@@ -10,11 +10,63 @@ use \Traversable,
 
 class ModuleRoute implements \Zend\Mvc\Router\Http\RouteInterface
 {
+	protected $moduleNames = array();
 
-    public function __construct($route, array $defaults = array())
+	protected $protectedNamespaces = array();
+
+	public function setModuleNames(array $moduleNames)
+	{
+		$this->moduleNames = $moduleNames;
+	}
+
+	public function getModuleNames()
+	{
+		if($this->moduleNames){
+			return $this->moduleNames;
+		}
+
+		if(false === \Eva\Registry::isRegistered("appConfig")){
+			return array();
+		}
+
+		$appConfig = \Eva\Registry::get("appConfig");
+		if($appConfig && isset($appConfig['modules'])){
+			return $appConfig['modules'];
+		}
+
+		return array();
+	}
+
+
+	public function setProtectedNamespaces(array $protectedNamespaces = array())
+	{
+		$this->protectedNamespaces = $protectedNamespaces;
+	}
+
+	public function getProtectedNamespaces()
+	{
+		if($this->protectedNamespaces){
+			return $this->protectedNamespaces;
+		}
+
+		if(false === \Eva\Registry::isRegistered("appConfig")){
+			return array();
+		}
+
+		$appConfig = \Eva\Registry::get("appConfig");
+		if($appConfig && isset($appConfig['protected_module_namespace'])){
+			return $appConfig['protected_module_namespace'];
+		}
+
+		return array();
+	}
+
+
+    public function __construct($route, array $moduleNames = array(), array $protectedNamespaces = array())
     {
         $this->route    = $route;
-        $this->defaults = $defaults;
+		$this->moduleNames = $moduleNames;
+		$this->protectedNamespaces = $protectedNamespaces;
 	}
 
     public static function factory($options = array())
@@ -42,11 +94,9 @@ class ModuleRoute implements \Zend\Mvc\Router\Http\RouteInterface
 		$pathArray = explode('/', $pathTrim);
 		$pathMaxLevel = count($pathArray);
 
-
-		$appConfig = \Eva\Registry::get("appConfig");
-		$loadedModules = $appConfig['modules'];
+		$loadedModules = $this->getModuleNames();
 		if(!$loadedModules) {
-            throw new Exception\InvalidArgumentException('No module loaded');
+			return null;
 		}
 
 		$checkInList = function($name, $array) {
@@ -57,7 +107,7 @@ class ModuleRoute implements \Zend\Mvc\Router\Http\RouteInterface
 			return in_array($name, $array);
 		};
 
-		$protectedModuleNamespace = isset($appConfig['protected_module_namespace']) ? $appConfig['protected_module_namespace'] : array();
+		$protectedModuleNamespace = $this->getProtectedNamespaces();
 		$moduleName = 'core';
 		$moduleNamespace = '';
 		$controllerName = $moduleName;

@@ -11,37 +11,74 @@ class ModuleRouteTest extends TestCase
 {
     public static function routeProvider()
     {
+
         return array(
-            'simple-match' => array(
-                new ModuleRoute('/foo'),
-                '/foo',
-                null,
-                true
-            ),
-            'no-match-without-leading-slash' => array(
-                new ModuleRoute('foo'),
-                '/foo',
-                null,
-                false
-            ),
-            'no-match-with-trailing-slash' => array(
-                new ModuleRoute('/foo'),
-                '/foo/',
-                null,
-                false
-            ),
-            'offset-skips-beginning' => array(
-                new ModuleRoute('foo'),
-                '/foo',
-                1,
-                true
-            ),
-            'offset-enables-partial-matching' => array(
-                new ModuleRoute('/foo'),
-                '/foo/bar',
-                0,
-                true
-            ),
+            'core' => array(
+                new ModuleRoute('/', array("Core", "Blog", "Album"), array('Admin')),
+                '/',
+				null,
+				array(
+					'module' => 'core',
+					'moduleNamespace' => 'core',
+					'controller' => 'Core\Controller\CoreController',	
+					'controllerName' => 'core',	
+					'action' => 'index',
+					'id' => ''
+				),
+				true
+			),
+            'core-noslash' => array(
+                new ModuleRoute('', array("Core", "Blog", "Album"), array('Admin')),
+                '',
+				null,
+				array(
+					'module' => 'core',
+					'moduleNamespace' => 'core',
+					'controller' => 'Core\Controller\CoreController',	
+					'controllerName' => 'core',	
+					'action' => 'index',
+					'id' => ''
+				),
+				true
+			),
+            'core-nomodule-loaded' => array(
+                new ModuleRoute('/', array(), array('Admin')),
+                '/',
+				null,
+				array(
+				),
+				false
+			),
+
+            'level1' => array(
+                new ModuleRoute('/blog', array("Core", "Blog", "Album"), array('Admin')),
+                '/blog',
+				null,
+				array(
+					'module' => 'blog',
+					'moduleNamespace' => 'blog',
+					'controller' => 'Blog\Controller\BlogController',	
+					'controllerName' => 'blog',	
+					'action' => 'index',
+					'id' => ''
+				),
+				true
+			),
+
+            'level1-' => array(
+                new ModuleRoute('/blog', array("Core", "Blog", "Album"), array('Admin')),
+                '/blog',
+				null,
+				array(
+					'module' => 'blog',
+					'moduleNamespace' => 'blog',
+					'controller' => 'Blog\Controller\BlogController',	
+					'controllerName' => 'blog',	
+					'action' => 'index',
+					'id' => ''
+				),
+				true
+			),
         );
     }
 
@@ -52,7 +89,7 @@ class ModuleRouteTest extends TestCase
      * @param        integer $offset
      * @param        boolean $shouldMatch
      */
-    public function testMatching(ModuleRoute $route, $path, $offset, $shouldMatch)
+    public function testMatching(ModuleRoute $route, $path, $offset, $routeParams, $shouldMatch)
     {
         $request = new Request();
         $request->setUri('http://example.com' . $path);
@@ -61,11 +98,11 @@ class ModuleRouteTest extends TestCase
         if (!$shouldMatch) {
             $this->assertNull($match);
         } else {
-            $this->assertInstanceOf('Zend\Mvc\Router\Http\RouteMatch', $match);
-            
-            if ($offset === null) {
-                $this->assertEquals(strlen($path), $match->getLength());            
-            }
+            $this->assertInstanceOf('\Zend\Mvc\Router\RouteMatch', $match);
+
+			foreach($routeParams as $key => $param){
+				$this->assertEquals($match->getParam($key), $param);
+			}
         }
     }
     
@@ -76,7 +113,7 @@ class ModuleRouteTest extends TestCase
      * @param        integer $offset
      * @param        boolean $shouldMatch
      */
-    public function testAssembling(Literal $route, $path, $offset, $shouldMatch)
+    public function testAssembling(ModuleRoute $route, $path, $offset, $shouldMatch)
     {
         if (!$shouldMatch) {
             // Data which will not match are not tested for assembling.
@@ -110,16 +147,17 @@ class ModuleRouteTest extends TestCase
     
     public function testFactory()
     {
+		/*
         $tester = new FactoryTester($this);
         $tester->testFactory(
             'Eva\Mvc\Router\Http\ModuleRoute',
             array(
-                'route' => 'Missing "route" in options array'
             ),
             array(
                 'route' => '/foo'
             )
-        );
+		);
+		 */
     }
 }
 
