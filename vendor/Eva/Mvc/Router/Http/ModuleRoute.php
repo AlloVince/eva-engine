@@ -115,36 +115,52 @@ class ModuleRoute implements \Zend\Mvc\Router\Http\RouteInterface
 		$id = '';
 
 
-		//Module not match
-		if(false === $checkInList($moduleName, $loadedModules)){
-			return null;
-		}
-
 		//Check prefix
 		if($pathArray[0] && true === $checkInList($pathArray[0], $protectedModuleNamespace)){
 			$moduleNamespace = array_shift($pathArray);
 			$pathMaxLevel = count($pathArray);
+
+			if($pathMaxLevel === 0){
+				$pathArray = array('');
+			}
 		}
 
-		//Path is exactly /
+		//Path is exactly / or /admin
 		if(!$pathArray[0]){
-			$moduleNamespace = $moduleName;
+			$moduleNamespace = $moduleNamespace ? $moduleNamespace : $moduleName;
 		}
 
 		//Level 1 :Path is / or /module
 		if($pathArray[0]) {
-			$moduleName = $pathArray[0];
-			if(strpos($moduleName, '-') === false){
+
+			//Level 1 :Path is /123
+			if(is_numeric($pathArray[0])){
 				$moduleNamespace = $moduleNamespace ? $moduleNamespace : $moduleName;
+				$actionName = 'get';
+				$id = $pathArray[0];
+				$controllerName = $moduleName;
+
+				goto complete;
 			} else {
-				$moduleNameArray = explode('-', $moduleName);
-				$moduleName = $moduleNameArray[0];
-				$moduleNamespace = $moduleNamespace ? $moduleNamespace : $moduleNameArray[1];			
+				$moduleName = $pathArray[0];
+				if(strpos($moduleName, '-') === false){
+					$moduleNamespace = $moduleNamespace ? $moduleNamespace : $moduleName;
+				} else {
+					$moduleNameArray = explode('-', $moduleName);
+					$moduleName = $moduleNameArray[0];
+					$moduleNamespace = $moduleNamespace ? $moduleNamespace : $moduleNameArray[1];			
+				}			
 			}
+
 		}
 		$controllerName = $moduleName;
 
-		
+
+		//Module not loaded
+		if(false === $checkInList($moduleName, $loadedModules)){
+			return null;
+		}
+
 		//Level 2 : Path is /module/123 or /module/abc
 		if($pathMaxLevel >= 2){
 			if(true === is_numeric($pathArray[1])){
@@ -157,7 +173,6 @@ class ModuleRoute implements \Zend\Mvc\Router\Http\RouteInterface
 
 
 		//Level 3 : Path is /module/abc/def or /module/abc/123 or /module/123/abc
-		//TODO: path param is number or null
 		if($pathMaxLevel >= 3 && false === is_numeric($pathArray[1])){
 			if(true === is_numeric($pathArray[2])){
 				$actionName = 'get';
@@ -167,10 +182,12 @@ class ModuleRoute implements \Zend\Mvc\Router\Http\RouteInterface
 				$id = $actionName;
 			}
 
-			if(isset($pathArray[3])) {
+			if(isset($pathArray[3]) && false === is_numeric($pathArray[2])) {
 				$id = $pathArray[3];
 			}
 		}
+
+		complete:
 
 		if($moduleName === $moduleNamespace) {
 			$controller = ucfirst($moduleName) . '\\Controller\\' . ucfirst($controllerName) . 'Controller';
@@ -178,7 +195,6 @@ class ModuleRoute implements \Zend\Mvc\Router\Http\RouteInterface
 			$controller = ucfirst($moduleName) . '\\' . ucfirst($moduleNamespace) . '\\Controller\\' . ucfirst($controllerName) . 'Controller';
 		}
 
-		/*
 		p($pathArray);
 		p(array(
 			'module' => $moduleName,
@@ -188,7 +204,6 @@ class ModuleRoute implements \Zend\Mvc\Router\Http\RouteInterface
 			'action' => $actionName,
 			'id' => $id,
 		));
-		 */
 
 		if(!$moduleName || !$moduleNamespace || !$controllerName || !$actionName){
 			return null;
