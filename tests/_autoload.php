@@ -1,4 +1,11 @@
 <?php
+function p($r)
+{
+    echo "|";
+    print_r($r);
+    echo "|";
+}
+
 /**
  * Setup autoloading
  */
@@ -6,7 +13,7 @@ function ZendTest_Autoloader($class)
 {
     $class = ltrim($class, '\\');
 
-    if (!preg_match('#^(Zend|Eva(Test)?|PHPUnit)(\\\\|_)#', $class)) {
+    if (!preg_match('#^(Zend(Test)?|Eva(Test)?|PHPUnit)(\\\\|_)#', $class)) {
         return false;
     }
 
@@ -24,10 +31,10 @@ function ZendTest_Autoloader($class)
         case 'ZendTest':
             // temporary fix for ZendTest namespace until we can migrate files 
             // into ZendTest dir
-            $file = __DIR__ . '/Zend/';
+            $file = __DIR__ . '/ZendTest/';
             break;
 		case 'EvaTest':
-            $file = __DIR__ . '/Eva/';
+            $file = __DIR__ . '/EvaTest/';
             break;
         default:
             $file = false;
