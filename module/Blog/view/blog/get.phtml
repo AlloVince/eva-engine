@@ -1,0 +1,13 @@
+<?php 
+$title = 'My albums';
+$this->headTitle($title);
+$form->setAction($this->url('default',
+        array('controller' => 'album', 'action' => 'add'))
+	)
+	->setMethod("put")
+	->setView($this);
+?>
+
+
+<?=$form->getElement('title')?>
+get

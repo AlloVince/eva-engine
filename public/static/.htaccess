@@ -1,0 +1,16 @@
+<IfModule deflate_module>
+<FilesMatch "\.(php|htm|html|js|css)$">
+SetOutputFilter DEFLATE
+</FilesMatch>
+</IfModule>
+
+<IfModule headers_module>
+  Header set Access-Control-Allow-Origin *
+  <FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css|swf)$">
+    Header set Expires "Thu, 15 Apr 2013 20:00:00 GMT"
+  </FilesMatch>
+  FileETag None
+  <FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css)$">
+    Header unset Last-Modified
+  </FilesMatch>
+</IfModule>

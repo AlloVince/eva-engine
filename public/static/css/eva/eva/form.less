@@ -1,0 +1,371 @@
+@formvInputWidth : 53%;
+@formhInputWidth : 64%;
+@formhMargin : 2%;
+
+/* Form layout */
+.formv, .formh{
+	position: relative;
+	.clearfix();
+
+	.holder, .buttonholder{ 
+		vertical-align:top;
+		.clearfix();
+	}
+	
+	label, button{ 
+		cursor: pointer;
+	}
+}
+
+.formv, .formh {
+
+	label, .label{
+		display: block;
+		float: none;
+		margin: 0 0 0.5em 0;
+		padding: 0;
+		line-height: 100%;
+		text-align:left;
+		vertical-align:top;
+	}
+	
+    .textinput, .fileupload, .select, select, textarea{
+		float: left;
+    	margin: 0;
+    	width: @formvInputWidth;
+    }
+
+	.textinput.auto, .fileupload.auto, .select.auto, select.auto, textarea.auto{
+		width:auto;
+	}
+    
+	.textinput, input, select, .select{
+		&.mini {width:60px;}
+		&.short {width:90px;}
+		&.normal {width:150px;}
+		&.long {width:270px;}
+	}
+
+	.radio, .checkbox{
+		margin:0;
+		height:auto;
+		width:auto;
+		border:none;
+	}
+    
+    .formhint{
+		float: right;
+    	width: 96% - @formvInputWidth;
+    	margin: 0;
+    	clear: none;
+		vertical-align:top;
+    }
+    
+    label em, .label em{
+		float: left;
+    	width: 1em;
+    	margin: 0 0 0 -1em;
+		position:relative;
+    }
+    
+    ul.labels, ul.inputs{
+		float: left;
+    	width: @formvInputWidth;
+    	margin: 0;
+    	padding: 0;
+    }
+    
+	ul.inputs li {
+		float: left;
+		margin-right: 1%;
+    	
+		input, .select, select{
+    		float: none;
+		}
+	}
+
+    ul.labels li{
+    	margin: 0 0 .5em 0;
+    	list-style: none;
+
+    	.textinput, .select, select{
+    		width: 98%;
+    		margin-top: 0.5em;
+    		display: block;
+    		float: none;
+    	}
+    }
+    
+    ul.labels li label{
+    	margin: 0;
+    	float: none;
+    	display: block;
+    	overflow: visible;
+    }
+    
+    ul.alternate li{ 
+		float: left;
+		width: 30%;
+		margin-right: 3%;
+	}
+    ul.alternate li label{
+		float: none;
+		display: block;
+		width: 98%;
+	}
+    
+
+	.buttonholder label{
+		.inline-block();
+		zoom: 1;
+		// *display: inline;
+		margin: 0.5em 0 0 0;
+		width: auto;
+		max-width: 60%;
+		text-align: left;
+	}
+}
+
+.formh {
+
+	label, .label {
+		float: left;
+		margin: 0.3em @formhMargin 0 0;
+		padding: 0;
+		line-height: 1;
+		width: 100% - @formhInputWidth - @formhMargin * 3;
+		position:relative;
+	}
+	
+    .textinput, .fileupload, .select, select, textarea{
+		float: left;
+    	width: @formhInputWidth;
+    }
+    
+    .formhint{
+    	clear: both;
+    	float: none;
+    	width: auto;
+    	margin-left: 100% - @formhInputWidth - @formhMargin * 2;
+		position: static;
+    }
+
+    ul.labels{ 
+		float: left;
+		width: @formhInputWidth + @formhMargin;
+	}
+
+	ul.labels label, ul.labels .label {
+		width:100%;
+	}
+
+    .holder.nolabel ul.labels{ 
+    	margin-left: 100% - @formhInputWidth - @formhMargin * 2;
+	}
+	
+    
+    label em, .label em{ 
+		display: block;
+		float: none;
+		margin: 0;
+		position: absolute;
+		right: 0;
+	}
+}
+
+.formh.labelright{
+	label, .label{
+		text-align: right;
+	}
+
+	ul.labels label, ul.labels .label {
+		text-align: left;
+	}
+
+    label em, .label em{ 
+		display:inline;
+		position: static;
+	}
+}
+
+.formv.fullwidth {
+    .textinput, .fileupload, .select, select, textarea{
+    	width: 100%;
+    }
+    .formhint{
+		float: left;
+    	width: 100%;
+    }
+	.inputs {
+    	width: 100%;
+	}
+}
+
+@error-text: desaturate(lighten(@red, 25%), 25%);
+
+.inputerror(){
+	border-color: @error-text;
+	.box-shadow(0 0 3px rgba(171,41,32,.25));
+	&:focus {
+		border-color: darken(@error-text, 10%);
+		.box-shadow(0 0 6px rgba(171,41,32,.5));
+	}	
+}
+
+.styleform{
+	:-moz-placeholder {
+		color: @grayLight;
+	}
+	::-webkit-input-placeholder {
+		color: @grayLight;
+	}
+
+	//best font for IE, do not change it 
+	label, input, select, textarea, .label {
+		#font > .sans-serif(normal,13px,normal);
+	}
+
+	.formhint {
+	    color: @gray;	
+		font-size: 13px;
+	}
+
+	//html5 form element
+	//input[type="text"], input[type="password"], text[type=search], text[type=email], text[type=url], text[type=tel], text[type=number], text[type=range],text[type=color],  text[type=datetime], text[type=date], text[type=month], text[type=week], text[type=time]
+	.textinput, textarea, select, .select {
+		.inline-block();
+		margin: 0;
+		padding: 4px;
+		font-size: 13px;
+		line-height: @baseLineHeight;
+		height: @baseLineHeight;
+		color: @gray;
+		border: 1px solid #ccc;
+		.border-radius(3px);
+
+		@transition: border linear .2s, box-shadow linear .2s;
+		.transition(@transition);
+		.box-shadow(inset 0 1px 3px rgba(0,0,0,.1));
+
+		&:focus {
+			outline: none;
+			border-color: rgba(82,168,236,.8);
+			@shadow: inset 0 1px 3px rgba(0,0,0,.1), 0 0 8px rgba(82,168,236,.6);
+			.box-shadow(@shadow);		
+		}
+
+		&.error {
+			.inputerror();
+		}
+	}
+	
+	select, input[type=file] {
+		height: @baseLineHeight * 1.5;
+		line-height: @baseLineHeight * 1.5;
+	}
+	
+	textarea {
+		height: auto;
+	}
+
+	input[readonly]:focus, textarea[readonly]:focus, input.readonly, input.disabled {
+		background: #f5f5f5;
+		border-color: #ddd;
+		.box-shadow(none);
+	}
+
+	.disabled {
+	  background-color: #eee;
+	  display: block;
+	  border-color: #ccc;
+	  .box-shadow(inset 0 1px 2px rgba(0,0,0,.075));
+  	}
+
+
+	.holder {
+		margin:1px 0;
+		padding:9px 0;
+	}
+
+
+	.prepend, .append {
+	  input[type=text] {
+		.border-radius(0 3px 3px 0);
+	  }
+	  .addon {
+		background: #f5f5f5;
+		float: left;
+		display: block;
+		width: auto;
+		min-width: 16px;
+		padding: 4px 4px 4px 5px;
+		color: @grayLight;
+		font-weight: normal;
+		line-height: 18px;
+		height: 18px;
+		text-align: center;
+		text-shadow: 0 1px 0 #fff;
+		border: 1px solid #ccc;
+		border-right-width: 0;
+		.border-radius(3px 0 0 3px);
+	  }
+	  .active {
+		background: lighten(@green, 30);
+		border-color: @green;
+	  }
+	}
+
+	.prepend {
+	  .addon {
+		*margin-top: 1px; /* IE6-7 */
+	  }
+	}
+
+	.append {
+	  input[type=text] {
+		float: left;
+		.border-radius(3px 0 0 3px);
+	  }
+	  .addon {
+		.border-radius(0 3px 3px 0);
+		border-right-width: 1px;
+		border-left-width: 0;
+	  }
+	}
+
+	.buttonholder {
+	  text-align: right;
+	  background: #f5f5f5;
+	  margin-top: @baseLineHeight;
+	  margin-bottom: @baseLineHeight;
+	  padding: (@baseLineHeight - 1) 20px @baseLineHeight 20px;
+	  border-top: 1px solid #ddd;
+	  .border-radius(0 0 3px 3px);
+
+	  .secondary {
+	  	float:left;
+	  }
+	}
+
+	.holder.error {
+		background: lighten(@red, 57%);
+		.border-radius(4px);
+		@error-text: desaturate(lighten(@red, 25%), 25%);
+		
+		label, .label, .formhint {
+			color: @red;
+		}
+
+		.textinput, textarea, select, .select {
+			.inputerror();
+		}
+		
+		.prepend, .append {
+			addon {
+				background: lighten(@red, 50%);
+				border-color: @error-text;
+				color: darken(@error-text, 10%);
+			}
+		}
+	}
+}
