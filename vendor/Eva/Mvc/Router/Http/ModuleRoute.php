@@ -195,6 +195,7 @@ class ModuleRoute implements \Zend\Mvc\Router\Http\RouteInterface
 			$controller = ucfirst($moduleName) . '\\' . ucfirst($moduleNamespace) . '\\Controller\\' . ucfirst($controllerName) . 'Controller';
 		}
 
+		/*
 		p($pathArray);
 		p(array(
 			'module' => $moduleName,
@@ -204,6 +205,7 @@ class ModuleRoute implements \Zend\Mvc\Router\Http\RouteInterface
 			'action' => $actionName,
 			'id' => $id,
 		));
+		 */
 
 		if(!$moduleName || !$moduleNamespace || !$controllerName || !$actionName){
 			return null;

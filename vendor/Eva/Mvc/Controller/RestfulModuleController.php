@@ -24,9 +24,8 @@ abstract class RestfulModuleController extends \Zend\Mvc\Controller\RestfulContr
 			return $this->restfulResource;
 		}
 
-		$routeParams = $this->getEvent()->getRouteMatch()->getParams();
-		$moduleName = $routeParams['module'];
-		$controllerName = $routeParams['controllerName'];
+		$moduleName = $this->getEvent()->getRouteMatch()->getParam('module');
+		$controllerName = $this->getEvent()->getRouteMatch()->getParam('controllerName');
 		$method = strtolower($this->getRequest()->getMethod());
 		if(!$moduleName || !$controllerName || !$method){
 			throw new \Eva\Core\Exception\RestfulException('Restful route argument not exist');
