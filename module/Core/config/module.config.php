@@ -35,6 +35,7 @@ return array(
                 'parameters' => array(
                     'paths'  => array(
                         'core' => __DIR__ . '/../view',
+                        //'admin/core' => __DIR__ . '/../viewadmin',
                     ),
                 ),
             ),

@@ -4,19 +4,29 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta charset="utf-8" />
     <?=$this->headTitle('Eva Engine')?>
-
-	<!--[if IE]>
-	<meta http-equiv="PRAGMA" content="NO-CACHE" />
-	<![endif]-->
 	<!--[if lt IE 9]>
+	<meta http-equiv="PRAGMA" content="NO-CACHE" />
+	<script src="<?=$this->basePath()?>/static/javascripts/lib/html5shiv.min.js"></script>
 	<![endif]-->
-	
     <?=$this->headMeta()?>
+	<link href="<?=$this->basePath()?>/static/css/bootstrap/bootstrap.min.css" media="all" rel="stylesheet" type="text/css" />
 </head>
 
 <body class="">
+	<div class="navbar navbar-fixed-top"><div class="navbar-inner"><div class="container">
+    <a class="brand" href="#">
+    Eva Engine
+    </a>	
+    <ul class="nav">
+    	<li class="active"><a href="#">Home</a></li>
+	    <li><a href="#">Modules</a></li>
+    	<li><a href="#">Admin</a></li>
+    	<li><a href="#">UI</a></li>
+    </ul>
+    </div></div></div>
 
-<div id="page" class="page"><?=$this->content;?></div><!-- #page end-->
-
+<div id="page" class="page">
+<?=$this->content;?>
+</div><!-- #page end-->
 </body>
 </html>

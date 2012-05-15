@@ -4,6 +4,7 @@ return array(
         'instance' => array(
             'Zend\Mvc\Router\RouteStackInterface' => array(
                 'parameters' => array(
+					/*
                     'routes' => array(
                         'website' => array(
                             'type' => 'Zend\Mvc\Router\Http\Literal',
@@ -16,7 +17,8 @@ return array(
                             ),
 							'priority' => 2,
 						),
-                    ),
+					),
+					 */
                 ),
 			),
             'Zend\View\Resolver\TemplatePathStack' => array(

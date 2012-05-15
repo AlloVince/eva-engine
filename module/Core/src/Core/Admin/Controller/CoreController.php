@@ -8,15 +8,15 @@ class CoreController extends ActionController
 {
 	public function indexAction()
 	{
-		p('admin/index');
         $model = new ViewModel(array(
 		));
+		$model->setTemplate('admin/index');
+		$this->layout('layout/admin'); 
 		return $model;
 	}
 
 	public function getAction()
 	{
-		p('admin/get');
         $model = new ViewModel(array(
 		));
 		return $model;

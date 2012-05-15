@@ -1,66 +1,21 @@
-<?php 
-$this->headTitle()->setSeparator(' - ')
-                  ->setAutoEscape(false);
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta charset="utf-8" />
+    <?=$this->headTitle('Eva Engine')?>
+	<!--[if lt IE 9]>
+	<meta http-equiv="PRAGMA" content="NO-CACHE" />
+	<script src="<?=$this->basePath()?>/static/javascripts/lib/html5shiv.min.js"></script>
+	<![endif]-->
+    <?=$this->headMeta()?>
+	<link href="<?=$this->basePath()?>/static/css/bootstrap/bootstrap.min.css" media="all" rel="stylesheet" type="text/css" />
+</head>
 
-$basePath = $this->basePath();
-$this->headLink()->appendStylesheet($basePath . '/css/bootstrap.min.css')
-                 ->appendStylesheet($basePath . '/css/style.css')
-                 ->appendStylesheet($basePath . '/css/bootstrap-responsive.min.css');
-
-$this->headLink(array(
-            'rel'  => 'shortcut icon',
-            'type' => 'image/vnd.microsoft.icon',
-            'href' => $basePath . '/images/favicon.ico',
-        ));
-
-// HTML5 shim, for IE6-8 support of HTML elements
-$this->headScript()->appendFile($basePath . '/js/html5.js', 'text/javascript', 
-    array('conditional' => 'lt IE9',));
-
-echo $this->doctype();
-?>
-
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <?php echo $this->headTitle('ZF2 Tutorial') ?>
-
-    <?php echo $this->headMeta() ?>
-
-    <!-- Le styles -->
-    <?php echo $this->headLink() ?>
-    
-    <!-- Scripts -->
-    <?php echo $this->headScript() ?>
-
-  </head>
-
-  <body>
-
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="brand" href="http://avnpc.com/">Eva Engine</a>
-          <div class="nav-collapse">
-            <ul class="nav">
-              <li class="active"><a href="/">Home</a></li>
-              <li><a href="/blog">Blog</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
-    </div>
-
-    <div class="container">
-
-      <?php echo $this->content; ?>
-
-      <hr>
-
-      <footer>
-      </footer>
-
-    </div> <!-- /container -->
-
-  </body>
+<body class="">
+admin layout
+<div id="page" class="page">
+<?=$this->content;?>
+</div><!-- #page end-->
+</body>
 </html>
