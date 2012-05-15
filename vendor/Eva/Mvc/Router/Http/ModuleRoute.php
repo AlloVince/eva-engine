@@ -218,7 +218,7 @@ class ModuleRoute implements \Zend\Mvc\Router\Http\RouteInterface
 			'controllerName' => $controllerName,	
 			'action' => $actionName,
 			'id' => $id,
-		), 0);
+		), strlen($path));
     }
 
 

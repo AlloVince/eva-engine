@@ -5,22 +5,13 @@ return array(
             'Zend\Mvc\Router\RouteStackInterface' => array(
                 'parameters' => array(
                     'routes' => array(
-						/*
-                        'home' => array(
-                            'type' => 'Zend\Mvc\Router\Http\Literal',
-                            'options' => array(
-                                'route'    => '/',
-                                'defaults' => array(
-                                    'controller' => 'Core\Controller\CoreController',
-                                    'action'     => 'abc',
-                                ),
-                            ),
-						),
-						 */
 						'default' => array(
 							'type'    => 'Eva\Mvc\Router\Http\ModuleRoute',
+							'priority' => 1,
 						),
+						
                     ),
+					'sorted' => true,
                 ),
 			),
 

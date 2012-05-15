@@ -14,6 +14,7 @@ return array(
                                     'action'     => 'index',
                                 ),
                             ),
+							'priority' => 2,
 						),
                     ),
                 ),
