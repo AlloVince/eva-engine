@@ -26,7 +26,8 @@ return array(
             'Zend\View\Resolver\TemplateMapResolver' => array(
                 'parameters' => array(
                     'map'  => array(
-                        'layout/layout' => __DIR__ . '/../view/layout/layout.phtml',
+                        'layout/admin' => __DIR__ . '/../view/layout/admin.phtml',
+                        'layout/default' => __DIR__ . '/../view/layout/default.phtml',
                     ),
                 ),
             ),
@@ -44,7 +45,7 @@ return array(
             ),
             'Zend\Mvc\View\DefaultRenderingStrategy' => array(
                 'parameters' => array(
-                    'layoutTemplate' => 'layout/layout',
+                    'layoutTemplate' => 'layout/default',
                 ),
             ),
             'Zend\Mvc\View\ExceptionStrategy' => array(

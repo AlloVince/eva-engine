@@ -4,7 +4,7 @@ CodeMirror.defineMode("css", function(config) {
 
   function tokenBase(stream, state) {
     var ch = stream.next();
-    if (ch == "@") {stream.eatWhile(/\w/); return ret("meta", stream.current());}
+    if (ch == "@") {stream.eatWhile(/[\w\\\-]/); return ret("meta", stream.current());}
     else if (ch == "/" && stream.eat("*")) {
       state.tokenize = tokenCComment;
       return tokenCComment(stream, state);
@@ -20,7 +20,7 @@ CodeMirror.defineMode("css", function(config) {
       return state.tokenize(stream, state);
     }
     else if (ch == "#") {
-      stream.eatWhile(/\w/);
+      stream.eatWhile(/[\w\\\-]/);
       return ret("atom", "hash");
     }
     else if (ch == "!") {
@@ -38,7 +38,7 @@ CodeMirror.defineMode("css", function(config) {
       return ret(null, ch);
     }
     else {
-      stream.eatWhile(/[\w\\\-_]/);
+      stream.eatWhile(/[\w\\\-]/);
       return ret("variable", "variable");
     }
   }
@@ -92,7 +92,7 @@ CodeMirror.defineMode("css", function(config) {
       var style = state.tokenize(stream, state);
 
       var context = state.stack[state.stack.length-1];
-      if (type == "hash" && context == "rule") style = "atom";
+      if (type == "hash" && context != "rule") style = "string-2";
       else if (style == "variable") {
         if (context == "rule") style = "number";
         else if (!context || context == "@media{") style = "tag";

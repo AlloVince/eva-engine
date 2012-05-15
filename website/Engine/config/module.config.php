@@ -8,7 +8,7 @@ return array(
                         'website' => array(
                             'type' => 'Zend\Mvc\Router\Http\Literal',
                             'options' => array(
-                                'route'    => '/abc',
+                                'route'    => '/',
                                 'defaults' => array(
                                     'controller' => 'Engine\Controller\EngineController',
                                     'action'     => 'index',
