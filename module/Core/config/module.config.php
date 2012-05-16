@@ -10,6 +10,13 @@ return array(
                     'broker'       => 'Zend\Mvc\Controller\PluginBroker',
                 ),
             ),
+            'Zend\View\HelperLoader' => array(
+                'parameters' => array(
+                    'map' => array(
+                        'uri' => 'Eva\View\Helper\Uri',
+                    ),
+                ),
+            ),
             'Zend\Mvc\Controller\PluginBroker' => array(
                 'parameters' => array(
                     'loader' => 'Zend\Mvc\Controller\PluginLoader',
