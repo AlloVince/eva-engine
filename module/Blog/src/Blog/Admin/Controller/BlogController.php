@@ -8,9 +8,10 @@ class BlogController extends ActionController
 {
 	public function indexAction()
 	{
-		p('abcde');
+		$this->layout('layout/admin'); 
         $model = new ViewModel(array(
 		));
+		$model->setTemplate('admin-blog/index');
 		return $model;
 	}
 }

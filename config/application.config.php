@@ -2,7 +2,7 @@
 return array(
 	'modules' => array(
 		'Core',
-		'Album',
+		//'Album',
 		'Blog',
 		'Engine',
 	),
@@ -10,7 +10,7 @@ return array(
 		'Admin',	
 	),
 	'module_listener_options' => array( 
-		'config_cache_enabled' => false,
+		'config_cache_enabled' => 0,
 		'cache_dir'            => EVA_CONFIG_PATH . '/cache',
 		'module_paths' => array(
 			EVA_MODULE_PATH,

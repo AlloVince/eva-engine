@@ -41,8 +41,9 @@ return array(
             'Zend\View\Resolver\TemplatePathStack' => array(
                 'parameters' => array(
                     'paths'  => array(
-                        'core' => __DIR__ . '/../view',
-                        //'admin/core' => __DIR__ . '/../viewadmin',
+                        __DIR__ . '/../view',
+                        //'Core\Controller\CoreController' => __DIR__ . '/../view',
+                        //'Core\Admin\Controller\CoreController' => __DIR__ . '/../view/admin',
                     ),
                 ),
             ),

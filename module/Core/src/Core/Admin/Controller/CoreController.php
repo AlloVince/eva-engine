@@ -8,10 +8,10 @@ class CoreController extends ActionController
 {
 	public function indexAction()
 	{
+		$this->layout('layout/admin'); 
         $model = new ViewModel(array(
 		));
 		$model->setTemplate('admin/index');
-		$this->layout('layout/admin'); 
 		return $model;
 	}
 
