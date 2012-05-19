@@ -35,21 +35,12 @@ $loader->registerNamespace('Eva\\', EVA_PUBLIC_PATH . '/../vendor/Eva');
 $appConfig = include EVA_CONFIG_PATH . DIRECTORY_SEPARATOR . 'application.config.php';
 \Eva\Registry::set("appConfig", $appConfig);
 
-$listenerOptions  = new Eva\Module\Listener\ListenerOptions($appConfig['module_listener_options']);
-$defaultListeners = new Eva\Module\Listener\DefaultListenerAggregate($listenerOptions);
-$defaultListeners->getConfigListener()->addConfigGlobPath(EVA_CONFIG_PATH . '/autoload/*.config.php');
+// setup service manager
+$serviceManager = new \Zend\ServiceManager\ServiceManager(new \Zend\Mvc\Service\ServiceManagerConfiguration($appConfig['service_manager']));
+$serviceManager->setService('ApplicationConfiguration', $appConfig);
+$serviceManager->get('ModuleManager')->loadModules();
 
-$moduleManager = new Eva\Module\Manager($appConfig['modules']);
-$moduleManager->events()->attachAggregate($defaultListeners);
-$moduleManager->loadModules();
+//$serviceManager->get('Application')->bootstrap()->run()->send();
 
-$config = $defaultListeners->getConfigListener()->getMergedConfig();
-//\Eva\Registry::set("config", $config->toArray());
-
-
-// Create application, bootstrap, and run
-$bootstrap   = new Eva\Mvc\Bootstrap($config);
-$application = new Eva\Mvc\Application;
-
-$bootstrap->bootstrap($application);
-$application->run()->send();
+$app = $serviceManager->get('Application');
+$app->bootstrap()->run()->send();

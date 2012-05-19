@@ -1,5 +1,49 @@
 <?php
 return array(
+    'view_manager' => array(
+        'display_not_found_reason' => true,
+        'display_exceptions'       => true,
+        'doctype'                  => 'HTML5',
+        'not_found_template'       => 'error/404',
+        'exception_template'       => 'error/index',
+        'template_map' => array(
+            'layout/layout' => __DIR__ . '/../view/layout/default.phtml',
+            'index/index'   => __DIR__ . '/../view/index/index.phtml',
+            'error/404'     => __DIR__ . '/../view/error/404.phtml',
+            'error/index'   => __DIR__ . '/../view/error/index.phtml',
+        ),
+        'template_path_stack' => array(
+            'core' => __DIR__ . '/../view',
+		),
+
+
+    ),
+	'controller' => array(
+
+	),
+	
+    'router' => array(
+        'routes' => array(
+            'default' => array(
+				'type'    => 'Eva\Mvc\Router\Http\ModuleRoute',
+				'priority' => 1,
+            ),
+        ),
+	),
+
+		'Di' => array(
+        'instance' => array(
+            'Zend\View\HelperLoader' => array(
+                'parameters' => array(
+                    'map' => array(
+                        'uri' => 'Eva\View\Helper\Uri',
+                    ),
+                ),
+			),
+
+		),
+		),
+	/*
     'di' => array(
         'instance' => array(
             // Inject the plugin broker for controller plugins into
@@ -72,5 +116,6 @@ return array(
             ),
 
         ),
-    ),
+	),
+	 */
 );

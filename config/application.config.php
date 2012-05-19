@@ -2,10 +2,15 @@
 return array(
 	'modules' => array(
 		'Core',
-		//'Album',
 		'Blog',
-		'Engine',
+		//'Album',
+		//'Engine',
 	),
+    'service_manager' => array(
+        'use_defaults' => true,
+        'factories'    => array(
+        ),
+    ),
 	'protected_module_namespace' => array(
 		'Admin',	
 	),

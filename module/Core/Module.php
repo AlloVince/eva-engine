@@ -1,17 +1,19 @@
 <?php
 namespace Core;
 
-use Eva\Module\Manager,
+use Eva\ModuleManager\ModuleManager,
     Eva\EventManager\StaticEventManager,
-    Eva\Module\Consumer\AutoloaderProvider;
+    Eva\ModuleManager\Feature\AutoloaderProvider;
 
-class Module implements AutoloaderProvider
+class Module
 {
-    public function init(Manager $moduleManager)
+	/*
+    public function init(ModuleManager $moduleManager)
     {
         $events = StaticEventManager::getInstance();
         $events->attach('bootstrap', 'bootstrap', array($this, 'initializeView'), 100);
-    }
+	}
+	 */
 
     public function getAutoloaderConfig()
     {
@@ -32,6 +34,7 @@ class Module implements AutoloaderProvider
         return include __DIR__ . '/config/module.config.php';
     }
     
+	/*
     public function initializeView($e)
     {
         $app          = $e->getParam('application');
@@ -40,5 +43,6 @@ class Module implements AutoloaderProvider
         $renderer     = $locator->get('Zend\View\Renderer\PhpRenderer');
         $renderer->plugin('url')->setRouter($app->getRouter());
         $renderer->plugin('basePath')->setBasePath($basePath);
-    }
+	}
+	 */
 }

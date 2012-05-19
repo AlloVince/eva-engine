@@ -1,7 +1,18 @@
 <?php
 return array(
-    'di' => array(
+	/*
+    'router' => array(
+        'routes' => array(
+            'default' => array(
+				'type'    => 'Eva\Mvc\Router\Http\ModuleRoute',
+				'priority' => 1,
+            ),
+        ),
+	),
+	 */
+    'Di' => array(
         'instance' => array(
+			/*
             'Zend\Mvc\Router\RouteStackInterface' => array(
                 'parameters' => array(
                     'routes' => array(
@@ -14,6 +25,7 @@ return array(
 					'sorted' => true,
                 ),
 			),
+			 */
 
 			'Eva\Db\Adapter\Adapter' => array(
 				'parameters' => array(
