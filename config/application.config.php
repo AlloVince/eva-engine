@@ -3,7 +3,7 @@ return array(
 	'modules' => array(
 		'Core',
 		'Blog',
-		//'Album',
+		'Album',
 		//'Engine',
 	),
     'service_manager' => array(

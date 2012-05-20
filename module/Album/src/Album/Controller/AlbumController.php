@@ -2,10 +2,11 @@
 
 namespace Album\Controller;
 
-use Eva\Mvc\Controller\ActionController,
+use Zend\Mvc\Controller\ActionController,
     Album\Model\AlbumTable,
+    Album\Model\Album,
     Album\Form\AlbumForm,
-    Eva\View\Model\ViewModel;
+    Zend\View\Model\ViewModel;
 
 class AlbumController extends ActionController
 {
@@ -16,82 +17,79 @@ class AlbumController extends ActionController
 
     public function indexAction()
     {
-        $model = new ViewModel(array(
-            'albums' => $this->albumTable->fetchAll(),
-		));
-		return $model;
+        return new ViewModel(array(
+            'albums' => $this->getAlbumTable()->fetchAll(),
+        ));
     }
 
     public function addAction()
     {
         $form = new AlbumForm();
-        $form->submit->setLabel('Add');
+        $form->get('submit')->setAttribute('label', 'Add');
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $formData = $request->post()->toArray();
-            if ($form->isValid($formData)) {
-                $artist = $form->getValue('artist');
-                $title  = $form->getValue('title');
-                $this->albumTable->addAlbum($artist, $title);
+            $album = new Album();
+            $form->setInputFilter($album->getInputFilter());
+            $form->setData($request->post());
+            if ($form->isValid()) {
+
+                $album->populate($form->getData());
+                $this->getAlbumTable()->saveAlbum($album);
 
                 // Redirect to list of albums
-                return $this->redirect()->toRoute('default', array(
-                    'controller' => 'album',
-                    'action'     => 'index',
-                ));
+                return $this->redirect()->toRoute('album');
 
             }
         }
 
         return array('form' => $form);
-
     }
 
     public function editAction()
     {
-        $form = new AlbumForm();
-        $form->submit->setLabel('Edit');
+        $id = (int)$this->getEvent()->getRouteMatch()->getParam('id');
+        if (!$id) {
+            return $this->redirect()->toRoute('album', array('action'=>'add'));
+        }
+        $album = $this->getAlbumTable()->getAlbum($id);
 
+        $form = new AlbumForm();
+        $form->setBindOnValidate(false);
+        $form->bind($album);
+        $form->get('submit')->setAttribute('label', 'Edit');
+        
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $formData = $request->post()->toArray();
-            if ($form->isValid($formData)) {
-                $id     = $form->getValue('id');
-                $artist = $form->getValue('artist');
-                $title  = $form->getValue('title');
-                
-                if ($this->albumTable->getAlbum($id)) {
-                    $this->albumTable->updateAlbum($id, $artist, $title);
-                }
+            $form->setData($request->post());
+            if ($form->isValid()) {
+                $form->bindValues();
+                $this->getAlbumTable()->saveAlbum($album);
 
                 // Redirect to list of albums
-                return $this->redirect()->toRoute('default', array(
-                    'controller' => 'album',
-                    'action'     => 'index' ,
-                ));
-            }
-        } else {
-            $id = $request->query()->get('id', 0);
-            if ($id > 0) {
-                $album = $this->albumTable->getAlbum($id);
-                if ($album) {
-                    $form->populate($album->getArrayCopy());
-                }
+                return $this->redirect()->toRoute('album');
             }
         }
 
-        return array('form' => $form);
+        return array(
+            'id' => $id,
+            'form' => $form,
+        );
     }
 
     public function deleteAction()
     {
+        $id = (int)$this->getEvent()->getRouteMatch()->getParam('id');
+        if (!$id) {
+            return $this->redirect()->toRoute('album');
+        }
+
         $request = $this->getRequest();
         if ($request->isPost()) {
             $del = $request->post()->get('del', 'No');
             if ($del == 'Yes') {
-                $id = $request->post()->get('id');
-                $this->albumTable->deleteAlbum($id);
+                $id = (int)$request->post()->get('id');
+                $this->getAlbumTable()->deleteAlbum($id);
             }
 
             // Redirect to list of albums
@@ -101,13 +99,24 @@ class AlbumController extends ActionController
             ));
         }
 
-        $id = $request->query()->get('id', 0);
-        return array('album' => $this->albumTable->getAlbum($id));        
+        return array(
+            'id' => $id,
+            'album' => $this->getAlbumTable()->getAlbum($id)
+        );
     }
 
     public function setAlbumTable(AlbumTable $albumTable)
     {
         $this->albumTable = $albumTable;
         return $this;
-    }    
+    }
+
+    public function getAlbumTable()
+    {
+        if (!$this->albumTable) {
+            $sm = $this->getServiceLocator();
+            $this->albumTable = $sm->get('album-table');
+        }
+        return $this->albumTable;
+    }
 }

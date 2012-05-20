@@ -33,6 +33,16 @@ class Module
     {
         return include __DIR__ . '/config/module.config.php';
     }
+
+    public function onBootstrap($e)
+    {
+        $application        = $e->getParam('application');
+        $serviceManager = $application->getServiceManager();
+        $helperLoader   = $serviceManager->get('Zend\View\HelperLoader');
+		$helperLoader->registerPlugins(array(
+			'uri' => 'Eva\View\Helper\Uri'	
+		));
+    }
     
 	/*
     public function initializeView($e)

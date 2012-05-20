@@ -9,8 +9,7 @@ $this->headTitle($title);
   '<?php echo $this->escape($album['artist']); ?>'?
 </p>
 <?php 
-$url = $this->url('default',
-    array('controller' => 'album', 'action' => 'delete')); ?>
+$url = $this->url('album', array('action' => 'delete', 'id'=>$this->id)); ?>
 <form action="<?php echo $url; ?>" method="post">
 <div>
   <input type="hidden" name="id" value="<?php echo (int)$album['id']; ?>" />

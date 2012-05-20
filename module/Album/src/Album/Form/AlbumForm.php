@@ -1,35 +1,54 @@
 <?php
 namespace Album\Form;
 
-use Zend\Form\Form,
-    Zend\Form\Element;
+use Zend\Form\Factory as FormFactory;
+use Zend\Form\Form;
+use Zend\Form\Hydrator\ObjectProperty;
 
 class AlbumForm extends Form
 {
-    public function init()
+    public function __construct()
     {
+        parent::__construct();
+
         $this->setName('album');
+        $this->setAttribute('method', 'post');
 
-        $id = new Element\Hidden('id');
-        $id->addFilter('Int');
+        $factory = new FormFactory();
 
-        $artist = new Element\Text('artist');
-        $artist->setLabel('Artist')
-               ->setRequired(true)
-               ->addFilter('StripTags')
-               ->addFilter('StringTrim')
-               ->addValidator('NotEmpty');
+        // Id
+        $this->add(array(
+            'name' => 'id',
+            'attributes' => array(
+                'type'  => 'hidden',
+            ),
+        ));
 
-        $title = new Element\Text('title');
-        $title->setLabel('Title')
-              ->setRequired(true)
-              ->addFilter('StripTags')
-              ->addFilter('StringTrim')
-              ->addValidator('NotEmpty');
+        // Artist        
+        $this->add(array(
+            'name' => 'artist',
+            'attributes' => array(
+                'type'  => 'text',
+                'label' => 'Artist',
+            ),
+        ));
 
-        $submit = new Element\Submit('submit');
-        $submit->setAttrib('id', 'submitbutton');
+        $this->add(array(
+            'name' => 'title',
+            'attributes' => array(
+                'type'  => 'text',
+                'label' => 'Title',
+            ),
+        ));
 
-        $this->addElements(array($id, $artist, $title, $submit));
+        $this->add(array(
+            'name' => 'submit',
+            'attributes' => array(
+                'type'  => 'submit',
+                'label' => 'Go',
+                'id' => 'submitbutton',
+            ),
+        ));
+
     }
 }

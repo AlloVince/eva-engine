@@ -1,0 +1,30 @@
+<?php
+$title = 'Add new album';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escape($title); ?></h1>
+
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url('album', array('action' => 'add')));
+echo $this->form()->openTag($form);
+?>
+<dl class="zend_form">
+<?php echo $this->formInput($form->get('id')); ?>
+<dt><?php echo $this->formLabel($form->get('title')); ?></dt>
+<dd><?php 
+    echo $this->formInput($form->get('title'));
+    echo $this->formElementErrors($form->get('title'));
+?></dd>
+<dt><?php echo $this->formLabel($form->get('artist')); ?></dt>
+<dd><?php 
+    echo $this->formInput($form->get('artist'));
+    echo $this->formElementErrors($form->get('artist'));
+?></dd>
+
+<dd><?php 
+    echo $this->formInput($form->get('submit'));
+    echo $this->formElementErrors($form->get('submit'));
+?></dd>
+</dl>
+<?php echo $this->form()->closeTag($form); ?>
