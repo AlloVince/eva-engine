@@ -16,6 +16,9 @@ return array(
 	),
 	'module_listener_options' => array( 
 		'config_cache_enabled' => 0,
+        'config_glob_paths'    => array(
+            EVA_CONFIG_PATH . '/autoload/{,*.}{global,local}.config.php',
+		),
 		'cache_dir'            => EVA_CONFIG_PATH . '/cache',
 		'module_paths' => array(
 			EVA_MODULE_PATH,

@@ -43,6 +43,19 @@ class Module
 			'uri' => 'Eva\View\Helper\Uri'	
 		));
     }
+
+    public function getServiceConfiguration()
+    {
+        return array(
+            'factories' => array(
+                'db-adapter' =>  function($sm) {
+                    $config = $sm->get('config')->db->toArray();
+                    $dbAdapter = new \Zend\Db\Adapter\Adapter($config);
+                    return $dbAdapter;
+                },
+            ),
+        );
+    }
     
 	/*
     public function initializeView($e)

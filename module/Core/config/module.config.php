@@ -15,9 +15,8 @@ return array(
         'template_path_stack' => array(
             'core' => __DIR__ . '/../view',
 		),
-
-
     ),
+	/*
 	'controller' => array(
 
 	),
@@ -30,19 +29,8 @@ return array(
             ),
         ),
 	),
+	 */
 
-		'Di' => array(
-        'instance' => array(
-            'Zend\View\HelperLoader' => array(
-                'parameters' => array(
-                    'map' => array(
-                        'uri' => 'Eva\View\Helper\Uri',
-                    ),
-                ),
-			),
-
-		),
-		),
 	/*
     'di' => array(
         'instance' => array(
