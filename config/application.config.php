@@ -3,17 +3,22 @@ return array(
 	'modules' => array(
 		'Core',
 		'Blog',
-		'Album',
-		'Engine',
+		//'Album',
+		//'Engine',
 	),
     'service_manager' => array(
-        'use_defaults' => true,
+		'use_defaults' => true,
+		'services' => array(
+			'ViewManager'                  => 'Eva\Mvc\View\ModuleViewManager',
+		),
         'factories'    => array(
+
         ),
     ),
 	'protected_module_namespace' => array(
 		'Admin',	
 	),
+	'use_module_template_path_stack' => true,
 	'module_listener_options' => array( 
 		'config_cache_enabled' => 0,
         'config_glob_paths'    => array(
