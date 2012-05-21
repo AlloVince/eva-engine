@@ -11,7 +11,6 @@ class CoreController extends ActionController
 		$this->layout('layout/admin'); 
         $model = new ViewModel(array(
 		));
-		$model->setTemplate('admin/index');
 		return $model;
 	}
 

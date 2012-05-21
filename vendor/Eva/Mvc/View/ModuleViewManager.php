@@ -37,42 +37,75 @@ use Zend\View\View;
 
 class ModuleViewManager extends \Zend\Mvc\View\ViewManager
 {
-    public function getResolver()
+
+	protected $viewRootPath;
+
+    /**
+     * Prepares the view layer
+     * 
+     * @param  ApplicationInterface $application 
+     * @return void
+     */
+    public function onBootstrap($event)
     {
-        if ($this->resolver) {
-            return $this->resolver;
-        }
+        $application  = $event->getApplication();
+        $services     = $application->getServiceManager();
+        $config       = $services->get('Configuration');
+        $events       = $application->events();
+        $sharedEvents = $events->getSharedManager();
 
-        $map = array();
-        if (isset($this->config['view_manager']) && isset($this->config['view_manager']['template_map'])) {
-            $map = $this->config['view_manager']['template_map'];
-        }
-        $templateMapResolver = new ViewResolver\TemplateMapResolver($map);
+        $this->config   = $config;
+        $this->services = $services;
+        $this->event    = $event;
 
-        $stack = array();
-        if (isset($this->config['view_manager']) && isset($this->config['view_manager']['template_path_stack'])) {
-            $stack = $this->config['view_manager']['template_path_stack'];
-            if ($stack instanceof Traversable) {
-                $stack = ArrayUtils::iteratorToArray($stack);
-            }
+        $routeNotFoundStrategy   = $this->getRouteNotFoundStrategy();
+        $exceptionStrategy       = $this->getExceptionStrategy();
+        $mvcRenderingStrategy    = $this->getMvcRenderingStrategy();
+        $createViewModelListener = new \Zend\Mvc\View\CreateViewModelListener();
+        $injectTemplateListener  = new \Eva\Mvc\View\InjectTemplateListener();
+        $injectViewModelListener = new \Zend\Mvc\View\InjectViewModelListener();
+
+        $events->attach($routeNotFoundStrategy);
+        $events->attach($exceptionStrategy);
+        $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($injectViewModelListener, 'injectViewModel'), -100);
+        $events->attach($mvcRenderingStrategy);
+        
+        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($createViewModelListener, 'createViewModelFromArray'), -80);
+        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($routeNotFoundStrategy, 'prepareNotFoundViewModel'), -90);
+        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($createViewModelListener, 'createViewModelFromNull'), -80);
+        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($injectTemplateListener, 'injectTemplate'), -90);
+        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($injectViewModelListener, 'injectViewModel'), -100);
+    }
+
+    public function attach(EventManagerInterface $events)
+    {
+		$this->listeners[] = $events->attach('bootstrap', array($this, 'onBootstrap'), 10000);
+		$this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'onDispatch'), 0);
+	}
+
+	public function onDispatch(MvcEvent $e)
+	{
+		$routeParams = $e->getRouteMatch()->getParams();
+		if(false === isset($routeParams['module']) || !$routeParams['module']){
+			return false;
 		}
-        $templatePathStack = new ViewResolver\TemplatePathStack();
-        $templatePathStack->addPaths($stack);
 
-        $this->resolver = new ViewResolver\AggregateResolver();
-        $this->resolver->attach($templateMapResolver);
-        $this->resolver->attach($templatePathStack);
+		//$controller = $routeParams['controller'];
+		$object = new \ReflectionObject($e->getTarget());
+		$controllerFullPath = $object->getFileName();
+		$controllerClassname = $object->getName();
 
-        $this->services->setService('ViewTemplateMapResolver', $templateMapResolver);
-        $this->services->setService('ViewTemplatePathStack', $templatePathStack);
-        $this->services->setService('ViewResolver', $this->resolver);
+		$classRootPath = substr($controllerFullPath, 0, 0 - strlen($controllerClassname . '.php'));
+		$moduleRootPath = $classRootPath . '..';
+		$this->viewRootPath = $moduleRootPath . DIRECTORY_SEPARATOR . 'view';
 
-        $this->services->setAlias('Zend\View\Resolver\TemplateMapResolver', 'ViewTemplateMapResolver');
-        $this->services->setAlias('Zend\View\Resolver\TemplatePathStack', 'ViewTemplatePathStack');
-        $this->services->setAlias('Zend\View\Resolver\AggregateResolver', 'ViewResolver');
-        $this->services->setAlias('Zend\View\Resolver\ResolverInterface', 'ViewResolver');
+		if(isset($routeParams['moduleNamespace']) && $routeParams['moduleNamespace'] && $routeParams['moduleNamespace'] != $routeParams['module']){
+			$this->viewRootPath .= DIRECTORY_SEPARATOR . '_' . strtolower($routeParams['moduleNamespace']);
+		}
 
-        return $this->resolver;
+		$templatePathStack = new ViewResolver\TemplatePathStack();
+		$templatePathStack->setPaths(array($this->viewRootPath));	
+		$this->resolver->attach($templatePathStack);
 	}
 
 
@@ -94,5 +127,5 @@ class ModuleViewManager extends \Zend\Mvc\View\ViewManager
         $this->services->setAlias('Eva\Mvc\View\DefaultModuleRenderingStrategy', 'DefaultRenderingStrategy');
 
         return $this->mvcRenderingStrategy;
-    }
+	}
 }

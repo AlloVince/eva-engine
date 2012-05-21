@@ -42,6 +42,7 @@ class DefaultModuleRenderingStrategy extends \Zend\Mvc\View\DefaultRenderingStra
      * @param  MvcEvent $e
      * @return Response
      */
+	/*
     public function render(MvcEvent $e)
     {
         $result = $e->getResult();
@@ -61,13 +62,9 @@ class DefaultModuleRenderingStrategy extends \Zend\Mvc\View\DefaultRenderingStra
         $view->setRequest($request);
         $view->setResponse($response);
 		
-		$route = $e->getRouteMatch()->getParams();
-		if($route && isset($route['module']) && $route['module']){
-		
-		}
-
         $view->render($viewModel);
 
         return $response;
-    }
+	}
+	 */
 }

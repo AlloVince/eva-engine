@@ -11,7 +11,7 @@ class BlogController extends ActionController
 		$this->layout('layout/admin'); 
         $model = new ViewModel(array(
 		));
-		$model->setTemplate('admin-blog/index');
+		$model->setTemplate('blog/index');
 		return $model;
 	}
 }
