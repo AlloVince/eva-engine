@@ -4,7 +4,7 @@ return array(
 		'Core',
 		'Blog',
 		'Album',
-		//'Engine',
+		'Engine',
 	),
     'service_manager' => array(
         'use_defaults' => true,

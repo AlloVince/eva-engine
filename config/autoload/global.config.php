@@ -7,6 +7,7 @@ return array(
 				'priority' => 1,
             ),
         ),
+		'sorted' => true,
 	),
     'db' => array(
         'driver' => 'Pdo',

@@ -11,10 +11,8 @@ class EngineController extends ActionController
 
 	public function indexAction()
 	{
-		p("website index");
-	}
-
-	public function restGetEngine()
-	{
+		$view = new ViewModel();
+		$view->setTemplate('engine/index');
+		return $view;
 	}
 }
