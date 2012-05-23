@@ -3,8 +3,8 @@ return array(
 	'modules' => array(
 		'Core',
 		'Blog',
-		//'Album',
-		//'Engine',
+		'Album',
+		'Engine',
 	),
     'service_manager' => array(
 		'use_defaults' => true,

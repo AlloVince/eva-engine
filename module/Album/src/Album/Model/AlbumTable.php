@@ -11,7 +11,7 @@ class AlbumTable extends TableGateway
     public function __construct(Adapter $adapter = null, $databaseSchema = null, 
         ResultSet $selectResultPrototype = null)
     {
-        parent::__construct('eva_album_albums', $adapter, $databaseSchema, 
+        parent::__construct('album', $adapter, $databaseSchema, 
             $selectResultPrototype);
 
         $resultSetPrototype = $this->getSelectResultPrototype();

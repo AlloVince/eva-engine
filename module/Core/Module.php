@@ -44,7 +44,6 @@ class Module
 		));
 	}
 
-	/*
     public function getServiceConfiguration()
     {
         return array(
@@ -57,7 +56,6 @@ class Module
             ),
         );
 	}
-	 */
     
 	/*
     public function initializeView($e)

@@ -109,8 +109,8 @@ class ModuleViewManager extends \Zend\Mvc\View\ViewManager
 		}
 
 		$templatePathStack = new ViewResolver\TemplatePathStack();
-		//Layout included here
-		$templatePathStack->addPaths(array($this->viewRootPath));	
+		//All path defined in config will be clear here
+		$templatePathStack->setPaths(array($this->viewRootPath));	
 		$this->resolver->attach($templatePathStack);
 	}
 
