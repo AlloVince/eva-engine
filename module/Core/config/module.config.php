@@ -12,9 +12,10 @@ return array(
             'index/index'   => __DIR__ . '/../view/index/index.phtml',
             'error/404'     => __DIR__ . '/../view/error/404.phtml',
             'error/index'   => __DIR__ . '/../view/error/index.phtml',
-        ),
+		),
+		'helper_map' => array(
+			'uri' => 'Eva\View\Helper\Uri'	
+		),
 	),
-	'helper_map' => array(
-		'uri' => 'Eva\View\Helper\Uri'	
-	),
+
 );

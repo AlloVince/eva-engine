@@ -2,20 +2,21 @@
 
 namespace Album\Model;
 
-use Zend\Db\TableGateway\TableGateway,
+use Zend\Db\TableGateway\AbstractTableGateway,
     Zend\Db\Adapter\Adapter,
     Zend\Db\ResultSet\ResultSet;
 
-class AlbumTable extends TableGateway
+class AlbumTable extends AbstractTableGateway
 {
-    public function __construct(Adapter $adapter = null, $databaseSchema = null, 
-        ResultSet $selectResultPrototype = null)
-    {
-        parent::__construct('album', $adapter, $databaseSchema, 
-            $selectResultPrototype);
+    protected $table ='eva_album_albums';
+    protected $tableName ='eva_album_albums';
 
-        $resultSetPrototype = $this->getSelectResultPrototype();
-        $resultSetPrototype->setRowObjectPrototype(new Album);
+    public function __construct(Adapter $adapter)
+    {
+        $this->adapter = $adapter;
+        $this->resultSetPrototype = new ResultSet(new Album);
+
+        $this->initialize();
     }
 
     public function fetchAll()
@@ -53,7 +54,6 @@ class AlbumTable extends TableGateway
             }
         }
     }
-
 
     public function addAlbum($artist, $title)
     {

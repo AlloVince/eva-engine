@@ -114,6 +114,32 @@ class ModuleViewManager extends \Zend\Mvc\View\ViewManager
 		$this->resolver->attach($templatePathStack);
 	}
 
+    /**
+     * Instantiates and configures the renderer's helper loader
+     * 
+     * @return ViewHelperLoader
+     */
+    public function getHelperLoader()
+    {
+        if ($this->helperLoader) {
+            return $this->helperLoader;
+        }
+
+        $map = array();
+        if (isset($this->config['helper_map'])) {
+            $map = $this->config['helper_map'];
+		}
+		//config will be transform into Zend\Config\Config object
+        if (is_array($map) && !in_array('Zend\Form\View\HelperLoader', $map)) {
+            array_unshift($map, 'Zend\Form\View\HelperLoader');
+        }
+        $this->helperLoader = new ViewHelperLoader($map);
+
+        $this->services->setService('ViewHelperLoader', $this->helperLoader);
+        $this->services->setAlias('Zend\View\HelperLoader', 'ViewHelperLoader');
+
+        return $this->helperLoader;
+    }
 
     /**
      * Instantiates and configures the default MVC rendering strategy

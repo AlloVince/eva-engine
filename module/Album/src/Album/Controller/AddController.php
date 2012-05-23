@@ -8,7 +8,7 @@ use Zend\Mvc\Controller\ActionController,
     Album\Form\AlbumForm,
     Zend\View\Model\ViewModel;
 
-class AlbumController extends ActionController
+class AddController extends ActionController
 {
     /**
      * @var \Album\Model\AlbumTable
@@ -16,21 +16,6 @@ class AlbumController extends ActionController
     protected $albumTable;
 
     public function indexAction()
-    {
-		$uri = \Zend\Uri\UriFactory::factory('/abc', 'http');
-		$uri->setScheme('http');
-		$uri->setHost('shishijia.com');
-		$uri->setQuery(array(
-			'a' => 'b'	
-		));
-		p($uri);
-		p($uri->toString());
-        return new ViewModel(array(
-            'albums' => $this->getAlbumTable()->fetchAll(),
-        ));
-    }
-
-    public function addAction()
     {
         $form = new AlbumForm();
         $form->get('submit')->setAttribute('label', 'Add');

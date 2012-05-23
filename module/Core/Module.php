@@ -34,6 +34,7 @@ class Module
         return include __DIR__ . '/config/module.config.php';
     }
 
+	/*
     public function onBootstrap($e)
     {
         $application        = $e->getParam('application');
@@ -43,6 +44,7 @@ class Module
 			'uri' => 'Eva\View\Helper\Uri'	
 		));
 	}
+	 */
 
     public function getServiceConfiguration()
     {
