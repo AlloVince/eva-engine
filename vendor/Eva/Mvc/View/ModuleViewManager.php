@@ -54,7 +54,10 @@ class ModuleViewManager extends \Zend\Mvc\View\ViewManager
         $events       = $application->events();
         $sharedEvents = $events->getSharedManager();
 
-        $this->config   = $config;
+		//Fixed config instanceof here
+        $this->config   = isset($config['view_manager']) && (is_array($config['view_manager']) || $config['view_manager'] instanceof \Zend\Config\Config)
+                        ? $config['view_manager'] 
+                        : array();
         $this->services = $services;
         $this->event    = $event;
 
@@ -64,6 +67,8 @@ class ModuleViewManager extends \Zend\Mvc\View\ViewManager
         $createViewModelListener = new \Zend\Mvc\View\CreateViewModelListener();
         $injectTemplateListener  = new \Eva\Mvc\View\InjectTemplateListener();
         $injectViewModelListener = new \Zend\Mvc\View\InjectViewModelListener();
+
+        $this->registerViewStrategies();
 
         $events->attach($routeNotFoundStrategy);
         $events->attach($exceptionStrategy);
@@ -104,7 +109,8 @@ class ModuleViewManager extends \Zend\Mvc\View\ViewManager
 		}
 
 		$templatePathStack = new ViewResolver\TemplatePathStack();
-		$templatePathStack->setPaths(array($this->viewRootPath));	
+		//Layout included here
+		$templatePathStack->addPaths(array($this->viewRootPath));	
 		$this->resolver->attach($templatePathStack);
 	}
 

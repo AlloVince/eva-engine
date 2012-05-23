@@ -42,7 +42,6 @@ class DefaultModuleRenderingStrategy extends \Zend\Mvc\View\DefaultRenderingStra
      * @param  MvcEvent $e
      * @return Response
      */
-	/*
     public function render(MvcEvent $e)
     {
         $result = $e->getResult();
@@ -66,5 +65,4 @@ class DefaultModuleRenderingStrategy extends \Zend\Mvc\View\DefaultRenderingStra
 
         return $response;
 	}
-	 */
 }
