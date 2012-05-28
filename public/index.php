@@ -1,8 +1,8 @@
 <?php
 error_reporting(E_ALL);
 // Check version
-if( version_compare(phpversion(), '5.3.0', '<') ) {
-  printf('PHP 5.3.0 is required, you have %s', phpversion());
+if( version_compare(phpversion(), '5.3.3', '<') ) {
+  printf('PHP 5.3.3 is required, you have %s', phpversion());
   exit(1);
 }
 

@@ -21,7 +21,7 @@ class Album extends Row implements InputFilterAwareInterface
     public function getInputFilter()
     {
         if (!$this->inputFilter) {
-            $inputFilter = new InputFilter;
+            $inputFilter = new InputFilter();
 
             $factory = new InputFactory();
 
@@ -29,22 +29,16 @@ class Album extends Row implements InputFilterAwareInterface
                 'name'       => 'id',
                 'required'   => true,
                 'filters' => array(
-                    array(
-                        'name'    => 'Int',
-                    ),
+                    array('name'    => 'Int'),
                 ),
             )));
 
             $inputFilter->add($factory->createInput(array(
-                'name'       => 'artist',
-                'required'   => true,
-                'filters'    => array(
-                    array(
-                        'name'    => 'StripTags',
-                    ),
-                    array(
-                        'name'    => 'StringTrim',
-                    ),
+                'name'     => 'artist',
+                'required' => true,
+                'filters'  => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
                 ),
                 'validators' => array(
                     array(
@@ -59,15 +53,11 @@ class Album extends Row implements InputFilterAwareInterface
             )));
 
             $inputFilter->add($factory->createInput(array(
-                'name'       => 'title',
-                'required'   => true,
-                'filters'    => array(
-                    array(
-                        'name'    => 'StripTags',
-                    ),
-                    array(
-                        'name'    => 'StringTrim',
-                    ),
+                'name'     => 'title',
+                'required' => true,
+                'filters'  => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
                 ),
                 'validators' => array(
                     array(

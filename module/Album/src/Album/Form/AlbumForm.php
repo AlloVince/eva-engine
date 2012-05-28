@@ -1,9 +1,7 @@
 <?php
 namespace Album\Form;
 
-use Zend\Form\Factory as FormFactory;
 use Zend\Form\Form;
-use Zend\Form\Hydrator\ObjectProperty;
 
 class AlbumForm extends Form
 {
@@ -13,8 +11,6 @@ class AlbumForm extends Form
 
         $this->setName('album');
         $this->setAttribute('method', 'post');
-
-        $factory = new FormFactory();
 
         // Id
         $this->add(array(

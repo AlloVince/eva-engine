@@ -3,10 +3,10 @@
 namespace Album\Controller;
 
 use Zend\Mvc\Controller\ActionController,
+    Zend\View\Model\ViewModel,
     Album\Model\AlbumTable,
     Album\Model\Album,
-    Album\Form\AlbumForm,
-    Zend\View\Model\ViewModel;
+    Album\Form\AlbumForm;
 
 class AlbumController extends ActionController
 {
@@ -17,14 +17,6 @@ class AlbumController extends ActionController
 
     public function indexAction()
     {
-		$uri = \Zend\Uri\UriFactory::factory('/abc', 'http');
-		$uri->setScheme('http');
-		$uri->setHost('shishijia.com');
-		$uri->setQuery(array(
-			'a' => 'b'	
-		));
-		p($uri);
-		p($uri->toString());
         return new ViewModel(array(
             'albums' => $this->getAlbumTable()->fetchAll(),
         ));

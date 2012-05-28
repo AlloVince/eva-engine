@@ -1,12 +1,14 @@
 <?php
-$title = 'Add new album';
+$title = 'Edit album';
 $this->headTitle($title);
 ?>
 <h1><?php echo $this->escape($title); ?></h1>
 
 <?php
 $form = $this->form;
-$form->setAttribute('action', $this->url('album', array('action' => 'add')));
+$form->setAttribute('action', 
+    '/album/edit');
+
 echo $this->form()->openTag($form);
 ?>
 <dl class="zend_form">

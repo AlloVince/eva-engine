@@ -3,8 +3,7 @@ $title = 'My albums';
 $this->headTitle($title);
 ?>
 <h1><?php echo $this->escape($title); ?></h1>
-<p><a href="<?php echo $this->url('default', array('controller'=>'album', 
-        'action'=>'add'));?>">Add new album</a></p>
+<p><a href="/album/add">Add new album</a></p>
 
 <table class="table">
 <tr>
