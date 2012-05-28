@@ -7,8 +7,6 @@ use Eva\Mvc\Controller\RestfulModuleController,
 
 class BlogController extends RestfulModuleController
 {
-	protected $postTable;
-
 	protected $addResources = array(
 		'page',	
 	);
@@ -17,19 +15,11 @@ class BlogController extends RestfulModuleController
 		'getPage' => 'page2',	
 	);
 
-    public function setPostTable(PostTable $postTable)
-    {
-        $this->postTable = $postTable;
-        return $this;
-	}  
-
 	public function restIndexBlog()
 	{
 	}
 
 	public function restGetBlog()
 	{
-        $form = new \Blog\Form\BlogForm();
-        return array('form' => $form);
 	}
 }

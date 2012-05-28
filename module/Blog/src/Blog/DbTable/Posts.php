@@ -1,23 +1,14 @@
 <?php
 
-namespace Album\Model;
+namespace Blog\DbTable;
 
-use Zend\Db\TableGateway\AbstractTableGateway,
+use Eva\Db\TableGateway\AbstractTableGateway,
     Zend\Db\Adapter\Adapter,
     Zend\Db\ResultSet\ResultSet;
 
-class AlbumTable extends AbstractTableGateway
+class Posts extends AbstractTableGateway
 {
-    protected $table ='eva_album_albums';
-    protected $tableName ='albums';
-
-    public function __construct(Adapter $adapter)
-    {
-        $this->adapter = $adapter;
-        $this->resultSetPrototype = new ResultSet(new Album);
-
-        $this->initialize();
-    }
+    protected $tableName ='posts';
 
     public function fetchAll()
     {
