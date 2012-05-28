@@ -20,13 +20,16 @@ class BlogController extends RestfulModuleController
 		);
 	}
 
-	/*
-	public function indexAction()
+	public function restGetBlog()
 	{
+        $id = (int)$this->getEvent()->getRouteMatch()->getParam('id');
 		$this->layout('layout/admin'); 
-        $model = new ViewModel(array(
-		));
-		return $model;
+        $form = new \Blog\Form\PostForm();
+		$postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
+		$postinfo = $postTable->getPost($id);
+		return array(
+			'form' => $form,
+			'post' => $postinfo,
+		);
 	}
-	 */
 }

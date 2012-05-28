@@ -4,10 +4,25 @@ use Eva\Db\Adapter\Adapter,
 	Eva\Db\ResultSet\ResultSet;
 class AbstractTableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 {
-	protected $tablePrefix = 'eva_';
+	protected $tablePrefix = 'eva';
 	protected $moduleName = '';
     protected $table = '';
 	protected $tableName = '';
+
+	public function getTablePrefix()
+	{
+		if($this->tablePrefix) {
+			return $this->tablePrefix;
+		}
+
+		return '';
+	}
+
+	public function setTablePrefix($tablePrefix)
+	{
+		$this->tablePrefix = $tablePrefix;
+		return $this;
+	}
 
 	public function getModuleName()
 	{
@@ -35,7 +50,7 @@ class AbstractTableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 
 	public function initTableName()
 	{
-		$this->table = $this->tablePrefix . $this->getModuleName() . '_' . $this->tableName;
+		$this->table = $this->tablePrefix . '_' . $this->getModuleName() . '_' . $this->tableName;
 		return $this;
 	}
 
