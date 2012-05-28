@@ -16,7 +16,7 @@ class Posts extends AbstractTableGateway
         return $resultSet;
     }
 
-    public function getAlbum($id)
+    public function getPost($id)
     {
         $id  = (int) $id;
         $rowset = $this->select(array('id' => $id));
@@ -27,7 +27,7 @@ class Posts extends AbstractTableGateway
         return $row;
     }
 
-    public function saveAlbum(Album $album)
+    public function savePost(Post $album)
     {
         $data = array(
             'artist' => $album->artist,
@@ -38,7 +38,7 @@ class Posts extends AbstractTableGateway
         if ($id == 0) {
             $this->insert($data);
         } else {
-            if ($this->getAlbum($id)) {
+            if ($this->getPost($id)) {
                 $this->update($data, array('id' => $id));
             } else {
                 throw new \Exception('Form id does not exit');
@@ -46,7 +46,7 @@ class Posts extends AbstractTableGateway
         }
     }
 
-    public function addAlbum($artist, $title)
+    public function addPost($artist, $title)
     {
         $data = array(
             'artist' => $artist,
@@ -55,7 +55,7 @@ class Posts extends AbstractTableGateway
         $this->insert($data);
     }
 
-    public function updateAlbum($id, $artist, $title)
+    public function updatePost($id, $artist, $title)
     {
         $data = array(
             'artist' => $artist,
@@ -64,7 +64,7 @@ class Posts extends AbstractTableGateway
         $this->update($data, array('id' => $id));
     }
 
-    public function deleteAlbum($id)
+    public function deletePost($id)
     {
         $this->delete(array('id' => $id));
     }

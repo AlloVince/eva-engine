@@ -34,17 +34,10 @@ class Module
         return include __DIR__ . '/config/module.config.php';
     }
 
-	/*
     public function onBootstrap($e)
     {
-        $application        = $e->getParam('application');
-        $serviceManager = $application->getServiceManager();
-        $helperLoader   = $serviceManager->get('Zend\View\HelperLoader');
-		$helperLoader->registerPlugins(array(
-			'uri' => 'Eva\View\Helper\Uri'	
-		));
+		\Eva\Api::_()->setEvent($e);
 	}
-	 */
 
     public function getServiceConfiguration()
     {
@@ -54,6 +47,8 @@ class Module
 					$config = $sm->get('config');
 					$config = $config['db'];
                     $dbAdapter = new \Zend\Db\Adapter\Adapter($config);
+
+					//\Eva\Registry::set("dbAdapter", $dbAdapter);
                     return $dbAdapter;
                 },
             ),

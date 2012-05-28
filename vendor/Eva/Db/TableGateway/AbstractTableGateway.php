@@ -11,6 +11,9 @@ class AbstractTableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 
 	public function getModuleName()
 	{
+		$className = get_class($this);
+		$moduleName = explode('\\', $className);
+		$moduleName = strtolower($moduleName[0]);
 		return $moduleName;
 	}
 
@@ -20,14 +23,19 @@ class AbstractTableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 		return $this;
 	}
 
+	/*
 	public function initAdapter()
 	{
-
+		if(true === \Eva\Registry::isRegistered('dbAdapter')){
+			$this->adapter = \Eva\Registry::get("dbAdapter");
+			return $this->adapter;
+		}
 	}
+	 */
 
 	public function initTableName()
 	{
-		$this->table = $this->tablePrefix . $this->moduleName . '_' . $this->tableName;
+		$this->table = $this->tablePrefix . $this->getModuleName() . '_' . $this->tableName;
 		return $this;
 	}
 
@@ -36,10 +44,9 @@ class AbstractTableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 	{
 		if($adapter) {
         	$this->adapter = $adapter;
-		} else {
-			$this->initAdapter();
 		}
 
+		$this->initTableName();
 		$this->initialize();
     }
 }

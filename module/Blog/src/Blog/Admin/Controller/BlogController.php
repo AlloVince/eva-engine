@@ -1,7 +1,8 @@
 <?php
 namespace Blog\Admin\Controller;
 
-use Eva\Mvc\Controller\RestfulModuleController,
+use Eva\Api,
+	Eva\Mvc\Controller\RestfulModuleController,
     Eva\View\Model\ViewModel;
 
 class BlogController extends RestfulModuleController
@@ -10,11 +11,13 @@ class BlogController extends RestfulModuleController
 	public function restIndexBlog()
 	{
 		$this->layout('layout/admin'); 
-        $model = new ViewModel(array(
-		));
 
-		$postTable = new \Blog\DbTable\Posts();
-		return $model;
+		$postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
+		$posts = $postTable->fetchAll();
+
+        return array(
+			'posts' => $posts->toArray()
+		);
 	}
 
 	/*

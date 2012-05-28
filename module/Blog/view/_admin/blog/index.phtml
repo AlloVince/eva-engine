@@ -1,1 +1,75 @@
-Blog admin index
+<div class="page_header">
+<h2 class="">Blog Posts</h2>
+</div>
+
+	<table class="table">
+	<tbody>
+	<tr>
+		<th class="twidth width_30"><input type="checkbox" id="checkall" /></th>	
+		<th>
+				Title
+		</th>
+		<th>
+				Author
+		</th>
+		<th class="twidth width_30">
+				Status
+		</th>
+		<th class="twidth width_30">
+			Comments
+		</th>
+		<th class="twidth width_30">
+				Order
+		</th>
+ 		<th class="twidth width_150 centeralign">
+			 Date
+	 	</th>
+	</tr>
+
+	<?if(!$this->posts):?>
+	<tr>
+		<td colspan="8" class="noresult">
+			No post found. Click here to <a href="<?=$this->Uri('/admin/postnew/'); ?>">add one</a>.
+		</td>
+	</tr>
+
+	<?else:?>
+
+	<?foreach($this->posts as $key=>$post):?>
+	<tr id="post_<?=$post['id'] ?>">
+		<td><input type="checkbox" class="checkall" name="post_ids[]" value="<?=$post['id'] ?>" /></td>	
+		<td>
+			<a href="<?=$this->Uri('/admin/posts/' . $post['id'])?>" class="title"><?=$post['title'] ?></a>			
+
+			<div class="quick_edit">
+				<a href="<?=$this->Uri('/pages/' . $post['urlName']); ?>" class="btn">View</a>
+				<a href="<?=$this->Uri('/admin/posts/' . $post['id']); ?>" class="btn">Edit</a>
+			</div>
+
+		</td>
+		<td>
+			<?=$post['user_name'] ?>
+		</td>
+		<td>
+			<?=$post['status'] ?>
+		</td>
+		<?if($post['postUsage'] == 'post'):?>
+		<td>
+			<a href="<?=$this->Uri('/admin/comments/?post_id=' . $post['id']); ?>"><?=$post['commentCount'] ? $post['commentCount'] : 0?></a>
+		</td>
+		<?else:?>
+		<td></td>
+		<?endif;?>
+		<td>
+			<input type="hidden" name="post_id[]" class="reorder_post_id" value="<?=$post['id'] ?>" />
+			<input tabindex="<?=$key+1 ?>" type="text" class="order reorder_ordernum" size="2" maxlength="3" name="orderNumber[]" value="<?=$post['orderNumber'] ? $post['orderNumber'] : "0" ?>" />
+		</td>
+		<td class="centeralign">
+			<?=$post['createTime'];?>
+		</td>
+	</tr>
+	<?endforeach;?>
+
+	<?endif;?>
+	</tbody>
+	</table>
