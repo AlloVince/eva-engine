@@ -8,25 +8,77 @@ $this->headTitle($title);
 $form = $this->form;
 $form->setAttribute('action', 
     '/admin/blog/');
-
-echo $this->form()->openTag($form);
 ?>
-<dl class="zend_form">
-<?php echo $this->formInput($form->get('id')); ?>
-<dt><?php echo $this->formLabel($form->get('title')); ?></dt>
-<dd><?php 
-    echo $this->formInput($form->get('title'));
-    echo $this->formElementErrors($form->get('title'));
-?></dd>
-<dt><?php echo $this->formLabel($form->get('artist')); ?></dt>
-<dd><?php 
-    echo $this->formInput($form->get('artist'));
-    echo $this->formElementErrors($form->get('artist'));
-?></dd>
 
-<dd><?php 
-    echo $this->formInput($form->get('submit'));
-    echo $this->formElementErrors($form->get('submit'));
-?></dd>
-</dl>
-<?php echo $this->form()->closeTag($form); ?>
+
+<form class="form-horizontal" action="<?=$this->Uri('/admin/blog/')?>">
+	<?=$this->formInput($form->get('id'));?>
+	<?=$this->formInput($form->get('security'));?>
+	<fieldset>
+		  <div class="control-group">
+		    <label class="control-label"><?=$this->formLabel($form->get('title'));?></label>
+			<div class="controls docs-input-sizes">
+			  <?=$this->formInput($form->get('title'))?>
+			  <p class="help-block">Use the same <code>.span*</code> classes from the grid system for input sizes.</p>
+			</div>
+		  </div>
+		  <div class="control-group">
+			<label class="control-label"><?=$this->formLabel($form->get('status'));?></label>
+			<div class="controls docs-input-sizes">
+			  <?=$this->formSelect($form->get('status'))?>
+			  
+			  <p class="help-block">You may also use static classes that don't map to the grid, adapt to the responsive CSS styles, or account for varying types of controls (e.g., <code>input</code> vs. <code>select</code>).</p>
+			</div>
+		  </div>
+		  <div class="control-group">
+			<label for="inlineCheckboxes" class="control-label">Inline checkboxes</label>
+			<div class="controls">
+			  <label class="checkbox inline">
+				<input type="checkbox" value="option1" id="inlineCheckbox1"> 1
+			  </label>
+			  <label class="checkbox inline">
+				<input type="checkbox" value="option2" id="inlineCheckbox2"> 2
+			  </label>
+			  <label class="checkbox inline">
+				<input type="checkbox" value="option3" id="inlineCheckbox3"> 3
+			  </label>
+			</div>
+		  </div>
+		  <div class="control-group">
+			<label for="optionsCheckboxList" class="control-label">Checkboxes</label>
+			<div class="controls">
+			  <label class="checkbox">
+				<input type="checkbox" value="option1" name="optionsCheckboxList1">
+				Option one is this and that&mdash;be sure to include why it's great
+			  </label>
+			  <label class="checkbox">
+				<input type="checkbox" value="option2" name="optionsCheckboxList2">
+				Option two can also be checked and included in form results
+			  </label>
+			  <label class="checkbox">
+				<input type="checkbox" value="option3" name="optionsCheckboxList3">
+				Option three can&mdash;yes, you guessed it&mdash;also be checked and included in form results
+			  </label>
+			  <p class="help-block"><strong>Note:</strong> Labels surround all the options for much larger click areas and a more usable form.</p>
+			</div>
+		  </div>
+		  <div class="control-group">
+			<label class="control-label">Radio buttons</label>
+			<div class="controls">
+			  <label class="radio">
+				<input type="radio" checked="" value="option1" id="optionsRadios1" name="optionsRadios">
+				Option one is this and that&mdash;be sure to include why it's great
+			  </label>
+			  <label class="radio">
+				<input type="radio" value="option2" id="optionsRadios2" name="optionsRadios">
+				Option two can is something else and selecting it will deselect option one
+			  </label>
+			</div>
+		  </div>
+		  <div class="form-actions">
+			<?=$this->formInput($form->get('submit'));?>
+			<button class="btn btn-primary" type="submit">Save changes</button>
+			<button class="btn">Cancel</button>
+		  </div>
+		</fieldset>
+</form>
