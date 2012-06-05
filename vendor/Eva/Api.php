@@ -85,4 +85,8 @@ class Api
 	{
 		return new $formClassName;
 	}
+
+	public function getView()
+	{
+	}
 }

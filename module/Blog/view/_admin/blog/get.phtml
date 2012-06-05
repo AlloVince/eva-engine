@@ -1,15 +1,19 @@
 <?php
-$title = 'Edit album';
-$this->headTitle($title);
+$title = 'Edit Post';
+$this->headTitle($title, 'SET');
 ?>
 <h1><?=$this->escape($title); ?></h1>
 <?
-$form = \Eva\Api::_()->getForm('\Blog\Form\PostForm')->init(array(
+$form = Eva\Api::_()->getForm('\Blog\Form\PostForm')->init(array(
 	'action' => $this->uri('/admin/blog/'),
 	'method' => 'get',
 	'values' => $this->post
 ));
+
+p($this->post);
 ?>
+
+<?//=$this->input($form->get('title'), array('class' => 'input-xlarge'));?>
 
 <form class="form-horizontal" <?=$this->formAttr($form)?>>
 	<?=$form->restful();?>
@@ -19,81 +23,51 @@ $form = \Eva\Api::_()->getForm('\Blog\Form\PostForm')->init(array(
 		  <div class="control-group">
 		    <label class="control-label"><?=$this->formLabel($form->get('title'));?></label>
 			<div class="controls docs-input-sizes">
-			  <?=$this->formInput($form->get('title'))?>
+			  <?=$this->input($form->get('title'), array('class' => 'input-xlarge'))?>
 			  <p class="help-block">Title</p>
 			</div>
 		  </div>
 		  <div class="control-group">
 			<label class="control-label"><?=$this->formLabel($form->get('status'));?></label>
-			<div class="controls docs-input-sizes">
-			  <?=$this->formSelect($form->get('status'))?>
-			  
+			<div class="controls">
+			<?=$this->input($form->get('status'), array(
+				'type' => 'formSelect',
+				'class' => 'span3',
+			  ))?>
 			  <p class="help-block">Default is </p>
 			</div>
 		  </div>
-		  <div class="control-group">
-            <label for="textarea" class="control-label"><?=$this->formLabel($form->get('content'));?></label>
-            <div class="controls">
-			  <?=$this->formTextarea($form->get('content'))?>
-            </div>
-          </div>
+
 		  <div class="control-group">
 			<label class="control-label"><?=$this->formLabel($form->get('codeType'));?></label>
 			<div class="controls">
-			  <?=$this->formRadio($form->get('codeType'))?>
-			</div>
-		  </div>
-
-<!--
-		  <div class="control-group">
-			<label for="inlineCheckboxes" class="control-label">Inline checkboxes</label>
-			<div class="controls">
-			  <label class="checkbox inline">
-				<input type="checkbox" value="option1" id="inlineCheckbox1"> 1
-			  </label>
-			  <label class="checkbox inline">
-				<input type="checkbox" value="option2" id="inlineCheckbox2"> 2
-			  </label>
-			  <label class="checkbox inline">
-				<input type="checkbox" value="option3" id="inlineCheckbox3"> 3
-			  </label>
+			<?=$this->input($form->get('codeType'), array(
+				'type' => 'formRadio',
+				'class' => 'checkbox inline',
+			  ))?>
 			</div>
 		  </div>
 		  <div class="control-group">
-			<label for="optionsCheckboxList" class="control-label">Checkboxes</label>
+            <label for="textarea" class="control-label"><?=$this->formLabel($form->get('visibility'));?></label>
 			<div class="controls">
-			  <label class="checkbox">
-				<input type="checkbox" value="option1" name="optionsCheckboxList1">
-				Option one is this and that&mdash;be sure to include why it's great
-			  </label>
-			  <label class="checkbox">
-				<input type="checkbox" value="option2" name="optionsCheckboxList2">
-				Option two can also be checked and included in form results
-			  </label>
-			  <label class="checkbox">
-				<input type="checkbox" value="option3" name="optionsCheckboxList3">
-				Option three can&mdash;yes, you guessed it&mdash;also be checked and included in form results
-			  </label>
-			  <p class="help-block"><strong>Note:</strong> Labels surround all the options for much larger click areas and a more usable form.</p>
-			</div>
-		  </div>
+			<?=$this->input($form->get('visibility'), array(
+				'type' => 'formSelect',
+			  ))?>
+            </div>
+          </div>
 		  <div class="control-group">
-			<label class="control-label">Radio buttons</label>
+            <label for="textarea" class="control-label"><?=$this->formLabel($form->get('content'));?></label>
 			<div class="controls">
-			  <label class="radio">
-				<input type="radio" checked="" value="option1" id="optionsRadios1" name="optionsRadios">
-				Option one is this and that&mdash;be sure to include why it's great
-			  </label>
-			  <label class="radio">
-				<input type="radio" value="option2" id="optionsRadios2" name="optionsRadios">
-				Option two can is something else and selecting it will deselect option one
-			  </label>
-			</div>
-		  </div>
--->
+			<?=$this->input($form->get('content'), array(
+				'type' => 'formTextarea',
+				'class' => 'span10',
+				'rows' => '15',
+			  ))?>
+            </div>
+          </div>
 		  <div class="form-actions">
 			<button class="btn btn-primary" type="submit">Submit</button>
 			<button class="btn">Cancel</button>
 		  </div>
-		</fieldset>
+	</fieldset>
 </form>

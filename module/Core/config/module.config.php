@@ -16,6 +16,7 @@ return array(
 		'helper_map' => array(
 			'uri' => 'Eva\View\Helper\Uri',	
 			'formAttr' => 'Eva\Form\View\Helper\FormAttr',
+			'input' => 'Eva\Form\View\Helper\Input',
 		),
 	),
 

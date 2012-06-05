@@ -72,9 +72,33 @@ class Form extends \Zend\Form\Form
 		return $this;
 	}
 
-	public function attr()
+	/*
+	public function input($elementOrName, $options)
 	{
+		$element = $elementOrName instanceof \Zend\Form\ElementInterface ? $element : null;
+		if(!$element && is_string($elementOrName)){
+			$element = $this->get($elementOrName);
+		}
+
+		if(!$element){
+			throw new Exception\UnexpectedMethodException(sprintf(
+                'Request element %s not found in form',
+                __METHOD__,
+                $elementOrName
+            ));
+		}
+
+		if($options){
+			$element = clone $element;
+			foreach($options as $key => $value){
+				$element->setAttribute($key, $value);
+			}
+		}
+
+		//$view = \Eva\Api::_()->getView();
+		//return $view->$elementType($element);
 	}
+	 */
 
 	public function setMethod($method = '')
 	{

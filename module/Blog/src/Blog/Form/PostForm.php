@@ -32,11 +32,29 @@ class PostForm extends Form
 						'value' => 'draft',
 					),	
 					array(
-						'label' => 'Publish',
-						'value' => 'publish',
+						'label' => 'Published',
+						'value' => 'published',
 					),	
 				),
                 'label' => 'Post Status',
+            ),
+		),
+
+		'visibility' => array(
+            'name' => 'visibility',
+            'attributes' => array(
+                'type' => 'select',
+				'options' => array(
+					array(
+						'label' => 'Public',
+						'value' => 'public',
+					),	
+					array(
+						'label' => 'Private',
+						'value' => 'private',
+					),	
+				),
+                'label' => 'Post Visibility',
             ),
 		),
 
