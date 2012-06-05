@@ -24,9 +24,12 @@ abstract class RestfulModuleController extends \Zend\Mvc\Controller\RestfulContr
 			return $this->restfulResource;
 		}
 
-		$moduleName = $this->getEvent()->getRouteMatch()->getParam('module');
-		$controllerName = $this->getEvent()->getRouteMatch()->getParam('controllerName');
-		$method = strtolower($this->getRequest()->getMethod());
+		$routeMatch = $this->getEvent()->getRouteMatch();
+		$moduleName = $routeMatch->getParam('module');
+		$controllerName = $routeMatch->getParam('controllerName');
+		$id = $routeMatch->getParam('id');
+		$request = $this->getRequest();
+		$method = strtolower($request->getMethod());
 		if(!$moduleName || !$controllerName || !$method){
 			throw new \Eva\Core\Exception\RestfulException('Restful route argument not exist');
 		}
@@ -37,9 +40,9 @@ abstract class RestfulModuleController extends \Zend\Mvc\Controller\RestfulContr
 				break;
 			case 'post':
 				//POST method could pretend as put or delete method
-				if($methodRecover = strtolower($this->getRequest()->getParam('_method'))
-					&& ($methodRecover == 'put' || $methodRecover == 'delete')
-				){
+				$postParams = $request->post();
+				$methodRecover = isset($postParams['_method']) && $postParams['_method'] ? $postParams['_method'] : '';
+				if($methodRecover == 'put' || $methodRecover == 'delete'){
 					$method = $methodRecover;
 					break;
 				}
@@ -79,7 +82,7 @@ abstract class RestfulModuleController extends \Zend\Mvc\Controller\RestfulContr
 		$render = $resource['render'];
 
 		if(false === method_exists($this, $function)) {
-			throw new \Eva\Core\Exception\RestfulException('Request restful resource not exist');
+			throw new \Eva\Core\Exception\RestfulException(sprintf('Request restful resource %s not exist', $function));
 		}
 
 		$model = new ViewModel();

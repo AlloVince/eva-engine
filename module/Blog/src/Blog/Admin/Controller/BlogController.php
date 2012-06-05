@@ -7,6 +7,9 @@ use Eva\Api,
 
 class BlogController extends RestfulModuleController
 {
+	protected $renders = array(
+		'restPutBlog' => 'blog/get',	
+	);
 
 	public function restIndexBlog()
 	{
@@ -30,5 +33,26 @@ class BlogController extends RestfulModuleController
 			//'form' => $form,
 			'post' => $postinfo,
 		);
+	}
+
+	public function restPutBlog()
+	{
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $form = new \Blog\Form\PostForm();
+			$form->enableFilters()->setData($request->post());
+            if ($form->isValid()) {
+				//p(1);
+			} else {
+				//p(2);
+			}
+		}
+
+		return array(
+			'form' => $form,
+			'post' => $request->post(),
+		);
+	
 	}
 }

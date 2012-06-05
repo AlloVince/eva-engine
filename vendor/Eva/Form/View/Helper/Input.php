@@ -57,7 +57,7 @@ class Input extends \Zend\Form\View\Helper\AbstractHelper
 		if($options){
 
 			//NOTE: clone element not effect to form original element
-			$element = clone $element;
+			//$element = clone $element;
 			foreach($options as $key => $value){
 				$element->setAttribute($key, $value);
 			}

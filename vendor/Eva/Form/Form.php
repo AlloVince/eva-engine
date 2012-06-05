@@ -1,17 +1,20 @@
 <?php
 namespace Eva\Form;
 
+use Zend\InputFilter\InputFilter;
+use Zend\InputFilter\Factory as InputFactory;
+
 class Form extends \Zend\Form\Form
 {
 	protected static $instance;
 
-	protected $baseElements;
+	protected $baseElements = array();
 
-	protected $mergeElements;
+	protected $mergeElements = array();
+	
+	protected $baseFilters = array();
 
-	protected $baseFilters;
-
-	protected $mergeFilters;
+	protected $mergeFilters = array();
 
 	protected $defaultValues;
 
@@ -55,7 +58,7 @@ class Form extends \Zend\Form\Form
 		}
 		$values = $options['values'];
 
-		$elements = $this->baseElements;
+		$elements = array_merge($this->baseElements, $this->mergeElements);
 	
 		if(is_object($values)){
 			foreach($elements as $name => $element){
@@ -66,9 +69,33 @@ class Form extends \Zend\Form\Form
 			}
 		} else {
 			foreach($elements as $name => $element){
+				if(isset($values[$name])){
+					$element['attributes']['value'] = $values[$name];
+				}
 				$this->add($element);
 			}
 		}
+		return $this;
+	}
+
+	public function enableFilters(array $filterOptions = array())
+	{
+		$inputFilter = new InputFilter;
+
+		$filters = array_merge($this->baseFilters, $this->mergeFilters, $filterOptions);
+
+		if(!$filters){
+			$this->setInputFilter($inputFilter);
+			return $this;
+		}
+		
+		$factory = new InputFactory();
+
+		foreach($filters as $filter) {
+			$inputFilter->add($factory->createInput($filter));
+		}
+
+		$this->setInputFilter($inputFilter);
 		return $this;
 	}
 
@@ -99,6 +126,24 @@ class Form extends \Zend\Form\Form
 		//return $view->$elementType($element);
 	}
 	 */
+
+	public function mergeInvalid()
+	{
+		$inputFilter = $this->getInputFilter();
+		if(!$inputFilter) {
+			return $this;
+		}
+
+		$invalids = $inputFilter->getInvalidInput();
+		$elements = $this->getElements();
+
+		foreach($invalids as $key => $invalid){
+			if(isset($elements[$key])){
+				$elements[$key]->setMessages($invalid->getMessages());
+			}
+		}
+		return $this;
+	}
 
 	public function setMethod($method = '')
 	{
@@ -148,6 +193,7 @@ class Form extends \Zend\Form\Form
 	}
 
 
+	/*
 	public static function _()
 	{
 		return self::getInstance();
@@ -161,4 +207,5 @@ class Form extends \Zend\Form\Form
 
 		return self::$instance;
 	}
+	 */
 }

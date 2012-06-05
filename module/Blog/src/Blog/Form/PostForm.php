@@ -79,4 +79,54 @@ class PostForm extends Form
 			),
 		),
 	);
+
+	protected $baseFilters = array(
+		'id' => array(
+			'name' => 'id',
+            'required' => true,
+            'filters' => array(
+               array('name' => 'Int'),
+            ),
+		),
+
+		'title' => 	array(
+			'name' => 'title',
+			'required' => true,
+			'filters' => array(
+				array('name' => 'StripTags'),
+				array('name' => 'StringTrim'),
+			),
+			'validators' => array(
+				array(
+					'name' => 'StringLength',
+					'options' => array(
+						'encoding' => 'UTF-8',
+						'min' => 1,
+						'max' => 100,
+					),
+				),
+			),
+		),
+
+		'status' => array(
+            'name' => 'status',
+            'required' => true,
+		),
+
+		'visibility' => array(
+            'name' => 'visibility',
+            'required' => true,
+		),
+
+		'content' => array(
+			'name' => 'content',
+            'required' => true,
+		),
+
+		'codeType' => array(
+			'name' => 'codeType',
+            'required' => true,
+		),		
+		
+	);
 }

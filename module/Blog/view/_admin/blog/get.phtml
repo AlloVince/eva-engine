@@ -4,27 +4,33 @@ $this->headTitle($title, 'SET');
 ?>
 <h1><?=$this->escape($title); ?></h1>
 <?
-$form = Eva\Api::_()->getForm('\Blog\Form\PostForm')->init(array(
+if($this->form){
+	$form = $this->form;
+} else {
+	$form = Eva\Api::_()->getForm('\Blog\Form\PostForm');
+}
+
+$form->init(array(
 	'action' => $this->uri('/admin/blog/'),
-	'method' => 'get',
+	'method' => 'put',
 	'values' => $this->post
 ));
 
-p($this->post);
+$form->mergeInvalid();
 ?>
-
-<?//=$this->input($form->get('title'), array('class' => 'input-xlarge'));?>
 
 <form class="form-horizontal" <?=$this->formAttr($form)?>>
 	<?=$form->restful();?>
 	<?=$this->formInput($form->get('id'));?>
 	<?//=$this->formInput($form->get('security'));?>
 	<fieldset>
-		  <div class="control-group">
+			<div class="control-group <?=$form->get('title')->getMessages() ? 'error' : '';?>">
 		    <label class="control-label"><?=$this->formLabel($form->get('title'));?></label>
 			<div class="controls docs-input-sizes">
 			  <?=$this->input($form->get('title'), array('class' => 'input-xlarge'))?>
-			  <p class="help-block">Title</p>
+			  <?foreach($form->get('title')->getMessages() as $message):?>
+			  <p class="help-block"><?=$message?></p>
+			  <?endforeach?>
 			</div>
 		  </div>
 		  <div class="control-group">
