@@ -14,7 +14,8 @@ return array(
             'error/index'   => __DIR__ . '/../view/error/index.phtml',
 		),
 		'helper_map' => array(
-			'uri' => 'Eva\View\Helper\Uri'	
+			'uri' => 'Eva\View\Helper\Uri',	
+			'formAttr' => 'Eva\Form\View\Helper\FormAttr',
 		),
 	),
 

@@ -2,18 +2,17 @@
 $title = 'Edit album';
 $this->headTitle($title);
 ?>
-<h1><?php echo $this->escape($title); ?></h1>
-
+<h1><?=$this->escape($title); ?></h1>
 <?
-$form = \Eva\Api::_()->getForm('\Blog\Form\PostForm');
-$form->initBaseForm(array(
+$form = \Eva\Api::_()->getForm('\Blog\Form\PostForm')->init(array(
 	'action' => $this->uri('/admin/blog/'),
 	'method' => 'get',
+	'values' => $this->post
 ));
 ?>
 
-
-<form class="form-horizontal" action="<?=$this->uri('/admin/blog/')?>">
+<form class="form-horizontal" <?=$this->formAttr($form)?>>
+	<?=$form->restful();?>
 	<?=$this->formInput($form->get('id'));?>
 	<?//=$this->formInput($form->get('security'));?>
 	<fieldset>
