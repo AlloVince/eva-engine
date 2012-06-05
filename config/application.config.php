@@ -2,6 +2,7 @@
 return array(
 	'modules' => array(
 		'Core',
+		'User',
 		'Blog',
 		'Album',
 		'Engine',

@@ -26,6 +26,8 @@ class Form extends \Zend\Form\Form
 
 	protected $hasIdPrefix = true;
 
+	//TODO: $form->get('title') when title is null should throw a new Exception 
+	
 	public function setDefaultValues($defaultValues)
 	{
 		$this->defaultValues = $defaultValues;

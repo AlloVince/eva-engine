@@ -83,6 +83,7 @@ class Api
 
 	public function getForm($formClassName)
 	{
+		//TODO: check module loaded
 		return new $formClassName;
 	}
 
