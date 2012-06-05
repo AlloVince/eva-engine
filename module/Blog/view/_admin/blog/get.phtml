@@ -4,22 +4,24 @@ $this->headTitle($title);
 ?>
 <h1><?php echo $this->escape($title); ?></h1>
 
-<?php
-$form = $this->form;
-$form->setAttribute('action', 
-    '/admin/blog/');
+<?
+$form = \Eva\Api::_()->getForm('\Blog\Form\PostForm');
+$form->initBaseForm(array(
+	'action' => $this->uri('/admin/blog/'),
+	'method' => 'get',
+));
 ?>
 
 
-<form class="form-horizontal" action="<?=$this->Uri('/admin/blog/')?>">
+<form class="form-horizontal" action="<?=$this->uri('/admin/blog/')?>">
 	<?=$this->formInput($form->get('id'));?>
-	<?=$this->formInput($form->get('security'));?>
+	<?//=$this->formInput($form->get('security'));?>
 	<fieldset>
 		  <div class="control-group">
 		    <label class="control-label"><?=$this->formLabel($form->get('title'));?></label>
 			<div class="controls docs-input-sizes">
 			  <?=$this->formInput($form->get('title'))?>
-			  <p class="help-block">Use the same <code>.span*</code> classes from the grid system for input sizes.</p>
+			  <p class="help-block">Title</p>
 			</div>
 		  </div>
 		  <div class="control-group">
@@ -27,9 +29,23 @@ $form->setAttribute('action',
 			<div class="controls docs-input-sizes">
 			  <?=$this->formSelect($form->get('status'))?>
 			  
-			  <p class="help-block">You may also use static classes that don't map to the grid, adapt to the responsive CSS styles, or account for varying types of controls (e.g., <code>input</code> vs. <code>select</code>).</p>
+			  <p class="help-block">Default is </p>
 			</div>
 		  </div>
+		  <div class="control-group">
+            <label for="textarea" class="control-label"><?=$this->formLabel($form->get('content'));?></label>
+            <div class="controls">
+			  <?=$this->formTextarea($form->get('content'))?>
+            </div>
+          </div>
+		  <div class="control-group">
+			<label class="control-label"><?=$this->formLabel($form->get('codeType'));?></label>
+			<div class="controls">
+			  <?=$this->formRadio($form->get('codeType'))?>
+			</div>
+		  </div>
+
+<!--
 		  <div class="control-group">
 			<label for="inlineCheckboxes" class="control-label">Inline checkboxes</label>
 			<div class="controls">
@@ -75,9 +91,9 @@ $form->setAttribute('action',
 			  </label>
 			</div>
 		  </div>
+-->
 		  <div class="form-actions">
-			<?=$this->formInput($form->get('submit'));?>
-			<button class="btn btn-primary" type="submit">Save changes</button>
+			<button class="btn btn-primary" type="submit">Submit</button>
 			<button class="btn">Cancel</button>
 		  </div>
 		</fieldset>

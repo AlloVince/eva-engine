@@ -24,11 +24,10 @@ class BlogController extends RestfulModuleController
 	{
         $id = (int)$this->getEvent()->getRouteMatch()->getParam('id');
 		$this->layout('layout/admin'); 
-        $form = new \Blog\Form\PostForm();
 		$postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
 		$postinfo = $postTable->getPost($id);
 		return array(
-			'form' => $form,
+			//'form' => $form,
 			'post' => $postinfo,
 		);
 	}

@@ -80,4 +80,9 @@ class Api
 	{
 		return new $tableClassName($this->getDbAdapter());
 	}
+
+	public function getForm($formClassName)
+	{
+		return new $formClassName;
+	}
 }
