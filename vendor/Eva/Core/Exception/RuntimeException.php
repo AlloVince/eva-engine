@@ -1,7 +1,7 @@
 <?php
 namespace Eva\Core\Exception;
 
-class RestfulException
+class RuntimeException
     extends \RuntimeException 
     implements ExceptionInterface
 {

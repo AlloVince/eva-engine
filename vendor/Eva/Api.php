@@ -1,11 +1,14 @@
 <?php
 namespace Eva;
+
+use Eva\Core\Exception\RuntimeException;
 class Api
 {
 	protected static $instance;
 	protected $event;
 	protected $config;
 	protected $dbAdapter;
+	protected $moduleLoaded;
 
 	public function setEvent($event)
 	{
@@ -20,7 +23,7 @@ class Api
 	/**
 	 * Shorthand for getInstance
 	 *
-	 * @return Engine_Api
+	 * @return Eva\Api
 	 */
 	public static function _()
 	{
@@ -40,8 +43,8 @@ class Api
 	/**
 	 * Set or unset the current api instance
 	 * 
-	 * @param Engine_Api $api
-	 * @return Engine_Api
+	 * @param Eva\Api $api
+	 * @return Eva\Api
 	 */
 	public static function setInstance(Api $api = null) 
 	{
@@ -57,6 +60,45 @@ class Api
 
 	public function setConfig($config)
 	{
+	}
+
+	public function getAppConfig()
+	{
+	}
+
+
+	public function getModuleLocalConfig()
+	{
+	}
+
+	public function getModuleLoaded()
+	{
+		if($this->moduleLoaded){
+			return $this->moduleLoaded;
+		}
+		
+		$event = $this->getEvent();
+		$modules = $event->getParam('application')->getServiceManager()->get('modulemanager')->getLoadedModules();
+		$moduleLoaded = array_keys($modules);
+		return $this->moduleLoaded = $moduleLoaded;
+	}
+
+
+	public function isModuleLoaded($className)
+	{
+		$moduleLoaded = $this->getModuleLoaded();
+
+		$className = ltrim($className, '\\');
+		$moduleName = explode('\\', $className);
+		if(!$moduleName) {
+			return false;
+		}
+
+		if(isset($moduleName[0]) && false === in_array($moduleName[0], $moduleLoaded)){
+			return false;
+		}
+
+		return true;
 	}
 
 	public function setDbAdapter($dbAdapter)
@@ -78,13 +120,37 @@ class Api
 
 	public function getDbTable($tableClassName)
 	{
+		if(false === $this->isModuleLoaded($tableClassName)){
+			throw new RuntimeException(sprintf(
+                'Module not loaded by class %s',
+                $tableClassName
+            ));	
+		}
 		return new $tableClassName($this->getDbAdapter());
 	}
 
 	public function getForm($formClassName)
 	{
-		//TODO: check module loaded
+		if(false === $this->isModuleLoaded($formClassName)){
+			throw new RuntimeException(sprintf(
+                'Module not loaded by class %s',
+                $formClassName
+            ));	
+		}
+
 		return new $formClassName;
+	}
+
+	public function getModel($modelClassName)
+	{
+		if(false === $this->isModuleLoaded($modelClassName)){
+			throw new RuntimeException(sprintf(
+                'Module not loaded by class %s',
+                $modelClassName
+            ));	
+		}
+
+		return new $modelClassName;
 	}
 
 	public function getView()
