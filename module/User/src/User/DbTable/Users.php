@@ -2,11 +2,9 @@
 
 namespace User\DbTable;
 
-use Eva\Db\TableGateway\AbstractTableGateway,
-    Zend\Db\Adapter\Adapter,
-    Zend\Db\ResultSet\ResultSet;
+use Eva\Db\TableGateway\AbstractTableGateway;
 
-class Users extends AbstractTableGateway
+class Users extends TableGateway
 {
     protected $tableName ='users';
 

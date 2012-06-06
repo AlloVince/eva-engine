@@ -2,11 +2,9 @@
 
 namespace Blog\DbTable;
 
-use Eva\Db\TableGateway\AbstractTableGateway,
-    Zend\Db\Adapter\Adapter,
-    Zend\Db\ResultSet\ResultSet;
+use Eva\Db\TableGateway\TableGateway;
 
-class Posts extends AbstractTableGateway
+class Posts extends TableGateway
 {
     protected $tableName ='posts';
 

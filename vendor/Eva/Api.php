@@ -1,7 +1,8 @@
 <?php
 namespace Eva;
 
-use Eva\Core\Exception\RuntimeException;
+use Zend\Db\Adapter\Adapter as DbAdapter,
+	Eva\Core\Exception\RuntimeException;
 class Api
 {
 	protected static $instance;
@@ -107,14 +108,24 @@ class Api
 		return self::$instance;
 	}
 
-	public function getDbAdapter()
+	public function getDbAdapter($configKeyOrArray = 'db')
 	{
 		if($this->dbAdapter) {
 			return $this->dbAdapter;
 		}
 
-		$config = $this->getConfig();
-		$dbAdapter = new \Zend\Db\Adapter\Adapter($config['db']);
+
+		$dbAdapter = array();
+		if(true === is_array($configKeyOrArray)){
+			$dbAdapter = new DbAdapter($configKeyOrArray);
+		} else {
+			$configKey = $configKeyOrArray;
+			$config = $this->getConfig();
+			if(isset($config[$configKey]) && $config[$configKey]){
+				$dbAdapter = new DbAdapter($config[$configKey]);
+			}
+		}
+
 		return $this->dbAdapter = $dbAdapter;
 	}
 
@@ -122,9 +133,9 @@ class Api
 	{
 		if(false === $this->isModuleLoaded($tableClassName)){
 			throw new RuntimeException(sprintf(
-                'Module not loaded by class %s',
-                $tableClassName
-            ));	
+				'Module not loaded by class %s',
+				$tableClassName
+			));	
 		}
 		return new $tableClassName($this->getDbAdapter());
 	}
@@ -133,9 +144,9 @@ class Api
 	{
 		if(false === $this->isModuleLoaded($formClassName)){
 			throw new RuntimeException(sprintf(
-                'Module not loaded by class %s',
-                $formClassName
-            ));	
+				'Module not loaded by class %s',
+				$formClassName
+			));	
 		}
 
 		return new $formClassName;

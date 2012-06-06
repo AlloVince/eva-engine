@@ -1,13 +1,15 @@
 <?php
 namespace Eva\Db\TableGateway;
-use Eva\Db\Adapter\Adapter,
+use Eva\Api,
+	Eva\Db\Adapter\Adapter,
 	Eva\Db\ResultSet\ResultSet;
-class AbstractTableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
+class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 {
-	protected $tablePrefix = 'eva';
-	protected $moduleName = '';
-    protected $table = '';
-	protected $tableName = '';
+	protected $tablePrefix;
+	protected $moduleTableName;
+    protected $table;
+	protected $tableName;
+	protected $primaryKey = 'id';
 
 	public function getTablePrefix()
 	{
@@ -15,6 +17,10 @@ class AbstractTableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 			return $this->tablePrefix;
 		}
 
+		$config = Api::_()->getConfig();
+		if(isset($config['db']['prefix']) && $config['db']['prefix']){
+			return $this->tablePrefix = $config['db']['prefix'];
+		}
 		return '';
 	}
 
@@ -24,17 +30,22 @@ class AbstractTableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 		return $this;
 	}
 
-	public function getModuleName()
+	public function getModuleTableName()
 	{
+		if($this->moduleTableName){
+			return $this->moduleTableName;
+		}
+
 		$className = get_class($this);
+		$className = ltrim($className, '\\');
 		$moduleName = explode('\\', $className);
 		$moduleName = strtolower($moduleName[0]);
-		return $moduleName;
+		return $this->moduleTableName = $moduleName;
 	}
 
-	public function setModuleName($moduleName)
+	public function setModuleTableName($moduleName)
 	{
-		$this->moduleName = $moduleName;
+		$this->moduleTableName = $moduleName;
 		return $this;
 	}
 
@@ -50,7 +61,7 @@ class AbstractTableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 
 	public function initTableName()
 	{
-		$this->table = $this->tablePrefix . '_' . $this->getModuleName() . '_' . $this->tableName;
+		$this->table = $this->getTablePrefix() . $this->getModuleTableName() . '_' . $this->tableName;
 		return $this;
 	}
 
