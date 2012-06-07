@@ -142,9 +142,30 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 		return $this;
 	}
 
-	public function find($findCondition = null)
+	public function find($findCondition = null, array $findOptions = array())
 	{
-		$select = $this->getSelect();
+		if(true === is_numeric($findCondition)){
+			$select = $this->findByNumber($findCondition);
+		} elseif(true === is_string($findCondition)){
+			$select = $this->findByString($findCondition, $findOptions);
+		} elseif(true === is_array($findCondition)){
+			$select = $this->findByArray($findCondition);
+		} elseif($findCondition instanceof \Zend\Db\Sql\Select){
+			$select = $findCondition;
+		} else {
+			throw new Exception\NotInitializedException(sprintf(
+				'%s not allow input find condition type %s',
+				__METHOD__,
+				gettype($findCondition)
+			));
+		}
+
+		$selectOptions = $this->selectOptions;
+		//Auto enable limit to prevent load full table
+		if(!isset($selectOptions['limit']) || !$selectOptions['limit']) {
+			$select->limit(10);
+		}
+
 		$resultSet = $this->selectWith($select);
 
 		$this->lastSelectString = $select->getSqlString();
@@ -156,6 +177,24 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 		}
 
 		return $resultSet;
+	}
+
+	protected function findByNumber($findString)
+	{
+		$select = $this->getSelect();
+		return $select;
+	}
+
+	protected function findByString($findString, array $findArray = array())
+	{
+		$select = $this->getSelect();
+		return $select;
+	}
+
+	protected function findByArray(array $findArray)
+	{
+		$select = $this->getSelect();
+		return $select;
 	}
 
 	public function debug()

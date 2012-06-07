@@ -14,10 +14,7 @@ defined('EVA_CONFIG_PATH')	|| define('EVA_CONFIG_PATH', __DIR__ . '/../config');
 /** Public functions */
 function p($r)
 {
-	echo "<pre>";
-	//print_r($r);
 	\Zend\Debug::dump($r);
-    echo "</pre>";
 }
 
 set_include_path(implode(PATH_SEPARATOR, array(
