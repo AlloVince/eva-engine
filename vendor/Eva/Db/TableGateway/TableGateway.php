@@ -1,7 +1,7 @@
 <?php
 namespace Eva\Db\TableGateway;
 use Eva\Api,
-	Eva\Db\Adapter\Adapter,
+	Zend\Db\Adapter\Adapter,
 	Eva\Db\ResultSet\ResultSet;
 class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 {
@@ -49,24 +49,51 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 		return $this;
 	}
 
-	/*
-	public function initAdapter()
-	{
-		if(true === \Eva\Registry::isRegistered('dbAdapter')){
-			$this->adapter = \Eva\Registry::get("dbAdapter");
-			return $this->adapter;
-		}
-	}
-	 */
-
 	public function initTableName()
 	{
 		$this->table = $this->getTablePrefix() . $this->getModuleTableName() . '_' . $this->tableName;
 		return $this;
 	}
 
+	public function fieldsMapping()
+	{
+	}
 
-    public function __construct(\Zend\Db\Adapter\Adapter $adapter = null)
+	public function where()
+	{
+	}
+
+	public function find()
+	{
+	}
+
+	public function setField()
+	{
+	}
+
+	public function save()
+	{
+	}
+
+	public function create()
+	{
+	}
+
+	public function switchAdapter()
+	{
+	
+	}
+
+	public function getCount()
+	{
+	}
+
+	public function getPager()
+	{
+	
+	}
+
+    public function __construct(Adapter $adapter = null)
 	{
 		if($adapter) {
         	$this->adapter = $adapter;

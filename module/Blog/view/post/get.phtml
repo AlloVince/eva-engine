@@ -1,0 +1,11 @@
+<?
+$post = $this->post;
+$title = $post['title'];
+$this->headTitle($title, 'SET');
+?>
+
+<h1><?=$this->escape($title); ?></h1>
+
+<div>
+<?=$post['contentHtml']?>
+</div>

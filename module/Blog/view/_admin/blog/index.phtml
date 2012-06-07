@@ -29,7 +29,7 @@
 	<?if(!$this->posts):?>
 	<tr>
 		<td colspan="8" class="noresult">
-			No post found. Click here to <a href="<?=$this->Uri('/admin/postnew/'); ?>">add one</a>.
+			No post found. Click here to <a href="<?=$this->uri('/admin/postnew/'); ?>">add one</a>.
 		</td>
 	</tr>
 
@@ -39,11 +39,11 @@
 	<tr id="post_<?=$post['id'] ?>">
 		<td><input type="checkbox" class="checkall" name="post_ids[]" value="<?=$post['id'] ?>" /></td>	
 		<td>
-			<a href="<?=$this->Uri('/admin/blog/' . $post['id'])?>" class="title"><?=$post['title'] ?></a>			
+			<a href="<?=$this->uri('/admin/blog/' . $post['id'])?>" class="title"><?=$post['title'] ?></a>			
 
 			<div class="quick_edit">
-				<a href="<?=$this->Uri('/blog/pages/' . $post['urlName']); ?>" class="btn">View</a>
-				<a href="<?=$this->Uri('/admin/blog/' . $post['id']); ?>" class="btn">Edit</a>
+				<a href="<?=$this->uri('/blog/pages/' . $post['urlName']); ?>" class="btn">View</a>
+				<a href="<?=$this->uri('/admin/blog/' . $post['id']); ?>" class="btn">Edit</a>
 			</div>
 
 		</td>
@@ -55,7 +55,7 @@
 		</td>
 		<?if($post['postUsage'] == 'post'):?>
 		<td>
-			<a href="<?=$this->Uri('/admin/blog/comments/?post_id=' . $post['id']); ?>"><?=$post['commentCount'] ? $post['commentCount'] : 0?></a>
+			<a href="<?=$this->uri('/admin/blog/comments/?post_id=' . $post['id']); ?>"><?=$post['commentCount'] ? $post['commentCount'] : 0?></a>
 		</td>
 		<?else:?>
 		<td></td>

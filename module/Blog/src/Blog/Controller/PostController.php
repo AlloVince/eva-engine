@@ -1,7 +1,8 @@
 <?php
 namespace Blog\Controller;
 
-use Eva\Mvc\Controller\RestfulModuleController,
+use Eva\Api,
+	Eva\Mvc\Controller\RestfulModuleController,
     Blog\Model\PostTable,
     Eva\View\Model\ViewModel;
 
@@ -18,7 +19,13 @@ class PostController extends RestfulModuleController
 
 	public function restGetPost()
 	{
-		p(__METHOD__);exit;
+        $id = $this->getEvent()->getRouteMatch()->getParam('id');
+		$postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
+		$postinfo = $postTable->getPost($id);
+		return array(
+			//'form' => $form,
+			'post' => $postinfo,
+		);
 	}
 
 	public function restGetPostPage()
