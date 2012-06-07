@@ -19,4 +19,8 @@ return array(
         ),
 		'prefix' => 'eva_',
     ),
+
+	'paginator' => array(
+			
+	),
 );

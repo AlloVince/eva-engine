@@ -14,9 +14,12 @@ class BlogController extends RestfulModuleController
 
 	public function restIndexBlog()
 	{
-		$postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
-		$posts = $postTable->fetchAll();
+		$request = $this->getRequest();
+		$page = $request->query()->get('page', 1);
 
+		$postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
+		$posts = $postTable->order('id DESC')->limit(10)->page($page)->find('all');
+		p($postTable->debug());
         return array(
 			'posts' => $posts->toArray()
 		);

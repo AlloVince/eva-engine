@@ -137,6 +137,8 @@ class Api
 				$tableClassName
 			));	
 		}
+
+		//TODO :: Use Di here
 		return new $tableClassName($this->getDbAdapter());
 	}
 
