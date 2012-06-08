@@ -14,9 +14,11 @@ class BlogController extends RestfulModuleController
 	public function restIndexBlog()
 	{
 		$this->layout('layout/admin'); 
+		$request = $this->getRequest();
+		$page = $request->query()->get('page', 1);
 
 		$postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
-		$posts = $postTable->order('id DESC')->find('all');
+		$posts = $postTable->order('id DESC')->page(1)->find('all');
 
         return array(
 			'posts' => $posts->toArray()
@@ -25,27 +27,25 @@ class BlogController extends RestfulModuleController
 
 	public function restGetBlog()
 	{
-        $id = (int)$this->getEvent()->getRouteMatch()->getParam('id');
 		$this->layout('layout/admin'); 
+        $id = (int)$this->getEvent()->getRouteMatch()->getParam('id');
 		$postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
-		$postinfo = $postTable->getPost($id);
+		$postinfo = $postTable->find($id);
 		return array(
-			//'form' => $form,
 			'post' => $postinfo,
 		);
 	}
 
 	public function restPutBlog()
 	{
-
         $request = $this->getRequest();
-        if ($request->isPost()) {
+		if ($request->isPost()) {
+			$postData = $request->post();
             $form = new \Blog\Form\PostForm();
-			$form->enableFilters()->setData($request->post());
+			$form->enableFilters()->setData($postData);
             if ($form->isValid()) {
-				//p(1);
+
 			} else {
-				//p(2);
 			}
 		}
 
