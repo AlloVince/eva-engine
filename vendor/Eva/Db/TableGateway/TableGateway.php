@@ -11,7 +11,7 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 	protected $moduleTableName;
     protected $table;
 	protected $tableName;
-	protected $primaryKey = 'id';
+	protected $primaryKey;
 
 	protected $paginatorEnable = false;
 	protected $paginatorOptions;
@@ -144,8 +144,7 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 	public function find($findCondition = null, array $findOptions = array())
 	{
 		if(!$findCondition && !$findOptions){
-			//NOTE: not allow fetchAll here
-			return $this->fetch($this->getSelect());
+			return $this->fetchAll($this->getSelect());
 		}
 
 		if(true === is_numeric($findCondition)){
@@ -216,7 +215,7 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 		);
 
 		$select = $this->getSelect();
-		return $this->fetch($select);
+		return $this->fetchAll($select);
 	}
 
 	protected function fetchOne(Select $select)
@@ -236,7 +235,7 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 
 	}
 
-	protected function fetch(Select $select)
+	protected function fetchAll(Select $select)
 	{
 		$selectOptions = $this->selectOptions;
 		//Auto enable limit to prevent load full table

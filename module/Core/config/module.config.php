@@ -20,4 +20,29 @@ return array(
 		),
 	),
 
+	'superadmin' => array(
+		'id' => 1,
+		'username' => 'root',
+		'password' => '123456',
+		'email' => 'allo.vince@gmail.com',
+	),
+
+
+	'dir' => array(
+		
+	),
+
+	'session' => array(
+		
+	),
+
+	'cache' => array(
+		'enable' => 1,
+		'model_cache' => array(
+			'enable' => 1,
+		),
+		'static_cache' => array(
+			'enable' => 0,
+		),
+	),
 );

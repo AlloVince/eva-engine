@@ -6,6 +6,10 @@ use Zend\Form\Element;
 
 class PostForm extends Form
 {
+	protected $fieldsMap = array(
+		
+	);
+
 	protected $baseElements = array(
 		'id' => array(
             'name' => 'id',
