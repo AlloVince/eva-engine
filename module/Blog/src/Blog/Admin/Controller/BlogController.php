@@ -16,7 +16,7 @@ class BlogController extends RestfulModuleController
 		$this->layout('layout/admin'); 
 
 		$postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
-		$posts = $postTable->fetchAll();
+		$posts = $postTable->order('id DESC')->find('all');
 
         return array(
 			'posts' => $posts->toArray()

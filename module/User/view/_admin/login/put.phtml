@@ -1,28 +1,30 @@
-<?php
+<?
 $title = 'Admin Login';
 $this->headTitle($title, 'SET');
-?>
-<?
+
 if($this->form){
 	$form = $this->form;
 } else {
 	$form = Eva\Api::_()->getForm('\User\Form\AdminLoginForm');
 }
-
 $form->init(array(
 	'action' => $this->uri('/admin/user/login/'),
 	'method' => 'put',
 	'values' => $this->user
 ));
-
 $form->mergeInvalid();
 ?>
 
-<form class="form-horizontal" <?=$this->formAttr($form)?>>
-	<?=$form->restful();?>
-	<fieldset>
+
+<div class="container">
+	<form class="form-vertical" <?=$this->formAttr($form)?> >
+		<?=$form->restful();?>
+		<header class="page-header">
+			<h3>Admin Login</h3>
+		</header>
+		<fieldset>
 			<div class="control-group <?=$form->get('userName')->getMessages() ? 'error' : '';?>">
-		    <label class="control-label"><?=$this->formLabel($form->get('userName'));?></label>
+			<label class="control-label"><?=$this->formLabel($form->get('userName'));?></label>
 			<div class="controls docs-input-sizes">
 			  <?=$this->input($form->get('userName'), array('class' => 'input-xlarge'))?>
 			  <?foreach($form->get('userName')->getMessages() as $message):?>
@@ -31,7 +33,7 @@ $form->mergeInvalid();
 			</div>
 		  </div>
 			<div class="control-group <?=$form->get('password')->getMessages() ? 'error' : '';?>">
-		    <label class="control-label"><?=$this->formLabel($form->get('password'));?></label>
+			<label class="control-label"><?=$this->formLabel($form->get('password'));?></label>
 			<div class="controls docs-input-sizes">
 			  <?=$this->input($form->get('password'), array('class' => 'input-xlarge'))?>
 			  <?foreach($form->get('password')->getMessages() as $message):?>
@@ -41,6 +43,7 @@ $form->mergeInvalid();
 		  <div class="form-actions">
 			<button class="btn btn-primary" type="submit">Login</button>
 		  </div>
-	</fieldset>
-</form>
+		</fieldset>
+	</form>
+</div>
 

@@ -18,12 +18,15 @@ class BlogController extends RestfulModuleController
 		$page = $request->query()->get('page', 1);
 
 		$postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
-		$posts = $postTable->order('id DESC')->find('all');
-		//$posts = $postTable->order('id DESC')->limit(10)->page($page)->find('all');
+		//$posts = $postTable->order('id DESC')->find();
+		$posts = $postTable->order('id DESC')->limit(10)->page($page);
+		$posts = $posts->find('all');
+		//p($posts);
+		//->find();
 		
 		//p($postTable->debug());
         return array(
-			'posts' => $posts->toArray()
+			'posts' => $posts
 		);
 	}
 }

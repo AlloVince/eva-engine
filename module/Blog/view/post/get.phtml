@@ -3,9 +3,12 @@ $post = $this->post;
 $title = $post['title'];
 $this->headTitle($title, 'SET');
 ?>
+<div class="container">
+	<header class="page-header">
+		<h1><?=$this->escape($title); ?></h1>
+	</header>
 
-<h1><?=$this->escape($title); ?></h1>
-
-<div>
-<?=$post['contentHtml']?>
+	<div>
+	<?=$post['contentHtml']?>
+	</div>
 </div>

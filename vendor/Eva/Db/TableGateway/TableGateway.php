@@ -2,6 +2,7 @@
 namespace Eva\Db\TableGateway;
 use Eva\Api,
 	Zend\Db\Adapter\Adapter,
+	Zend\Db\Sql\Select,
 	Eva\Db\ResultSet\ResultSet,
 	Eva\Db\Exception;
 class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
@@ -76,8 +77,6 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 		return $this->primaryKey;
 	}
 
-
-
 	public function reset()
 	{
 		$this->select = null;
@@ -144,22 +143,101 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 
 	public function find($findCondition = null, array $findOptions = array())
 	{
+		if(!$findCondition && !$findOptions){
+			//NOTE: not allow fetchAll here
+			return $this->fetch($this->getSelect());
+		}
+
 		if(true === is_numeric($findCondition)){
-			$select = $this->findByNumber($findCondition);
+			return $this->findByNumber($findCondition);
 		} elseif(true === is_string($findCondition)){
-			$select = $this->findByString($findCondition, $findOptions);
+			return $this->findByString($findCondition, $findOptions);
 		} elseif(true === is_array($findCondition)){
-			$select = $this->findByArray($findCondition);
-		} elseif($findCondition instanceof \Zend\Db\Sql\Select){
-			$select = $findCondition;
+			return $this->findByArray($findCondition);
 		} else {
-			throw new Exception\NotInitializedException(sprintf(
+			throw new Exception\InvalidArgumentException(sprintf(
 				'%s not allow input find condition type %s',
 				__METHOD__,
 				gettype($findCondition)
 			));
 		}
+	}
 
+	protected function findByNumber($findNumber)
+	{
+		$primaryKey = $this->primaryKey;
+		if(!$primaryKey){
+			throw new Exception\InvalidArgumentException(sprintf(
+				'No primary key set in %s',
+				__METHOD__
+			));
+		}
+		if(false === is_string($primaryKey)){
+			throw new Exception\InvalidArgumentException(sprintf(
+				'Only allow single primary key in %s',
+				__METHOD__
+			));
+		}
+
+		$this->where(array(
+			$primaryKey => $findNumber
+		));
+		return $this->fetchOne($this->select);
+	}
+
+	protected function findByString($findString, array $findArray = array())
+	{
+		$findString = strtolower($findString);
+		switch($findString) {
+			case 'one' :
+				return $this->fetchOne($this->getSelect());
+			case 'count' :
+				return $this->fetchCount($this->getSelect());
+			case 'all' :
+				return $this->findByArray($findArray);
+		}
+		return $select;
+	}
+
+	protected function findByArray(array $findArray)
+	{
+		$findOptions = array(
+			'where' => false,
+			'from' => false,
+			'columns' => false,
+			'join' => false,
+			'group' => false,
+			'having' => false,
+			'order' => false,
+			'page' => false,
+			'limit' => false,    
+			'offset' => false, 
+			'enablePaginator' => false,
+		);
+
+		$select = $this->getSelect();
+		return $this->fetch($select);
+	}
+
+	protected function fetchOne(Select $select)
+	{
+		$this->limit(1);
+		$resultSet = $this->selectWith($select);
+		$this->lastSelectString = $select->getSqlString();
+		$this->reset();
+		if(!$resultSet){
+			return array();
+		}
+		return $resultSet->current();
+	}
+
+	protected function fetchCount(Select $select)
+	{
+
+	}
+
+	protected function fetch(Select $select)
+	{
 		$selectOptions = $this->selectOptions;
 		//Auto enable limit to prevent load full table
 		if(!isset($selectOptions['limit']) || !$selectOptions['limit']) {
@@ -171,30 +249,11 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 		$this->lastSelectString = $select->getSqlString();
 		$this->reset();
 
-
 		if(!$resultSet){
 			return array();
 		}
 
 		return $resultSet;
-	}
-
-	protected function findByNumber($findString)
-	{
-		$select = $this->getSelect();
-		return $select;
-	}
-
-	protected function findByString($findString, array $findArray = array())
-	{
-		$select = $this->getSelect();
-		return $select;
-	}
-
-	protected function findByArray(array $findArray)
-	{
-		$select = $this->getSelect();
-		return $select;
 	}
 
 	public function debug()

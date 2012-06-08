@@ -1,8 +1,8 @@
-<div class="page_header">
+<div class="page-header">
 <h2 class="">Blog Posts</h2>
 </div>
 
-	<table class="table">
+	<table class="table table-striped table-bordered table-condensed">
 	<tbody>
 	<tr>
 		<th class="twidth width_30"><input type="checkbox" id="checkall" /></th>	
@@ -62,7 +62,7 @@
 		<?endif;?>
 		<td>
 			<input type="hidden" name="post_id[]" class="reorder_post_id" value="<?=$post['id'] ?>" />
-			<input tabindex="<?=$key+1 ?>" type="text" class="order reorder_ordernum" size="2" maxlength="3" name="orderNumber[]" value="<?=$post['orderNumber'] ? $post['orderNumber'] : "0" ?>" />
+			<input tabindex="<?=$key+1 ?>" type="text" class="order span1" size="2" maxlength="3" name="orderNumber[]" value="<?=$post['orderNumber'] ? $post['orderNumber'] : "0" ?>" />
 		</td>
 		<td class="centeralign">
 			<?=$post['createTime'];?>

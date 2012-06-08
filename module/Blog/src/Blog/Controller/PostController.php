@@ -20,8 +20,12 @@ class PostController extends RestfulModuleController
 	public function restGetPost()
 	{
         $id = $this->getEvent()->getRouteMatch()->getParam('id');
+
+
 		$postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
-		$postinfo = $postTable->getPost($id);
+		$postinfo = $postTable->find($id);
+		//p($postTable->debug());
+		//p($postinfo);
 		return array(
 			//'form' => $form,
 			'post' => $postinfo,
