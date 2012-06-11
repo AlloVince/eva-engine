@@ -88,6 +88,12 @@ class ModuleViewManager extends \Zend\Mvc\View\ViewManager
 		$this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'onDispatch'), 0);
 	}
 
+    /**
+	 * Set module view root path to module/{module name}/view
+	 * Reset layout by config->module_namespace_layout_map
+     * 
+     * @return ViewHelperLoader
+     */
 	public function onDispatch(MvcEvent $e)
 	{
 		$routeParams = $e->getRouteMatch()->getParams();
@@ -104,8 +110,14 @@ class ModuleViewManager extends \Zend\Mvc\View\ViewManager
 		$moduleRootPath = $classRootPath . '..';
 		$this->viewRootPath = $moduleRootPath . DIRECTORY_SEPARATOR . 'view';
 
-		if(isset($routeParams['moduleNamespace']) && $routeParams['moduleNamespace'] && $routeParams['moduleNamespace'] != $routeParams['module']){
+		$moduleNamespace = isset($routeParams['moduleNamespace']) ? $routeParams['moduleNamespace'] : '';
+		if($moduleNamespace && $routeParams['moduleNamespace'] && $routeParams['moduleNamespace'] != $routeParams['module']){
 			$this->viewRootPath .= DIRECTORY_SEPARATOR . '_' . strtolower($routeParams['moduleNamespace']);
+		}
+
+		if($moduleNamespace && isset($this->config['module_namespace_layout_map']) 
+			&& !isset($this->config['layout']) && isset($this->config['module_namespace_layout_map'][ucfirst($moduleNamespace)])) {
+			$this->getViewModel()->setTemplate('layout/' . $moduleNamespace);
 		}
 
 		$templatePathStack = new ViewResolver\TemplatePathStack();

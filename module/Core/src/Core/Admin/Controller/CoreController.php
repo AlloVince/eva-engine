@@ -8,7 +8,6 @@ class CoreController extends ActionController
 {
 	public function indexAction()
 	{
-		$this->layout('layout/admin'); 
         $model = new ViewModel(array(
 		));
 		return $model;

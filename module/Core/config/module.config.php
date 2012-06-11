@@ -18,7 +18,12 @@ return array(
 			'formAttr' => 'Eva\Form\View\Helper\FormAttr',
 			'input' => 'Eva\Form\View\Helper\Input',
 		),
+
+		'module_namespace_layout_map' => array(
+			'Admin' => 'layout/admin'
+		),
 	),
+
 
 	'superadmin' => array(
 		'id' => 1,

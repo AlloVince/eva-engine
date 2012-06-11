@@ -13,7 +13,6 @@ class BlogController extends RestfulModuleController
 
 	public function restIndexBlog()
 	{
-		$this->layout('layout/admin'); 
 		$request = $this->getRequest();
 		$page = $request->query()->get('page', 1);
 
@@ -27,7 +26,6 @@ class BlogController extends RestfulModuleController
 
 	public function restGetBlog()
 	{
-		$this->layout('layout/admin'); 
         $id = (int)$this->getEvent()->getRouteMatch()->getParam('id');
 		$postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
 		$postinfo = $postTable->find($id);

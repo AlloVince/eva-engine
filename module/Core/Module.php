@@ -1,9 +1,7 @@
 <?php
 namespace Core;
 
-use Eva\ModuleManager\ModuleManager,
-    Eva\EventManager\StaticEventManager,
-    Eva\ModuleManager\Feature\AutoloaderProvider;
+use Eva\Api;
 
 class Module
 {
@@ -36,9 +34,10 @@ class Module
 
     public function onBootstrap($e)
     {
-		\Eva\Api::_()->setEvent($e);
+		Api::_()->setEvent($e);
 	}
 
+	/*
     public function getServiceConfiguration()
     {
         return array(
@@ -54,6 +53,7 @@ class Module
             ),
         );
 	}
+	 */
     
 	/*
     public function initializeView($e)
