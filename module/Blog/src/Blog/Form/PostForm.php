@@ -26,6 +26,14 @@ class PostForm extends Form
             ),
 		),
 
+		'urlName' => 	array(
+            'name' => 'urlName',
+            'attributes' => array(
+                'type' => 'text',
+                'label' => 'Post Url',
+            ),
+		),
+
 		'status' => array(
             'name' => 'status',
             'attributes' => array(
@@ -107,6 +115,31 @@ class PostForm extends Form
 						'encoding' => 'UTF-8',
 						'min' => 1,
 						'max' => 100,
+					),
+				),
+			),
+		),
+
+		'urlName' => 	array(
+			'name' => 'urlName',
+			'required' => true,
+			'filters' => array(
+				array('name' => 'StripTags'),
+				array('name' => 'StringTrim'),
+			),
+			'validators' => array(
+				array(
+					'name' => 'StringLength',
+					'options' => array(
+						'encoding' => 'UTF-8',
+						'min' => 1,
+						'max' => 100,
+					),
+				),
+				array(
+					'name' => 'Regex',
+					'options' => array(
+						'pattern' => '/\w+/'
 					),
 				),
 			),

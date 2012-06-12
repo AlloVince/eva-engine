@@ -4,7 +4,10 @@ $this->headTitle($title, 'SET');
 ?>
 
 <div class="page-header">
-<h2 class=""><?=$title?></h2>
+<h2 class="">
+	<?=$title?>
+	<small><a href="<?=$this->uri('/admin/blog/add')?>">Add New Post</a></small>
+</h2>
 </div>
 
 	<table class="table table-striped table-bordered table-condensed">

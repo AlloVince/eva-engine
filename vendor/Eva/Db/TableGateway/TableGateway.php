@@ -3,25 +3,25 @@ namespace Eva\Db\TableGateway;
 use Eva\Api,
 	Zend\Db\Adapter\Adapter,
 	Zend\Db\Sql\Select,
+	Zend\Db\Sql\Expression,
 	Eva\Db\ResultSet\ResultSet,
 	Eva\Db\Exception;
 class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 {
+    const ROW_COUNT_COLUMN = 'eva_row_count';
+
 	protected $tablePrefix;
 	protected $moduleTableName;
     protected $table;
 	protected $tableName;
 	protected $primaryKey;
 
-	protected $paginatorEnable = false;
-	protected $paginatorOptions;
-	protected $paginator;
-
-	protected $resultSetCount;
-
 	protected $select;
 	protected $selectOptions;
 	protected $lastSelectString;
+
+	protected $enableCount = false;
+	protected $lastSelectCount;
 
 	public function getSelect()
 	{
@@ -86,6 +86,7 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 	{
 		$this->select = null;
 		$this->selectOptions = array(); 
+		$this->enableCount = false;
 		return $this;
 	}
 
@@ -135,6 +136,7 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 
 	public function count()
 	{
+		return $this->fetchCount();
 	}
 
 	public function page($page = 1)
@@ -242,12 +244,48 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 
 	protected function fetchCount(Select $select)
 	{
+		$select->limit(1);
+		$select->offset(null);
+		//NOTE: no method could reset order here
+		//$select->order(array());
 
+		$countColumnName = self::ROW_COUNT_COLUMN;
+		if($this->primaryKey && is_string($this->primaryKey)){
+			$select->columns(array(
+				$countColumnName	=> new Expression("COUNT($this->primaryKey)")
+			));
+		} else {
+			$select->columns(array(
+				$countColumnName	=> new Expression('COUNT(*)')
+			));
+		}
+
+		//p($select->getSqlString());
+		
+		$resultSet = $this->selectWith($select);
+		if(false === $this->enableCount){
+			$this->lastSelectString = $select->getSqlString();
+			$this->reset();
+		}
+
+		if(!$resultSet){
+			return 0;
+		}
+
+		$resultSet = $resultSet->current();
+		return $this->lastSelectCount = $resultSet->$countColumnName;
 	}
 
 	protected function fetchAll(Select $select)
 	{
+		if(true === $this->enableCount){
+			$countSelect = clone $select;
+			$this->fetchCount($countSelect);
+		}
+
 		$selectOptions = $this->selectOptions;
+
+
 		//Auto enable limit to prevent load full table
 		if(!isset($selectOptions['limit']) || !$selectOptions['limit']) {
 			$select->limit(10);
@@ -256,6 +294,7 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 		$resultSet = $this->selectWith($select);
 
 		$this->lastSelectString = $select->getSqlString();
+		//p($select->getSqlString());
 		$this->reset();
 
 		if(!$resultSet){
@@ -312,6 +351,7 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 
 	public function getCount()
 	{
+		return $this->lastSelectCount;
 	}
 
 
@@ -319,46 +359,16 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 	{
 	}
 
-	public function enablePaginator()
+	public function enableCount()
 	{
-		$this->paginatorEnable = true;
+		$this->enableCount = true;
 		return $this;
 	}
 
-	public function disablePaginator()
+	public function disableCount()
 	{
-		$this->paginatorEnable = false;
+		$this->enableCount = false;
 		return $this;
-	}
-
-	public function setPaginatorOptions($paginatorOptions)
-	{
-		$this->paginatorOptions = $paginatorOptions;
-		return $this;
-	}
-
-	public function getPaginatorOptions()
-	{
-		if($this->paginatorOptions) {
-			return $this->paginatorOptions;
-		}
-
-		$config = Api::_()->getConfig();
-		if(isset($config['paginator']) && $config['paginator']){
-			return $this->paginator = $config['paginator'];
-		}
-		return array();
-	}
-
-	public function setPaginator($paginator)
-	{
-		$this->paginator = $paginator;
-		return $this;
-	}
-
-	public function getPaginator()
-	{
-		return $this->paginator;
 	}
 
     public function __construct(Adapter $adapter = null)
@@ -367,6 +377,7 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
         	$this->adapter = $adapter;
 		}
 
+		//TODO:: change to lazy db connect
 		$this->initTableName();
 		$this->initialize();
     }

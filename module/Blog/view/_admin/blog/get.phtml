@@ -36,6 +36,18 @@ $form->mergeInvalid();
 			  <?endforeach?>
 			</div>
 		  </div>
+
+		  <div class="control-group <?=$form->get('urlName')->getMessages() ? 'error' : '';?>">
+		    <label class="control-label"><?=$this->formLabel($form->get('urlName'));?></label>
+			<div class="controls docs-input-sizes">
+			  <?=$this->input($form->get('urlName'), array('class' => 'input-xlarge'))?>
+			  <?foreach($form->get('urlName')->getMessages() as $message):?>
+			  <p class="help-block"><?=$message?></p>
+			  <?endforeach?>
+			</div>
+		  </div>
+
+
 		  <div class="control-group">
 			<label class="control-label"><?=$this->formLabel($form->get('status'));?></label>
 			<div class="controls">

@@ -20,7 +20,9 @@ class BlogController extends RestfulModuleController
 		$page = $request->query()->get('page', 1);
 
 		$postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
-		$posts = $postTable->order('id DESC')->page($page)->find('all');
+		$posts = $postTable->enableCount()->order('id DESC')->page($page)->find('all');
+		$postCount = $postTable->getCount();
+		//$paginator = $postTable->getPaginator();
 
         return array(
 			'posts' => $posts->toArray()
@@ -99,11 +101,9 @@ class BlogController extends RestfulModuleController
 			$postTable->where("id = {$postData['id']}")->remove();
 
 		} else {
-
+			return array(
+				'post' => $postData,
+			);
 		}
-
-		return array(
-			'post' => $postData,
-		);
 	}
 }

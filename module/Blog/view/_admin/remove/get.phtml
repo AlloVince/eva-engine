@@ -13,6 +13,7 @@ $form->init(array(
 $form->mergeInvalid();
 ?>
 
+<?if($post):?>
 <div class="alert alert-block container">
    <h2 class="alert-heading"><?=$title?></h2>
    <p>Post <?=$post['title']?> will be deleted, are you sure?</p>
@@ -25,3 +26,8 @@ $form->mergeInvalid();
    		</form>
 	</p>
 </div>
+<?else:?>
+<div class="alert alert-success container">
+   <h2 class="alert-heading">Post have been deleted.</h2>
+</div>
+<?endif?>
