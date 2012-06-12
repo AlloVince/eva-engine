@@ -26,8 +26,46 @@ class Form extends \Zend\Form\Form
 
 	protected $hasIdPrefix = true;
 
+	protected $fieldsMap = array();
+
+
 	//TODO: $form->get('title') when title is null should throw a new Exception 
-	
+
+	public function fieldsMap($data = array(), $quickMode = false, $skipFieldStart = '_')
+	{
+		if(is_object($data)){
+			$data = $data->toArray();
+		}
+
+		if(!$data || !$this->fieldsMap && $quickMode === false){
+			return $data;
+		}
+
+		if(true === $quickMode){
+			foreach($data as $key => $value){
+				if(false === strpos($key, $skipFieldStart)){
+					continue;
+				}
+
+				unset($data[$key]);
+			}
+		} else {
+
+			$fieldsMap = $this->fieldsMap;
+			$newData = array();
+			foreach($data as $key => $value){
+				if(isset($fieldsMap[$key])){
+					$newData[$fieldsMap[$key]] = $value;
+				}
+			}
+			$data = $newData;
+			unset($newData);
+		}
+
+
+		return $data;
+	}
+
 	public function setDefaultValues($defaultValues)
 	{
 		$this->defaultValues = $defaultValues;

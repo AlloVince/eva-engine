@@ -1,7 +1,8 @@
 <?php
 namespace Blog\Admin\Controller;
 
-use Eva\Api,
+use Blog\Form,
+	Eva\Api,
 	Eva\Mvc\Controller\RestfulModuleController,
     Eva\View\Model\ViewModel;
 
@@ -9,6 +10,7 @@ class BlogController extends RestfulModuleController
 {
 	protected $renders = array(
 		'restPutBlog' => 'blog/get',	
+		'restPostBlog' => 'blog/get',	
 	);
 
 	public function restIndexBlog()
@@ -17,7 +19,7 @@ class BlogController extends RestfulModuleController
 		$page = $request->query()->get('page', 1);
 
 		$postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
-		$posts = $postTable->order('id DESC')->page(1)->find('all');
+		$posts = $postTable->order('id DESC')->page($page)->find('all');
 
         return array(
 			'posts' => $posts->toArray()
@@ -34,23 +36,52 @@ class BlogController extends RestfulModuleController
 		);
 	}
 
-	public function restPutBlog()
+	public function restPostBlog()
 	{
-        $request = $this->getRequest();
-		if ($request->isPost()) {
-			$postData = $request->post();
-            $form = new \Blog\Form\PostForm();
-			$form->enableFilters()->setData($postData);
-            if ($form->isValid()) {
+		$request = $this->getRequest();
+		$postData = $request->post();
+		$form = new Form\PostForm();
 
-			} else {
-			}
+		$form->enableFilters()->setData($postData);
+		if ($form->isValid()) {
+
+			$postData = $form->getData();
+
+			$postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
+			$postData = $form->fieldsMap($postData, true);
+			$postTable->create($postData);
+
+		} else {
+			
+			//p($form->getInputFilter()->getInvalidInput());
 		}
 
 		return array(
 			'form' => $form,
-			'post' => $request->post(),
+			'post' => $postData,
 		);
-	
+	}
+
+	public function restPutBlog()
+	{
+		$request = $this->getRequest();
+		$postData = $request->post();
+		$form = new Form\PostForm();
+		$form->enableFilters()->setData($postData);
+		if ($form->isValid()) {
+
+			$postData = $form->getData();
+			$postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
+			$postData = $form->fieldsMap($postData, true);
+			$postTable->where("id = {$postData['id']}")->save($postData);
+
+		} else {
+		}
+
+		return array(
+			'form' => $form,
+			'post' => $postData,
+		);
+
 	}
 }

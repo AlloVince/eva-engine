@@ -28,6 +28,11 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 		return $this->select ? $this->select : $this->sql->select();
 	}
 
+	public function getUpdate()
+	{
+		return $this->update ? $this->update : $this->sql->update();
+	}
+
 	public function getTablePrefix()
 	{
 		if($this->tablePrefix) {
@@ -112,6 +117,11 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 				default :
 					$select->$method();
 					$this->selectOptions[$method] = true;
+			}
+
+			//Where maybe have multi columns
+			if($method == 'where'){
+				$this->selectOptions['where'] = $select->where;
 			}
 
 			//Note: ZF2 will clear last select when use $this->sql->select();
@@ -269,16 +279,28 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 		return '';
 	}
 
-	public function setField()
+	public function save(array $set = array())
 	{
+		$selectOptions = $this->selectOptions;
+		$where = isset($selectOptions['where']) ? $selectOptions['where'] : array();
+		if(!$selectOptions || !$where){
+			return $this->insert($set);
+		}
+
+		return $this->update($set, $where);	
 	}
 
-	public function save()
+	public function create(array $set = array())
 	{
+		if(!$set){
+			return false;
+		}
+		return $this->insert($set);
 	}
 
-	public function create()
+	public function remove()
 	{
+	
 	}
 
 

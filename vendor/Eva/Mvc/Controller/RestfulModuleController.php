@@ -44,8 +44,8 @@ abstract class RestfulModuleController extends \Zend\Mvc\Controller\RestfulContr
 				$methodRecover = isset($postParams['_method']) && $postParams['_method'] ? $postParams['_method'] : '';
 				if($methodRecover == 'put' || $methodRecover == 'delete'){
 					$method = $methodRecover;
-					break;
 				}
+				break;
 			default:
 				if($id = $this->getEvent()->getRouteMatch()->getParam('id')){
 					$method = 'get';
@@ -64,6 +64,7 @@ abstract class RestfulModuleController extends \Zend\Mvc\Controller\RestfulContr
 
 		$resource = $method . ucfirst($controllerName) . ucfirst($resource);
 		$function = 'rest' . ucfirst($resource);
+
 
 		return $this->restfulResource = array(
 			'module' => $moduleName,

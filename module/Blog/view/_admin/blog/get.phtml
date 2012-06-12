@@ -1,5 +1,7 @@
 <?
-$title = 'Edit Post';
+$post = $this->post;
+$title = $post['id'] ? 'Edit Post' : 'Create Post';
+$method = $post['id'] ? 'put' : 'post';
 $this->headTitle($title, 'SET');
 if($this->form){
 	$form = $this->form;
@@ -9,7 +11,7 @@ if($this->form){
 
 $form->init(array(
 	'action' => $this->uri('/admin/blog/'),
-	'method' => 'put',
+	'method' => $method,
 	'values' => $this->post
 ));
 
@@ -41,7 +43,6 @@ $form->mergeInvalid();
 				'type' => 'formSelect',
 				'class' => 'span3',
 			  ))?>
-			  <p class="help-block">Default is </p>
 			</div>
 		  </div>
 
@@ -62,7 +63,7 @@ $form->mergeInvalid();
 			  ))?>
             </div>
           </div>
-		  <div class="control-group">
+		  <div class="control-group <?=$form->get('content')->getMessages() ? 'error' : '';?>">
             <label for="textarea" class="control-label"><?=$this->formLabel($form->get('content'));?></label>
 			<div class="controls">
 			<?=$this->input($form->get('content'), array(
@@ -70,7 +71,10 @@ $form->mergeInvalid();
 				'class' => 'span10',
 				'rows' => '15',
 			  ))?>
-            </div>
+			</div>
+		    <?foreach($form->get('content')->getMessages() as $message):?>
+		    <p class="help-block"><?=$message?></p>
+		    <?endforeach?>
           </div>
 		  <div class="form-actions">
 			<button class="btn btn-primary" type="submit">Submit</button>
