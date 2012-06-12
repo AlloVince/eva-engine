@@ -300,7 +300,13 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 
 	public function remove()
 	{
-	
+		$selectOptions = $this->selectOptions;
+		$where = isset($selectOptions['where']) ? $selectOptions['where'] : array();
+		if(!$selectOptions || !$where){
+			return false;
+		}
+
+		return $this->delete($where);	
 	}
 
 

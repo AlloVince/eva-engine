@@ -1,5 +1,10 @@
+<?
+$title = 'Posts List';
+$this->headTitle($title, 'SET');
+?>
+
 <div class="page-header">
-<h2 class="">Blog Posts</h2>
+<h2 class=""><?=$title?></h2>
 </div>
 
 	<table class="table table-striped table-bordered table-condensed">
@@ -44,6 +49,7 @@
 			<div class="quick_edit">
 				<a href="<?=$this->uri('/blog/pages/' . $post['urlName']); ?>" class="btn">View</a>
 				<a href="<?=$this->uri('/admin/blog/' . $post['id']); ?>" class="btn">Edit</a>
+				<a href="<?=$this->uri('/admin/blog/remove/' . $post['id']); ?>" class="btn">Delete</a>
 			</div>
 
 		</td>

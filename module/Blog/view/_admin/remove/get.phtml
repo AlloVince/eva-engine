@@ -1,0 +1,27 @@
+<?
+$post = $this->post;
+$title = 'Delete Post';
+$this->headTitle($title, 'SET');
+$form = Eva\Api::_()->getForm('\Blog\Form\PostDeleteForm');
+
+$form->init(array(
+	'action' => $this->uri('/admin/blog/'),
+	'method' => 'delete',
+	'values' => $this->post
+));
+
+$form->mergeInvalid();
+?>
+
+<div class="alert alert-block container">
+   <h2 class="alert-heading"><?=$title?></h2>
+   <p>Post <?=$post['title']?> will be deleted, are you sure?</p>
+   <p>
+		<form class="form-horizontal" <?=$this->formAttr($form)?>>
+			<?=$form->restful();?>
+			<?=$this->formInput($form->get('id'));?>
+			<button class="btn btn-danger" type="submit">Delete</button>
+			<a class="btn" href="">Go Back</a>
+   		</form>
+	</p>
+</div>

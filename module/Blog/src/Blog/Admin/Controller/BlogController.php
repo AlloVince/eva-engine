@@ -11,6 +11,7 @@ class BlogController extends RestfulModuleController
 	protected $renders = array(
 		'restPutBlog' => 'blog/get',	
 		'restPostBlog' => 'blog/get',	
+		'restDeleteBlog' => 'remove/get',	
 	);
 
 	public function restIndexBlog()
@@ -82,6 +83,27 @@ class BlogController extends RestfulModuleController
 			'form' => $form,
 			'post' => $postData,
 		);
+	}
 
+	public function restDeleteBlog()
+	{
+		$request = $this->getRequest();
+		$postData = $request->post();
+		$form = new Form\PostDeleteForm();
+		$form->enableFilters()->setData($postData);
+		if ($form->isValid()) {
+
+			$postData = $form->getData();
+			$postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
+
+			$postTable->where("id = {$postData['id']}")->remove();
+
+		} else {
+
+		}
+
+		return array(
+			'post' => $postData,
+		);
 	}
 }
