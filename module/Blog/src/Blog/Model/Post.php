@@ -6,6 +6,7 @@ use Eva\Mvc\Model\AbstractModel;
 
 class Post extends AbstractModel
 {
+    protected $itemTableName = 'Blog\DbTable\Posts';
 
     public function getPost($id)
     {

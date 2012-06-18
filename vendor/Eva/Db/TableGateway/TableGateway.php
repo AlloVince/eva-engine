@@ -23,6 +23,8 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
     protected $enableCount = false;
     protected $lastSelectCount;
 
+    protected $paginatorOptions;
+
     public function getSelect()
     {
         return $this->select ? $this->select : $this->sql->select();
@@ -96,6 +98,10 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
         $allowMagicCalls = array('where', 'from', 'columns', 'join', 'group', 'having', 'order', 'limit', 'offset');
 
         if(true === in_array($method, $allowMagicCalls)){
+            if (!$this->isInitialized) {
+                $this->initialize();
+            }
+
             if(!$this->isInitialized) {
                 throw new Exception\NotInitializedException(sprintf(
                     'Sql must initialized before methed %s called',
@@ -148,6 +154,9 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
         } else {
             $limit = 10;
         }
+        $this->paginatorOptions['itemCountPerPage'] = (int) $limit;
+        $this->paginatorOptions['pageNumber'] = (int) $page;
+
         $offset = ($page - 1) * $limit;
         $select->offset($offset);
         return $this;
@@ -371,14 +380,29 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
         return $this;
     }
 
+    public function getPaginatorOptions()
+    {
+        return $this->paginatorOptions;
+    }
+
+    public function initialize()
+    {
+        if ($this->isInitialized) {
+            return;
+        }
+
+        if(!$this->adapter) {
+            $this->adapter = Api::_()->getDbAdapte();
+        }
+
+        $this->initTableName();
+        parent::initialize();
+    }
+
     public function __construct(Adapter $adapter = null)
     {
         if($adapter) {
             $this->adapter = $adapter;
         }
-
-        //TODO:: change to lazy db connect
-        $this->initTableName();
-        $this->initialize();
     }
 }

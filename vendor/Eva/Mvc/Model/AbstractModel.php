@@ -7,21 +7,26 @@ use Eva\Api,
 
 abstract class AbstractModel
 {
-
     const CACHE_QUERY = 'query';
     const CACHE_META = 'meta';
     const CACHE_PAGINATOR = 'paginator';
 
+    protected $itemName;
+    protected $item;
+    protected $itemList;
 
-    protected $paginatorEnable = false;
-    protected $paginatorOptions;
     protected $paginator;
 
     protected $itemTable;
+    protected $itemTableName;
 
     public function getItemTable()
     {
-        return $this->itemTable;
+        if($this->itemTable){
+            return $this->itemTable;
+        }
+
+        return $this->itemTable = Api::_()->getDbTable($this->itemTableName);
     }
 
     public function setItemTable(TableGateway $itemTable)
@@ -43,59 +48,74 @@ abstract class AbstractModel
     }
 
 
-    public function setPaginatorOptions($paginatorOptions)
-    {
-        $this->paginatorOptions = $paginatorOptions;
-        return $this;
-    }
 
-    public function getPaginatorOptions()
-    {
-        if($this->paginatorOptions) {
-            return $this->paginatorOptions;
-        }
-
-        $config = Api::_()->getConfig();
-
-        $paginatorOptions = array(
-            'itemCountPerPage' => 10,
-            'currentPageNumber' => 1,
-            'pageRange' => 5,
-        );
-
-        return $paginatorOptions;
-
-        /*
-        if(isset($config['paginator']) && $config['paginator']){
-            return $this->paginator = $config['paginator'];
-        }
-         */
-    }
-
-    public function setPaginator(\Zend\Paginator\Paginator $paginator)
+    public function setPaginator(\Eva\Paginator\Paginator $paginator)
     {
         $this->paginator = $paginator;
         return $this;
     }
 
-    public function getPaginator()
+    public function getPaginator(array $paginatorOptions = array(), $useDbTable = true)
     {
-        return $this->paginator;
+        $defaultPaginatorOptions = array(
+            'itemCountPerPage' => 10,
+            'pageRange' => 5,
+            'pageNumber' => 1,
+        );
 
-        /*
-        $paginatorOptions = $this->getPaginatorOptions();
+
+        if(true === $useDbTable) {
+            $itemTable = $this->getItemTable();
+            if(!$itemTable) {
+                return $this->paginator;
+            }
+
+            $count = $itemTable->getCount();
+            if(!$count) {
+                return $this->paginator;
+            }
+
+            $dbPaginatorOptions = $itemTable->getPaginatorOptions();
+
+            $paginatorOptions = array_merge($defaultPaginatorOptions, $dbPaginatorOptions, $paginatorOptions);
+
+            $count = (int) $count;
+            $diConfig = array(
+                'instance' => array(
+                    'Zend\Paginator\Adapter\DbTableSelect' => array(
+                        'parameters' => array(
+                            'rowCount' => $count,
+                            'select' => $itemTable->getSelect()
+                        )
+                    ),
+                    'Eva\Paginator\Paginator' => array(
+                        'parameters' => array(
+                            'rowCount' => $count,
+                            'adapter' => 'Zend\Paginator\Adapter\DbTableSelect',
+                        ),
+                    ),
+                )
+            );
+
+        } else {
+            
+            $paginatorOptions = array_merge($defaultPaginatorOptions, $paginatorOptions);
+
+        }
+
+        foreach ($paginatorOptions as $key => $value) {
+            if(false === in_array($key, array('itemCountPerPage', 'pageNumber', 'pageRange'))){
+                continue;
+            }
+            
+            $diConfig['instance']['Eva\Paginator\Paginator']['parameters'][$key] = $paginatorOptions[$key];
+        }
+        //p($diConfig['instance']['Eva\Paginator\Paginator']['parameters']);
+        
         $di = new \Zend\Di\Di();
-        $di->instanceManager()->setParameters('Zend\Paginator\Adapter\DbSelect', array(
-            '_select' => $this->getItemTable()->getSelect()
-        ));
-        $adapter = $di->get('Zend\Paginator\Adapter\DbSelect');
-        $di->instanceManager()->setParameters('Zend\Paginator\Paginator', array(
-            'adapter' => $adapter,
-        ));
-
-        $paginator = $di->get('Zend\Paginator\Paginator');
-        //$paginator = new \Zend\Paginator\Paginator($adapter);
-        return $paginator;
-         */
+        $di->configure(new \Zend\Di\Configuration($diConfig));
+        $paginator = $di->get('Eva\Paginator\Paginator');
+       // \Zend\Di\Display\Console::export($di);
+        return $this->paginator = $paginator;
     }
 }
