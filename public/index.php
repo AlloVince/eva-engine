@@ -6,20 +6,20 @@ if( version_compare(phpversion(), '5.3.3', '<') ) {
   exit(1);
 }
 
-defined('EVA_ROOT_PATH')	|| define('EVA_ROOT_PATH', __DIR__ . '/..');
-defined('EVA_PUBLIC_PATH')	|| define('EVA_PUBLIC_PATH', __DIR__);
-defined('EVA_MODULE_PATH')	|| define('EVA_MODULE_PATH', __DIR__ . '/../module');
-defined('EVA_CONFIG_PATH')	|| define('EVA_CONFIG_PATH', __DIR__ . '/../config');
+defined('EVA_ROOT_PATH')    || define('EVA_ROOT_PATH', __DIR__ . '/..');
+defined('EVA_PUBLIC_PATH')    || define('EVA_PUBLIC_PATH', __DIR__);
+defined('EVA_MODULE_PATH')    || define('EVA_MODULE_PATH', __DIR__ . '/../module');
+defined('EVA_CONFIG_PATH')    || define('EVA_CONFIG_PATH', __DIR__ . '/../config');
 
 /** Public functions */
 function p($r)
 {
-	\Zend\Debug::dump($r);
+    \Zend\Debug::dump($r);
 }
 
 set_include_path(implode(PATH_SEPARATOR, array(
-	'.',
-	realpath(EVA_PUBLIC_PATH . '/../vendor/'),
+    '.',
+    realpath(EVA_PUBLIC_PATH . '/../vendor/'),
     get_include_path(),
 )));
 

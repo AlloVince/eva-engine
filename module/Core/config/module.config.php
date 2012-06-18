@@ -12,42 +12,42 @@ return array(
             'index/index'   => __DIR__ . '/../view/index/index.phtml',
             'error/404'     => __DIR__ . '/../view/error/404.phtml',
             'error/index'   => __DIR__ . '/../view/error/index.phtml',
-		),
-		'helper_map' => array(
-			'uri' => 'Eva\View\Helper\Uri',	
-			'formAttr' => 'Eva\Form\View\Helper\FormAttr',
-			'input' => 'Eva\Form\View\Helper\Input',
-		),
+        ),
+        'helper_map' => array(
+            'uri' => 'Eva\View\Helper\Uri',    
+            'formAttr' => 'Eva\Form\View\Helper\FormAttr',
+            'input' => 'Eva\Form\View\Helper\Input',
+        ),
 
-		'module_namespace_layout_map' => array(
-			'Admin' => 'layout/admin'
-		),
-	),
-
-
-	'superadmin' => array(
-		'id' => 1,
-		'username' => 'root',
-		'password' => '123456',
-		'email' => 'allo.vince@gmail.com',
-	),
+        'module_namespace_layout_map' => array(
+            'Admin' => 'layout/admin'
+        ),
+    ),
 
 
-	'dir' => array(
-		
-	),
+    'superadmin' => array(
+        'id' => 1,
+        'username' => 'root',
+        'password' => '123456',
+        'email' => 'allo.vince@gmail.com',
+    ),
 
-	'session' => array(
-		
-	),
 
-	'cache' => array(
-		'enable' => 1,
-		'model_cache' => array(
-			'enable' => 1,
-		),
-		'static_cache' => array(
-			'enable' => 0,
-		),
-	),
+    'dir' => array(
+        
+    ),
+
+    'session' => array(
+        
+    ),
+
+    'cache' => array(
+        'enable' => 1,
+        'model_cache' => array(
+            'enable' => 1,
+        ),
+        'static_cache' => array(
+            'enable' => 0,
+        ),
+    ),
 );

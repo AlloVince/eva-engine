@@ -38,7 +38,7 @@ use Zend\View\View;
 class ModuleViewManager extends \Zend\Mvc\View\ViewManager
 {
 
-	protected $viewRootPath;
+    protected $viewRootPath;
 
     /**
      * Prepares the view layer
@@ -54,7 +54,7 @@ class ModuleViewManager extends \Zend\Mvc\View\ViewManager
         $events       = $application->events();
         $sharedEvents = $events->getSharedManager();
 
-		//Fixed config instanceof here
+        //Fixed config instanceof here
         $this->config   = isset($config['view_manager']) && (is_array($config['view_manager']) || $config['view_manager'] instanceof \Zend\Config\Config)
                         ? $config['view_manager'] 
                         : array();
@@ -84,47 +84,47 @@ class ModuleViewManager extends \Zend\Mvc\View\ViewManager
 
     public function attach(EventManagerInterface $events)
     {
-		$this->listeners[] = $events->attach('bootstrap', array($this, 'onBootstrap'), 10000);
-		$this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'onDispatch'), 0);
-	}
+        $this->listeners[] = $events->attach('bootstrap', array($this, 'onBootstrap'), 10000);
+        $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'onDispatch'), 0);
+    }
 
     /**
-	 * Set module view root path to module/{module name}/view
-	 * Reset layout by config->module_namespace_layout_map
+     * Set module view root path to module/{module name}/view
+     * Reset layout by config->module_namespace_layout_map
      * 
      * @return ViewHelperLoader
      */
-	public function onDispatch(MvcEvent $e)
-	{
-		$routeParams = $e->getRouteMatch()->getParams();
-		if(false === isset($routeParams['module']) || !$routeParams['module']){
-			return false;
-		}
+    public function onDispatch(MvcEvent $e)
+    {
+        $routeParams = $e->getRouteMatch()->getParams();
+        if(false === isset($routeParams['module']) || !$routeParams['module']){
+            return false;
+        }
 
-		//$controller = $routeParams['controller'];
-		$object = new \ReflectionObject($e->getTarget());
-		$controllerFullPath = $object->getFileName();
-		$controllerClassname = $object->getName();
+        //$controller = $routeParams['controller'];
+        $object = new \ReflectionObject($e->getTarget());
+        $controllerFullPath = $object->getFileName();
+        $controllerClassname = $object->getName();
 
-		$classRootPath = substr($controllerFullPath, 0, 0 - strlen($controllerClassname . '.php'));
-		$moduleRootPath = $classRootPath . '..';
-		$this->viewRootPath = $moduleRootPath . DIRECTORY_SEPARATOR . 'view';
+        $classRootPath = substr($controllerFullPath, 0, 0 - strlen($controllerClassname . '.php'));
+        $moduleRootPath = $classRootPath . '..';
+        $this->viewRootPath = $moduleRootPath . DIRECTORY_SEPARATOR . 'view';
 
-		$moduleNamespace = isset($routeParams['moduleNamespace']) ? $routeParams['moduleNamespace'] : '';
-		if($moduleNamespace && $routeParams['moduleNamespace'] && $routeParams['moduleNamespace'] != $routeParams['module']){
-			$this->viewRootPath .= DIRECTORY_SEPARATOR . '_' . strtolower($routeParams['moduleNamespace']);
-		}
+        $moduleNamespace = isset($routeParams['moduleNamespace']) ? $routeParams['moduleNamespace'] : '';
+        if($moduleNamespace && $routeParams['moduleNamespace'] && $routeParams['moduleNamespace'] != $routeParams['module']){
+            $this->viewRootPath .= DIRECTORY_SEPARATOR . '_' . strtolower($routeParams['moduleNamespace']);
+        }
 
-		if($moduleNamespace && isset($this->config['module_namespace_layout_map']) 
-			&& !isset($this->config['layout']) && isset($this->config['module_namespace_layout_map'][ucfirst($moduleNamespace)])) {
-			$this->getViewModel()->setTemplate('layout/' . $moduleNamespace);
-		}
+        if($moduleNamespace && isset($this->config['module_namespace_layout_map']) 
+            && !isset($this->config['layout']) && isset($this->config['module_namespace_layout_map'][ucfirst($moduleNamespace)])) {
+            $this->getViewModel()->setTemplate('layout/' . $moduleNamespace);
+        }
 
-		$templatePathStack = new ViewResolver\TemplatePathStack();
-		//All path defined in config will be clear here
-		$templatePathStack->setPaths(array($this->viewRootPath));	
-		$this->resolver->attach($templatePathStack);
-	}
+        $templatePathStack = new ViewResolver\TemplatePathStack();
+        //All path defined in config will be clear here
+        $templatePathStack->setPaths(array($this->viewRootPath));    
+        $this->resolver->attach($templatePathStack);
+    }
 
     /**
      * Instantiates and configures the renderer's helper loader
@@ -140,8 +140,8 @@ class ModuleViewManager extends \Zend\Mvc\View\ViewManager
         $map = array();
         if (isset($this->config['helper_map'])) {
             $map = $this->config['helper_map'];
-		}
-		//config will be transform into Zend\Config\Config object
+        }
+        //config will be transform into Zend\Config\Config object
         if (is_array($map) && !in_array('Zend\Form\View\HelperLoader', $map)) {
             array_unshift($map, 'Zend\Form\View\HelperLoader');
         }
@@ -171,5 +171,5 @@ class ModuleViewManager extends \Zend\Mvc\View\ViewManager
         $this->services->setAlias('Eva\Mvc\View\DefaultModuleRenderingStrategy', 'DefaultRenderingStrategy');
 
         return $this->mvcRenderingStrategy;
-	}
+    }
 }

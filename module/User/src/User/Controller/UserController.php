@@ -7,10 +7,10 @@ use Eva\Mvc\Controller\RestfulModuleController,
 
 class UserController extends RestfulModuleController
 {
-	protected $addResources = array(
-	);
+    protected $addResources = array(
+    );
 
-	public function restIndexUser()
-	{
-	}
+    public function restIndexUser()
+    {
+    }
 }

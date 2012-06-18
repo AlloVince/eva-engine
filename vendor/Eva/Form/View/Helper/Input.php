@@ -45,25 +45,25 @@ class Input extends \Zend\Form\View\Helper\AbstractHelper
      */
     public function __invoke(ElementInterface $element, array $options = array())
     {
-		$defaultOptions = array(
-			'type' => 'formInput',
-		);
+        $defaultOptions = array(
+            'type' => 'formInput',
+        );
 
-		$options = array_merge($defaultOptions, $options);
-		$elementType = $options['type'];
-		unset($options['type']);
+        $options = array_merge($defaultOptions, $options);
+        $elementType = $options['type'];
+        unset($options['type']);
 
 
-		if($options){
+        if($options){
 
-			//NOTE: clone element not effect to form original element
-			//$element = clone $element;
-			foreach($options as $key => $value){
-				$element->setAttribute($key, $value);
-			}
-		}
+            //NOTE: clone element not effect to form original element
+            //$element = clone $element;
+            foreach($options as $key => $value){
+                $element->setAttribute($key, $value);
+            }
+        }
 
-		$view = $this->getView();
-		return $view->$elementType($element);
+        $view = $this->getView();
+        return $view->$elementType($element);
     }
 }

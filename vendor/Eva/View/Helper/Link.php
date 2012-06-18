@@ -34,40 +34,40 @@ use Eva\Uri\Uri,
  */
 class Link extends \Zend\View\Helper\AbstractHelper
 {
-	protected $options = array(
-		'basePath' => '',
-		'baseQuery' => array(),
-		'scheme' => 'http',
-		'host' => '',
-		'path' => '',
-		'query' => array(),
-		'version' => '',
-	);
+    protected $options = array(
+        'basePath' => '',
+        'baseQuery' => array(),
+        'scheme' => 'http',
+        'host' => '',
+        'path' => '',
+        'query' => array(),
+        'version' => '',
+    );
 
-	protected 
+    protected 
 
-	protected $optionsInited = false;
+    protected $optionsInited = false;
 
-	public function getOptions()
-	{
-		return $this->options;
-	}
+    public function getOptions()
+    {
+        return $this->options;
+    }
 
-	public function mergeOptions(array $newOptions = array())
-	{
-	
-	}
+    public function mergeOptions(array $newOptions = array())
+    {
+    
+    }
 
-	public function initOptions()
-	{
-		$basePath = $this->view->basePath();
-	
-	}
+    public function initOptions()
+    {
+        $basePath = $this->view->basePath();
+    
+    }
 
-	public function resetOptions()
-	{
-	
-	}
+    public function resetOptions()
+    {
+    
+    }
 
     /**
      * Generates an url given the name of a route.
@@ -83,10 +83,10 @@ class Link extends \Zend\View\Helper\AbstractHelper
      * @throws Exception\RuntimeException  If RouteMatch didn't contain a matched route name
      */
     public function __invoke($resourceString = '', $arg = '', array $options = array())
-	{
-		$options = $options ? $this->mergeOptions($options) : $this->options;
-		$uri = new Uri($resourceString);
+    {
+        $options = $options ? $this->mergeOptions($options) : $this->options;
+        $uri = new Uri($resourceString);
 
-		return $resourceString;
+        return $resourceString;
     }
 }

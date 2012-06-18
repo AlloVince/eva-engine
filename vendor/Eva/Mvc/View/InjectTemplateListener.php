@@ -51,35 +51,35 @@ class InjectTemplateListener extends \Zend\Mvc\View\InjectTemplateListener
             return;
         }
 
-		$routeMatch = $e->getRouteMatch();
-		$module = $routeMatch->getParam('module');
-		if($module) {
-			$controllerName = $routeMatch->getParam('controllerName');
-			$action = $routeMatch->getParam('action');
-			$model->setTemplate($controllerName . '/' . $action);		
-		} else {
-			$controller = $e->getTarget();
-			if (is_object($controller)) {
-				$controller = get_class($controller);
-			}
-			if (!$controller) {
-				$controller = $routeMatch->getParam('controller', '');
-			}
+        $routeMatch = $e->getRouteMatch();
+        $module = $routeMatch->getParam('module');
+        if($module) {
+            $controllerName = $routeMatch->getParam('controllerName');
+            $action = $routeMatch->getParam('action');
+            $model->setTemplate($controllerName . '/' . $action);        
+        } else {
+            $controller = $e->getTarget();
+            if (is_object($controller)) {
+                $controller = get_class($controller);
+            }
+            if (!$controller) {
+                $controller = $routeMatch->getParam('controller', '');
+            }
 
-			$module     = $this->deriveModuleNamespace($controller);
-			$controller = $this->deriveControllerClass($controller);
+            $module     = $this->deriveModuleNamespace($controller);
+            $controller = $this->deriveControllerClass($controller);
 
-			$template   = $this->inflectName($module);
-			if (!empty($template)) {
-				$template .= '/';
-			}
-			$template  .= $this->inflectName($controller);
+            $template   = $this->inflectName($module);
+            if (!empty($template)) {
+                $template .= '/';
+            }
+            $template  .= $this->inflectName($controller);
 
-			$action     = $routeMatch->getParam('action');
-			if (null !== $action) {
-				$template .= '/' . $this->inflectName($action);
-			}
-			$model->setTemplate($template);		
-		}
-	}
+            $action     = $routeMatch->getParam('action');
+            if (null !== $action) {
+                $template .= '/' . $this->inflectName($action);
+            }
+            $model->setTemplate($template);        
+        }
+    }
 }

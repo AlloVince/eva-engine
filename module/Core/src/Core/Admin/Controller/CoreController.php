@@ -6,17 +6,17 @@ use Eva\Mvc\Controller\ActionController,
 
 class CoreController extends ActionController
 {
-	public function indexAction()
-	{
+    public function indexAction()
+    {
         $model = new ViewModel(array(
-		));
-		return $model;
-	}
+        ));
+        return $model;
+    }
 
-	public function getAction()
-	{
+    public function getAction()
+    {
         $model = new ViewModel(array(
-		));
-		return $model;
-	}
+        ));
+        return $model;
+    }
 }

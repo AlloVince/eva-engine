@@ -25,7 +25,7 @@ function ZendTest_Autoloader($class)
         case 'Zend':
             $file = dirname(__DIR__) . '/vendor/Zend/';
             break;
-		case 'Eva':
+        case 'Eva':
             $file = dirname(__DIR__) . '/vendor/Eva/';
             break;
         case 'ZendTest':
@@ -33,13 +33,13 @@ function ZendTest_Autoloader($class)
             // into ZendTest dir
             $file = __DIR__ . '/ZendTest/';
             break;
-		case 'EvaTest':
+        case 'EvaTest':
             $file = __DIR__ . '/EvaTest/';
             break;
         default:
             $file = false;
             break;
-	}
+    }
 
 
     if ($file) {
@@ -55,7 +55,7 @@ function ZendTest_Autoloader($class)
     switch ($ns) {
         case 'Zend':
             $file = dirname(__DIR__) . '/vendor/Zend/';
-			break;
+            break;
         case 'Eva':
             $file = dirname(__DIR__) . '/vendor/Eva/';
             break;

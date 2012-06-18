@@ -60,9 +60,9 @@ class DefaultModuleRenderingStrategy extends \Zend\Mvc\View\DefaultRenderingStra
         $view = $this->view;
         $view->setRequest($request);
         $view->setResponse($response);
-		
+        
         $view->render($viewModel);
 
         return $response;
-	}
+    }
 }

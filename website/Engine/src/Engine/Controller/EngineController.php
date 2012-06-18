@@ -6,13 +6,13 @@ use Eva\Mvc\Controller\ActionController,
 
 class EngineController extends ActionController
 {
-	protected $addResources = array(
-	);
+    protected $addResources = array(
+    );
 
-	public function indexAction()
-	{
-		$view = new ViewModel();
-		$view->setTemplate('engine/index');
-		return $view;
-	}
+    public function indexAction()
+    {
+        $view = new ViewModel();
+        $view->setTemplate('engine/index');
+        return $view;
+    }
 }

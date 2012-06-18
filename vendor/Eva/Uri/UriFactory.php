@@ -28,10 +28,10 @@ namespace Eva\Uri;
  */
 abstract class UriFactory
 {
-	protected $options = array();
+    protected $options = array();
 
 
-	
+    
 
 
     /**
@@ -43,10 +43,10 @@ abstract class UriFactory
      * @return \Zend\Uri\Uri
      */
     static public function factory($uriString, $options = array())
-	{
+    {
 
-		$uri = new Uri($uriString);
-		
-		return $uri;
-	}
+        $uri = new Uri($uriString);
+        
+        return $uri;
+    }
 }

@@ -48,7 +48,7 @@ class Module
     {
         return array(
             'factories' => array(
-				'album-table' =>  function($sm) {
+                'album-table' =>  function($sm) {
                     $dbAdapter = $sm->get('db-adapter');
                     $table = new AlbumTable($dbAdapter);
                     return $table;

@@ -62,19 +62,19 @@ class ControllerLoaderFactory implements FactoryInterface
         $controllerLoader = $serviceLocator->createScopedServiceManager();
         $configuration    = $serviceLocator->get('Configuration');
 
-		$routeMatch = $serviceLocator->get('application')->getMvcEvent()->getRouteMatch();
-		if($routeMatch && $routeMatch  instanceof \Zend\Mvc\Router\RouteMatch){
-			$routeMatchName =  $routeMatch->getMatchedRouteName();
-			$controllerName =  $routeMatch->getParam('controller');
+        $routeMatch = $serviceLocator->get('application')->getMvcEvent()->getRouteMatch();
+        if($routeMatch && $routeMatch  instanceof \Zend\Mvc\Router\RouteMatch){
+            $routeMatchName =  $routeMatch->getMatchedRouteName();
+            $controllerName =  $routeMatch->getParam('controller');
 
-			if(isset($configuration['router']['routes'][$routeMatchName]) 
-				&& $routeConfiguration = $configuration['router']['routes'][$routeMatchName]
-			){
-				if(isset($routeConfiguration['type']) && $routeConfiguration['type'] === 'Eva\Mvc\Router\Http\ModuleRoute'){
-					$configuration['controller']['classes'][$controllerName] = $controllerName;
-				}
-			}
-		}
+            if(isset($configuration['router']['routes'][$routeMatchName]) 
+                && $routeConfiguration = $configuration['router']['routes'][$routeMatchName]
+            ){
+                if(isset($routeConfiguration['type']) && $routeConfiguration['type'] === 'Eva\Mvc\Router\Http\ModuleRoute'){
+                    $configuration['controller']['classes'][$controllerName] = $controllerName;
+                }
+            }
+        }
 
 
         if (isset($configuration['controller'])) {

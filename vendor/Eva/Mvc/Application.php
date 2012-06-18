@@ -2,7 +2,7 @@
 namespace Eva\Mvc;
 
 use ArrayObject,
-	Zend\Mvc\MvcEvent,
+    Zend\Mvc\MvcEvent,
     Zend\Di\Exception\ClassNotFoundException,
     Zend\Di\LocatorInterface,
     Zend\EventManager\EventManagerInterface,
@@ -18,7 +18,7 @@ use ArrayObject,
 class Application extends \Zend\Mvc\Application
 {
 
-	/*
+    /*
     public function dispatch(MvcEvent $e)
     {
         $locator = $this->getLocator();
@@ -28,17 +28,17 @@ class Application extends \Zend\Mvc\Application
             );
         }
 
-		$routeMatch     = $e->getRouteMatch();
+        $routeMatch     = $e->getRouteMatch();
         $moduleName = $routeMatch->getParam('module', 'not-found');
-		if(!$moduleName || $moduleName == 'not-found'){
-			return parent::dispatch($e);
-		}
+        if(!$moduleName || $moduleName == 'not-found'){
+            return parent::dispatch($e);
+        }
 
         $controllerName = $routeMatch->getParam('controller', 'not-found');
-		$events         = $this->events();
+        $events         = $this->events();
 
-		//Change controllerName here to full namaspace
-		$controllerName = ucfirst($moduleName) . '\\Controller\\' . ucfirst($controllerName) . 'Controller';
+        //Change controllerName here to full namaspace
+        $controllerName = ucfirst($moduleName) . '\\Controller\\' . ucfirst($controllerName) . 'Controller';
 
         try {
             $controller = $locator->get($controllerName);
@@ -79,7 +79,7 @@ class Application extends \Zend\Mvc\Application
         $request  = $e->getRequest();
         $response = $this->getResponse();
 
-		//Fix here
+        //Fix here
         if ($controller instanceof InjectApplicationEventInterface || $moduleName) {
             $controller->setEvent($e);
         }
@@ -109,6 +109,6 @@ class Application extends \Zend\Mvc\Application
         }
         $e->setResult($return);
         return $return;
-	}
-	 */
+    }
+     */
 }

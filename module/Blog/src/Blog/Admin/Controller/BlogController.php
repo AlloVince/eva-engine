@@ -2,108 +2,140 @@
 namespace Blog\Admin\Controller;
 
 use Blog\Form,
-	Eva\Api,
-	Eva\Mvc\Controller\RestfulModuleController,
+    Eva\Api,
+    Eva\Mvc\Controller\RestfulModuleController,
     Eva\View\Model\ViewModel;
 
 class BlogController extends RestfulModuleController
 {
-	protected $renders = array(
-		'restPutBlog' => 'blog/get',	
-		'restPostBlog' => 'blog/get',	
-		'restDeleteBlog' => 'remove/get',	
-	);
+    protected $renders = array(
+        'restPutBlog' => 'blog/get',    
+        'restPostBlog' => 'blog/get',    
+        'restDeleteBlog' => 'remove/get',    
+    );
 
-	public function restIndexBlog()
-	{
-		$request = $this->getRequest();
-		$page = $request->query()->get('page', 1);
+    public function restIndexBlog()
+    {
+        $request = $this->getRequest();
+        $page = $request->query()->get('page', 1);
 
-		$postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
-		$posts = $postTable->enableCount()->order('id DESC')->page($page)->find('all');
-		$postCount = $postTable->getCount();
-		//$paginator = $postTable->getPaginator();
+        $postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
+        $posts = $postTable->enableCount()->order('id DESC')->page($page)->find('all');
+        $postCount = $postTable->getCount();
+
+        $diConfig = array(
+            'instance' => array(
+                'Zend\Paginator\Adapter\DbTableSelect' => array(
+                    'parameters' => array(
+                        '_rowCount' => $postTable->getCount(),
+                        '_select' => $postTable->getSelect()
+                    )
+                ),
+                'Eva\Paginator\Paginator' => array(
+                    'parameters' => array(
+                        'rowCount' => $postTable->getCount(),
+                        'adapter' => 'Zend\Paginator\Adapter\DbTableSelect',
+                    ),
+                ),
+                'Blog\Model\Post' => array(
+                    'parameters' => array(
+                        'itemTable' => $postTable,
+                        'paginator' => 'Eva\Paginator\Paginator',
+                    ),
+                ),
+            )
+        );
+
+        $postModel = Api::_()->getModel('Blog\Model\Post', $diConfig);
+        $paginator = $postModel->getPaginator();
+        /*
+        p($paginator->getItemCountPerPage());
+        p($paginator->getPageRange());
+        p($paginator->getPages());
+        p($paginator);
+        */
+        //p($postModel);
 
         return array(
-			'posts' => $posts->toArray()
-		);
-	}
+            'posts' => $posts->toArray()
+        );
+    }
 
-	public function restGetBlog()
-	{
+    public function restGetBlog()
+    {
         $id = (int)$this->getEvent()->getRouteMatch()->getParam('id');
-		$postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
-		$postinfo = $postTable->find($id);
-		return array(
-			'post' => $postinfo,
-		);
-	}
+        $postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
+        $postinfo = $postTable->find($id);
+        return array(
+            'post' => $postinfo,
+        );
+    }
 
-	public function restPostBlog()
-	{
-		$request = $this->getRequest();
-		$postData = $request->post();
-		$form = new Form\PostForm();
+    public function restPostBlog()
+    {
+        $request = $this->getRequest();
+        $postData = $request->post();
+        $form = new Form\PostForm();
 
-		$form->enableFilters()->setData($postData);
-		if ($form->isValid()) {
+        $form->enableFilters()->setData($postData);
+        if ($form->isValid()) {
 
-			$postData = $form->getData();
+            $postData = $form->getData();
 
-			$postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
-			$postData = $form->fieldsMap($postData, true);
-			$postTable->create($postData);
+            $postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
+            $postData = $form->fieldsMap($postData, true);
+            $postTable->create($postData);
 
-		} else {
-			
-			//p($form->getInputFilter()->getInvalidInput());
-		}
+        } else {
+            
+            //p($form->getInputFilter()->getInvalidInput());
+        }
 
-		return array(
-			'form' => $form,
-			'post' => $postData,
-		);
-	}
+        return array(
+            'form' => $form,
+            'post' => $postData,
+        );
+    }
 
-	public function restPutBlog()
-	{
-		$request = $this->getRequest();
-		$postData = $request->post();
-		$form = new Form\PostForm();
-		$form->enableFilters()->setData($postData);
-		if ($form->isValid()) {
+    public function restPutBlog()
+    {
+        $request = $this->getRequest();
+        $postData = $request->post();
+        $form = new Form\PostForm();
+        $form->enableFilters()->setData($postData);
+        if ($form->isValid()) {
 
-			$postData = $form->getData();
-			$postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
-			$postData = $form->fieldsMap($postData, true);
-			$postTable->where("id = {$postData['id']}")->save($postData);
+            $postData = $form->getData();
+            $postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
+            $postData = $form->fieldsMap($postData, true);
+            $postTable->where("id = {$postData['id']}")->save($postData);
 
-		} else {
-		}
+        } else {
+        }
 
-		return array(
-			'form' => $form,
-			'post' => $postData,
-		);
-	}
+        return array(
+            'form' => $form,
+            'post' => $postData,
+        );
+    }
 
-	public function restDeleteBlog()
-	{
-		$request = $this->getRequest();
-		$postData = $request->post();
-		$form = new Form\PostDeleteForm();
-		$form->enableFilters()->setData($postData);
-		if ($form->isValid()) {
+    public function restDeleteBlog()
+    {
+        $request = $this->getRequest();
+        $postData = $request->post();
+        $form = new Form\PostDeleteForm();
+        $form->enableFilters()->setData($postData);
+        if ($form->isValid()) {
 
-			$postData = $form->getData();
-			$postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
+            $postData = $form->getData();
+            $postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
 
-			$postTable->where("id = {$postData['id']}")->remove();
+            $postTable->where("id = {$postData['id']}")->remove();
 
-		} else {
-			return array(
-				'post' => $postData,
-			);
-		}
-	}
+        } else {
+            return array(
+                'post' => $postData,
+            );
+        }
+    }
 }

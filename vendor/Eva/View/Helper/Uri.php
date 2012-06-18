@@ -87,11 +87,11 @@ class Uri extends \Zend\View\Helper\AbstractHelper
      * @throws Exception\RuntimeException  If RouteMatch didn't contain a matched route name
      */
     public function __invoke($resourceString = '', $arg = '', array $options = array())
-	{
-		$basepath = $this->view->basePath();
-		$url = $basepath . $resourceString;
-		return $url;
-		/*
+    {
+        $basepath = $this->view->basePath();
+        $url = $basepath . $resourceString;
+        return $url;
+        /*
         if (null === $this->router) {
             throw new Exception\RuntimeException('No RouteStackInterface instance provided');
         }
@@ -114,7 +114,7 @@ class Uri extends \Zend\View\Helper\AbstractHelper
         
         $options['name'] = $name;
 
-		return $this->router->assemble($params, $options);
-		 */
+        return $this->router->assemble($params, $options);
+         */
     }
 }
