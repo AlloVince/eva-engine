@@ -82,3 +82,42 @@ $this->headTitle($title, 'SET');
 	<?endif;?>
 	</tbody>
 	</table>
+
+<?
+$paginator = $this->paginator ? $this->paginator->toArray() : null;
+if($paginator && $paginator['pageCount'] > 1):
+?>
+<div class="pagination"><ul>
+    <?if($paginator['firstPage']):?>
+    <li><a href="#">First</a></li>
+    <?endif?>
+    <?if($paginator['prevPage']):?>
+    <li><a href="#">Prev</a></li>
+    <?endif?>
+    <?if($paginator['prevPageRangeSkip']):?>
+    <li class="disabled");><a href="javascript:;">...</a></li>
+    <?endif?>
+    <?if($paginator['prevPageRange']):?>
+    <?foreach($paginator['prevPageRange'] as $page):?>
+    <li><a href="#"><?=$page?></a></li>
+    <?endforeach?>
+    <?endif?>
+    <li class="active">
+        <a href="#"><?=$paginator['pageNumber']?></a>
+    </li>
+    <?if($paginator['nextPageRange']):?>
+    <?foreach($paginator['nextPageRange'] as $page):?>
+    <li><a href="#"><?=$page?></a></li>
+    <?endforeach?>
+    <?endif?>
+    <?if($paginator['nextPageRangeSkip']):?>
+    <li class="disabled");><a href="javascript:;">...</a></li>
+    <?endif?>
+    <?if($paginator['nextPage']):?>
+    <li><a href="#">Next</a></li>
+    <?endif?>
+    <?if($paginator['lastPage']):?>
+    <li><a href="#">Last</a></li>
+    <?endif?>
+</ul></div>
+<?endif?>

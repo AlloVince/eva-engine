@@ -21,53 +21,11 @@ class BlogController extends RestfulModuleController
 
         $postModel = Api::_()->getModel('Blog\Model\Post');
         $postTable = $postModel->getItemTable();
-        $posts = $postTable->enableCount()->limit(10)->order('id DESC')->page($page)->find('all');
+        $posts = $postTable->enableCount()->limit(200)->order('id DESC')->page($page)->find('all');
         $paginator = $postModel->getPaginator();
-
-        //$postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
-        //$posts = $postTable->enableCount()->order('id DESC')->page($page)->find('all');
-        //$postCount = $postTable->getCount();
-
-
-        //setCurrentPageNumber
-        //setItemCountPerPage
-
-
-        //$diConfig = array(
-        //    'instance' => array(
-        //        'Zend\Paginator\Adapter\DbTableSelect' => array(
-        //            'parameters' => array(
-        //                '_rowCount' => $postTable->getCount(),
-        //                '_select' => $postTable->getSelect()
-        //            )
-        //        ),
-        //        'Eva\Paginator\Paginator' => array(
-        //            'parameters' => array(
-        //                'rowCount' => $postTable->getCount(),
-        //                'adapter' => 'Zend\Paginator\Adapter\DbTableSelect',
-        //            ),
-        //        ),
-        //        'Blog\Model\Post' => array(
-        //            'parameters' => array(
-        //                'itemTable' => $postTable,
-        //                'paginator' => 'Eva\Paginator\Paginator',
-        //            ),
-        //        ),
-        //    )
-        //);
-
-        //$postModel = Api::_()->getModel('Blog\Model\Post', $diConfig);
-        /*
-        p($paginator->getItemCountPerPage());
-        p($paginator->getPageRange());
-        p($paginator->getPages());
-        p($paginator);
-        */
-        //p($postModel);
-
         return array(
             'posts' => $posts->toArray(),
-            'paginator' => $paginator->toArray(),
+            'paginator' => $paginator,
         );
     }
 

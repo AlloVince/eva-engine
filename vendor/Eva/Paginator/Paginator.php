@@ -36,14 +36,20 @@ class Paginator extends \Zend\Paginator\Paginator
 
         $i = 0;
         $prevPageRange = array();
+        $prevPageRangeSkip = false;
         if($currentPageNumber > 1){
             $i = $currentPageNumber - $pageRange;
             $i = $i <= 1 ? 1 : $i;
             for ($i; $i < $currentPageNumber; $i++) {
                 $prevPageRange[] = $i;
             }
+            if($prevPageRange && $prevPageRange[0] > 1){
+                $prevPageRangeSkip = true;
+            }
         }
+
         $nextPageRange = array();
+        $nextPageRangeSkip = false;
         if($currentPageNumber < $pageCount){
             $limit = $currentPageNumber + $pageRange;
             $limit = $limit >= $pageCount ? $pageCount : $limit;
@@ -51,7 +57,13 @@ class Paginator extends \Zend\Paginator\Paginator
             for($i; $i <= $limit; $i++){
                 $nextPageRange[] = $i;
             }
+            if($nextPageRange && $nextPageRange[count($nextPageRange) - 1] < $pageCount){
+                $nextPageRangeSkip = true;
+            }
         }
+
+        $firstPage = $currentPageNumber == 1 ? false : 1;
+        $lastPage = $currentPageNumber == $pageCount ? false : $pageCount;
 
         return array(
             'itemCountPerPage' => $itemCountPerPage,
@@ -60,11 +72,15 @@ class Paginator extends \Zend\Paginator\Paginator
             'offsetStart' => $offsetStart,
             'offsetEnd' => $offsetEnd,
             'pageCount' => $pageCount,
-            'nextPage' => $nextPage,
+            'firstPage' => $firstPage,
             'prevPage' => $prevPage,
+            'nextPage' => $nextPage,
+            'lastPage' => $lastPage,
             'pageRage' => $pageRange,
             'prevPageRange' => $prevPageRange,
+            'prevPageRangeSkip' => $prevPageRangeSkip,
             'nextPageRange' => $nextPageRange,
+            'nextPageRangeSkip' => $nextPageRangeSkip,
         );
     }
 
