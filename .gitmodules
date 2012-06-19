@@ -4,3 +4,6 @@
 [submodule "vendor/Sphinx"]
 	path = vendor/Sphinx
 	url = https://github.com/AlloVince/evaengine-libs-sphinx.git
+[submodule "vendor/Simplehtmldom"]
+	path = vendor/Simplehtmldom
+	url = https://github.com/AlloVince/evaengine-libs-simplehtmldom.git
