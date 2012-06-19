@@ -7,3 +7,6 @@
 [submodule "vendor/Simplehtmldom"]
 	path = vendor/Simplehtmldom
 	url = https://github.com/AlloVince/evaengine-libs-simplehtmldom.git
+[submodule "public/static/lib"]
+	path = public/static/lib
+	url = https://github.com/AlloVince/evaengine-libs-front.git
