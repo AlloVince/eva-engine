@@ -23,7 +23,8 @@ namespace Eva\View\Helper;
 
 use Zend\Mvc\Router\RouteStackInterface,
     Zend\Mvc\Router\RouteMatch,
-    Zend\View\Exception;
+    Zend\View\Exception,
+    Eva\Uri\Uri as CoreUri;
 
 /**
  * Helper for making easy links and getting urls that depend on the routes and router.
@@ -49,6 +50,27 @@ class Uri extends \Zend\View\Helper\AbstractHelper
      */
     protected $routeMatch;
 
+    protected $uri;
+
+    protected $argMap = array(
+        'b' => 'addBasePath',
+        'B' => 'setBasePath',
+        'c' => 'setCallback',
+        'C' => 'setCallbackName',
+        'e' => 'toHtmlEncodeString',
+        'E' => 'toUrlEncodeString',
+        'h' => 'setHost',
+        'p' => 'setPost',
+        'Q' => 'setBaseQuery',
+        'q' => 'addBaseQuery',
+        's' => 'setScheme',
+        'v' => 'addVersion',
+        'V' => 'setVersionName',
+    );
+
+    
+    protected $defaultUriOptions;
+
     /**
      * Set the router to use for assembling.
      * 
@@ -73,48 +95,57 @@ class Uri extends \Zend\View\Helper\AbstractHelper
         return $this;
     }
 
-    /**
-     * Generates an url given the name of a route.
-     *
-     * @see    Zend\Mvc\Router\RouteInterface::assemble()
-     * @param  string  $name               Name of the route
-     * @param  array   $params             Parameters for the link
-     * @param  array   $options            Options for the route
-     * @param  boolean $reuseMatchedParams Whether to reuse matched parameters
-     * @return string Url                  For the link href attribute
-     * @throws Exception\RuntimeException  If no RouteStackInterface was provided
-     * @throws Exception\RuntimeException  If no RouteMatch was provided
-     * @throws Exception\RuntimeException  If RouteMatch didn't contain a matched route name
-     */
-    public function __invoke($resourceString = '', $arg = '', array $options = array())
+    public function getDefaultUriOptions()
     {
-        $basepath = $this->view->basePath();
-        $url = $basepath . $resourceString;
-        return $url;
-        /*
-        if (null === $this->router) {
-            throw new Exception\RuntimeException('No RouteStackInterface instance provided');
+        if($this->defaultUriOptions){
+            return $this->defaultUriOptions;
         }
 
-        if ($name === null) {
-            if ($this->routeMatch === null) {
-                throw new Exception\RuntimeException('No RouteMatch instance provided');
-            }
-            
-            $name = $this->routeMatch->getMatchedRouteName();
-            
-            if ($name === null) {
-                throw new Exception\RuntimeException('RouteMatch does not contain a matched route name');
-            }
-        }
-        
-        if ($reuseMatchedParams && $this->routeMatch !== null) {
-            $params = array_merge($this->routeMatch->getParams(), $params);
-        }
-        
-        $options['name'] = $name;
+        $defaultUriOptions = array(
+            'setBasePath' => $this->view->basePath(),
+            'setCallbackName' => 'callback',
+            'setHost' => '',
+            'setBaseQuery' => $this->view->_baseQuery,
+            'addVersion' => '',
+            'setVersionName' => 'v',
+        );
 
-        return $this->router->assemble($params, $options);
-         */
+        return $this->defaultUriOptions = $defaultUriOptions;
+    }
+
+    /**
+     * $this-uri('/blog/1', 'q', array('q' => array('page' => 1)))
+     * $this-uri('/blog/1', array('page' => 1)) === $this-uri('/blog/1', 'q', array('q' => array('page' => 1)))
+     * $this-uri('admin/blog/1','qf') === $this-uri('admin/blog/1','-BEeqf')
+     * 
+     */
+    public function __invoke($resourceString = '', $arg = 'BEe', array $options = array())
+    {
+        $uri = new CoreUri($resourceString);
+
+        $defaultUriOptions = $this->getDefaultUriOptions();
+
+        //short cut for just setting query
+        if(true === is_array($arg)){
+            $options = array_merge($options, array(
+                'q' => $arg
+            ));
+        }
+
+        $argMap = $this->argMap;
+        $localOptions = array();
+        foreach($options as $key => $value){
+            $localOptions[$argMap[$key]] = $value;
+        }
+        $options = array_merge($defaultUriOptions, $localOptions);
+
+        foreach($options as $key => $value){
+            if(!$value){
+                continue;
+            }
+            $uri->$key($value);
+        }
+        //$args = str_split($arg);
+        return $uri->toString();
     }
 }

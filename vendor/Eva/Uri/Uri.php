@@ -22,6 +22,8 @@ class Uri extends \Zend\Uri\Uri
 {
     protected $basePath;
     protected $basePathAdded = false;
+    protected $callbackName;
+    protected $callback;
     protected $version;
     protected $versionName = 'v';
     protected $versionAdded = false;
@@ -36,6 +38,28 @@ class Uri extends \Zend\Uri\Uri
     public function setBasePath($basePath)
     {
         $this->basePath = $basePath;
+        return $this;
+    }
+
+    public function getCallback()
+    {
+        return $this->callback;
+    }
+
+    public function setCallback($callback)
+    {
+        $this->callback = $callback;
+        return $this;
+    }
+
+    public function getCallbackName()
+    {
+        return $this->callbackName;
+    }
+
+    public function setCallbackName($callbackName)
+    {
+        $this->callbackName = $callbackName;
         return $this;
     }
 

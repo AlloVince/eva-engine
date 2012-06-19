@@ -21,7 +21,7 @@ class BlogController extends RestfulModuleController
 
         $postModel = Api::_()->getModel('Blog\Model\Post');
         $postTable = $postModel->getItemTable();
-        $posts = $postTable->enableCount()->limit(200)->order('id DESC')->page($page)->find('all');
+        $posts = $postTable->enableCount()->order('id DESC')->page($page)->find('all');
         $paginator = $postModel->getPaginator();
         return array(
             'posts' => $posts->toArray(),
