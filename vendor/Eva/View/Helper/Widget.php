@@ -61,16 +61,24 @@ class Widget extends \Zend\View\Helper\AbstractHelper
      * @return string|Partial
      * @throws Exception\RuntimeException
      */
-    public function __invoke($name = null, $model = null)
+    public function __invoke($moduleName = null, $name = null, $model = null)
     {
         if (0 == func_num_args()) {
             return $this;
         }
+        
+        //$model = new \Zend\View\Model\ViewModel();
+        //$model->setTemplate('D:\xampp\htdocs\zf2\module\Core\view\widgets\paginator.phtml');
 
         $view = $this->cloneView();
         if (isset($this->partialCounter)) {
             $view->partialCounter = $this->partialCounter;
         }
+
+        $modulePath = EVA_MODULE_PATH . DIRECTORY_SEPARATOR . ucfirst($moduleName) . DIRECTORY_SEPARATOR . 'view';
+        $resolver = new \Zend\View\Resolver\TemplatePathStack();
+        $resolver->addPaths(array($modulePath));
+        $view->setResolver($resolver);
 
         if (!empty($model)) {
             if (is_array($model)) {
@@ -85,7 +93,6 @@ class Widget extends \Zend\View\Helper\AbstractHelper
                 }
             }
         }
-
         return $view->render($name);
     }
 

@@ -18,7 +18,7 @@ return array(
             //'link' => 'Eva\View\Helper\Link',
             'formAttr' => 'Eva\Form\View\Helper\FormAttr',
             'input' => 'Eva\Form\View\Helper\Input',
-            'widget' => 'Eva\Form\View\Helper\Widget',
+            'widget' => 'Eva\View\Helper\Widget',
         ),
 
         'module_namespace_layout_map' => array(

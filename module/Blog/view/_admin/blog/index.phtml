@@ -82,4 +82,4 @@ $this->headTitle($title, 'SET');
 	<?endif;?>
 	</tbody>
 	</table>
-    <?=$this->partial('paginator', $this->vars())?>
+<?=$this->widget('Core', 'widgets/paginator', $this->vars())?>
