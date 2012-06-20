@@ -131,6 +131,7 @@ class ModuleViewManager extends \Zend\Mvc\View\ViewManager
      * 
      * @return ViewHelperLoader
      */
+     /*
     public function getHelperLoader()
     {
         if ($this->helperLoader) {
@@ -152,12 +153,14 @@ class ModuleViewManager extends \Zend\Mvc\View\ViewManager
 
         return $this->helperLoader;
     }
+    */
 
     /**
      * Instantiates and configures the default MVC rendering strategy
      * 
      * @return DefaultRenderingStrategy
      */
+     /*
     public function getMvcRenderingStrategy()
     {
         if ($this->mvcRenderingStrategy) {
@@ -172,4 +175,5 @@ class ModuleViewManager extends \Zend\Mvc\View\ViewManager
 
         return $this->mvcRenderingStrategy;
     }
+    */
 }
