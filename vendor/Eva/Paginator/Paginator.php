@@ -6,6 +6,32 @@ class Paginator extends \Zend\Paginator\Paginator
 {
     protected $rowCount;
 
+    protected $path;
+
+    protected $pageQueryKey = 'page';
+
+    public function setPath($path)
+    {
+        $this->path = $path;
+        return $this;
+    }
+
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    public function setPageQueryKey($pageQueryKey)
+    {
+        $this->pageQueryKey = $pageQueryKey;
+        return $this;
+    }
+
+    public function getPageQueryKey()
+    {
+        return $this->pageQueryKey;
+    }
+
     public function setRowCount($rowCount)
     {
         $this->rowCount = $rowCount;
@@ -83,6 +109,17 @@ class Paginator extends \Zend\Paginator\Paginator
             'nextPageRangeSkip' => $nextPageRangeSkip,
         );
     }
+
+    /**
+     * Serializes the object as a string.  Proxies to {@link render()}.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return '';
+    }
+
 
     protected function _calculatePageCount()
     {

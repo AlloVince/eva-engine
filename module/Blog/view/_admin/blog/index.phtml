@@ -82,4 +82,5 @@ $this->headTitle($title, 'SET');
 	<?endif;?>
 	</tbody>
 	</table>
+<?=$this->paginator->setPath('/admin/blog/')?>
 <?=$this->widget('Core', 'widgets/paginator', $this->vars())?>

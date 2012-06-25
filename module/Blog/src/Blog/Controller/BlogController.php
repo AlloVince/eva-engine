@@ -17,11 +17,13 @@ class BlogController extends RestfulModuleController
         $request = $this->getRequest();
         $page = $request->query()->get('page', 1);
 
-        $postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
-        $posts = $postTable->page($page)->order('id DESC')->find();
-
+        $postModel = Api::_()->getModel('Blog\Model\Post');
+        $postTable = $postModel->getItemTable();
+        $posts = $postTable->enableCount()->order('id DESC')->page($page)->find('all');
+        $paginator = $postModel->getPaginator();
         return array(
-            'posts' => $posts
+            'posts' => $posts->toArray(),
+            'paginator' => $paginator,
         );
     }
 }
