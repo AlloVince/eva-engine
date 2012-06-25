@@ -15,7 +15,7 @@ if($paginator && $paginator['pageCount'] > 1):
     <li><a href="<?=$this->uri($path, array($queryKey => $paginator['firstPage']))?>">1</a></li>
     <?endif?>
     <?if($paginator['prevPageRangeSkip']):?>
-    <li class="disabled");><a href="javascript:;">...</a></li>
+    <li class="disabled"><a href="javascript:;">...</a></li>
     <?endif?>
     <?if($paginator['prevPageRange']):?>
     <?foreach($paginator['prevPageRange'] as $page):?>
@@ -31,7 +31,7 @@ if($paginator && $paginator['pageCount'] > 1):
     <?endforeach?>
     <?endif?>
     <?if($paginator['nextPageRangeSkip']):?>
-    <li class="disabled");><a href="javascript:;">...</a></li>
+    <li class="disabled"><a href="javascript:;">...</a></li>
     <?endif?>
     <?if($paginator['nextPageRangeSkip'] && $paginator['lastPage']):?>
     <li><a href="<?=$this->uri($path, array($queryKey => $paginator['lastPage']))?>"><?=$paginator['lastPage']?></a></li>

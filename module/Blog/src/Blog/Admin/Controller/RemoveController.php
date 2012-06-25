@@ -17,6 +17,7 @@ class RemoveController extends RestfulModuleController
         $postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
         $postinfo = $postTable->find($id);
         return array(
+            'callback' => $this->getRequest()->query()->get('callback'),
             'post' => $postinfo,
         );
     }

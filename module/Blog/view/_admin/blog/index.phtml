@@ -52,7 +52,7 @@ $this->headTitle($title, 'SET');
 			<div class="quick_edit">
 				<a href="<?=$this->uri('/blog/pages/' . $post['urlName']); ?>" class="btn">View</a>
 				<a href="<?=$this->uri('/admin/blog/' . $post['id']); ?>" class="btn">Edit</a>
-				<a href="<?=$this->uri('/admin/blog/remove/' . $post['id']); ?>" class="btn">Delete</a>
+                <a href="<?=$this->uri('/admin/blog/remove/' . $post['id'], 'c', array('c' => $this->uri('/admin/blog', array('page' => $this->page)))); ?>" class="btn">Delete</a>
 			</div>
 
 		</td>

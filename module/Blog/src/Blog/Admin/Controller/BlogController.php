@@ -24,6 +24,7 @@ class BlogController extends RestfulModuleController
         $posts = $postTable->enableCount()->order('id DESC')->page($page)->find('all');
         $paginator = $postModel->getPaginator();
         return array(
+            'page' => $request->query()->get('page', 1),
             'posts' => $posts->toArray(),
             'paginator' => $paginator,
         );
@@ -53,6 +54,9 @@ class BlogController extends RestfulModuleController
             $postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
             $postData = $form->fieldsMap($postData, true);
             $postTable->create($postData);
+            $postId = $postTable->getLastInsertValue();
+
+            $this->redirect()->toUrl('/admin/blog/' . $postId);
 
         } else {
             
@@ -78,6 +82,8 @@ class BlogController extends RestfulModuleController
             $postData = $form->fieldsMap($postData, true);
             $postTable->where("id = {$postData['id']}")->save($postData);
 
+            $this->redirect()->toUrl('/admin/blog/' . $postData['id']);
+
         } else {
         }
 
@@ -91,6 +97,8 @@ class BlogController extends RestfulModuleController
     {
         $request = $this->getRequest();
         $postData = $request->post();
+        $callback = $request->post()->get('callback');
+
         $form = new Form\PostDeleteForm();
         $form->enableFilters()->setData($postData);
         if ($form->isValid()) {
@@ -99,6 +107,10 @@ class BlogController extends RestfulModuleController
             $postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
 
             $postTable->where("id = {$postData['id']}")->remove();
+
+            if($callback){
+                $this->redirect()->toUrl($callback);
+            }
 
         } else {
             return array(

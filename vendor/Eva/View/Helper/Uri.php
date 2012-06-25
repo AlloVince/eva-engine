@@ -31,6 +31,6 @@ namespace Eva\View\Helper;
  */
 class Uri extends AbstractUri
 {
-    protected $defaultArgs = 'BQe';
+    protected $defaultArgs = 'BCQe';
 
 }

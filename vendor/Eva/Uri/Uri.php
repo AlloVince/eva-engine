@@ -77,6 +77,18 @@ class Uri extends \Zend\Uri\Uri
 
     public function setCallback($callback)
     {
+        if(!$callback){
+            return $this;
+        }
+        
+        $query = $this->getQueryAsArray();
+        $callbackName = $this->getCallbackName();
+        if(!$callbackName){
+            return $this;
+        }
+
+        $query[$callbackName] = $callback;
+        $this->setQuery($query);
         $this->callback = $callback;
         return $this;
     }

@@ -22,7 +22,8 @@ $form->mergeInvalid();
 			<?=$form->restful();?>
 			<?=$this->formInput($form->get('id'));?>
 			<button class="btn btn-danger" type="submit">Delete</button>
-			<a class="btn" href="">Go Back</a>
+            <input name="callback" type="hidden" value="<?=$this->callback?>" />
+            <a class="btn" href="<?=$this->callback?>">Go Back</a>
    		</form>
 	</p>
 </div>

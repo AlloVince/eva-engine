@@ -82,7 +82,7 @@ class AbstractUri extends \Zend\View\Helper\AbstractHelper
      * Html encoded
      * Enable config host
     */
-    protected $defaultArgs = 'BQe';
+    protected $defaultArgs;
     
     //protected $defaultArgs = 'Qeh';
 
@@ -154,7 +154,6 @@ class AbstractUri extends \Zend\View\Helper\AbstractHelper
     {
         $uri = new CoreUri($resourceString);
 
-        $defaultUriOptions = $this->getDefaultUriOptions();
 
         //short cut for just setting query
         if(true === is_array($arg)){
@@ -178,6 +177,7 @@ class AbstractUri extends \Zend\View\Helper\AbstractHelper
         }
 
         $argMap = $this->argMap;
+        $defaultUriOptions = $this->getDefaultUriOptions();
         $localOptions = array();
         foreach($options as $key => $value){
             if(isset($argMap[$key])) {
