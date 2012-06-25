@@ -3,7 +3,6 @@ return array(
     'view_manager' => array(
         'display_not_found_reason' => true,
         'display_exceptions'       => true,
-        'doctype'                  => 'HTML5',
         'not_found_template'       => 'error/404',
         'exception_template'       => 'error/index',
         'template_map' => array(
@@ -15,7 +14,7 @@ return array(
         ),
         'helper_map' => array(
             'uri' => 'Eva\View\Helper\Uri',    
-            //'link' => 'Eva\View\Helper\Link',
+            'link' => 'Eva\View\Helper\Link',
             'formAttr' => 'Eva\Form\View\Helper\FormAttr',
             'input' => 'Eva\Form\View\Helper\Input',
             'widget' => 'Eva\View\Helper\Widget',

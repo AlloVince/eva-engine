@@ -1,6 +1,10 @@
 <?
 $paginator = $this->paginator ? $this->paginator->toArray() : null;
 if($paginator && $paginator['pageCount'] > 1):
+echo $this->uri('/admin/blog/', 'v', array(
+    'q' => array('page' => $paginator['firstPage']),
+    'Q' => array('for' => 'bar'),
+));
 ?>
 <div class="pagination"><ul>
     <?if($paginator['firstPage']):?>

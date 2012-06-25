@@ -20,7 +20,15 @@ return array(
         'prefix' => 'eva_',
     ),
 
-    'paginator' => array(
-            
+    'site' => array(
+        'uri' => array(
+            'callbackName' => 'callback',
+        ),
+        'link' => array(
+            //'host' => 'abc.com',
+            'basePath' => '/static',
+            'versionName' => 'v',
+            'version' => '1.0.0',
+        ),
     ),
 );

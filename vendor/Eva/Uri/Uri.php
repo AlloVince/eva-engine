@@ -21,24 +21,53 @@ namespace Eva\Uri;
 class Uri extends \Zend\Uri\Uri
 {
     protected $basePath;
-    protected $basePathAdded = false;
+    protected $extraPath;
     protected $callbackName;
     protected $callback;
     protected $version;
     protected $versionName = 'v';
-    protected $versionAdded = false;
     protected $baseQuery;
-    protected $baseQueryAdded = false;
+    protected $extraQuery;
+    protected $htmlEncode = false;
+    protected $urlEncode = false;
 
     public function getBasePath()
     {
         return $this->basePath;
     }
 
-    public function setBasePath($basePath)
+    public function setBasePath($basePath = '')
     {
+        if(!$basePath){
+            return $this;
+        }
+
         $this->basePath = $basePath;
+        $path = $this->getPath();
+        $path = $basePath . $path;
+        $this->setPath($path);
+
         return $this;
+    }
+
+    public function setExtraPath($extraPath = '')
+    {
+        if(!$extraPath){
+            return $this;
+        }
+
+        $this->extraPath = $extraPath;
+        $path = $this->getPath();
+        $basePath = $basePath ? $basePath : $this->getBasePath();
+        $path = $basePath . $extraPath . $path;
+        $this->setPath($path);
+
+        return $this;
+    }
+
+    public function getExtraPath()
+    {
+        return $this->extraPath;
     }
 
     public function getCallback()
@@ -66,6 +95,15 @@ class Uri extends \Zend\Uri\Uri
     public function setVersion($version)
     {
         $this->version = $version;
+
+        $query = $this->getQueryAsArray();
+        $versionName = $this->getVersionName();
+        if(!$versionName || empty($version)){
+            return $this;
+        }
+
+        $query[$versionName] = $version;
+        $this->setQuery($query);
         return $this;
     }
 
@@ -90,100 +128,57 @@ class Uri extends \Zend\Uri\Uri
         return $this->baseQuery;
     }
 
-    public function setBaseQuery($baseQuery)
+    public function setBaseQuery($baseQuery = array())
     {
-        $this->baseQuery = $baseQuery;
-        return $this;
-    }
-
-
-    public function addBasePath($basePath = '')
-    {
-        if(true === $this->basePathAdded){
-            return $this;
-        }
-
-        $path = $this->getPath();
-        $basePath = $basePath ? $basePath : $this->getBasePath();
-        if(!$basePath){
-            return $this;
-        }
-
-        $this->setBasePath($basePath);
-        $path = $basePath . $path;
-        $this->setPath($path);
-
-        $this->basePathAdded = true;
-
-        return $this;
-    }
-
-    public function addVersion($version = '')
-    {
-        if(true === $this->versionAdded){
-            return $this;
-        }
-
-        $version = (string) $version;
-        $this->version = $version;
-    
-        $query = $this->getQueryAsArray();
-
-        $versionName = $this->getVersionName();
-
-        if(!$versionName || empty($version)){
-            return $this;
-        }
-
-        if(isset($query[$versionName])){
-            throw new \Zend\Uri\Exception\InvalidUriPartException(sprintf(
-                'Version Name "%s" is already taken',
-                $versionName,
-                get_class($this)
-            ), Exception\InvalidUriPartException::INVALID_SCHEME);
-        }
-
-        $query[$versionName] = $version;
-        $this->setQuery($query);
-        $this->versionAdded = true;
-        return $this;
-    }
-
-    public function addBaseQuery(array $baseQuery = array())
-    {
-        if(true === $this->baseQueryAdded){
-            return $this;
-        }
-
-        $baseQuery = $baseQuery ? $baseQuery : $this->getBaseQuery();
         if(!$baseQuery){
             return $this;
         }
+        $this->baseQuery = $baseQuery;
         $query = $this->getQueryAsArray();
-        $this->setBaseQuery($baseQuery);
-
-        $query = array_merge($baseQuery, $query);
+        $query = array_merge($query, $baseQuery);
         $this->setQuery($query);
-
-        $this->baseQueryAdded = true;
         return $this;
     }
 
-    public function toUrlEncodeString($url = '')
+    public function setExtraQuery($extraQuery = array())
     {
-        $url = $url ? $url : $this->toString();
-        if(!$url){
-            return '';
+        if(!$extraQuery){
+            return $this;
         }
-        return urlencode($url);
+        $this->extraQuery = $extraQuery;
+        $query = $this->getQueryAsArray();
+        $query = array_merge($query, $extraQuery);
+        $this->setQuery($query);
+        return $this;
     }
 
-    public function toHtmlEncodeString($url = '')
+    public function urlEncode()
     {
-        $url = $url ? $url : $this->toString();
-        if(!$url){
-            return '';
+        $this->urlEncode = true;
+        return $this;
+    }
+
+    public function htmlEncode()
+    {
+        $this->htmlEncode = true;
+        return $this;
+    }
+
+    public function toString()
+    {
+        if($this->host && !$this->scheme){
+            $this->setScheme('http');
         }
-        return htmlentities($url, ENT_QUOTES, 'UTF-8');
+
+        $url = parent::toString();
+
+        if(true === $this->htmlEncode){
+            $url = htmlentities($url, ENT_QUOTES, 'UTF-8');
+        }
+
+        if(true === $this->urlEncode){
+            $url = urldecode($url);
+        }
+        return $url;
     }
 }
