@@ -176,17 +176,21 @@ class Api
             ));    
         }
 
-        if($diConfig){
-            $di = $this->getDi();
-            $di->configure(new DiConfiguration($diConfig));
-            //$di->instanceManager()->setParameters($modelClassName, $diConfig);
-            //\Zend\Di\Display\Console::export($di);
-
-            return $di->get($modelClassName);
-        }
-        
-
-        return new $modelClassName;
+        $di = $this->getDi();
+        $defaultConfig = array(
+            'instance' => array(
+                $modelClassName => array(
+                    'parameters' => array(
+                        'event' => $this->event,
+                        //'adapter' => 'Zend\Paginator\Adapter\DbTableSelect',
+                    ),
+                ),
+            )
+        );
+        $diConfig = $diConfig ? array_merge($defaultConfig, $diConfig) : $defaultConfig;
+        $di->configure(new DiConfiguration($diConfig));
+        //\Zend\Di\Display\Console::export($di);
+        return $di->get($modelClassName);
     }
 
     public function getView()

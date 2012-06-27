@@ -8,57 +8,37 @@ class Post extends AbstractModel
 {
     protected $itemTableName = 'Blog\DbTable\Posts';
 
-    public function getPost($id)
+    protected $user;
+
+    protected $events = array(
+        'createPost.pre',
+        'createPost',
+        'createPost.post',
+        'savePost.pre',
+        'savePost',
+        'savePost.post',
+        'removePost.pre',
+        'removePost',
+        'removePost.post',
+        'getPost.pre',
+        'getPost',
+        'getPost.post',
+        'getPostList.pre',
+        'getPostList',
+        'getPostList.post',
+    );
+
+    protected $auto = array(
+        'savePost'
+    );
+
+    public function setUser($user)
     {
-        $id  = (int) $id;
-        $rowset = $this->select(array('id' => $id));
-        $row = $rowset->current();
-        if (!$row) {
-            throw new \Exception("Could not find row $id");
-        }
-        return $row;
+        $this->user = $user;
     }
 
-    public function savePost(Post $album)
+    public function getUser()
     {
-        $data = array(
-            'artist' => $album->artist,
-            'title'  => $album->title,
-        );
-
-        $id = (int)$album->id;
-        if ($id == 0) {
-            $this->insert($data);
-        } else {
-            if ($this->getPost($id)) {
-                $this->update($data, array('id' => $id));
-            } else {
-                throw new \Exception('Form id does not exit');
-            }
-        }
+        return $this->user;
     }
-
-    public function addPost($artist, $title)
-    {
-        $data = array(
-            'artist' => $artist,
-            'title'  => $title,
-        );
-        $this->insert($data);
-    }
-
-    public function updatePost($id, $artist, $title)
-    {
-        $data = array(
-            'artist' => $artist,
-            'title'  => $title,
-        );
-        $this->update($data, array('id' => $id));
-    }
-
-    public function deletePost($id)
-    {
-        $this->delete(array('id' => $id));
-    }
-
 }

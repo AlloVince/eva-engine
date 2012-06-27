@@ -11,6 +11,8 @@ abstract class AbstractModel
     const CACHE_META = 'meta';
     const CACHE_PAGINATOR = 'paginator';
 
+    protected $event;
+
     protected $itemName;
     protected $item;
     protected $itemList;
@@ -36,14 +38,53 @@ abstract class AbstractModel
     }
 
     
+    public function getItem($itemArrayOrObject, $itemAttrConfig = array())
+    {
+        if($this->item){
+            return $this->item;
+        }
+
+        $itemClassName = get_class($this) . '\Item';
+
+        $item = new $itemClassName($itemArrayOrObject, $this, $itemAttrConfig);
+
+        return $this->item = $item;
+    }
+
+    public function getItemArray($itemArrayOrObject, $itemAttrConfig = array())
+    {
+        $item = $this->getItem($itemArrayOrObject, $itemAttrConfig);
+        return $item->toArray($itemAttrConfig);
+    }
+
+    public function setItem(AbstractItem $item)
+    {
+        $this->item = $item;
+        return $this;
+    }
+
+    public function getItemList()
+    {
+        return $this->itemList;
+    }
+
+    public function setItemList($itemList)
+    {
+        $this->itemList = $itemList;
+        return $this;
+    }
 
     public function getEvent()
     {
-    
+        return $this->event;
     }
 
+    public function setEvent($event)
+    {
+        $this->event = $event;
+    }
 
-    public function cache($cacheData, $cacheType = '')
+    public function setCache($cacheData, $cacheType = '')
     {
     }
 

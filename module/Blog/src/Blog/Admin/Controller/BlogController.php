@@ -33,8 +33,10 @@ class BlogController extends RestfulModuleController
     public function restGetBlog()
     {
         $id = (int)$this->getEvent()->getRouteMatch()->getParam('id');
-        $postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
+        $postModel = Api::_()->getModel('Blog\Model\Post');
+        $postTable = $postModel->getItemTable();
         $postinfo = $postTable->find($id);
+        $postinfo = $postModel->getItemArray($postinfo);
         return array(
             'post' => $postinfo,
         );
@@ -51,7 +53,10 @@ class BlogController extends RestfulModuleController
 
             $postData = $form->getData();
 
-            $postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
+            $postModel = Api::_()->getModel('Blog\Model\Post');
+            $postTable = $postModel->getItemTable();
+            $postData = $postModel->getItemArray($postData);
+
             $postData = $form->fieldsMap($postData, true);
             $postTable->create($postData);
             $postId = $postTable->getLastInsertValue();
