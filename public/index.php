@@ -23,10 +23,14 @@ set_include_path(implode(PATH_SEPARATOR, array(
     get_include_path(),
 )));
 
-require_once 'Eva/Loader/Autoloader.php';
-Eva\Loader\Autoloader::factory();
-$loader = Eva\Loader\Autoloader::getRegisteredAutoloaders();
-$loader = $loader[Eva\Loader\Autoloader::STANDARD_AUTOLOADER];
+require_once 'Eva/Loader/AutoloaderFactory.php';
+Eva\Loader\AutoloaderFactory::factory(array(
+    'Zend\Loader\StandardAutoloader' => array(
+        'autoregister_zf' => true
+    )
+));
+$loader = Eva\Loader\AutoloaderFactory::getRegisteredAutoloaders();
+$loader = $loader[Eva\Loader\AutoloaderFactory::STANDARD_AUTOLOADER];
 $loader->registerNamespace('Eva\\', EVA_PUBLIC_PATH . '/../vendor/Eva');
 
 $appConfig = include EVA_CONFIG_PATH . DIRECTORY_SEPARATOR . 'application.config.php';
