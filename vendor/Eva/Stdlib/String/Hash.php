@@ -19,8 +19,62 @@
  * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
  */
- class UniqueHash
+ class Hash
  {
+     public static function guid()
+     {
+         if (function_exists('com_create_guid') === true)
+         {
+             return trim(com_create_guid(), '{}');
+         }
+         return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
+     }
+
+
+     public static function shortHashArray($input) {
+         $base32 =  array(
+             "a" , "b" , "c" , "d" , "e" , "f" , "g" , "h" ,  
+             "i" , "j" , "k" , "l" , "m" , "n" , "o" , "p" ,  
+             "q" , "r" , "s" , "t" , "u" , "v" , "w" , "x" ,  
+             "y" , "z" , "0" , "1" , "2" , "3" , "4" , "5" ,  
+             "6" , "7" , "8" , "9" , "A" , "B" , "C" , "D" ,  
+             "E" , "F" , "G" , "H" , "I" , "J" , "K" , "L" ,  
+             "M" , "N" , "O" , "P" , "Q" , "R" , "S" , "T" ,  
+             "U" , "V" , "W" , "X" , "Y" , "Z"  
+         );  
+
+
+         $hex = md5($input);
+         $hexLen = strlen($hex);
+         $subHexLen = $hexLen / 8;
+         $output = array();
+
+         for ($i = 0; $i < $subHexLen; $i++) {
+             $subHex = substr ($hex, $i * 8, 8);
+             $int = 0x3FFFFFFF & (1 * ('0x'.$subHex));
+             $out = '';
+
+             for ($j = 0; $j < 6; $j++) {
+                 $val = 0x0000003D & $int;
+                 $out .= $base32[$val];
+                 $int = $int >> 5;
+             }
+
+             $output[] = $out;
+         }
+
+         return $output;
+     }
+
+
+     public static function uniqueHash()
+     {
+         $guid = self::guid();
+         $guid = str_replace('-', '', $guid);
+
+         $hashArray = self::shortHashArray($guid);
+         return $hashArray[rand(0, 3)];
+     }
 
      /**
      * Translates a number to a short alhanumeric version
@@ -43,7 +97,7 @@
      *
      * @return mixed string or long
      */
-     public static function hash($in = null, $toNum = false, $padUp = false, $passKey = null)
+     public static function shortHash($in = null, $toNum = false, $padUp = false, $passKey = null)
      {
          if(!$in){
              $in = mt_rand();

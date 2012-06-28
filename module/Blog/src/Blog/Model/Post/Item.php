@@ -31,7 +31,7 @@ class Item extends AbstractItem
         if($urlName){
             return $urlName;
         }
-        return \Eva\Stdlib\String\UniqueHash::hash();
+        return \Eva\Stdlib\String\Hash::uniqueHash();
     }
 
     public function getUrl($urlName)
