@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2012 年 05 月 14 日 08:39
+-- 生成日期: 2012 年 06 月 28 日 04:52
 -- 服务器版本: 5.5.16
 -- PHP 版本: 5.3.8
 
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `eva_album_albums` (
   `orderNumber` int(10) DEFAULT NULL,
   `createTime` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -122,24 +122,7 @@ CREATE TABLE IF NOT EXISTS `eva_blog_comments` (
   `parentId` int(10) DEFAULT NULL,
   `commentRank` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1244 ;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `eva_blog_postlanguageextras`
---
-
-DROP TABLE IF EXISTS `eva_blog_postlanguageextras`;
-CREATE TABLE IF NOT EXISTS `eva_blog_postlanguageextras` (
-  `post_id` int(11) NOT NULL,
-  `language` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
-  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `preview` text COLLATE utf8_unicode_ci,
-  `content` longtext COLLATE utf8_unicode_ci,
-  `contentHtml` longtext COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`post_id`,`language`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -151,35 +134,29 @@ DROP TABLE IF EXISTS `eva_blog_posts`;
 CREATE TABLE IF NOT EXISTS `eva_blog_posts` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `status` enum('deleted','draft','published','pending','badword') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'published',
+  `status` enum('deleted','draft','published','pending') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'published',
   `visibility` enum('public','private','password') COLLATE utf8_unicode_ci NOT NULL,
-  `displayEmail` tinyint(1) NOT NULL DEFAULT '0',
-  `displayProfile` tinyint(1) NOT NULL DEFAULT '0',
-  `codeType` enum('wiki','html','ubb') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'wiki',
+  `codeType` enum('markdown','html','wiki','ubb','other') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'markdown',
   `language` varchar(5) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'en',
   `postUsage` enum('post','page','faq','news') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'post',
   `connect_id` int(10) DEFAULT NULL,
   `trackback` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `urlName` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `preview` text COLLATE utf8_unicode_ci,
-  `toc` text COLLATE utf8_unicode_ci,
-  `content` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `contentHtml` longtext COLLATE utf8_unicode_ci,
+  `preview` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
   `orderNumber` int(10) DEFAULT NULL,
-  `metaKeywords` tinytext COLLATE utf8_unicode_ci,
-  `metaDescription` tinytext COLLATE utf8_unicode_ci,
+  `setting` int(10) NOT NULL DEFAULT '0',
   `createTime` datetime NOT NULL,
   `user_id` int(10) NOT NULL,
   `user_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `site` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `updateTime` datetime DEFAULT NULL,
   `editor_id` int(10) DEFAULT NULL,
   `editor_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `password` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `commentAble` tinyint(1) NOT NULL DEFAULT '1',
+  `postPassword` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `commentStatus` enum('open','closed','authority') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'open',
   `commentCount` int(10) NOT NULL DEFAULT '0',
+  `viewCount` bigint(20) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=138 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -197,7 +174,7 @@ CREATE TABLE IF NOT EXISTS `eva_blog_tags` (
   `orderNumber` int(10) DEFAULT NULL,
   `count` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=139 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -210,6 +187,40 @@ CREATE TABLE IF NOT EXISTS `eva_blog_tags_posts` (
   `tag_id` int(10) NOT NULL,
   `post_id` int(10) NOT NULL,
   PRIMARY KEY (`tag_id`,`post_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `eva_blog_texts`
+--
+
+DROP TABLE IF EXISTS `eva_blog_texts`;
+CREATE TABLE IF NOT EXISTS `eva_blog_texts` (
+  `post_id` int(20) NOT NULL,
+  `metaKeywords` text COLLATE utf8_unicode_ci,
+  `metaDescription` text COLLATE utf8_unicode_ci,
+  `toc` text COLLATE utf8_unicode_ci,
+  `content` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `contentHtml` longtext COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`post_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `eva_blog_translations`
+--
+
+DROP TABLE IF EXISTS `eva_blog_translations`;
+CREATE TABLE IF NOT EXISTS `eva_blog_translations` (
+  `post_id` int(11) NOT NULL,
+  `language` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
+  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `preview` text COLLATE utf8_unicode_ci,
+  `content` longtext COLLATE utf8_unicode_ci,
+  `contentHtml` longtext COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`post_id`,`language`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -588,157 +599,6 @@ CREATE TABLE IF NOT EXISTS `eva_notification_hashes` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `eva_post_categories`
---
-
-DROP TABLE IF EXISTS `eva_post_categories`;
-CREATE TABLE IF NOT EXISTS `eva_post_categories` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `categoryName` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `urlName` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `description` text COLLATE utf8_unicode_ci,
-  `parentId` int(10) DEFAULT NULL,
-  `rootId` int(10) DEFAULT NULL,
-  `orderNumber` int(10) DEFAULT NULL,
-  `createTime` datetime NOT NULL,
-  `count` int(10) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `eva_post_categories_posts`
---
-
-DROP TABLE IF EXISTS `eva_post_categories_posts`;
-CREATE TABLE IF NOT EXISTS `eva_post_categories_posts` (
-  `category_id` int(11) NOT NULL,
-  `post_id` int(11) NOT NULL,
-  PRIMARY KEY (`category_id`,`post_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `eva_post_comments`
---
-
-DROP TABLE IF EXISTS `eva_post_comments`;
-CREATE TABLE IF NOT EXISTS `eva_post_comments` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `status` enum('approved','pending','badword','spam','deleted') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'pending',
-  `commentUsage` enum('post','product','game','movie','music','book','album','image','ticket') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'post',
-  `connect_id` int(10) NOT NULL,
-  `user_id` int(10) NOT NULL,
-  `user_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `screen_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `site` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ip` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `content` mediumtext COLLATE utf8_unicode_ci NOT NULL,
-  `contentHtml` text COLLATE utf8_unicode_ci,
-  `createTime` datetime NOT NULL,
-  `editor_id` int(10) DEFAULT NULL,
-  `editor_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `editor_screenname` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `rootId` int(10) DEFAULT NULL,
-  `parentId` int(10) DEFAULT NULL,
-  `commentRank` int(10) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `eva_post_postlanguageextras`
---
-
-DROP TABLE IF EXISTS `eva_post_postlanguageextras`;
-CREATE TABLE IF NOT EXISTS `eva_post_postlanguageextras` (
-  `post_id` int(11) NOT NULL,
-  `language` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
-  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `preview` text COLLATE utf8_unicode_ci,
-  `content` longtext COLLATE utf8_unicode_ci,
-  `contentHtml` longtext COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`post_id`,`language`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `eva_post_posts`
---
-
-DROP TABLE IF EXISTS `eva_post_posts`;
-CREATE TABLE IF NOT EXISTS `eva_post_posts` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `status` enum('deleted','draft','published','pending','badword') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'published',
-  `visibility` enum('public','private','password') COLLATE utf8_unicode_ci NOT NULL,
-  `displayEmail` tinyint(1) NOT NULL DEFAULT '0',
-  `displayProfile` tinyint(1) NOT NULL DEFAULT '0',
-  `codeType` enum('wiki','html','ubb') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'wiki',
-  `language` varchar(5) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'en',
-  `postUsage` enum('post','page','faq','news') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'post',
-  `connect_id` int(10) DEFAULT NULL,
-  `trackback` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `urlName` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `preview` text COLLATE utf8_unicode_ci,
-  `toc` text COLLATE utf8_unicode_ci,
-  `content` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `contentHtml` longtext COLLATE utf8_unicode_ci,
-  `orderNumber` int(10) DEFAULT NULL,
-  `metaKeywords` tinytext COLLATE utf8_unicode_ci,
-  `metaDescription` tinytext COLLATE utf8_unicode_ci,
-  `createTime` datetime NOT NULL,
-  `user_id` int(10) NOT NULL,
-  `user_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `site` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `updateTime` datetime DEFAULT NULL,
-  `editor_id` int(10) DEFAULT NULL,
-  `editor_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `password` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `commentAble` tinyint(1) NOT NULL DEFAULT '1',
-  `commentCount` int(10) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `eva_post_tags`
---
-
-DROP TABLE IF EXISTS `eva_post_tags`;
-CREATE TABLE IF NOT EXISTS `eva_post_tags` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `tagName` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `linkTo` enum('book','tag','post','page') COLLATE utf8_unicode_ci DEFAULT NULL,
-  `parentId` int(10) DEFAULT NULL,
-  `rootId` int(10) DEFAULT NULL,
-  `orderNumber` int(10) DEFAULT NULL,
-  `count` int(10) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `eva_post_tags_posts`
---
-
-DROP TABLE IF EXISTS `eva_post_tags_posts`;
-CREATE TABLE IF NOT EXISTS `eva_post_tags_posts` (
-  `tag_id` int(10) NOT NULL,
-  `post_id` int(10) NOT NULL,
-  PRIMARY KEY (`tag_id`,`post_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- 表的结构 `eva_queue_queuemessages`
 --
 
@@ -839,7 +699,7 @@ CREATE TABLE IF NOT EXISTS `eva_user_oauths` (
   `expireTime` datetime DEFAULT NULL,
   `appUserId` bigint(20) DEFAULT NULL,
   `appUserName` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `appExt` text COLLATE utf8_unicode_ci,
+  `appExt` mediumtext COLLATE utf8_unicode_ci,
   PRIMARY KEY (`user_id`,`appType`,`token`,`tokenSecret`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -909,6 +769,41 @@ CREATE TABLE IF NOT EXISTS `eva_user_useroptions` (
   `optionValue` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`user_id`,`optionKey`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `eva_user_users`
+--
+
+DROP TABLE IF EXISTS `eva_user_users`;
+CREATE TABLE IF NOT EXISTS `eva_user_users` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `userName` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(320) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `status` enum('active','deleted','inactive') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'active',
+  `screenName` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `salt` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `firstName` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `lastName` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `password` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `oldPassword` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `lastPasswordChangeTime` datetime DEFAULT NULL,
+  `gender` enum('male','female','other') COLLATE utf8_unicode_ci DEFAULT NULL,
+  `avatar` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `timezone` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `registerTime` datetime DEFAULT NULL,
+  `lastLoginTime` datetime DEFAULT NULL,
+  `language` varchar(10) COLLATE utf8_unicode_ci DEFAULT 'zh_CN',
+  `setting` int(10) NOT NULL DEFAULT '0',
+  `isInvited` tinyint(1) NOT NULL DEFAULT '0',
+  `onlineStatus` enum('online','busy','offline') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'offline',
+  `lastFleshTime` datetime DEFAULT NULL,
+  `viewCount` bigint(20) NOT NULL DEFAULT '0',
+  `registerIp` varbinary(16) DEFAULT NULL,
+  `lastLoginIp` varbinary(16) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
