@@ -84,6 +84,7 @@ class PostForm extends Form
                 'type'  => 'radio',
                 'label' => 'Code Type',
                 'options' => array(
+                    'Markdown' => 'markdown',
                     'HTML' => 'html',
                     'Wiki' => 'wiki',
                 ),
@@ -155,10 +156,12 @@ class PostForm extends Form
             'required' => true,
         ),
 
+        /*
         'content' => array(
             'name' => 'content',
             'required' => true,
         ),
+        */
 
         'codeType' => array(
             'name' => 'codeType',

@@ -75,6 +75,7 @@ $form->mergeInvalid();
 			  ))?>
             </div>
           </div>
+          <!--
 		  <div class="control-group <?=$form->get('content')->getMessages() ? 'error' : '';?>">
             <label for="textarea" class="control-label"><?=$this->formLabel($form->get('content'));?></label>
 			<div class="controls">
@@ -87,7 +88,8 @@ $form->mergeInvalid();
 		    <?foreach($form->get('content')->getMessages() as $message):?>
 		    <p class="help-block"><?=$message?></p>
 		    <?endforeach?>
-          </div>
+        </div>
+        -->
 		  <div class="form-actions">
 			<button class="btn btn-primary" type="submit">Submit</button>
 			<button class="btn">Cancel</button>

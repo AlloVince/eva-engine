@@ -12,28 +12,17 @@ class PostController extends RestfulModuleController
         'page',    
     );
 
-    public function restIndexPost()
-    {
-        p(__METHOD__);exit;
-    }
-
     public function restGetPost()
     {
         $id = $this->getEvent()->getRouteMatch()->getParam('id');
 
-
-        $postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
+        $postModel = Api::_()->getModel('Blog\Model\Post');
+        $postTable = $postModel->getItemTable();
         $postinfo = $postTable->find($id);
-        //p($postTable->debug());
-        //p($postinfo);
         return array(
             //'form' => $form,
             'post' => $postinfo,
         );
     }
 
-    public function restGetPostPage()
-    {
-        p(__METHOD__);exit;
-    }
 }
