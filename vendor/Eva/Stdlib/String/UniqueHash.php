@@ -8,9 +8,9 @@
  * @package   Zend_Uri
  */
 
-namespace Eva\Stdlib\String;
+ namespace Eva\Stdlib\String;
 
-/**
+ /**
  * Unique Hash
  * From : http://blog.kevburnsjr.com/php-unique-hash
  * 
@@ -22,95 +22,97 @@ namespace Eva\Stdlib\String;
  class UniqueHash
  {
 
-	/**
-	 * Generate unique hash
-	 *
-	 * @author	Kevin van Zonneveld <kevin@vanzonneveld.net>
-	 * @author	Simon Franz
-	 * @author	Deadfish
-	 * @copyright 2008 Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-	 * @license   http://www.opensource.org/licenses/bsd-license.php New BSD Licence
-	 * @version   SVN: Release: $Id: alphaID.inc.php 344 2009-06-10 17:43:59Z kevin $
-	 * @link	  http://kevin.vanzonneveld.net/
-	 *
-	 * @param mixed   $in	  String or long input to translate
-	 * @param boolean $toNum  Reverses translation when true
-	 * @param mixed   $padUp  Number or boolean padds the result up to a specified length
-	 * @param string  $passKey Supplying a password makes it harder to calculate the original ID
-	 *
-	 * @return mixed string or long
-	 */
-    public static function hash($in = '', $toNum = false, $padUp = false, $passKey = null)
-	{
-		$index = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		if ($passKey !== null) {
-			// Although this function's purpose is to just make the
-			// ID short - and not so much secure,
-			// with this patch by Simon Franz (http://blog.snaky.org/)
-			// you can optionally supply a password to make it harder
-			// to calculate the corresponding numeric ID
+     /**
+     * Translates a number to a short alhanumeric version
+     *
+     * Translated any number up to 9007199254740992
+     * to a shorter version in letters e.g.:
+     * 9007199254740989 --> PpQXn7COf
+     * @author	Kevin van Zonneveld <kevin@vanzonneveld.net>
+     * @author	Simon Franz
+     * @author	Deadfish
+     * @copyright 2008 Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+     * @license   http://www.opensource.org/licenses/bsd-license.php New BSD Licence
+     * @version   SVN: Release: $Id: alphaID.inc.php 344 2009-06-10 17:43:59Z kevin $
+     * @link	  http://kevin.vanzonneveld.net/
+     *
+     * @param mixed   $in	  String or long input to translate
+     * @param boolean $toNum  Reverses translation when true
+     * @param mixed   $padUp  Number or boolean padds the result up to a specified length
+     * @param string  $passKey Supplying a password makes it harder to calculate the original ID
+     *
+     * @return mixed string or long
+     */
+     public static function hash($in = null, $toNum = false, $padUp = false, $passKey = null)
+     {
+         if(!$in){
+             $in = mt_rand();
+             $padUp = 6;
+         }
 
-			for ($n = 0; $n<strlen($index); $n++) {
-				$i[] = substr( $index,$n ,1);
-			}
+         $index = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+         if ($passKey !== null) {
+             // Although this function's purpose is to just make the
+             // ID short - and not so much secure,
+             // with this patch by Simon Franz (http://blog.snaky.org/)
+             // you can optionally supply a password to make it harder
+             // to calculate the corresponding numeric ID
 
-			$passhash = hash('sha256',$passKey);
-			$passhash = (strlen($passhash) < strlen($index))
-				? hash('sha512',$passKey)
-				: $passhash;
+             for ($n = 0; $n<strlen($index); $n++) {
+                 $i[] = substr( $index,$n ,1);
+             }
 
-			for ($n=0; $n < strlen($index); $n++) {
-				$p[] =  substr($passhash, $n ,1);
-			}
+             $passhash = hash('sha256',$passKey);
+             $passhash = (strlen($passhash) < strlen($index)) ? hash('sha512',$passKey) : $passhash;
 
-			array_multisort($p,  SORT_DESC, $i);
-			$index = implode($i);
-		}
+             for ($n=0; $n < strlen($index); $n++) {
+                 $p[] =  substr($passhash, $n ,1);
+             }
 
-		$base  = strlen($index);
+             array_multisort($p,  SORT_DESC, $i);
+             $index = implode($i);
+         }
 
-		if(!$in) {
-			list($usec, $sec) = explode(" ", microtime());
-			$in = $sec . substr($usec, 2);
-		}
+         $base  = strlen($index);
 
-		if ($toNum) {
-			// Digital number  <<--  alphabet letter code
-			$in  = strrev($in);
-			$out = 0;
-			$len = strlen($in) - 1;
-			for ($t = 0; $t <= $len; $t++) {
-				$bcpow = bcpow($base, $len - $t);
-				$out   = $out + strpos($index, substr($in, $t, 1)) * $bcpow;
-			}
+         if ($toNum) {
+             // Digital number  <<--  alphabet letter code
+             $in  = strrev($in);
+             $out = 0;
+             $len = strlen($in) - 1;
+             for ($t = 0; $t <= $len; $t++) {
+                 $bcpow = bcpow($base, $len - $t);
+                 $out   = $out + strpos($index, substr($in, $t, 1)) * $bcpow;
+             }
 
-			if (is_numeric($padUp)) {
-				$padUp--;
-				if ($padUp > 0) {
-					$out -= pow($base, $padUp);
-				}
-			}
-			$out = sprintf('%F', $out);
-			$out = substr($out, 0, strpos($out, '.'));
-		} else {
-			// Digital number  -->>  alphabet letter code
-			if (is_numeric($padUp)) {
-				$padUp--;
-				if ($padUp > 0) {
-					$in += pow($base, $padUp);
-				}
-			}
+             if (is_numeric($padUp)) {
+                 $padUp--;
+                 if ($padUp > 0) {
+                     $out -= pow($base, $padUp);
+                 }
+             }
+             $out = sprintf('%F', $out);
+             $out = substr($out, 0, strpos($out, '.'));
+         } else {
+             // Digital number  -->>  alphabet letter code
+             if (is_numeric($padUp)) {
+                 $padUp--;
+                 if ($padUp > 0) {
+                     $in += pow($base, $padUp);
+                 }
+             }
 
-			$out = "";
-			for ($t = floor(log($in, $base)); $t >= 0; $t--) {
-				$bcp = bcpow($base, $t);
-				$a   = floor($in / $bcp) % $base;
-				$out = $out . substr($index, $a, 1);
-				$in  = $in - ($a * $bcp);
-			}
-			$out = strrev($out); // reverse
-		}
+             $out = "";
+             for ($t = floor(log($in, $base)); $t >= 0; $t--) {
+                 $bcp = bcpow($base, $t);
+                 $a   = floor($in / $bcp) % $base;
+                 $out = $out . substr($index, $a, 1);
+                 $in  = $in - ($a * $bcp);
+             }
+             $out = strrev($out); // reverse
+         }
 
-		return $out;
-	}
+         return $out;
+     }
+
  }
