@@ -1,7 +1,7 @@
 <?php
 namespace Eva\Mvc\Model;
 
-use Eva\Mvc\Expression;
+use Eva\Mvc\Exception;
 
 class AbstractItem 
 {
@@ -22,7 +22,8 @@ class AbstractItem
             $item = $this->handlerConfig($attrName, $attrConfig, $item);
         }
 
-        return $this->item = $item;
+        $this->item = $item;
+        return (array) $item;
     }
 
     protected function handlerConfig($attrName, $attrConfig, $item)
@@ -32,8 +33,8 @@ class AbstractItem
             return $item;
         }
 
-        if(false === isset($item->$attrName)){
-            $item->$attrName  = null;
+        if(false === isset($item[$attrName])){
+            $item[$attrName]  = null;
         }
         $handlerTypes = array('field', 'function', 'callback');
 
@@ -45,26 +46,40 @@ class AbstractItem
                     $handlerType = $attrConfig[2];
                 }
 
-                $itemInputAttr = isset($item->$attrConfig[0]) ? $item->$attrConfig[0] : null;
+                $itemInputAttr = isset($item[$attrConfig[0]]) ? $item[$attrConfig[0]] : null;
 
                 if($handlerType == 'field'){
-                    $item->$attrName = $attrConfig[1];
+                    $item[$attrName] = $attrConfig[1];
                 } elseif($handlerType == 'function') {
                     $functionName = $attrConfig[1];
                     $functionArgs = isset($attrConfig[3]) && is_array($attrConfig[3]) ? $attrConfig[3] : array();
-                    $item->$attrName = call_user_func_array($functionName, $functionArgs);
+                    $item[$attrName] = call_user_func_array($functionName, $functionArgs);
                 } elseif($handlerType == 'callback') {
                     $functionName = $attrConfig[1];
                     $class = isset($attrConfig[3]) && is_array($attrConfig[3]) ? $attrConfig[3] : $this;
-                    $item->$attrName = call_user_func_array(array(
-                        $class,
+                    $item[$attrName] = call_user_func_array(array(
+                        &$class,
                         $functionName,
                     ), array($itemInputAttr));
+
+
+                    /*
+                    p(array(
+                        'attrName' => $attrName,
+                        'class' => get_class($class),
+                        'functionName' => $functionName,
+                        'itemInputAttr' => $itemInputAttr,
+                        'res' => call_user_func_array(array(
+                            $class,
+                            $functionName,
+                        ), array($itemInputAttr)),
+                    ));
+                    */
                 }
             
             } else {
                 foreach($attrConfig as $subAttrName => $subAttrConfig){
-                    $item->$attrName = $this->handlerConfig($subAttrName, $subAttrConfig, $item->$attrName);
+                    $item[$attrName] = $this->handlerConfig($subAttrName, $subAttrConfig, $item[$attrName]);
                 }
             }
 
@@ -73,7 +88,7 @@ class AbstractItem
             case 'integer':
             case 'double':
             case 'string':
-            $item->$attrName = $attrConfig;
+            $item[$attrName] = $attrConfig;
             break;
             default:
             throw new Exception\InvalidArgumentException(sprintf(
@@ -89,7 +104,7 @@ class AbstractItem
     public function __construct($item, $model = null, $config = array())
     {
         if(true === is_array($item)){
-            $this->item = new \ArrayObject($item);
+            $this->item = $item = new \ArrayObject($item);
         }
         if(!$item instanceof \ArrayObject){
             throw new Exception\InvalidArgumentException(sprintf(

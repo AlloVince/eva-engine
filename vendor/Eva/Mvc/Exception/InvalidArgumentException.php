@@ -31,5 +31,5 @@ namespace Eva\Mvc\Exception;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class InvalidArgumentException extends \RuntimeException implements 
-    \Zend\Mvc\Exception\ExceptionInterface
+\Eva\Mvc\Exception\ExceptionInterface
 {}

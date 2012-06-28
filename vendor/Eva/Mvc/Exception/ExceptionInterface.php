@@ -8,7 +8,7 @@
  * @package   Zend_Db
  */
 
-namespace Zend\Mvc\Exception;
+namespace Eva\Mvc\Exception;
 
 /**
  * @category   Zend

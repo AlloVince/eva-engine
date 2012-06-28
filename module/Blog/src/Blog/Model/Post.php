@@ -8,6 +8,8 @@ class Post extends AbstractModel
 {
     protected $itemTableName = 'Blog\DbTable\Posts';
 
+    protected $data;
+
     protected $user;
 
     protected $events = array(
@@ -42,8 +44,30 @@ class Post extends AbstractModel
         return $this->user;
     }
 
-    public function createPost($data)
+    public function setData(array $data = array())
     {
-        
+        $this->data = $data;
+        return $this;
+    }
+
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    public function createPost()
+    {
+        $this->getEvent()->trigger('createPost.pre', $this);
+
+        $data = $this->getData();
+        $data = $this->getItemArray($data, array(
+            'urlName' => array('urlName', 'getUrlName'),
+            'createTime' => array('createTime', 'getCreateTime'),
+            'updateTime' => array('updateTime', 'getUpdateTime'),
+        ));
+        $itemTable = $this->getItemTable();
+        $itemTable->create($data);
+
+        return $itemTable->getLastInsertValue();
     }
 }

@@ -81,7 +81,9 @@ abstract class AbstractModel
         if($this->mvcEvent && $this->mvcEvent instanceof MvcEvent){
             return $this->mvcEvent->getApplication()->events();
         }
-        return false;
+
+        //TODO: throw exeption when no event set
+        return new \Zend\EventManager\EventManager();
     }
 
     public function getMvcEvent()

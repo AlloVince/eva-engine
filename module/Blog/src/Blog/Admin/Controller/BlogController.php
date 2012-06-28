@@ -52,20 +52,9 @@ class BlogController extends RestfulModuleController
         if ($form->isValid()) {
 
             $postData = $form->getData();
-
             $postModel = Api::_()->getModel('Blog\Model\Post');
-            $postTable = $postModel->getItemTable();
-            $postData = $postModel->getItemArray($postData, array(
-                'createTime',
-                'updateTime',
-                'user_id',
-                'user'
-            ));
-
             $postData = $form->fieldsMap($postData, true);
-            $postTable->create($postData);
-            $postId = $postTable->getLastInsertValue();
-
+            $postId = $postModel->setData($postData)->createPost();
             $this->redirect()->toUrl('/admin/blog/' . $postId);
 
         } else {

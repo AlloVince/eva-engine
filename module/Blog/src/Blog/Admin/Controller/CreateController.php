@@ -6,13 +6,13 @@ use Blog\Form,
     Eva\Mvc\Controller\RestfulModuleController,
     Eva\View\Model\ViewModel;
 
-class AddController extends RestfulModuleController
+class CreateController extends RestfulModuleController
 {
     protected $renders = array(
-        'restIndexAdd' => 'blog/get',    
+        'restIndexCreate' => 'blog/get',    
     );
 
-    public function restIndexAdd()
+    public function restIndexCreate()
     {
         $request = $this->getRequest();
         return array(

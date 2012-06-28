@@ -88,7 +88,7 @@ class PostForm extends Form
                     'HTML' => 'html',
                     'Wiki' => 'wiki',
                 ),
-                'value' => array('html'),
+                'value' => array('markdown'),
             ),
         ),
     );
@@ -121,6 +121,7 @@ class PostForm extends Form
             ),
         ),
 
+        /*
         'urlName' =>     array(
             'name' => 'urlName',
             'required' => true,
@@ -145,6 +146,7 @@ class PostForm extends Form
                 ),
             ),
         ),
+        */
 
         'status' => array(
             'name' => 'status',
