@@ -181,7 +181,7 @@ class Api
             'instance' => array(
                 $modelClassName => array(
                     'parameters' => array(
-                        'event' => $this->event,
+                        'mvcEvent' => $this->event,
                         //'adapter' => 'Zend\Paginator\Adapter\DbTableSelect',
                     ),
                 ),

@@ -3,7 +3,8 @@ namespace Eva\Mvc\Model;
 
 
 use Eva\Api,
-    Eva\Db\TableGateway\TableGateway;
+    Eva\Db\TableGateway\TableGateway,
+    Zend\Mvc\MvcEvent;
 
 abstract class AbstractModel
 {
@@ -11,7 +12,8 @@ abstract class AbstractModel
     const CACHE_META = 'meta';
     const CACHE_PAGINATOR = 'paginator';
 
-    protected $event;
+    protected $events;
+    protected $mvcEvent;
 
     protected $itemName;
     protected $item;
@@ -76,12 +78,23 @@ abstract class AbstractModel
 
     public function getEvent()
     {
-        return $this->event;
+        if($this->mvcEvent && $this->mvcEvent instanceof MvcEvent){
+            return $this->mvcEvent->getApplication()->events();
+        }
+        return false;
     }
 
-    public function setEvent($event)
+    public function getMvcEvent()
     {
-        $this->event = $event;
+        return $this->mvcEvent;
+    }
+
+    public function setMvcEvent(MvcEvent $event)
+    {
+        $this->mvcEvent = $event;
+        if($this->events){
+            $event->getApplication()->events()->attach($this->events);
+        }
     }
 
     public function setCache($cacheData, $cacheType = '')

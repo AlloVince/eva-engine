@@ -29,7 +29,7 @@ class Post extends AbstractModel
     );
 
     protected $auto = array(
-        'savePost'
+        'createPostByAdmin'
     );
 
     public function setUser($user)
@@ -40,5 +40,10 @@ class Post extends AbstractModel
     public function getUser()
     {
         return $this->user;
+    }
+
+    public function createPost($data)
+    {
+        
     }
 }

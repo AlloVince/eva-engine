@@ -26,11 +26,12 @@ class Item extends AbstractItem
     {
     }
 
-    public function getUrl()
+    public function getUrl($urlName)
     {
+        return '/blog/post/' . $urlName;
     }
 
-    public function getContent()
+    public function getContentHtml($content)
     {
     }
 

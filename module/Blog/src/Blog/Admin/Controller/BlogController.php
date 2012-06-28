@@ -55,7 +55,12 @@ class BlogController extends RestfulModuleController
 
             $postModel = Api::_()->getModel('Blog\Model\Post');
             $postTable = $postModel->getItemTable();
-            $postData = $postModel->getItemArray($postData);
+            $postData = $postModel->getItemArray($postData, array(
+                'createTime',
+                'updateTime',
+                'user_id',
+                'user'
+            ));
 
             $postData = $form->fieldsMap($postData, true);
             $postTable->create($postData);
