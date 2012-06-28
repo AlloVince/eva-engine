@@ -6,6 +6,7 @@ return array(
         'Blog',
         'Album',
         'Engine',
+        'Scaffold',
     ),
     'service_manager' => array(
         'use_defaults' => true,

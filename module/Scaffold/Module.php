@@ -1,9 +1,9 @@
 <?php
-namespace Core;
+namespace Scaffold;
 
 use Eva\Api;
 
-class Scaffold
+class Module 
 {
     public function getAutoloaderConfig()
     {
