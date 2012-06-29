@@ -22,9 +22,11 @@ class Post extends AbstractModel
         'removePost.pre',
         'removePost',
         'removePost.post',
+        'getPost.precache',
         'getPost.pre',
         'getPost',
         'getPost.post',
+        'getPost.postcache',
         'getPostList.pre',
         'getPostList',
         'getPostList.post',
@@ -68,6 +70,52 @@ class Post extends AbstractModel
         $itemTable = $this->getItemTable();
         $itemTable->create($data);
 
+        $this->getEvent()->trigger('createPost.post', $this);
+
         return $itemTable->getLastInsertValue();
     }
+
+    public function getPost()
+    {
+        $this->getEvent()->trigger('getPost.precache', $this);
+
+        $params = $this->getItemParams();
+        if(!$params || !(is_numeric($params) || is_string($params))){
+            throw new \Core\Model\Exception\InvalidArgumentException(sprintf(
+                '%s params %s not correct',
+                __METHOD__,
+                $params
+            ));
+        }
+
+
+        $this->getEvent()->trigger('getPost.pre', $this);
+
+        $itemTable = $this->getItemTable();
+
+        if(is_numeric($params)){
+            $this->item = $post = $itemTable->where(array('id' => $params))->find('one');
+        } else {
+            $this->item = $post = $itemTable->where(array('urlName' => $params))->find('one');
+        }
+
+        $this->getEvent()->trigger('getPost', $this);
+
+        if($post) {
+            $this->item = $post = $this->getItemArray($post, array(
+                'Url' => array('urlName', 'getUrl', 'callback'),
+                'Text' => array(
+                    'contentHtml' => array('contentHtml', 'getContentHtml'),
+                ),
+            ));
+        }
+        
+        $this->getEvent()->trigger('getPost.post', $this);
+
+
+        $this->getEvent()->trigger('getPost.postcache', $this);
+
+        return $this->item = $post;
+    }
+
 }

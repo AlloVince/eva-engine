@@ -15,14 +15,16 @@ abstract class AbstractModel
     protected $events;
     protected $mvcEvent;
 
+    protected $itemTable;
+    protected $itemTableName;
+
     protected $itemName;
+    protected $itemParams;
     protected $item;
+    protected $itemListParams;
     protected $itemList;
 
     protected $paginator;
-
-    protected $itemTable;
-    protected $itemTableName;
 
     public function getItemTable()
     {
@@ -39,10 +41,22 @@ abstract class AbstractModel
         return $this;
     }
 
-    
-    public function getItem($itemArrayOrObject, $itemAttrConfig = array())
+    public function getItemParams()
     {
-        if($this->item){
+        return $this->itemParams;
+    }
+
+    public function setItemParams($params)
+    {
+        $this->itemParams = $params;
+        return $this;
+    }
+
+
+    
+    public function getItem($itemArrayOrObject = null, $itemAttrConfig = array())
+    {
+        if(!$itemArrayOrObject && $this->item){
             return $this->item;
         }
 
@@ -62,6 +76,17 @@ abstract class AbstractModel
     public function setItem(AbstractItem $item)
     {
         $this->item = $item;
+        return $this;
+    }
+
+    public function getItemListParams()
+    {
+        return $this->itemListParams;
+    }
+
+    public function setItemListParams($params)
+    {
+        $this->itemListParams = $params;
         return $this;
     }
 

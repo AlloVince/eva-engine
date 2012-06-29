@@ -17,14 +17,7 @@ class PostController extends RestfulModuleController
         $id = $this->getEvent()->getRouteMatch()->getParam('id');
 
         $postModel = Api::_()->getModel('Blog\Model\Post');
-        $postTable = $postModel->getItemTable();
-        $postinfo = $postTable->find($id);
-        $postinfo = $postModel->getItemArray($postinfo, array(
-            'Url' => array('urlName', 'getUrl', 'callback'),
-            'Text' => array(
-                'contentHtml' => array('contentHtml', 'getContentHtml'),
-            ),
-        ));
+        $postinfo = $postModel->setItemParams($id)->getPost();
         return array(
             //'form' => $form,
             'post' => $postinfo,

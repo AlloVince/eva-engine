@@ -21,6 +21,12 @@ class BlogController extends RestfulModuleController
         $postTable = $postModel->getItemTable();
         $posts = $postTable->enableCount()->order('id DESC')->page($page)->find('all');
         $paginator = $postModel->getPaginator();
+
+        /*
+        $meta = new \Zend\Db\Metadata\Metadata(Api::_()->getDbAdapter());
+        $columns = $meta->getColumns('eva_blog_posts');
+        p($columns);
+        */
         return array(
             'posts' => $posts->toArray(),
             'paginator' => $paginator,
