@@ -11,6 +11,13 @@ class TextForm extends Form
     );
 
     protected $baseElements = array(
+        'post_id' => array(
+            'name' => 'post_id',
+            'attributes' => array(
+                'type' => 'hidden',
+            ),
+        ),
+
         'content' => array(
             'name' => 'content',
             'attributes' => array(

@@ -28,6 +28,11 @@ class Form extends \Zend\Form\Form
 
     protected $fieldsMap = array();
 
+    protected $subForms = array();
+
+    public function setSubForms(array $subForms = array())
+    {
+    }
 
     //TODO: $form->get('title') when title is null should throw a new Exception 
 
@@ -229,6 +234,7 @@ class Form extends \Zend\Form\Form
 
     public function restful()
     {
+        //TODO: restful input name should be able to custom
         return sprintf('<input type="hidden" name="_method" value="%s">', $this->restfulMethod);
     }
 

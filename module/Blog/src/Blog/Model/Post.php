@@ -27,9 +27,11 @@ class Post extends AbstractModel
         'getPost',
         'getPost.post',
         'getPost.postcache',
+        'getPostList.precache',
         'getPostList.pre',
         'getPostList',
         'getPostList.post',
+        'getPostList.postcache',
     );
 
     protected $auto = array(
@@ -116,6 +118,20 @@ class Post extends AbstractModel
         $this->getEvent()->trigger('getPost.postcache', $this);
 
         return $this->item = $post;
+    }
+
+    public function getPosts()
+    {
+    
+        $this->getEvent()->trigger('getPostList.precache', $this);
+
+
+        $params = $this->getItemListParams();
+        $itemTable = $this->getItemTable();
+        $posts = $itemTable->enableCount()->order('id DESC')->page($page)->find('all');
+
+        $this->getEvent()->trigger('getPost.postcache', $this);
+        return $this->itemList = $posts;
     }
 
 }
