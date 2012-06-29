@@ -21,7 +21,6 @@ class BlogController extends RestfulModuleController
         $postTable = $postModel->getItemTable();
         $posts = $postTable->enableCount()->order('id DESC')->page($page)->find('all');
         $paginator = $postModel->getPaginator();
-        p(\Eva\Stdlib\String\Hash::uniqueHash());
         return array(
             'posts' => $posts->toArray(),
             'paginator' => $paginator,

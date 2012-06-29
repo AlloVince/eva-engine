@@ -23,10 +23,8 @@ class PostController extends RestfulModuleController
             'Url' => array('urlName', 'getUrl', 'callback'),
             'Text' => array(
                 'contentHtml' => array('contentHtml', 'getContentHtml'),
-                //'MetaKeywordsArray' => array('metaKeyword', 'getMetaKeywordArray') 
             ),
         ));
-
         return array(
             //'form' => $form,
             'post' => $postinfo,

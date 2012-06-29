@@ -78,6 +78,11 @@ class AbstractItem
                 }
             
             } else {
+
+                $functionName = 'get' . $attrName;
+                if(method_exists($this, $functionName)){
+                    $item[$attrName] = $this->$functionName();
+                }
                 foreach($attrConfig as $subAttrName => $subAttrConfig){
                     $item[$attrName] = $this->handlerConfig($subAttrName, $subAttrConfig, $item[$attrName]);
                 }
