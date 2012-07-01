@@ -47,6 +47,9 @@ class TextForm extends Form
         'content' => array(
             'name' => 'content',
             'required' => true,
+            'filters' => array(
+                array('name' => 'StringTrim'),
+            ),
         ),
     );
 }

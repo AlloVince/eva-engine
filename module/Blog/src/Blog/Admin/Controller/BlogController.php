@@ -34,9 +34,7 @@ class BlogController extends RestfulModuleController
     {
         $id = (int)$this->getEvent()->getRouteMatch()->getParam('id');
         $postModel = Api::_()->getModel('Blog\Model\Post');
-        $postTable = $postModel->getItemTable();
-        $postinfo = $postTable->find($id);
-        $postinfo = $postModel->getItemArray($postinfo);
+        $postinfo = $postModel->setItemParams($id)->getPost();
         return array(
             'post' => $postinfo,
         );
@@ -47,9 +45,11 @@ class BlogController extends RestfulModuleController
         $request = $this->getRequest();
         $postData = $request->post();
         $form = new Form\PostForm();
-        $form->setSubforms(array(
+
+        $subForms = array(
             'Text' => array('Blog\Form\TextForm'),
-        ))->init();
+        );
+        $form->setSubforms($subForms)->init();
 
         $form->enableFilters()->setData($postData);
         if ($form->isValid()) {
@@ -57,8 +57,8 @@ class BlogController extends RestfulModuleController
             $postData = $form->getData();
             $postModel = Api::_()->getModel('Blog\Model\Post');
             $postData = $form->fieldsMap($postData, true);
-            //$postId = $postModel->setData($postData)->createPost();
-            //$this->redirect()->toUrl('/admin/blog/' . $postId);
+            $postId = $postModel->setData($postData, $subForms)->createPost();
+            $this->redirect()->toUrl('/admin/blog/' . $postId);
 
         } else {
             

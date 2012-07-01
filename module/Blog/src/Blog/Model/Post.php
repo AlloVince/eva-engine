@@ -10,6 +10,8 @@ class Post extends AbstractModel
 
     protected $data;
 
+    protected $subItems;
+
     protected $user;
 
     protected $events = array(
@@ -34,10 +36,6 @@ class Post extends AbstractModel
         'getPostList.postcache',
     );
 
-    protected $auto = array(
-        'createPostByAdmin'
-    );
-
     public function setUser($user)
     {
         $this->user = $user;
@@ -48,7 +46,7 @@ class Post extends AbstractModel
         return $this->user;
     }
 
-    public function setData(array $data = array())
+    public function setData(array $data = array(), array $subItemsMap = array())
     {
         $this->data = $data;
         return $this;
@@ -71,10 +69,11 @@ class Post extends AbstractModel
         ));
         $itemTable = $this->getItemTable();
         $itemTable->create($data);
+        $postId = $itemTable->getLastInsertValue();
 
         $this->getEvent()->trigger('createPost.post', $this);
 
-        return $itemTable->getLastInsertValue();
+        return $postId;
     }
 
     public function getPost()

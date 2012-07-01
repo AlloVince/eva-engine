@@ -169,6 +169,7 @@ class Form extends \Zend\Form\Form
             } else {
                 $this->bind(new \ArrayObject($values));
             }
+            $this->bindValues();
         }
 
         return $this;
@@ -176,12 +177,12 @@ class Form extends \Zend\Form\Form
 
     public function enableFilters(array $filterOptions = array())
     {
-        $inputFilter = new InputFilter;
 
         $filters = array_merge($this->baseFilters, $this->mergeFilters, $filterOptions);
 
 
         if(!$filters){
+            $inputFilter = new InputFilter;
             $this->setInputFilter($inputFilter);
             return $this;
         }
@@ -290,6 +291,32 @@ class Form extends \Zend\Form\Form
     {
         //TODO: restful input name should be able to custom
         return sprintf('<input type="hidden" name="_method" value="%s">', $this->restfulMethod);
+    }
+
+    public function populateValues($data)
+    {
+        if (!is_array($data) && !$data instanceof Traversable) {
+            throw new Exception\InvalidArgumentException(sprintf(
+                '%s expects an array or Traversable set of data; received "%s"',
+                __METHOD__,
+                (is_object($data) ? get_class($data) : gettype($data))
+            ));
+        }
+
+        foreach ($data as $name => $value) {
+            if (!$this->has($name)) {
+                continue;
+            }
+
+            $element = $this->get($name);
+            //Fixed if bind value is ArrayObject;
+            if ($element instanceof \Zend\Form\FieldsetInterface && (is_array($value) || $value instanceof \ArrayObject)) {
+                $element->populateValues((array) $value);
+                continue;
+            }
+
+            $element->setAttribute('value', $value);
+        }
     }
 
     /*
