@@ -53,9 +53,18 @@ class Input extends \Zend\Form\View\Helper\AbstractHelper
         $elementType = $options['type'];
         unset($options['type']);
 
+        //Support Subform
+        if($subFormName = $element->getAttribute("data-subform-name")){
+            $name = $element->getName();
+            if($name){
+                $element->setName($subFormName . '[' . $name . ']');
+                //$attibutes = $element->getAttributes();
+                //unset($attibutes['data-subform-name']);
+                //$element->setAttributes($attibutes);
+            }
+        }
 
         if($options){
-
             //NOTE: clone element not effect to form original element
             //$element = clone $element;
             foreach($options as $key => $value){

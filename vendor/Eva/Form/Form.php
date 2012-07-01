@@ -24,11 +24,13 @@ class Form extends \Zend\Form\Form
 
     protected $idPrefix;
 
-    protected $hasIdPrefix = true;
-
     protected $fieldsMap = array();
 
     protected $subForms = array();
+
+    protected $elementInited = false;
+    protected $subFormInited = array();
+    //protected $valuesInited = false;
 
     public function getMergedElements()
     {
@@ -55,6 +57,11 @@ class Form extends \Zend\Form\Form
 
     protected function addSubForm($formName, array $subFormConfig = array()) 
     {
+        //Sub form will be allow init once
+        if(isset($this->subFormInited[$formName]) && true === $this->subFormInited[$formName]){
+            return $this;
+        }
+
         $subFormClass = $subFormConfig[0];
         $subForm = new $subFormClass;
         $this->subElements[$formName] = $subElements = $subForm->getMergedElements();
@@ -63,8 +70,7 @@ class Form extends \Zend\Form\Form
         $fieldset = new \Zend\Form\Fieldset($formName);
         $factory = $this->getFormFactory();
         foreach($subElements as $subElementKey => $subElement){
-            $subElementKey = $formName . '[' . $subElementKey . ']';
-            $subElement['name'] = $subElementKey;
+            $subElement['attributes']['data-subform-name'] = $formName;
             $fieldset->add($factory->create($subElement));
         }
         $this->add($fieldset);
@@ -76,34 +82,11 @@ class Form extends \Zend\Form\Form
             )
         );
 
-        //p($this->baseFilters);
-
-
-        /*
-        $newSubElements = array();
-        foreach($subElements as $subElementKey => $subElement){
-            $subElementKey = $formName . '[' . $subElementKey . ']';
-            $subElement['name'] = $subElementKey;
-            $newSubElements[$subElementKey] = $subElement;
-        }
-        unset($subElements);
-
-        $newSubFilters = array();
-        foreach($subFilters as $filterKey => $subFilter){
-            $subFilterKey = $formName . '[' . $filterKey . ']';
-            $subFilter['name'] = $subFilterKey;
-            $newSubFilters[$subFilterKey] = $subFilter;
-        }
-        unset($subFilters);
-
-        $this->baseElements = array_merge($this->baseElements, $newSubElements);
-        $this->baseFilters = array_merge($this->baseFilters, $newSubFilters);
-        */
+        $this->subFormInited[$formName] = true;
         return $this; 
     }
 
     //TODO: $form->get('title') when title is null should throw a new Exception 
-
     public function fieldsMap($data = array(), $quickMode = false, $skipFieldStart = '_')
     {
         if(is_object($data)){
@@ -169,25 +152,25 @@ class Form extends \Zend\Form\Form
         if($action){
             $this->setAttribute('action', $action);
         }
-        $values = $options['values'];
 
-        $elements = array_merge($this->baseElements, $this->mergeElements);
-    
-        if(is_object($values)){
+        if(false === $this->elementInited){
+            $elements = array_merge($this->baseElements, $this->mergeElements);
             foreach($elements as $name => $element){
-                if(isset($values->$name)){
-                    $element['attributes']['value'] = $values->$name;
-                }
                 $this->add($element);
             }
-        } else {
-            foreach($elements as $name => $element){
-                if(isset($values[$name])){
-                    $element['attributes']['value'] = $values[$name];
-                }
-                $this->add($element);
+            $this->elementInited = true;
+        }
+
+
+        $values = $options['values'];
+        if($values){
+            if(is_object($values)){
+                $this->bind($values);
+            } else {
+                $this->bind(new \ArrayObject($values));
             }
         }
+
         return $this;
     }
 
@@ -240,9 +223,9 @@ class Form extends \Zend\Form\Form
     }
      */
 
+    /*
     public function mergeInvalid()
     {
-        /*
         $inputFilter = $this->getInputFilter();
         if(!$inputFilter) {
             return $this;
@@ -256,9 +239,10 @@ class Form extends \Zend\Form\Form
                 $elements[$key]->setMessages($invalid->getMessages());
             }
         }
-        */
         return $this;
     }
+    */
+
 
     public function setMethod($method = '')
     {

@@ -6,26 +6,20 @@ $this->headTitle($title, 'SET');
 if($this->form){
 	$form = $this->form;
 } else {
-	$form = Eva\Api::_()->getForm('\Blog\Form\PostForm');
+    $form = Eva\Api::_()->getForm('\Blog\Form\PostForm');
 }
-
-
 $form->setSubForms(array(
     'Text' => array('Blog\Form\TextForm'),
 ));
-
 $form->init(array(
-	'action' => $this->uri('/admin/blog/'),
-	'method' => $method,
-	'values' => $this->post
+    'action' => $this->uri('/admin/blog/'),
+    'method' => $method,
+    'values' => $this->post
 ));
-
-
-$form->mergeInvalid();
 ?>
 
 <div class="page-header">
-<h1><?=$title?></h1>
+    <h1><?=$title?></h1>
 </div>
 
 <form class="form-horizontal" <?=$this->formAttr($form)?>>
@@ -82,16 +76,16 @@ $form->mergeInvalid();
             </div>
         </div>
 
-        <div class="control-group <?=$form->subForm('Text')->get('Text[content]')->getMessages() ? 'error' : '';?>">
-            <label for="textarea" class="control-label"><?=$this->formLabel($form->subForm('Text')->get('Text[content]'));?></label>
+        <div class="control-group <?=$form->subForm('Text')->get('content')->getMessages() ? 'error' : '';?>">
+            <label for="textarea" class="control-label"><?=$this->formLabel($form->subForm('Text')->get('content'));?></label>
             <div class="controls">
-                <?=$this->input($form->subForm('Text')->get('Text[content]'), array(
+                <?=$this->input($form->subForm('Text')->get('content'), array(
                     'type' => 'formTextarea',
                     'class' => 'span10',
                     'rows' => '15',
                 ))?>
             </div>
-            <?foreach($form->subForm('Text')->get('Text[content]')->getMessages() as $message):?>
+            <?foreach($form->subForm('Text')->get('content')->getMessages() as $message):?>
             <p class="help-block"><?=$message?></p>
             <?endforeach?>
         </div>
