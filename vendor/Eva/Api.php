@@ -63,18 +63,13 @@ class Api
         return $app->getConfiguration();
     }
 
-    public function setConfig($config)
-    {
-    }
-
     public function getAppConfig()
     {
         if($this->appConfig){
             return $this->appConfig;
         }
 
-        p($this->event);
-        exit;
+        return $this->event->getApplication()->getServiceManager()->get('ApplicationConfiguration');
     }
 
 

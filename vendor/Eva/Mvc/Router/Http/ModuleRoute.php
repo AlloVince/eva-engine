@@ -34,17 +34,6 @@ class ModuleRoute implements \Zend\Mvc\Router\Http\RouteInterface
         if($appConfig && isset($appConfig['modules'])){
             return $appConfig['modules'];
         }
-        /*
-        if(false === \Eva\Registry::isRegistered("appConfig")){
-            return array();
-        }
-
-        $appConfig = \Eva\Registry::get("appConfig");
-        if($appConfig && isset($appConfig['modules'])){
-            return $appConfig['modules'];
-        }
-        */
-
         return array();
     }
 
@@ -60,17 +49,10 @@ class ModuleRoute implements \Zend\Mvc\Router\Http\RouteInterface
             return $this->protectedNamespaces;
         }
 
-        /*
-        if(false === \Eva\Registry::isRegistered("appConfig")){
-            return array();
-        }
-
-        $appConfig = \Eva\Registry::get("appConfig");
+        $appConfig = \Eva\Api::_()->getAppConfig();
         if($appConfig && isset($appConfig['protected_module_namespace'])){
             return $appConfig['protected_module_namespace'];
         }
-        */
-
         return array();
     }
 

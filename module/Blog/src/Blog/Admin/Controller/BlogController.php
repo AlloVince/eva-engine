@@ -17,14 +17,14 @@ class BlogController extends RestfulModuleController
     public function restIndexBlog()
     {
         $request = $this->getRequest();
-        $page = $request->query()->get('page', 1);
+        $page = $request->getQuery()->get('page', 1);
 
         $postModel = Api::_()->getModel('Blog\Model\Post');
         $postTable = $postModel->getItemTable();
         $posts = $postTable->enableCount()->order('id DESC')->page($page)->find('all');
         $paginator = $postModel->getPaginator();
         return array(
-            'page' => $request->query()->get('page', 1),
+            'page' => $page,
             'posts' => $posts->toArray(),
             'paginator' => $paginator,
         );
