@@ -7,6 +7,8 @@ use Eva\Mvc\Model\AbstractItem,
 
 class Item extends AbstractItem
 {
+    protected $date;
+
     public function getCreateTime()
     {
         $this->date = $date = new \Eva\Date\Date();

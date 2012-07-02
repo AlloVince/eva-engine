@@ -62,21 +62,22 @@ class AbstractItem
                         $functionName,
                     ), array($itemInputAttr));
 
-
-                    /*
-                    p(array(
-                        'attrName' => $attrName,
-                        'class' => get_class($class),
-                        'functionName' => $functionName,
-                        'itemInputAttr' => $itemInputAttr,
-                        'res' => call_user_func_array(array(
-                            $class,
-                            $functionName,
-                        ), array($itemInputAttr)),
-                    ));
-                    */
                 }
-            
+
+                /*
+                p(array(
+                    'handlerType' => $handlerType,
+                    'attrName' => $attrName,
+                    'class' => get_class($class),
+                    'functionName' => $functionName,
+                    'itemInputAttr' => $itemInputAttr,
+                    'res' => call_user_func_array(array(
+                        $class,
+                        $functionName,
+                    ), array($itemInputAttr)),
+                ));
+                */
+
             } else {
 
                 $functionName = 'get' . $attrName;

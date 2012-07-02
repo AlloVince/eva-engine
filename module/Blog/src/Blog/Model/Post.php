@@ -36,39 +36,6 @@ class Post extends AbstractModel
         'getPostList.postcache',
     );
 
-    /*
-    public function setData(array $data = array(), array $subItemsMap = array())
-    {
-        if($subItemsMap){
-            $subData = array();
-            foreach($data as $key => $value){
-                if(!isset($subItemsMap[$key])){
-                    continue;
-                }
-                $subData[$key] = $value;
-                unset($data[$key]);
-            }
-            $this->subData = $subData;
-        }
-        $this->data = $data;
-        return $this;
-    }
-
-    public function getData()
-    {
-        return $this->data;
-    }
-
-    public function getSubData($dataKey)
-    {
-        if(isset($this->subData[$dataKey])){
-            return $this->subData[$dataKey];
-        }
-
-        return $this->subData;
-    }
-    */
-
     public function createPost()
     {
         $this->getEvent()->trigger('createPost.pre', $this);
@@ -101,6 +68,41 @@ class Post extends AbstractModel
         
 
         $this->getEvent()->trigger('createPost.post', $this);
+
+        return $postId;
+    }
+
+    public function savePost()
+    {
+        $this->getEvent()->trigger('savePost.pre', $this);
+
+        $item = $this->setItemAttrMap(array(
+            'urlName' => array('urlName', 'getUrlName'),
+            'updateTime' => array('updateTime', 'getUpdateTime'),
+        ))->getItemArray();
+
+        $postId = $item['id'];
+
+        if(!$postId){
+            throw new \Core\Model\Exception\InvalidArgumentException(sprintf(
+                '%s post id not found',
+                __METHOD__
+            ));
+        }
+        $itemTable = $this->getItemTable();
+        $itemTable->where(array('id' => $postId))->save($item);
+
+        if($postId && $this->getSubItem('Text')){
+            $textData = $this->getSubItem('Text');
+            $textTable = Api::_()->getDbTable('Blog\DbTable\Texts');
+            $textItem = $this->getItemClass($textData, array(
+                'post_id' => array('post_id', 'getPostId')
+            ), 'Blog\Model\Text\Item');
+            $textData = $textItem->toArray();
+            $textTable->where(array('post_id' => $postId))->save($textData);
+        }
+
+        $this->getEvent()->trigger('savePost.post', $this);
 
         return $postId;
     }

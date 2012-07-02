@@ -76,14 +76,18 @@ class BlogController extends RestfulModuleController
         $request = $this->getRequest();
         $postData = $request->post();
         $form = new Form\PostForm();
+        $subForms = array(
+            'Text' => array('Blog\Form\TextForm'),
+        );
+        $form->setSubforms($subForms)->init();
+
         $form->enableFilters()->setData($postData);
         if ($form->isValid()) {
 
             $postData = $form->getData();
-            $postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
+            $postModel = Api::_()->getModel('Blog\Model\Post');
             $postData = $form->fieldsMap($postData, true);
-            $postTable->where("id = {$postData['id']}")->save($postData);
-
+            $postId = $postModel->setSubItemMap($subForms)->setItem($postData)->savePost();
             $this->redirect()->toUrl('/admin/blog/' . $postData['id']);
 
         } else {

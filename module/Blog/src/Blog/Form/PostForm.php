@@ -121,12 +121,10 @@ class PostForm extends Form
             ),
         ),
 
-        /*
         'urlName' =>     array(
             'name' => 'urlName',
             'required' => true,
             'filters' => array(
-                array('name' => 'StripTags'),
                 array('name' => 'StringTrim'),
             ),
             'validators' => array(
@@ -134,19 +132,11 @@ class PostForm extends Form
                     'name' => 'StringLength',
                     'options' => array(
                         'encoding' => 'UTF-8',
-                        'min' => 1,
                         'max' => 100,
-                    ),
-                ),
-                array(
-                    'name' => 'Regex',
-                    'options' => array(
-                        'pattern' => '/\w+/'
                     ),
                 ),
             ),
         ),
-        */
 
         'status' => array(
             'name' => 'status',
@@ -157,13 +147,6 @@ class PostForm extends Form
             'name' => 'visibility',
             'required' => true,
         ),
-
-        /*
-        'content' => array(
-            'name' => 'content',
-            'required' => true,
-        ),
-        */
 
         'codeType' => array(
             'name' => 'codeType',
