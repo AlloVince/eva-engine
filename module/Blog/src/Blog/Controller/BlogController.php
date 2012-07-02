@@ -15,7 +15,7 @@ class BlogController extends RestfulModuleController
     public function restIndexBlog()
     {
         $request = $this->getRequest();
-        $page = $request->query()->get('page', 1);
+        $page = $request->getQuery()->get('page', 1);
 
         $postModel = Api::_()->getModel('Blog\Model\Post');
         $postTable = $postModel->getItemTable();

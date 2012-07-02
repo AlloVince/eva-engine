@@ -40,7 +40,7 @@ abstract class RestfulModuleController extends \Zend\Mvc\Controller\AbstractRest
                 break;
             case 'post':
                 //POST method could pretend as put or delete method
-                $postParams = $request->post();
+                $postParams = $request->getPost();
                 $methodRecover = isset($postParams['_method']) && $postParams['_method'] ? $postParams['_method'] : '';
                 if($methodRecover == 'put' || $methodRecover == 'delete'){
                     $method = $methodRecover;
@@ -156,7 +156,7 @@ abstract class RestfulModuleController extends \Zend\Mvc\Controller\AbstractRest
             $return = $this->getList();
             break;
         case 'post':
-            $return = $this->create($request->post()->toArray());
+            $return = $this->create($request->getPost()->toArray());
             break;
         case 'put':
             if (null === $id = $routeMatch->getParam('id')) {

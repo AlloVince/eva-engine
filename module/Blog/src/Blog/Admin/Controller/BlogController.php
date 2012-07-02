@@ -43,7 +43,7 @@ class BlogController extends RestfulModuleController
     public function restPostBlog()
     {
         $request = $this->getRequest();
-        $postData = $request->post();
+        $postData = $request->getPost();
         $form = new Form\PostForm();
 
         $subForms = array(
@@ -74,7 +74,7 @@ class BlogController extends RestfulModuleController
     public function restPutBlog()
     {
         $request = $this->getRequest();
-        $postData = $request->post();
+        $postData = $request->getPost();
         $form = new Form\PostForm();
         $subForms = array(
             'Text' => array('Blog\Form\TextForm'),
@@ -102,8 +102,8 @@ class BlogController extends RestfulModuleController
     public function restDeleteBlog()
     {
         $request = $this->getRequest();
-        $postData = $request->post();
-        $callback = $request->post()->get('callback');
+        $postData = $request->getPost();
+        $callback = $request->getPost()->get('callback');
 
         $form = new Form\PostDeleteForm();
         $form->enableFilters()->setData($postData);
