@@ -1,5 +1,5 @@
 body {
-	background: url(../img/bg.png) repeat-y;
+	background: url(img/bg.png) repeat-y;
 }
 
 .container {
@@ -345,3 +345,4 @@ h1, h2, h3, h4, h5, h6 {
 		line-height: 1;
 	}
 }
+

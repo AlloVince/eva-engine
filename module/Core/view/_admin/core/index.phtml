@@ -14,9 +14,8 @@ $form->init(array(
 ));
 ?>
 
-
-<div class="container">
-	<form class="form-vertical" <?=$this->formAttr($form)?> >
+<div class="slate">
+    <form class="form-horizontal" <?=$this->formAttr($form)?> >
 		<?=$form->restful();?>
 		<header class="page-header">
 			<h3>Admin Login</h3>
@@ -43,6 +42,5 @@ $form->init(array(
 			<button class="btn btn-primary" type="submit">Login</button>
 		  </div>
 		</fieldset>
-	</form>
+    </form>
 </div>
-

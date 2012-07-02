@@ -9,12 +9,10 @@ $form->init(array(
 	'method' => 'delete',
 	'values' => $this->post
 ));
-
-$form->mergeInvalid();
 ?>
 
 <?if($post):?>
-<div class="alert alert-block container">
+<div class="alert alert-block">
    <h2 class="alert-heading"><?=$title?></h2>
    <p>Post <?=$post['title']?> will be deleted, are you sure?</p>
    <p>

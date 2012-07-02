@@ -9,28 +9,151 @@
     <script src="<?=$this->link('/lib/js/html5shiv/html5shiv.min.js')?>"></script>
 	<![endif]-->
     <?=$this->headMeta()?>
-    <link href="<?=$this->link('/lib/css/bootstrap/bootstrap.min.css')?>" media="all" rel="stylesheet" type="text/css" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://fonts.googleapis.com/css?family=Oxygen|Marck+Script" rel="stylesheet" type="text/css">
+    <link href="<?=$this->link('/src/admin/css/bootstrap.css')?>" media="all" rel="stylesheet" type="text/css" />
+    <link href="<?=$this->link('/lib/css/fontawesome/css/font-awesome.css')?>" media="all" rel="stylesheet" type="text/css" />
+    <link href="<?=$this->link('/src/admin/css/admin.css')?>" media="all" rel="stylesheet" type="text/css" />
 	<style>
+    /*
 	body, h1, h2, h3, h4, h5, h6  {
 		font-family:Microsoft YaHei,Trebuchet MS, Verdana, Helvetica, Arial, sans-serif;
 	}
+    */
 	</style>
 </head>
 
 <body class="">
-	<div class="navbar"><div class="navbar-inner"><div class="container">
-    <a class="brand" href="/admin/">Admin Panel</a>
-    <ul class="nav">
-	    <li><a href="/admin/blog/">Blog</a></li>
-	</ul>
-    <ul class="nav pull-right">
-    	<li class="active"><a href="/">View Site</a></li>
-    </ul>
-	</div></div></div>
 
-<div id="page" class="page">
-<?=$this->content;
-?>
-</div><!-- #page end-->
+    <div class="container">
+
+        <div class="row">
+
+            <div class="span2">
+
+                <div class="main-left-col">
+
+                    <h1>Eva Engine</h1>
+
+                    <ul class="side-nav">
+                        <li class="active">
+                        <a href="<?=$this->uri('/admin/')?>"><i class="icon-home"></i> Dashboard</a>
+                        </li>
+                        <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="collapse" data-target="#website-dropdown" href="#"><i class="icon-sitemap"></i> Blog <b class="caret"></b></a>
+                        <ul id="website-dropdown" class="collapse">
+                            <li><a href="<?=$this->uri('/admin/blog/')?>">Pages</a></li>
+                            <li><a href="<?=$this->uri('/admin/blog/category/')?>">Page Categories</a></li>
+                        </ul>
+                        </li>
+                        <!--
+                        <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="collapse" data-target="#store-dropdown" href="#"><i class="icon-shopping-cart"></i> Store <b class="caret"></b></a>
+                        <ul id="store-dropdown" class="collapse">
+                            <li><a href="listing.html">Catalogue</a></li>
+                            <li><a href="orders.html">Orders</a></li>
+                            <li><a href="listing.html">Enquiries</a></li>
+                        </ul>
+                        </li>
+                        <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="collapse" data-target="#reports-dropdown" href="#"><i class="icon-signal"></i> Reports <b class="caret"></b></a>
+                        <ul id="reports-dropdown" class="collapse">
+                            <li><a href="report.html">Sales Reports</a></li>
+                            <li><a href="report.html">Product Popularity</a></li>
+                            <li><a href="report.html">Member Registrations</a></li>
+                        </ul>
+                        </li>
+                        <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="collapse" data-target="#members-dropdown" href="#"><i class="icon-group"></i> Members <b class="caret"></b></a>
+                        <ul id="members-dropdown" class="collapse">
+                            <li><a href="listing.html">Members</a></li>
+                            <li><a href="listing.html">User Groups</a></li>
+                            <li><a href="listing.html">Permissions</a></li>
+                        </ul>
+                        </li>
+                        <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="collapse" data-target="#settings-dropdown" href="#"><i class="icon-cogs"></i> Settings <b class="caret"></b></a>
+                        <ul id="settings-dropdown" class="collapse">
+                            <li><a href="listing.html">Payment Processors</a></li>
+                            <li><a href="listing.html">Order Statuses</a></li>
+                            <li><a href="listing.html">Shipping Methods</a></li>
+                            <li><a href="listing.html">Emails</a></li>
+                        </ul>
+                        </li>
+                        <li><a href="#"><i class="icon-bullhorn"></i> Alerts <span class="badge badge-warning">2</span></a></li>
+                        <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="collapse" data-target="#help-dropdown" href="#"><i class="icon-info-sign"></i> Help <b class="caret"></b></a>
+                        <ul id="help-dropdown" class="collapse">
+                            <li><a href="content.html">FAQ</a></li>
+                            <li class="active"><a href="content.html">User Guide</a></li>
+                            <li><a href="content.html">Support</a></li>
+                        </ul>
+                        </li>
+                        -->
+                    </ul>
+                </div> <!-- end main-left-col -->
+
+            </div> <!-- end span2 -->
+
+            <div class="span10">
+
+                <div class="secondary-masthead">
+
+                    <ul class="nav nav-pills pull-right">
+                        <li>
+                        <a href="<?=$this->uri('/')?>"><i class="icon-globe"></i> View Website</a>
+                        </li>
+                        <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i> John Smith <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="profile.html">Your Profile</a></li>
+                            <li class="active"><a href="form.html">Account Settings</a></li>
+                            <li class="divider"></li>
+                            <li><a href="">Logout</a></li>
+                        </ul>
+                        </li>
+                    </ul>
+
+                    <ul class="breadcrumb">
+                        <li>
+                        <a href="#">Admin</a> <span class="divider">/</span>
+                        </li>
+                        <li class="active">Dashboard</li>
+                    </ul>
+
+                </div>
+
+                <div class="main-area dashboard">
+
+                    <div class="row">
+                        <div class="span10">
+                        <?=$this->content?>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="span10 footer">
+
+                            <p>&copy; Website Name 2012</p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div> <!-- end span10 -->
+
+        </div> <!-- end row -->
+
+    </div> <!-- end container -->
+
+
+    <script src="<?=$this->link('/lib/js/jquery/jquery.min.js')?>"></script>
+    <script src="<?=$this->link('/lib/js/bootstrap/bootstrap.min.js')?>"></script>
+
 </body>
 </html>

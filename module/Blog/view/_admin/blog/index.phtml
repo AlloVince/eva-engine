@@ -1,88 +1,128 @@
 <?
 $title = 'Posts List';
 $this->headTitle($title, 'SET');
+$lableMap = array(
+    'draft' => '',
+    'published' => 'label-success',
+    'pending' => 'label-warning',
+);
 ?>
 
-<div class="page-header">
-<h2 class="">
-	<?=$title?>
-    <small><a href="<?=$this->uri('/admin/blog/create')?>">Add New Post</a></small>
-</h2>
+<div class="row">
+    <div class="span10">
+        <div class="slate">
+            <form class="form-inline">
+                <input type="text" placeholder="Keyword..." class="input-large">
+                <select class="span2">
+                    <option value=""> - From Date - </option>
+                </select>
+                <select class="span2">
+                    <option value=""> - To Date - </option>
+                </select>
+                <select class="span2">
+                    <option value=""> - Filter - </option>
+                </select>
+                <button class="btn" type="submit">Filter Listings</button>
+            </form>
+        </div>
+    </div>
 </div>
 
-	<table class="table table-striped table-bordered table-condensed">
-	<tbody>
-	<tr>
-		<th class="twidth width_30"><input type="checkbox" id="checkall" /></th>	
-		<th>
-				Title
-		</th>
-		<th>
-				Author
-		</th>
-		<th class="twidth width_30">
-				Status
-		</th>
-		<th class="twidth width_30">
-			Comments
-		</th>
-		<th class="twidth width_30">
-				Order
-		</th>
- 		<th class="twidth width_150 centeralign">
-			 Date
-	 	</th>
-	</tr>
 
-	<?if(!$this->posts):?>
-	<tr>
-		<td colspan="8" class="noresult">
-			No post found. Click here to <a href="<?=$this->uri('/admin/postnew/'); ?>">add one</a>.
-		</td>
-	</tr>
+<div class="row">
 
-	<?else:?>
+    <div class="span10 listing-buttons">
+        <a href="<?=$this->uri('/admin/blog/create')?>" class="btn">Add New Post</a>
+    </div>
 
-	<?foreach($this->posts as $key=>$post):?>
-	<tr id="post_<?=$post['id'] ?>">
-		<td><input type="checkbox" class="checkall" name="post_ids[]" value="<?=$post['id'] ?>" /></td>	
-		<td>
-			<a href="<?=$this->uri('/admin/blog/' . $post['id'])?>" class="title"><?=$post['title'] ?></a>			
+    <div class="span10">
+        <div class="slate">
+            <div class="page-header">
+                <div class="btn-group pull-right">
+                    <button data-toggle="dropdown" class="btn dropdown-toggle">
+                        <i class="icon-edit"></i> Edit To:
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="">Draft</a></li>
+                        <li><a href="">Published</a></li>
+                        <li><a href="">Pending</a></li>
+                    </ul>
+                </div>
+                <h2><?=$title?></h2>
+            </div>
 
-			<div class="quick_edit">
-				<a href="<?=$this->uri('/blog/pages/' . $post['urlName']); ?>" class="btn">View</a>
-				<a href="<?=$this->uri('/admin/blog/' . $post['id']); ?>" class="btn">Edit</a>
-                <a href="<?=$this->uri('/admin/blog/remove/' . $post['id'], 'c', array('c' => $this->uri('/admin/blog', array('page' => $this->page)))); ?>" class="btn">Delete</a>
-			</div>
+            <table class="orders-table table">
+                <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" class="checkall" name="post_ids[]" value="" />
+                        </th>
+                        <th>Post Name</th>
+                        <th class="span1">Order</th>
+                        <th class="actions">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?if($this->posts):?>
+                    <?foreach($this->posts as $key=>$post):?>
+                    <tr id="post_<?=$post['id'] ?>">
+                        <td>
+                            <input type="checkbox" class="checkall" name="post_ids[]" value="<?=$post['id'] ?>" />
+                            <input type="hidden" name="post_id[]" class="reorder_post_id" value="<?=$post['id'] ?>" />
+                        </td>	
+                        <td>
+                            <a href="<?=$this->uri('/admin/blog/' . $post['id'])?>" class="title"><?=$post['title'] ?></a>
+                            <span class="label <?=$lableMap[$post['status']]?>"><?=$post['status']?></span>
+                            <p>
+                            <span class="meta"><?=$post['user_name'] ?> <?=$post['createTime'];?></span>
+                            </p>
+                        </td>
+                        <td>
+                            <input tabindex="<?=$key+1 ?>" type="text" class="order span1" size="2" maxlength="3" name="orderNumber[]" value="<?=$post['orderNumber'] ? $post['orderNumber'] : "0" ?>" />
+                        </td>
+                        <td class="actions">
+                            <a href="<?=$this->uri('/admin/blog/remove/' . $post['id'], 'c', array('c' => $this->uri('/admin/blog', array('page' => $this->page)))); ?>" class="btn btn-small btn-danger">Delete</a>
+                            <a href="<?=$this->uri('/blog/' . $post['id'])?>" class="btn btn-small">View</a>
+                            <a href="<?=$this->uri('/admin/blog/' . $post['id'])?>" class="btn btn-small">Edit</a>
+                        </td>
+                    </tr>
+                    <?endforeach;?>
+                    <?endif;?>
+                </tbody>
+            </table>
+        </div>
+    </div><!--span10 end-->
 
-		</td>
-		<td>
-			<?=$post['user_name'] ?>
-		</td>
-		<td>
-			<?=$post['status'] ?>
-		</td>
-		<?if($post['postUsage'] == 'post'):?>
-		<td>
-			<a href="<?=$this->uri('/admin/blog/comments/?post_id=' . $post['id']); ?>"><?=$post['commentCount'] ? $post['commentCount'] : 0?></a>
-		</td>
-		<?else:?>
-		<td></td>
-		<?endif;?>
-		<td>
-			<input type="hidden" name="post_id[]" class="reorder_post_id" value="<?=$post['id'] ?>" />
-			<input tabindex="<?=$key+1 ?>" type="text" class="order span1" size="2" maxlength="3" name="orderNumber[]" value="<?=$post['orderNumber'] ? $post['orderNumber'] : "0" ?>" />
-		</td>
-		<td class="centeralign">
-			<?=$post['createTime'];?>
-		</td>
-	</tr>
-	<?endforeach;?>
+    <!--
+    <div id="removeItem" class="modal hide fade">
+        <div class="modal-header">
+            <button data-dismiss="modal" class="close" type="button">×</button>
+            <h3>Remove Item</h3>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure you would like to remove this item?</p>
+        </div>
+        <div class="modal-footer">
+            <a data-dismiss="modal" class="btn" href="#">Close</a>
+            <a class="btn btn-danger" href="#">Remove</a>
+        </div>
+    </div>
+    -->
 
-	<?endif;?>
-	</tbody>
-	</table>
-<?if($this->paginator):?>
-<?=$this->paginator->setPath('/admin/blog/')?>
-<?=$this->widget('Core', 'widgets/paginator', $this->vars())?>
-<?endif;?>
+    <!--
+    <div class="span5 listing-buttons">
+        <button class="btn btn-info">Action</button>
+        <button class="btn btn-success">Action</button>
+        <button class="btn btn-primary">Add New Item</button>
+    </div>
+    -->
+
+    <div class="span10">
+        <?if($this->paginator):?>
+        <?=$this->paginator->setPath('/admin/blog/')?>
+        <?=$this->widget('Core', 'widgets/paginator', $this->vars())?>
+        <?endif;?>
+    </div>
+
+</div>
