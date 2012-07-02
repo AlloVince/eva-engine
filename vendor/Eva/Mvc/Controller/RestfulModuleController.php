@@ -7,7 +7,7 @@ use Eva\View\Model\ViewModel,
     Zend\Stdlib\ResponseInterface as Response,
     Zend\Mvc\MvcEvent;
 
-abstract class RestfulModuleController extends \Zend\Mvc\Controller\RestfulController
+abstract class RestfulModuleController extends \Zend\Mvc\Controller\AbstractRestfulController
 {
     protected $addResources = array();
     protected $renders = array();

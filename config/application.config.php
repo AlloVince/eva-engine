@@ -4,7 +4,6 @@ return array(
         'Core',
         'User',
         'Blog',
-        'Album',
         'Engine',
         'Scaffold',
     ),

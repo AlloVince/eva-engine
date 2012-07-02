@@ -25,6 +25,16 @@ class ModuleRoute implements \Zend\Mvc\Router\Http\RouteInterface
             return $this->moduleNames;
         }
 
+        $moduleLoaded = \Eva\Api::_()->getModuleLoaded();
+
+        if($moduleLoaded){
+            return $moduleLoaded;
+        }
+
+        if($appConfig && isset($appConfig['modules'])){
+            return $appConfig['modules'];
+        }
+        /*
         if(false === \Eva\Registry::isRegistered("appConfig")){
             return array();
         }
@@ -33,6 +43,7 @@ class ModuleRoute implements \Zend\Mvc\Router\Http\RouteInterface
         if($appConfig && isset($appConfig['modules'])){
             return $appConfig['modules'];
         }
+        */
 
         return array();
     }
@@ -49,6 +60,7 @@ class ModuleRoute implements \Zend\Mvc\Router\Http\RouteInterface
             return $this->protectedNamespaces;
         }
 
+        /*
         if(false === \Eva\Registry::isRegistered("appConfig")){
             return array();
         }
@@ -57,6 +69,7 @@ class ModuleRoute implements \Zend\Mvc\Router\Http\RouteInterface
         if($appConfig && isset($appConfig['protected_module_namespace'])){
             return $appConfig['protected_module_namespace'];
         }
+        */
 
         return array();
     }
@@ -82,11 +95,11 @@ class ModuleRoute implements \Zend\Mvc\Router\Http\RouteInterface
 
     public function match(Request $request, $pathOffset = null)
     {
-        if (!method_exists($request, 'uri')) {
+        if (!method_exists($request, 'getUri')) {
             return null;
         }
 
-        $uri  = $request->uri();
+        $uri  = $request->getUri();
         $path = $uri->getPath();
 
         //Remove last /
@@ -205,7 +218,8 @@ class ModuleRoute implements \Zend\Mvc\Router\Http\RouteInterface
             'action' => $actionName,
             'id' => $id,
         ));
-         */
+        exit;
+        */
 
         if(!$moduleName || !$moduleNamespace || !$controllerName || !$actionName){
             return null;

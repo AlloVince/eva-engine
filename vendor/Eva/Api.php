@@ -10,6 +10,7 @@ class Api
     protected static $instance;
     protected $event;
     protected $config;
+    protected $appConfig;
     protected $dbAdapter;
     protected $moduleLoaded;
     protected $di;
@@ -68,6 +69,12 @@ class Api
 
     public function getAppConfig()
     {
+        if($this->appConfig){
+            return $this->appConfig;
+        }
+
+        p($this->event);
+        exit;
     }
 
 

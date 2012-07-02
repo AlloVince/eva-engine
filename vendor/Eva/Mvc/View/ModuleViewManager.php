@@ -51,11 +51,12 @@ class ModuleViewManager extends \Zend\Mvc\View\ViewManager
         $application  = $event->getApplication();
         $services     = $application->getServiceManager();
         $config       = $services->get('Configuration');
-        $events       = $application->events();
+        $events       = $application->getEventManager();
         $sharedEvents = $events->getSharedManager();
 
         //Fixed config instanceof here
-        $this->config   = isset($config['view_manager']) && (is_array($config['view_manager']) || $config['view_manager'] instanceof \Zend\Config\Config)
+        $this->config   = isset($config['view_manager']) && (is_array($config['view_manager']) || $config['view_manager'] instanceof ArrayAccess)
+        //$this->config   = isset($config['view_manager']) && (is_array($config['view_manager']) || $config['view_manager'] instanceof \Zend\Config\Config)
                         ? $config['view_manager'] 
                         : array();
         $this->services = $services;
@@ -68,6 +69,7 @@ class ModuleViewManager extends \Zend\Mvc\View\ViewManager
         $injectTemplateListener  = new \Eva\Mvc\View\InjectTemplateListener();
         $injectViewModelListener = new \Zend\Mvc\View\InjectViewModelListener();
 
+        $this->registerMvcRenderingStrategies($events);
         $this->registerViewStrategies();
 
         $events->attach($routeNotFoundStrategy);

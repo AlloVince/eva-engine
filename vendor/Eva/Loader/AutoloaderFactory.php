@@ -20,7 +20,7 @@
 
 
 namespace Eva\Loader;
-require_once 'Zend/Loader/AutoloaderFactory.php';
+//require_once 'Zend/Loader/AutoloaderFactory.php';
 
 /**
  * @category   Zend

@@ -5,7 +5,7 @@ use Eva\View\Model\ViewModel,
     Zend\Http\PhpEnvironment\Response as HttpResponse,
     Zend\Mvc\MvcEvent;
 
-abstract class RestfulController extends \Zend\Mvc\Controller\RestfulController
+abstract class RestfulController extends \Zend\Mvc\Controller\AbstractRestfulController
 {
     protected $addResources = array();
     protected $renders = array();

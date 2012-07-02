@@ -1,6 +1,3 @@
-[submodule "vendor/Zend"]
-	path = vendor/Zend
-	url = https://github.com/AlloVince/evaengine-libs-zend.git
 [submodule "vendor/Sphinx"]
 	path = vendor/Sphinx
 	url = https://github.com/AlloVince/evaengine-libs-sphinx.git
@@ -13,3 +10,6 @@
 [submodule "vendor/Markdown"]
 	path = vendor/Markdown
 	url = https://github.com/AlloVince/evaengine-libs-markdown.git
+[submodule "vendor/zf2"]
+	path = vendor/zf2
+	url = https://github.com/AlloVince/zf2.git
