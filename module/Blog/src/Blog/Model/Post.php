@@ -2,15 +2,15 @@
 
 namespace Blog\Model;
 
-use Eva\Mvc\Model\AbstractModel;
+use Eva\Api,
+    Eva\Mvc\Model\AbstractModel;
 
 class Post extends AbstractModel
 {
     protected $itemTableName = 'Blog\DbTable\Posts';
 
     protected $data;
-
-    protected $subItems;
+    protected $subData;
 
     protected $user;
 
@@ -36,18 +36,20 @@ class Post extends AbstractModel
         'getPostList.postcache',
     );
 
-    public function setUser($user)
-    {
-        $this->user = $user;
-    }
-
-    public function getUser()
-    {
-        return $this->user;
-    }
-
+    /*
     public function setData(array $data = array(), array $subItemsMap = array())
     {
+        if($subItemsMap){
+            $subData = array();
+            foreach($data as $key => $value){
+                if(!isset($subItemsMap[$key])){
+                    continue;
+                }
+                $subData[$key] = $value;
+                unset($data[$key]);
+            }
+            $this->subData = $subData;
+        }
         $this->data = $data;
         return $this;
     }
@@ -57,19 +59,46 @@ class Post extends AbstractModel
         return $this->data;
     }
 
+    public function getSubData($dataKey)
+    {
+        if(isset($this->subData[$dataKey])){
+            return $this->subData[$dataKey];
+        }
+
+        return $this->subData;
+    }
+    */
+
     public function createPost()
     {
         $this->getEvent()->trigger('createPost.pre', $this);
 
-        $data = $this->getData();
-        $data = $this->getItemArray($data, array(
+        $item = $this->setItemAttrMap(array(
             'urlName' => array('urlName', 'getUrlName'),
             'createTime' => array('createTime', 'getCreateTime'),
             'updateTime' => array('updateTime', 'getUpdateTime'),
-        ));
+        ))->getItemArray();
+
         $itemTable = $this->getItemTable();
-        $itemTable->create($data);
+        $itemTable->create($item);
         $postId = $itemTable->getLastInsertValue();
+
+
+        if($postId){
+            $item['id'] = $postId;
+            $this->item = $item;
+        }
+
+        if($postId && $this->getSubItem('Text')){
+            $textData = $this->getSubItem('Text');
+            $textTable = Api::_()->getDbTable('Blog\DbTable\Texts');
+            $textItem = $this->getItemClass($textData, array(
+                'post_id' => array('post_id', 'getPostId')
+            ), 'Blog\Model\Text\Item');
+            $textData = $textItem->toArray();
+            $textTable->create($textData);
+        }
+        
 
         $this->getEvent()->trigger('createPost.post', $this);
 
@@ -89,7 +118,6 @@ class Post extends AbstractModel
             ));
         }
 
-
         $this->getEvent()->trigger('getPost.pre', $this);
 
         $itemTable = $this->getItemTable();
@@ -103,12 +131,12 @@ class Post extends AbstractModel
         $this->getEvent()->trigger('getPost', $this);
 
         if($post) {
-            $this->item = $post = $this->getItemArray($post, array(
+            $this->item = $post = $this->setItemAttrMap(array(
                 'Url' => array('urlName', 'getUrl', 'callback'),
                 'Text' => array(
                     'contentHtml' => array('contentHtml', 'getContentHtml'),
                 ),
-            ));
+            ))->getItemArray();
         }
         
         $this->getEvent()->trigger('getPost.post', $this);

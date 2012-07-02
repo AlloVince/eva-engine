@@ -4,6 +4,8 @@ namespace Eva\Mvc\Model;
 
 use Eva\Api,
     Eva\Db\TableGateway\TableGateway,
+    Eva\Mvc\Model\AbstractItem,
+    Eva\Mvc\Model\AbstractItemList,
     Zend\Mvc\MvcEvent;
 
 abstract class AbstractModel
@@ -21,8 +23,12 @@ abstract class AbstractModel
     protected $itemName;
     protected $itemParams;
     protected $item;
+    protected $itemAttrMap = array();
     protected $itemListParams;
     protected $itemList;
+
+    protected $subItemsMap;
+    protected $subItems;
 
     protected $paginator;
 
@@ -53,31 +59,93 @@ abstract class AbstractModel
     }
 
 
-    
-    public function getItem($itemArrayOrObject = null, $itemAttrConfig = array())
+    public function setItem($item)
     {
-        if(!$itemArrayOrObject && $this->item){
+        if($item && $item instanceof AbstractItem){
+            $this->item = $item;
+            return $this;
+        }
+
+        if($subItemsMap = $this->subItemMap){
+            $subItems = array();
+            foreach($item as $key => $value){
+                if(!isset($subItemsMap[$key])){
+                    continue;
+                }
+                $subItems[$key] = $value;
+                unset($item[$key]);
+            }
+            $this->subItems = $subItems;
+        }
+        $this->item = $item;
+        return $this;
+    }
+
+    public function setSubItemMap($subItemsMap)
+    {
+        $this->subItemMap = $subItemsMap;
+        return $this;
+    }
+
+    public function getSubItem($dataKey = null)
+    {
+        if(isset($this->subItems[$dataKey])){
+            return $this->subItems[$dataKey];
+        }
+        return false;
+    }
+
+    public function getSubItems()
+    {
+        return $this->subItems;
+    }
+
+
+    public function setItemAttrMap(array $itemAttrMap)
+    {
+        $this->itemAttrMap = $itemAttrMap;
+        return $this;
+    }
+
+    public function getItemClass($itemArrayOrObject = null, $itemAttrConfig = array(), $itemClassName = null)
+    {
+        if(false === class_exists($itemClassName)){
+            throw new \Zend\Mvc\Exception\InvalidArgumentException(sprintf(
+                'Item class %s not exist',
+                $itemClassName
+            )); 
+        }
+
+        if(!$itemArrayOrObject || !is_array($itemArrayOrObject) && !$itemArrayOrObject instanceof \ArrayObject ){
+            throw new \Zend\Mvc\Exception\InvalidArgumentException(sprintf(
+                '%s Item type %s not exist',
+                __method__,
+                gettype($itemArrayOrObject)
+            )); 
+        }
+        $item = new $itemClassName($itemArrayOrObject, $this, $itemAttrConfig);
+        return $item;
+    }
+
+    
+    public function getItem($itemArrayOrObject = null, $itemAttrConfig = array(), $itemClass = null)
+    {
+        if($this->item && $this->item instanceof AbstractItem){
             return $this->item;
         }
 
-        $itemClassName = get_class($this) . '\Item';
-
-        $item = new $itemClassName($itemArrayOrObject, $this, $itemAttrConfig);
-
-        return $this->item = $item;
+        $itemClassName = $itemClass ? $itemClass : get_class($this) . '\Item';
+        $itemAttrConfig = array_merge($this->itemAttrMap, $itemAttrConfig);
+        $itemArrayOrObject = $itemArrayOrObject ? $itemArrayOrObject : $this->item;
+        return $this->item = $this->getItemClass($itemArrayOrObject, $itemAttrConfig, $itemClassName);
     }
 
-    public function getItemArray($itemArrayOrObject, $itemAttrConfig = array())
+    public function getItemArray($itemArrayOrObject = null, $itemAttrConfig = array())
     {
         $item = $this->getItem($itemArrayOrObject, $itemAttrConfig);
         return $item->toArray($itemAttrConfig);
     }
 
-    public function setItem(AbstractItem $item)
-    {
-        $this->item = $item;
-        return $this;
-    }
 
     public function getItemListParams()
     {
