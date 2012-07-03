@@ -6,13 +6,9 @@ use Eva\Api,
     Blog\Model\PostTable,
     Eva\View\Model\ViewModel;
 
-class PostController extends RestfulModuleController
+class PageController extends RestfulModuleController
 {
-    protected $addResources = array(
-        'page',    
-    );
-
-    public function restGetPost()
+    public function restGetPage()
     {
         $id = $this->getEvent()->getRouteMatch()->getParam('id');
 

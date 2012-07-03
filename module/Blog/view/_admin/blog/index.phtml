@@ -30,24 +30,27 @@ $lableMap = array(
 
 
 <div class="row">
-
     <div class="span10 listing-buttons">
-        <a href="<?=$this->uri('/admin/blog/create')?>" class="btn">Add New Post</a>
+        <div class="btn-group">
+            <span class="btn"><input type="checkbox" class="checkall" /></span>
+            <button data-toggle="dropdown" class="btn dropdown-toggle">
+                Change Status
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="">Published</a></li>
+                <li><a href="">Draft</a></li>
+                <li><a href="">Pending</a></li>
+            </ul>
+        </div>
     </div>
 
     <div class="span10">
         <div class="slate">
             <div class="page-header">
                 <div class="btn-group pull-right">
-                    <button data-toggle="dropdown" class="btn dropdown-toggle">
-                        <i class="icon-edit"></i> Edit To:
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a href="">Draft</a></li>
-                        <li><a href="">Published</a></li>
-                        <li><a href="">Pending</a></li>
-                    </ul>
+                    <a href="<?=$this->uri('/admin/blog/create')?>" class="btn btn-info">Add New Post</a>
+
                 </div>
                 <h2><?=$title?></h2>
             </div>
@@ -55,8 +58,7 @@ $lableMap = array(
             <table class="orders-table table">
                 <thead>
                     <tr>
-                        <th>
-                            <input type="checkbox" class="checkall" name="post_ids[]" value="" />
+                        <th class="span1">
                         </th>
                         <th>Post Name</th>
                         <th class="span1">Order</th>
@@ -83,7 +85,7 @@ $lableMap = array(
                         </td>
                         <td class="actions">
                             <a href="<?=$this->uri('/admin/blog/remove/' . $post['id'], 'c', array('c' => $this->uri('/admin/blog', array('page' => $this->page)))); ?>" class="btn btn-small btn-danger">Delete</a>
-                            <a href="<?=$this->uri('/blog/' . $post['id'])?>" class="btn btn-small">View</a>
+                            <a href="<?=$this->uri('/blog/page/' . $post['urlName'])?>" class="btn btn-small">View</a>
                             <a href="<?=$this->uri('/admin/blog/' . $post['id'])?>" class="btn btn-small">Edit</a>
                         </td>
                     </tr>

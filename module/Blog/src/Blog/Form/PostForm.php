@@ -42,7 +42,11 @@ class PostForm extends Form
                     array(
                         'label' => 'Draft',
                         'value' => 'draft',
-                    ),    
+                    ),
+                    array(
+                        'label' => 'Pending',
+                        'value' => 'pending',
+                    ),
                     array(
                         'label' => 'Published',
                         'value' => 'published',
