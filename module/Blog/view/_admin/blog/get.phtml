@@ -41,6 +41,13 @@ $form->init(array(
     <div class="span10">
         <div class="slate">
             <div class="page-header">
+                <?if($post):?>
+                <div class="btn-group pull-right">
+                    <a href="<?=$this->uri('/blog/page/' . $post['urlName'])?>" class="btn">View</a>
+                    <a href="<?=$this->uri('/admin/blog/create')?>" class="btn">Clear Cache</a>
+                    <a href="<?=$this->uri('/admin/blog/remove/' . $post['id'], 'c', array('c' => $this->uri('/admin/blog/' . $post['id']))); ?>" class="btn">Delete</a>
+                </div>
+                <?endif?>
                 <h2><?=$title?></h2>
             </div>
             <fieldset class="">

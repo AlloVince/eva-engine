@@ -23,7 +23,7 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
     protected $enableCount = false;
     protected $lastSelectCount;
 
-    protected $paginatorOptions;
+    protected $paginatorOptions = array();
 
     public function getSelect()
     {
@@ -147,6 +147,13 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 
     public function page($page = 1)
     {
+        //Maybe call find without select condition
+        if (!$this->isInitialized) {
+            $this->initialize();
+        }
+        $page = (int) $page;
+        $page = !$page ? 1 : $page;
+
         $select = $this->getSelect();
         $selectOptions = $this->selectOptions;
         if(isset($selectOptions['limit']) && $selectOptions['limit']) {
@@ -155,7 +162,7 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
             $limit = 10;
         }
         $this->paginatorOptions['itemCountPerPage'] = (int) $limit;
-        $this->paginatorOptions['pageNumber'] = (int) $page;
+        $this->paginatorOptions['pageNumber'] = $page;
 
         $offset = ($page - 1) * $limit;
         $select->offset($offset);
@@ -164,6 +171,11 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 
     public function find($findCondition = null, array $findOptions = array())
     {
+        //Maybe call find without select condition
+        if (!$this->isInitialized) {
+            $this->initialize();
+        }
+
         if(!$findCondition && !$findOptions){
             return $this->fetchAll($this->getSelect());
         }

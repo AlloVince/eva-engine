@@ -147,7 +147,7 @@ class Uri extends \Zend\Uri\Uri
         }
         $this->baseQuery = $baseQuery;
         $query = $this->getQueryAsArray();
-        $query = array_merge($query, $baseQuery);
+        $query = array_merge((array) $query, (array) $baseQuery);
         $this->setQuery($query);
         return $this;
     }
@@ -159,7 +159,7 @@ class Uri extends \Zend\Uri\Uri
         }
         $this->extraQuery = $extraQuery;
         $query = $this->getQueryAsArray();
-        $query = array_merge($query, $extraQuery);
+        $query = array_merge((array) $query, (array) $extraQuery);
         $this->setQuery($query);
         return $this;
     }

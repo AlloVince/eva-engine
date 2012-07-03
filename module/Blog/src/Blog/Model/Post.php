@@ -151,13 +151,23 @@ class Post extends AbstractModel
 
     public function getPosts()
     {
-    
         $this->getEvent()->trigger('getPostList.precache', $this);
 
-
+        $defaultParams = array(
+            'enableCount' => true,
+            'keyword' => '',
+            'status' => '',
+            'visibility' => '',
+            'page' => 1,
+            'order' => 'iddesc',
+        );
         $params = $this->getItemListParams();
+        $params = new \Zend\Stdlib\Parameters(array_merge($defaultParams, $params));
+
         $itemTable = $this->getItemTable();
-        $posts = $itemTable->enableCount()->order('id DESC')->page($page)->find('all');
+
+        $itemTable->selectPosts($params);
+        $posts = $itemTable->find('all');
 
         $this->getEvent()->trigger('getPost.postcache', $this);
         return $this->itemList = $posts;

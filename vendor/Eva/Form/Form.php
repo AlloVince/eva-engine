@@ -6,8 +6,6 @@ use Zend\InputFilter\Factory as FilterFactory;
 
 class Form extends \Zend\Form\Form
 {
-    protected static $instance;
-
     protected $baseElements = array();
     protected $mergeElements = array();
     protected $subElements = array();
@@ -191,10 +189,10 @@ class Form extends \Zend\Form\Form
 
         $values = $options['values'];
         if($values){
-            if(is_object($values)){
+            if($values instanceof \ArrayObject){
                 $this->bind($values);
             } else {
-                $this->bind(new \ArrayObject($values));
+                $this->bind(new \ArrayObject((array) $values));
             }
             $this->bindValues();
         }

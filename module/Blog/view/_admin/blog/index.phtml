@@ -9,7 +9,7 @@ if($this->form){
 $form->init(array(
     'action' => $this->uri('/admin/blog/'),
     'method' => 'get',
-    'values' => $this->search
+    'values' => $this->query
 ));
 
 $lableMap = array(
@@ -17,6 +17,7 @@ $lableMap = array(
     'published' => 'label-success',
     'pending' => 'label-warning',
 );
+
 ?>
 
 <div class="row">
@@ -41,7 +42,7 @@ $lableMap = array(
         <div class="btn-group pull-left">
             <span class="btn"><input type="checkbox" class="checkall" /></span>
             <button data-toggle="dropdown" class="btn dropdown-toggle">
-                Change Status
+                Status
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
@@ -56,7 +57,13 @@ $lableMap = array(
         <div class="slate">
             <div class="page-header">
                 <div class="btn-group pull-right">
-                    <a href="<?=$this->uri('/admin/blog/create')?>" class="btn"><i class="icon-arrow-down"></i> Id</a>
+                    <a href="<?=$this->uri('/admin/blog/', 'Qq', array(
+                            'Q' => $this->query,
+                            'q' => array(
+                                'order' => 'idasc',
+                                'page' => '',
+                            ),
+                        ));?>" class="btn"><i class="icon-arrow-up"></i> Id</a>
                     <a href="<?=$this->uri('/admin/blog/create')?>" class="btn"><i class="icon-arrow-down"></i> Title</a>
                     <a href="<?=$this->uri('/admin/blog/create')?>" class="btn"><i class="icon-arrow-down"></i> Update Time</a>
                 </div>
@@ -84,6 +91,9 @@ $lableMap = array(
                         <td>
                             <a href="<?=$this->uri('/admin/blog/' . $post['id'])?>" class="title"><?=$post['title'] ?></a>
                             <span class="label <?=$lableMap[$post['status']]?>"><?=$post['status']?></span>
+                            <?if($post['visibility'] == 'private'):?>
+                            <span class="label label-important">private</span>
+                            <?endif?>
                             <p>
                             <span class="meta"><?=$post['user_name'] ?> <?=$post['createTime'];?></span>
                             </p>
@@ -104,33 +114,10 @@ $lableMap = array(
         </div>
     </div><!--span10 end-->
 
-    <!--
-    <div id="removeItem" class="modal hide fade">
-        <div class="modal-header">
-            <button data-dismiss="modal" class="close" type="button">×</button>
-            <h3>Remove Item</h3>
-        </div>
-        <div class="modal-body">
-            <p>Are you sure you would like to remove this item?</p>
-        </div>
-        <div class="modal-footer">
-            <a data-dismiss="modal" class="btn" href="#">Close</a>
-            <a class="btn btn-danger" href="#">Remove</a>
-        </div>
-    </div>
-    -->
-
-    <!--
-    <div class="span5 listing-buttons">
-        <button class="btn btn-info">Action</button>
-        <button class="btn btn-success">Action</button>
-        <button class="btn btn-primary">Add New Item</button>
-    </div>
-    -->
-
     <div class="span10">
         <?if($this->paginator):?>
         <?=$this->paginator->setPath('/admin/blog/')?>
+        <?$this->baseQuery = (array) $this->query?>
         <?=$this->widget('Core', 'widgets/paginator', $this->vars())?>
         <?endif;?>
     </div>
