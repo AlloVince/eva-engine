@@ -26,6 +26,7 @@ abstract class RestfulModuleController extends \Zend\Mvc\Controller\AbstractRest
 
         $routeMatch = $this->getEvent()->getRouteMatch();
         $moduleName = $routeMatch->getParam('module');
+        $moduleNamespace = $routeMatch->getParam('moduleNamespace');
         $controllerName = $routeMatch->getParam('controllerName');
         $id = $routeMatch->getParam('id');
         $request = $this->getRequest();
@@ -65,9 +66,9 @@ abstract class RestfulModuleController extends \Zend\Mvc\Controller\AbstractRest
         $resource = $method . ucfirst($controllerName) . ucfirst($resource);
         $function = 'rest' . ucfirst($resource);
 
-
         return $this->restfulResource = array(
             'module' => $moduleName,
+            'moduleNamespace' => $moduleNamespace,
             'controller' => $controllerName,    
             'method' => $method,
             'resource' => $resource,

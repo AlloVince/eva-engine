@@ -158,6 +158,20 @@ class Api
         return new $tableClassName($this->getDbAdapter());
     }
 
+    public function setRestfulResource()
+    {
+    }
+
+    public function getRestfulResource()
+    {
+        return $this->restfulResource; 
+    }
+
+    public function getRouterMatch()
+    {
+        return $this->event->getRouteMatch();
+    }
+
     public function getForm($formClassName)
     {
         if(false === $this->isModuleLoaded($formClassName)){

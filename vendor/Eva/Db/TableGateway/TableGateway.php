@@ -152,7 +152,7 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
             $this->initialize();
         }
         $page = (int) $page;
-        $page = !$page ? 1 : $page;
+        $page = $page ? $page : 1;
 
         $select = $this->getSelect();
         $selectOptions = $this->selectOptions;

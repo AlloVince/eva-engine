@@ -36,6 +36,21 @@ class Posts extends TableGateway
             $this->page($params->page);
         }
 
+        $orders = array(
+            'idasc' => 'id ASC',
+            'iddesc' => 'id DESC',
+            'timeasc' => 'updateTime ASC',
+            'timedesc' => 'updateTime DESC',
+            'titleasc' => 'title ASC',
+            'titledesc' => 'title DESC',
+        );
+        if($params->order){
+            $order = $orders[$params->order];
+            if($order){
+                $this->order($order);
+            }
+        }
+
         return $this;
     }
 }

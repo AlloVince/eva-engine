@@ -168,6 +168,7 @@ class Post extends AbstractModel
 
         $itemTable->selectPosts($params);
         $posts = $itemTable->find('all');
+        //p($itemTable->debug());
 
         $this->getEvent()->trigger('getPost.postcache', $this);
         return $this->itemList = $posts;

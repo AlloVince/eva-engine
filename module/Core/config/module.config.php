@@ -19,6 +19,7 @@ return array(
             'input' => 'Eva\Form\View\Helper\Input',
             'label' => 'Eva\Form\View\Helper\Label',
             'widget' => 'Eva\View\Helper\Widget',
+            'evajs' => 'Core\Helper\Evajs',
         ),
 
         'module_namespace_layout_map' => array(
