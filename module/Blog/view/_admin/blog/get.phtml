@@ -17,6 +17,7 @@ $form->init(array(
     'values' => $this->post
 ));
 
+$form->helper('urlName', 'label', array('class' => 'control-label'))
 
 //Form usage:
 //is error
@@ -29,13 +30,16 @@ $form->init(array(
 //    'class' => 'span9',
 //    'rows' => '15',
 //))
-//$fomr->input(array('Text', 'content'), 'formTextarea', array('class' => 'span9','rows' => '15',))
+//$fomr->input(array('Text', 'content), 'formTextarea', array('class' => 'span9','rows' => '15',))
+
+//Print out error messages:
+//foreach($form->subForm('Text')->get('content')->getMessages() as $message):
 ?>
 
 <div class="row">
 <form <?=$this->formAttr($form)?>>
     <?=$form->restful();?>
-    <?=$form->input('id');?>
+    <?=$form->helper('id');?>
     <div class="span10">
         <div class="slate">
             <div class="page-header">
@@ -43,21 +47,19 @@ $form->init(array(
             </div>
             <fieldset class="">
                 <div class="control-group <?=$form->isError('title') ? 'error' : '';?>">
-                    <label class="control-label"><?=$form->get('title')->getAttribute('label');?></label>
+                    <?=$form->helper('title', 'label', array('class' => 'control-label'))?>
                     <div class="controls docs-input-sizes">
-                        <?=$form->input('title', array('class' => 'span9'))?>
-                        <p class="help-block"><?=$form->input('title', 'formElementErrors')?></p>
+                        <?=$form->helper('title', array('class' => 'span9'))?>
+                        <div class="help-block"><?=$form->helper('title', 'formElementErrors')?></div>
                     </div>
                 </div>
 
                 <div class="control-group <?=$form->isError(array('Text', 'content')) ? 'error' : '';?>">
-                    <label class="control-label"><?=$this->formLabel($form->subForm('Text')->get('content'));?></label>
+                    <?=$form->helper(array('Text', 'content'), 'label', array('class' => 'control-label'))?>
                     <div class="controls">
-                        <?=$form->input(array('Text', 'content'), 'formTextarea', array('class' => 'span9','rows' => '15',))?>
+                        <?=$form->helper(array('Text', 'content'), 'formTextarea', array('class' => 'span9','rows' => '15',))?>
                     </div>
-                    <?foreach($form->subForm('Text')->get('content')->getMessages() as $message):?>
-                    <p class="help-block"><?=$message?></p>
-                    <?endforeach?>
+                    <div class="help-block"><?=$form->helper(array('Text', 'content'), 'formElementErrors')?></div>
                 </div>
             </fieldset>
         </div>
@@ -70,34 +72,32 @@ $form->init(array(
             </div>
             <fieldset class="form-horizontal">
 
-                <div class="control-group <?=$form->get('urlName')->getMessages() ? 'error' : '';?>">
-                    <label class="control-label"><?=$this->formLabel($form->get('urlName'));?></label>
-                    <div class="controls docs-input-sizes">
-                        <?=$form->input('urlName', array('class' => 'input-xlarge'))?>
-                        <?foreach($form->get('urlName')->getMessages() as $message):?>
-                        <p class="help-block"><?=$message?></p>
-                        <?endforeach?>
+                <div class="control-group <?=$form->isError('urlName') ? 'error' : '';?>">
+                    <?=$form->helper('urlName', 'label', array('class' => 'control-label'))?>
+                    <div class="controls">
+                        <?=$form->helper('urlName', array('class' => 'input-xlarge'))?>
+                        <div class="help-block"><?=$form->helper('urlName', 'formElementErrors')?></div>
                     </div>
                 </div>
 
 
                 <div class="control-group">
-                    <label class="control-label"><?=$this->formLabel($form->get('status'));?></label>
+                    <?=$form->helper('status', 'label', array('class' => 'control-label'))?>
                     <div class="controls">
-                        <?=$form->input('status', 'formSelect')?>
+                        <?=$form->helper('status', 'formSelect')?>
                     </div>
                 </div>
 
                 <div class="control-group">
-                    <label class="control-label"><?=$this->formLabel($form->get('codeType'));?></label>
+                    <?=$form->helper('codeType', 'label', array('class' => 'control-label'))?>
                     <div class="controls">
-                        <?=$form->input('codeType', 'formRadio', array('class' => 'checkbox inline'))?>
+                        <?=$form->helper('codeType', 'formRadio', array('class' => 'checkbox inline'))?>
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label"><?=$this->formLabel($form->get('visibility'));?></label>
+                    <?=$form->helper('visibility', 'label', array('class' => 'control-label'))?>
                     <div class="controls">
-                        <?=$form->input('visibility', 'formSelect')?>
+                        <?=$form->helper('visibility', 'formSelect')?>
                     </div>
                 </div>
 

@@ -31,7 +31,10 @@ $lableMap = array(
 
 <div class="row">
     <div class="span10 listing-buttons">
-        <div class="btn-group">
+        <div class="btn-group pull-right">
+            <a href="<?=$this->uri('/admin/blog/create')?>" class="btn btn-info">Add New Post</a>
+        </div>
+        <div class="btn-group pull-left">
             <span class="btn"><input type="checkbox" class="checkall" /></span>
             <button data-toggle="dropdown" class="btn dropdown-toggle">
                 Change Status
@@ -49,7 +52,9 @@ $lableMap = array(
         <div class="slate">
             <div class="page-header">
                 <div class="btn-group pull-right">
-                    <a href="<?=$this->uri('/admin/blog/create')?>" class="btn btn-info">Add New Post</a>
+                    <a href="<?=$this->uri('/admin/blog/create')?>" class="btn"><i class="icon-arrow-down"></i> Id</a>
+                    <a href="<?=$this->uri('/admin/blog/create')?>" class="btn"><i class="icon-arrow-down"></i> Title</a>
+                    <a href="<?=$this->uri('/admin/blog/create')?>" class="btn"><i class="icon-arrow-down"></i> Update Time</a>
                 </div>
                 <h2><?=$title?></h2>
             </div>

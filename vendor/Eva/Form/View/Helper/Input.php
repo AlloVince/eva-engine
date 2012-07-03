@@ -47,7 +47,7 @@ class Input extends \Zend\Form\View\Helper\AbstractHelper
     {
         $defaultOptions = array(
             'type' => 'formInput',
-            //'autoId' => true,
+            'args' => array(),
         );
 
         $options = array_merge($defaultOptions, $options);
@@ -55,33 +55,44 @@ class Input extends \Zend\Form\View\Helper\AbstractHelper
         unset($options['type']);
 
         //Support Subform
-        if($subFormName = $element->getAttribute("data-subform-name")){
+        if($subFormName = $element->getAttribute('data-subform-name')){
             $name = $element->getName();
             if($name){
                 $element->setName($subFormName . '[' . $name . ']');
+                $attributes = $element->getAttributes();
+                //Reset attributes to make sure re-name just once;
+                unset($attributes['data-subform-name']);
+                $element->clearAttributes();
+                $element->setAttributes($attributes);
             }
+        }
+
+        $args = array();
+        if(isset($option['args'])){
+            if($option['args'] && is_array($option['args'])){
+                foreach($args as $key => $value){
+                    $args[] = $value; 
+                }
+            }
+            unset($option['args']);
         }
 
         if($options){
             //NOTE: clone element not effect to form original element
-            //$element = clone $element;
+            $element = clone $element;
             foreach($options as $key => $value){
                 $element->setAttribute($key, $value);
             }
         }
 
-        /*
-        if(true === $options['autoId'] && !$elementId = $element->getAttribute('id')){
-            $elementName = $element->getName();
-            if($elementName){
-                $elementId = str_replace(array('_','[',']'), '-', strtolower($elementName));
-                $elementId = trim($elementId, '-');
-                $element->setAttribute('id', $elementId);
-            }
-        }
-        */
+        //put element clone into view helper
+        array_unshift($args, $element);
 
         $view = $this->getView();
-        return $view->$elementType($element);
+        return call_user_func_array(array(
+            &$view,
+            $elementType,
+        ), $args);
+        //return $view->$elementType($element);
     }
 }

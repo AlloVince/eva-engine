@@ -17,6 +17,7 @@ return array(
             'link' => 'Eva\View\Helper\Link',
             'formAttr' => 'Eva\Form\View\Helper\FormAttr',
             'input' => 'Eva\Form\View\Helper\Input',
+            'label' => 'Eva\Form\View\Helper\Label',
             'widget' => 'Eva\View\Helper\Widget',
         ),
 

@@ -16,13 +16,13 @@ class Form extends \Zend\Form\Form
     protected $mergeFilters = array();
     protected $subFilters = array();
 
-    protected $defaultValues;
+    //protected $defaultValues;
 
     protected $formMethod;
 
     protected $restfulMethod;
 
-    protected $autoId = true;
+    protected $autoElementId = true;
     protected $idPrefix;
 
     protected $fieldsMap = array();
@@ -32,6 +32,27 @@ class Form extends \Zend\Form\Form
     protected $elementInited = false;
     protected $subFormInited = array();
     //protected $valuesInited = false;
+
+    public function setAutoElementId($autoElementId)
+    {
+        $this->autoElementId = (boolean) $autoElementId;
+        return $this;
+    }
+
+    public function setIdPrefix($idPrefix)
+    {
+        $this->idPrefix = (string) $idPrefix;
+        return $this;
+    }
+
+    public function getIdPrefix()
+    {
+        if($this->idPrefix){
+            return $this->idPrefix;
+        }
+
+        return $this->idPrefix = get_class($this);
+    }
 
     public function getMergedElements()
     {
@@ -72,6 +93,7 @@ class Form extends \Zend\Form\Form
         $factory = $this->getFormFactory();
         foreach($subElements as $subElementKey => $subElement){
             $subElement['attributes']['data-subform-name'] = $formName;
+            $subElement = $this->autoElementId($subElement, $subFormClass);
             $fieldset->add($factory->create($subElement));
         }
         $this->add($fieldset);
@@ -123,6 +145,7 @@ class Form extends \Zend\Form\Form
         return $data;
     }
 
+    /*
     public function setDefaultValues($defaultValues)
     {
         $this->defaultValues = $defaultValues;
@@ -133,6 +156,7 @@ class Form extends \Zend\Form\Form
     {
         return $this->defaultValues;
     }
+    */
 
     public function init(array $options = array())
     {
@@ -157,18 +181,8 @@ class Form extends \Zend\Form\Form
         if(false === $this->elementInited){
             $elements = array_merge($this->baseElements, $this->mergeElements);
 
-            if($this->autoId){
-                $idPrefix = $this->idPrefix ? $this->idPrefix : get_class($this);
-            }
-
             foreach($elements as $name => $element){
-                if($this->autoId){
-                    $elementId = isset($element['attributes']['id']) ? $element['attributes']['id'] : $element['name'];
-                    $elementId = $idPrefix . '-' . $elementId;
-                    $elementId = str_replace(array('\\','_','[',']'), '-', strtolower($elementId));
-                    $elementId = trim($elementId, '-');
-                    $element['attributes']['id'] = $elementId;
-                }
+                $element = $this->autoElementId($element);
                 $this->add($element);
             }
             $this->elementInited = true;
@@ -193,7 +207,6 @@ class Form extends \Zend\Form\Form
 
         $filters = array_merge($this->baseFilters, $this->mergeFilters, $filterOptions);
 
-
         if(!$filters){
             $inputFilter = new InputFilter;
             $this->setInputFilter($inputFilter);
@@ -204,59 +217,8 @@ class Form extends \Zend\Form\Form
 
         $inputFilter = $factory->createInputFilter($filters);
         $this->setInputFilter($inputFilter);
-
-        //$this->attachInputFilterDefaults($inputFilter, $this);
         return $this;
     }
-
-    /*
-    public function input($elementOrName, $options)
-    {
-        $element = $elementOrName instanceof \Zend\Form\ElementInterface ? $element : null;
-        if(!$element && is_string($elementOrName)){
-            $element = $this->get($elementOrName);
-        }
-
-        if(!$element){
-            throw new Exception\UnexpectedMethodException(sprintf(
-                'Request element %s not found in form',
-                __METHOD__,
-                $elementOrName
-            ));
-        }
-
-        if($options){
-            $element = clone $element;
-            foreach($options as $key => $value){
-                $element->setAttribute($key, $value);
-            }
-        }
-
-        //$view = \Eva\Api::_()->getView();
-        //return $view->$elementType($element);
-    }
-     */
-
-    /*
-    public function mergeInvalid()
-    {
-        $inputFilter = $this->getInputFilter();
-        if(!$inputFilter) {
-            return $this;
-        }
-
-        $invalids = $inputFilter->getInvalidInput();
-        $elements = $this->getElements();
-
-        foreach($invalids as $key => $invalid){
-            if(isset($elements[$key])){
-                $elements[$key]->setMessages($invalid->getMessages());
-            }
-        }
-        return $this;
-    }
-    */
-
 
     public function setMethod($method = '')
     {
@@ -309,7 +271,7 @@ class Form extends \Zend\Form\Form
     public function populateValues($data)
     {
         if (!is_array($data) && !$data instanceof Traversable) {
-            throw new Exception\InvalidArgumentException(sprintf(
+            throw new \Zend\Form\Exception\InvalidArgumentException(sprintf(
                 '%s expects an array or Traversable set of data; received "%s"',
                 __METHOD__,
                 (is_object($data) ? get_class($data) : gettype($data))
@@ -332,21 +294,44 @@ class Form extends \Zend\Form\Form
         }
     }
 
-    public function getView()
+    public function getElement($elementNameOrArray)
     {
+        if(true === is_string($elementNameOrArray)){
+            return $this->get($elementNameOrArray);
+        }
+
+        if(true === is_array($elementNameOrArray) && isset($elementNameOrArray[0]) && isset($elementNameOrArray[1])){
+            $fieldset = $this->get($elementNameOrArray[0]);
+            return $fieldset->get($elementNameOrArray[1]);
+        }
+
+        throw new Exception\UnexpectedElementException(sprintf(
+            '%s Request element %s not correct',
+            __METHOD__,
+            $elementNameOrArray
+        ));
     }
 
-    public function input($elementName, $optionOrInputType = null, array $options = array())
+    public function autoElementId(array $element, $idPrefix = null)
+    {
+        if(!$this->autoElementId){
+            return $element;
+        }
+
+        $idPrefix = $idPrefix ? $idPrefix : $this->getIdPrefix();
+        $elementId = isset($element['attributes']['id']) ? $element['attributes']['id'] : $element['name'];
+        $elementId = $idPrefix . '-' . $elementId;
+        $elementId = str_replace(array('\\','_','[',']'), '-', strtolower($elementId));
+        $elementId = trim($elementId, '-');
+        $element['attributes']['id'] = $elementId;
+        return $element;
+    }
+
+    public function helper($elementName, $optionOrInputType = null, array $options = array())
     {
         $view = \Eva\Api::_()->getView();
 
-        $element = null;
-        if(is_array($elementName)){
-            $element = $this->subForm($elementName[0])->get($elementName[1]);
-        } else {
-            $element = $this->get($elementName);
-        }
-
+        $element = $this->getElement($elementName);
 
         if($optionOrInputType){
             if(is_string($optionOrInputType)){
@@ -360,12 +345,7 @@ class Form extends \Zend\Form\Form
 
     public function isError($elementName)
     {
-        $element = null;
-        if(is_array($elementName)){
-            $element = $this->subForm($elementName[0])->get($elementName[1]);
-        } else {
-            $element = $this->get($elementName);
-        }
+        $element = $this->getElement($elementName);
         return $element->getMessages() ? true : false;
     }
 

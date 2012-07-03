@@ -2,6 +2,7 @@
 namespace Core;
 
 use Eva\Api;
+use Zend\Mvc\ModuleRouteListener;
 
 class Module
 {
