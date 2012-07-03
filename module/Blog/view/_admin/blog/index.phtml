@@ -1,6 +1,17 @@
 <?
 $title = 'Posts List';
 $this->headTitle($title, 'SET');
+if($this->form){
+	$form = $this->form;
+} else {
+    $form = Eva\Api::_()->getForm('\Blog\Form\PostSearchForm');
+}
+$form->init(array(
+    'action' => $this->uri('/admin/blog/'),
+    'method' => 'get',
+    'values' => $this->search
+));
+
 $lableMap = array(
     'draft' => '',
     'published' => 'label-success',
@@ -11,18 +22,11 @@ $lableMap = array(
 <div class="row">
     <div class="span10">
         <div class="slate">
-            <form class="form-inline">
-                <input type="text" placeholder="Keyword..." class="input-large">
-                <select class="span2">
-                    <option value=""> - From Date - </option>
-                </select>
-                <select class="span2">
-                    <option value=""> - To Date - </option>
-                </select>
-                <select class="span2">
-                    <option value=""> - Filter - </option>
-                </select>
-                <button class="btn" type="submit">Filter Listings</button>
+            <form <?=$this->formAttr($form)?> class="form-inline">
+                <?=$form->helper('keyword', array('class' => 'input-large', 'placeholder' => 'Keyword...'))?>
+                <?=$form->helper('status', 'formSelect', array('class' => 'span2'))?>
+                <?=$form->helper('visibility', 'formSelect', array('class' => 'span2'))?>
+                <button class="btn" type="submit">Filter Posts</button>
             </form>
         </div>
     </div>
