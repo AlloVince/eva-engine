@@ -22,6 +22,7 @@ class Form extends \Zend\Form\Form
 
     protected $restfulMethod;
 
+    protected $autoId = true;
     protected $idPrefix;
 
     protected $fieldsMap = array();
@@ -155,7 +156,19 @@ class Form extends \Zend\Form\Form
 
         if(false === $this->elementInited){
             $elements = array_merge($this->baseElements, $this->mergeElements);
+
+            if($this->autoId){
+                $idPrefix = $this->idPrefix ? $this->idPrefix : get_class($this);
+            }
+
             foreach($elements as $name => $element){
+                if($this->autoId){
+                    $elementId = isset($element['attributes']['id']) ? $element['attributes']['id'] : $element['name'];
+                    $elementId = $idPrefix . '-' . $elementId;
+                    $elementId = str_replace(array('\\','_','[',']'), '-', strtolower($elementId));
+                    $elementId = trim($elementId, '-');
+                    $element['attributes']['id'] = $elementId;
+                }
                 $this->add($element);
             }
             $this->elementInited = true;
@@ -319,47 +332,41 @@ class Form extends \Zend\Form\Form
         }
     }
 
-    /*
-    public function populateValues($data)
+    public function getView()
     {
-        if (!is_array($data) && !$data instanceof Traversable) {
-            throw new Exception\InvalidArgumentException(sprintf(
-                '%s expects an array or Traversable set of data; received "%s"',
-                __METHOD__,
-                (is_object($data) ? get_class($data) : gettype($data))
-            ));
+    }
+
+    public function input($elementName, $optionOrInputType = null, array $options = array())
+    {
+        $view = \Eva\Api::_()->getView();
+
+        $element = null;
+        if(is_array($elementName)){
+            $element = $this->subForm($elementName[0])->get($elementName[1]);
+        } else {
+            $element = $this->get($elementName);
         }
 
-        foreach ($data as $name => $value) {
-            if (!$this->has($name)) {
-                continue;
+
+        if($optionOrInputType){
+            if(is_string($optionOrInputType)){
+                $options = array_merge(array('type' => $optionOrInputType), $options);
+            } else {
+                $options = array_merge($optionOrInputType, $options);
             }
-
-            $element = $this->get($name);
-            if ($element instanceof FieldsetInterface && is_array($value)) {
-                $element->populateValues($value);
-                continue;
-            }
-
-            $element->setAttribute('value', $value);
         }
-    }
-    */
-
-
-    /*
-    public static function _()
-    {
-        return self::getInstance();
+        return $view->input($element, $options); 
     }
 
-    public static function getInstance()
+    public function isError($elementName)
     {
-        if( is_null(self::$instance) ) {
-            self::$instance = new self();
+        $element = null;
+        if(is_array($elementName)){
+            $element = $this->subForm($elementName[0])->get($elementName[1]);
+        } else {
+            $element = $this->get($elementName);
         }
-
-        return self::$instance;
+        return $element->getMessages() ? true : false;
     }
-     */
+
 }

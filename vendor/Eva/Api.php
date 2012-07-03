@@ -14,6 +14,7 @@ class Api
     protected $dbAdapter;
     protected $moduleLoaded;
     protected $di;
+    protected $view;
 
     public function setEvent($event)
     {
@@ -197,5 +198,9 @@ class Api
 
     public function getView()
     {
+        if($this->view){
+            return $this->view;
+        }
+        return $this->view = $this->event->getApplication()->getServiceManager()->get('ViewManager')->getRenderer();
     }
 }

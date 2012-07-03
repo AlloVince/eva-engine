@@ -47,6 +47,7 @@ class Input extends \Zend\Form\View\Helper\AbstractHelper
     {
         $defaultOptions = array(
             'type' => 'formInput',
+            //'autoId' => true,
         );
 
         $options = array_merge($defaultOptions, $options);
@@ -58,9 +59,6 @@ class Input extends \Zend\Form\View\Helper\AbstractHelper
             $name = $element->getName();
             if($name){
                 $element->setName($subFormName . '[' . $name . ']');
-                //$attibutes = $element->getAttributes();
-                //unset($attibutes['data-subform-name']);
-                //$element->setAttributes($attibutes);
             }
         }
 
@@ -71,6 +69,17 @@ class Input extends \Zend\Form\View\Helper\AbstractHelper
                 $element->setAttribute($key, $value);
             }
         }
+
+        /*
+        if(true === $options['autoId'] && !$elementId = $element->getAttribute('id')){
+            $elementName = $element->getName();
+            if($elementName){
+                $elementId = str_replace(array('_','[',']'), '-', strtolower($elementName));
+                $elementId = trim($elementId, '-');
+                $element->setAttribute('id', $elementId);
+            }
+        }
+        */
 
         $view = $this->getView();
         return $view->$elementType($element);

@@ -127,7 +127,7 @@ class PostForm extends Form
 
         'urlName' =>     array(
             'name' => 'urlName',
-            'required' => true,
+            'required' => false,
             'filters' => array(
                 array('name' => 'StringTrim'),
             ),

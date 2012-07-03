@@ -16,36 +16,44 @@ $form->init(array(
     'method' => $method,
     'values' => $this->post
 ));
+
+
+//Form usage:
+//is error
+//$form->subForm('Text')->get('content')->getMessages() ? 'error' : '';
+//$form->isError(array('Text', 'content'))
+
+
+//$this->input($form->subForm('Text')->get('content'), array(
+//    'type' => 'formTextarea',
+//    'class' => 'span9',
+//    'rows' => '15',
+//))
+//$fomr->input(array('Text', 'content'), 'formTextarea', array('class' => 'span9','rows' => '15',))
 ?>
 
 <div class="row">
 <form <?=$this->formAttr($form)?>>
     <?=$form->restful();?>
-    <?=$this->formInput($form->get('id'));?>
+    <?=$form->input('id');?>
     <div class="span10">
         <div class="slate">
             <div class="page-header">
                 <h2><?=$title?></h2>
             </div>
             <fieldset class="">
-                <div class="control-group <?=$form->get('title')->getMessages() ? 'error' : '';?>">
-                    <label class="control-label"><?=$this->formLabel($form->get('title'));?></label>
+                <div class="control-group <?=$form->isError('title') ? 'error' : '';?>">
+                    <label class="control-label"><?=$form->get('title')->getAttribute('label');?></label>
                     <div class="controls docs-input-sizes">
-                        <?=$this->input($form->get('title'), array('class' => 'input-xlarge span9'))?>
-                        <?foreach($form->get('title')->getMessages() as $message):?>
-                        <p class="help-block"><?=$message?></p>
-                        <?endforeach?>
+                        <?=$form->input('title', array('class' => 'span9'))?>
+                        <p class="help-block"><?=$form->input('title', 'formElementErrors')?></p>
                     </div>
                 </div>
 
-                <div class="control-group <?=$form->subForm('Text')->get('content')->getMessages() ? 'error' : '';?>">
-                    <label for="textarea" class="control-label"><?=$this->formLabel($form->subForm('Text')->get('content'));?></label>
+                <div class="control-group <?=$form->isError(array('Text', 'content')) ? 'error' : '';?>">
+                    <label class="control-label"><?=$this->formLabel($form->subForm('Text')->get('content'));?></label>
                     <div class="controls">
-                        <?=$this->input($form->subForm('Text')->get('content'), array(
-                            'type' => 'formTextarea',
-                            'class' => 'span9',
-                            'rows' => '15',
-                        ))?>
+                        <?=$form->input(array('Text', 'content'), 'formTextarea', array('class' => 'span9','rows' => '15',))?>
                     </div>
                     <?foreach($form->subForm('Text')->get('content')->getMessages() as $message):?>
                     <p class="help-block"><?=$message?></p>
@@ -65,7 +73,7 @@ $form->init(array(
                 <div class="control-group <?=$form->get('urlName')->getMessages() ? 'error' : '';?>">
                     <label class="control-label"><?=$this->formLabel($form->get('urlName'));?></label>
                     <div class="controls docs-input-sizes">
-                        <?=$this->input($form->get('urlName'), array('class' => 'input-xlarge'))?>
+                        <?=$form->input('urlName', array('class' => 'input-xlarge'))?>
                         <?foreach($form->get('urlName')->getMessages() as $message):?>
                         <p class="help-block"><?=$message?></p>
                         <?endforeach?>
@@ -76,28 +84,20 @@ $form->init(array(
                 <div class="control-group">
                     <label class="control-label"><?=$this->formLabel($form->get('status'));?></label>
                     <div class="controls">
-                        <?=$this->input($form->get('status'), array(
-                            'type' => 'formSelect',
-                            'class' => 'span3',
-                        ))?>
+                        <?=$form->input('status', 'formSelect')?>
                     </div>
                 </div>
 
                 <div class="control-group">
                     <label class="control-label"><?=$this->formLabel($form->get('codeType'));?></label>
                     <div class="controls">
-                        <?=$this->input($form->get('codeType'), array(
-                            'type' => 'formRadio',
-                            'class' => 'checkbox inline',
-                        ))?>
+                        <?=$form->input('codeType', 'formRadio', array('class' => 'checkbox inline'))?>
                     </div>
                 </div>
                 <div class="control-group">
-                    <label for="textarea" class="control-label"><?=$this->formLabel($form->get('visibility'));?></label>
+                    <label class="control-label"><?=$this->formLabel($form->get('visibility'));?></label>
                     <div class="controls">
-                        <?=$this->input($form->get('visibility'), array(
-                            'type' => 'formSelect',
-                        ))?>
+                        <?=$form->input('visibility', 'formSelect')?>
                     </div>
                 </div>
 
