@@ -37,7 +37,7 @@
                         <li class="dropdown active">
                         <a class="dropdown-toggle" data-toggle="collapse" data-target="#website-dropdown" href="#"><i class="icon-sitemap"></i> Blog <b class="caret"></b></a>
                         <ul id="website-dropdown" class="collapse">
-                            <li><a href="<?=$this->uri('/admin/blog/')?>">Pages</a></li>
+                            <li class="active"><a href="<?=$this->uri('/admin/blog/')?>">Pages</a></li>
                             <li><a href="<?=$this->uri('/admin/blog/category/')?>">Page Categories</a></li>
                         </ul>
                         </li>
@@ -149,6 +149,7 @@
     <script src="<?=$this->link('/lib/js/jquery/jquery.min.js')?>"></script>
     <script src="<?=$this->link('/lib/js/bootstrap/bootstrap.min.js')?>"></script>
     <script src="<?=$this->link('/eva/js/core.js')?>"></script>
+    <script src="<?=$this->link('/src/admin/js/init.js')?>"></script>
 
 </body>
 </html>

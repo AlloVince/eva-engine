@@ -38,18 +38,20 @@ $lableMap = array(
         <div class="btn-group pull-right">
             <a href="<?=$this->uri('/admin/blog/create')?>" class="btn btn-info">Add New Post</a>
         </div>
-        <div class="btn-group pull-left">
-            <span class="btn"><input type="checkbox" class="checkall" /></span>
-            <button data-toggle="dropdown" class="btn dropdown-toggle">
-                Status
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-                <li><a href="">Published</a></li>
-                <li><a href="">Draft</a></li>
-                <li><a href="">Pending</a></li>
-            </ul>
-        </div>
+        <form action="<?=$this->uri('/admin/blog/multi/')?>" method="post" class="pull-left">
+            <div class="btn-group">
+                <span class="btn"><input type="checkbox" class="checkmulti" data-checkmulti="checkmulti-item" /></span>
+                <span data-toggle="dropdown" class="btn dropdown-toggle">
+                    Status
+                    <span class="caret"></span>
+                </span>
+                <ul class="dropdown-menu">
+                    <li><a href="">Published</a></li>
+                    <li><a href="">Draft</a></li>
+                    <li><a href="">Pending</a></li>
+                </ul>
+            </div>
+        </form>
     </div>
 
     <div class="span10">
@@ -85,10 +87,10 @@ $lableMap = array(
                 <tbody>
                     <?if($this->posts):?>
                     <?foreach($this->posts as $key=>$post):?>
-                    <tr id="post_<?=$post['id'] ?>">
+                    <tr id="post_<?=$post['id'] ?>" class="">
                         <td>
-                            <input type="checkbox" class="checkall" name="post_ids[]" value="<?=$post['id'] ?>" />
-                            <input type="hidden" name="post_id[]" class="reorder_post_id" value="<?=$post['id'] ?>" />
+                            <input type="checkbox" class="checkmulti-item" name="post_ids[]" value="<?=$post['id'] ?>" />
+                            <input type="hidden" name="post_id[]" value="<?=$post['id'] ?>" />
                         </td>	
                         <td>
                             <a href="<?=$this->uri('/admin/blog/' . $post['id'])?>" class="title"><?=$post['title'] ?></a>

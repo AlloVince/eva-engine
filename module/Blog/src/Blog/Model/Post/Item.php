@@ -11,14 +11,12 @@ class Item extends AbstractItem
 
     public function getCreateTime()
     {
-        $this->date = $date = new \Eva\Date\Date();
-        return $date->get('YYYY-MM-dd HH:mm:ss');
+        return \Eva\Date\Date::getNow();
     }
 
     public function getUpdateTime()
     {
-        $date = $this->date ? $this->date : new \Eva\Date\Date();
-        return $date->get('YYYY-MM-dd HH:mm:ss');
+        return \Eva\Date\Date::getNow();
     }
 
     public function getUserId()
