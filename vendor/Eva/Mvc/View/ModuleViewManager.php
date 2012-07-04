@@ -87,7 +87,43 @@ class ModuleViewManager extends \Zend\Mvc\View\ViewManager
     public function attach(EventManagerInterface $events)
     {
         $this->listeners[] = $events->attach('bootstrap', array($this, 'onBootstrap'), 10000);
+        $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'beforeDispatch'), 100);
         $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'onDispatch'), 0);
+    }
+
+    public function beforeDispatch(MvcEvent $e)
+    {
+        //TODO: add here for temporary
+        //Auto add controller Di alias by global router
+        $configuration    = $e->getApplication()->getConfiguration();
+        $routeMatch = $e->getRouteMatch();
+        if($routeMatch && $routeMatch  instanceof \Zend\Mvc\Router\RouteMatch){
+            $routeMatchName =  $routeMatch->getMatchedRouteName();
+            $controllerName =  $routeMatch->getParam('controller');
+
+            if(isset($configuration['router']['routes'][$routeMatchName]) 
+                && $routeConfiguration = $configuration['router']['routes'][$routeMatchName]
+            ){
+                if(isset($routeConfiguration['type']) && $routeConfiguration['type'] === 'Eva\Mvc\Router\Http\ModuleRoute'){
+                    $configuration['controller']['classes'][$controllerName] = $controllerName;
+                }
+            }
+        }
+        $controllerLoader = $e->getApplication()->getServiceManager()->get('ControllerLoader');
+        if (isset($configuration['controller'])) {
+            foreach ($configuration['controller'] as $type => $specs) {
+                if ($type == 'classes') {
+                    foreach ($specs as $name => $value) {
+                        $controllerLoader->setInvokableClass($name, $value);
+                    }
+                }
+                if ($type == 'factories') {
+                    foreach ($specs as $name => $value) {
+                        $controllerLoader->setFactory($name, $value);
+                    }
+                }
+            }
+        }
     }
 
     /**

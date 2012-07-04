@@ -11,18 +11,16 @@ class LoginController extends RestfulModuleController
     {
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $form = new \User\Form\AdminLoginForm();
-            $form->enableFilters()->setData($request->post());
+            $form = Api::_()->getForm('User\Form\AdminLoginForm');
+            $form->init()->enableFilters()->setData($request->getPost());
             if ($form->isValid()) {
-                //p(1);
             } else {
-                //p(2);
             }
         }
 
         return array(
             'form' => $form,
-            'post' => $request->post(),
+            'post' => $request->getPost(),
         );
     
     }

@@ -13,7 +13,9 @@ return array(
             'ViewManager'                  => 'Eva\Mvc\View\ModuleViewManager',
         ),
         'factories'    => array(
-            'ControllerLoader'                  => 'Eva\Mvc\Service\ControllerLoaderFactory',
+            //overwrite and add custom helpers here
+            'ViewHelperManager'       => 'Eva\Mvc\Service\ViewHelperManagerFactory',
+            //'ControllerLoader'                  => 'Eva\Mvc\Service\ControllerLoaderFactory',
         ),
     ),
     'protected_module_namespace' => array(

@@ -43,7 +43,8 @@ $appConfig = include EVA_CONFIG_PATH . DIRECTORY_SEPARATOR . 'application.config
 // setup service manager
 $serviceManager = new \Zend\ServiceManager\ServiceManager(new \Zend\Mvc\Service\ServiceManagerConfiguration($appConfig['service_manager']));
 $serviceManager->setService('ApplicationConfiguration', $appConfig);
-$serviceManager->get('ModuleManager')->loadModules();
+$moduleManger = $serviceManager->get('ModuleManager');
+$moduleManger->loadModules();
 
 //$serviceManager->get('Application')->bootstrap()->run()->send();
 

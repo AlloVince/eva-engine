@@ -12,6 +12,7 @@ return array(
             'error/404'     => __DIR__ . '/../view/error/404.phtml',
             'error/index'   => __DIR__ . '/../view/error/index.phtml',
         ),
+        /*
         'helper_map' => array(
             'uri' => 'Eva\View\Helper\Uri',    
             'link' => 'Eva\View\Helper\Link',
@@ -21,6 +22,7 @@ return array(
             'widget' => 'Eva\View\Helper\Widget',
             'evajs' => 'Core\Helper\Evajs',
         ),
+        */
 
         'module_namespace_layout_map' => array(
             'Admin' => 'layout/admin'
