@@ -17,7 +17,6 @@ $lableMap = array(
     'published' => 'label-success',
     'pending' => 'label-warning',
 );
-
 ?>
 
 <div class="row">
@@ -57,42 +56,18 @@ $lableMap = array(
         <div class="slate">
             <div class="page-header">
                 <div class="btn-group pull-right">
-                    <a href="<?=$this->uri('/admin/blog/', 'Qq', array(
-                            'Q' => $this->query,
-                            'q' => array(
-                                'order' => 'idasc',
-                            ),
-                        ));?>" class="btn"><i class="icon-arrow-up"></i> Id</a>
-                    <a href="<?=$this->uri('/admin/blog/', 'Qq', array(
-                            'Q' => $this->query,
-                            'q' => array(
-                                'order' => 'iddesc',
-                            ),
-                        ));?>" class="btn"><i class="icon-arrow-down"></i> Id</a>
-                    <a href="<?=$this->uri('/admin/blog/', 'Qq', array(
-                            'Q' => $this->query,
-                            'q' => array(
-                                'order' => 'titleasc',
-                            ),
-                        ));?>" class="btn"><i class="icon-arrow-up"></i> Title</a>
-                    <a href="<?=$this->uri('/admin/blog/', 'Qq', array(
-                            'Q' => $this->query,
-                            'q' => array(
-                                'order' => 'titledesc',
-                            ),
-                        ));?>" class="btn"><i class="icon-arrow-down"></i> Title</a>
-                    <a href="<?=$this->uri('/admin/blog/', 'Qq', array(
-                            'Q' => $this->query,
-                            'q' => array(
-                                'order' => 'timeasc',
-                            ),
-                        ));?>" class="btn"><i class="icon-arrow-up"></i> Time</a>
-                    <a href="<?=$this->uri('/admin/blog/', 'Qq', array(
-                            'Q' => $this->query,
-                            'q' => array(
-                                'order' => 'timedesc',
-                            ),
-                        ));?>" class="btn"><i class="icon-arrow-down"></i> Time</a>
+                    <span data-toggle="dropdown" class="btn dropdown-toggle">
+                        Order
+                        <span class="caret"></span>
+                    </span>
+                    <ul class="dropdown-menu">
+                        <li><a href="<?=$this->uri('/admin/blog/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'idasc',),));?>" class=""><i class="icon-arrow-up"></i> Id</a></li>
+                        <li><a href="<?=$this->uri('/admin/blog/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'iddesc',),));?>" class=""><i class="icon-arrow-down"></i> Id</a></li>
+                        <li><a href="<?=$this->uri('/admin/blog/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'titleasc',),));?>" class=""><i class="icon-arrow-up"></i> Title</a></li>
+                        <li><a href="<?=$this->uri('/admin/blog/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'titledesc',),));?>" class=""><i class="icon-arrow-down"></i> Title</a></li>
+                        <li><a href="<?=$this->uri('/admin/blog/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'timeasc',),));?>" class=""><i class="icon-arrow-up"></i> Time</a></li>
+                        <li><a href="<?=$this->uri('/admin/blog/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'timedesc',),));?>" class=""><i class="icon-arrow-down"></i> Time</a></li>
+                    </ul>
                 </div>
                 <h2><?=$title?></h2>
             </div>
@@ -143,8 +118,7 @@ $lableMap = array(
 
     <div class="span10">
         <?if($this->paginator):?>
-        <?=$this->paginator->setPath('/admin/blog/')?>
-        <?$this->baseQuery = (array) $this->query?>
+        <?=$this->paginator->setPath('/admin/blog/')->setBaseQuery($this->query);?>
         <?=$this->widget('Core', 'widgets/paginator', $this->vars())?>
         <?endif;?>
     </div>

@@ -58,6 +58,7 @@ class AbstractUri extends \Zend\View\Helper\AbstractHelper
         'b' => 'setExtraPath',
         'c' => 'setCallback',
         'C' => 'setCallbackName',
+        'd' => 'deleteEmptyQuery',
         'e' => 'htmlEncode',
         'E' => 'urlEncode',
         'f' => 'fragment',
@@ -197,7 +198,8 @@ class AbstractUri extends \Zend\View\Helper\AbstractHelper
             $function = $argMap[$functionShortName];
             $functionParam = isset($options[$function]) ? $options[$function] : null;
             
-            //p($functionShortName . '=>'. $function . '=>'.  $functionParam);
+            //p($functionShortName . '=>'. $function . '=>');
+            //p($functionParam);
 
             $uri->$function($functionParam);
         }

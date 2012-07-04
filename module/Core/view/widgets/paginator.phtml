@@ -3,41 +3,42 @@ $paginator = $this->paginator;
 if($paginator){
     $path = $paginator->getPath();
     $queryKey = $paginator->getPageQueryKey();
+    $baseQuery = $paginator->getBaseQuery();
     $paginator = $paginator->toArray();
 }
 if($paginator && $paginator['pageCount'] > 1):
 ?>
 <div class="pagination"><ul>
     <?if($paginator['prevPage']):?>
-    <li><a href="<?=$this->uri($path, array($queryKey => $paginator['prevPage']))?>">«</a></li>
+    <li><a href="<?=$this->uri($path, 'dq', array('Q' => $baseQuery, 'q' => array($queryKey => $paginator['prevPage'])))?>">«</a></li>
     <?endif?>
     <?if($paginator['prevPageRangeSkip'] && $paginator['firstPage']):?>
-    <li><a href="<?=$this->uri($path, array($queryKey => $paginator['firstPage']))?>">1</a></li>
+    <li><a href="<?=$this->uri($path, 'dq', array('Q' => $baseQuery, 'q' => array($queryKey => $paginator['firstPage'])))?>">1</a></li>
     <?endif?>
     <?if($paginator['prevPageRangeSkip']):?>
     <li class="disabled"><a href="javascript:;">...</a></li>
     <?endif?>
     <?if($paginator['prevPageRange']):?>
     <?foreach($paginator['prevPageRange'] as $page):?>
-    <li><a href="<?=$this->uri($path, array($queryKey => $page))?>"><?=$page?></a></li>
+    <li><a href="<?=$this->uri($path, 'dq', array('Q' => $baseQuery, 'q' => array($queryKey => $page)))?>"><?=$page?></a></li>
     <?endforeach?>
     <?endif?>
     <li class="active">
-        <a href="<?=$this->uri($path, array($queryKey => $paginator['pageNumber']))?>"><?=$paginator['pageNumber']?></a>
+        <a href="<?=$this->uri($path, 'dq', array('Q' => $baseQuery, 'q' => array($queryKey => $paginator['pageNumber'])))?>"><?=$paginator['pageNumber']?></a>
     </li>
     <?if($paginator['nextPageRange']):?>
     <?foreach($paginator['nextPageRange'] as $page):?>
-    <li><a href="<?=$this->uri($path, array($queryKey => $page))?>"><?=$page?></a></li>
+    <li><a href="<?=$this->uri($path, 'dq', array('Q' => $baseQuery, 'q' => array($queryKey => $page)))?>"><?=$page?></a></li>
     <?endforeach?>
     <?endif?>
     <?if($paginator['nextPageRangeSkip']):?>
     <li class="disabled"><a href="javascript:;">...</a></li>
     <?endif?>
     <?if($paginator['nextPageRangeSkip'] && $paginator['lastPage']):?>
-    <li><a href="<?=$this->uri($path, array($queryKey => $paginator['lastPage']))?>"><?=$paginator['lastPage']?></a></li>
+    <li><a href="<?=$this->uri($path, 'dq', array('Q' => $baseQuery, 'q' => array($queryKey => $paginator['lastPage'])))?>">»</a></li>
     <?endif?>
     <?if($paginator['nextPage']):?>
-    <li><a href="<?=$this->uri($path, array($queryKey => $paginator['nextPage']))?>">»</a></li>
+    <li><a href="<?=$this->uri($path, 'dq', array('Q' => $baseQuery, 'q' => array($queryKey => $paginator['nextPage'])))?>">»</a></li>
     <?endif?>
 </ul></div>
 <?endif?>

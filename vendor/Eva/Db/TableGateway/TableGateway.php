@@ -165,7 +165,8 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
         $this->paginatorOptions['pageNumber'] = $page;
 
         $offset = ($page - 1) * $limit;
-        $select->offset($offset);
+        //Use magic call offset here to keep params
+        $this->offset($offset);
         return $this;
     }
 

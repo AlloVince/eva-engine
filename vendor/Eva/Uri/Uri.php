@@ -164,6 +164,22 @@ class Uri extends \Zend\Uri\Uri
         return $this;
     }
 
+    public function deleteEmptyQuery()
+    {
+        $query = $this->getQueryAsArray();
+        if(!$query){
+            return $this;
+        }
+        foreach($query as $key => $value){
+            if(empty($value)){
+                unset($query[$key]);
+            }
+        }
+        ksort($query);
+        $this->setQuery($query);
+        return $this;
+    }
+
     public function urlEncode()
     {
         $this->urlEncode = true;

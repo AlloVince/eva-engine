@@ -10,6 +10,19 @@ class Paginator extends \Zend\Paginator\Paginator
 
     protected $pageQueryKey = 'page';
 
+    protected $baseQuery = array();
+
+    public function setBaseQuery($baseQuery)
+    {
+        $this->baseQuery = $baseQuery;
+        return $this;
+    }
+
+    public function getBaseQuery()
+    {
+        return $this->baseQuery;
+    }
+
     public function setPath($path)
     {
         $this->path = $path;
