@@ -6,6 +6,7 @@ use Eva\Api,
     Eva\Db\TableGateway\TableGateway,
     Eva\Mvc\Model\AbstractItem,
     Eva\Mvc\Model\AbstractItemList,
+    Zend\Cache\StorageFactory as CacheStorageFactory,
     Zend\Mvc\MvcEvent;
 
 abstract class AbstractModel
@@ -21,15 +22,17 @@ abstract class AbstractModel
     protected $itemTableName;
 
     protected $itemName;
-    protected $itemParams;
+    protected $itemParams = array();
     protected $item;
     protected $itemAttrMap = array();
-    protected $itemListParams;
+    protected $itemListParams = array();
     protected $itemList;
 
     protected $subItemsMap;
     protected $subItems;
 
+
+    protected $cacheStorageFactory;
     protected $paginator;
 
     public function getItemTable()
@@ -192,10 +195,34 @@ abstract class AbstractModel
         }
     }
 
-    public function setCache($cacheData, $cacheType = '')
+    public function cache($cacheKey = null, $cacheData = null, array $cacheOptions = array())
     {
+        $cacheStorageFactory = $this->getCacheStorageFactory();
+        if(!$cacheStorageFactory){
+            return false;
+        }
+
+        $cacheAdapter = $cacheStorageFactory::getAdapterPluginManager();
+        return $cacheAdapter;
+        /*
+        p($cacheAdapter->get('filesystem'));
+        $cacheAdapter->get('filesystem')->removeItem('abc');
+        $cacheAdapter->get('filesystem')->setItem('abc', '123');
+        p($cacheAdapter->get('filesystem')->getItem('abc'));
+        */
+
     }
 
+    public function setCacheStorageFactory(CacheStorageFactory $cacheStorageFactory)
+    {
+        $this->cacheStorageFactory = $cacheStorageFactory;
+        return $this;
+    }
+
+    public function getCacheStorageFactory()
+    {
+        return $this->cacheStorageFactory;
+    }
 
 
     public function setPaginator(\Eva\Paginator\Paginator $paginator)

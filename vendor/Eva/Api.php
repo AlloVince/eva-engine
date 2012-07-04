@@ -195,11 +195,38 @@ class Api
 
         $di = $this->getDi();
         $defaultConfig = array(
+            'definition' => array(
+                'class' => array(
+                    'Zend\Cache\Storage\Adapter' => array(
+                        'instantiator' => array(
+                            'Zend\Cache\StorageFactory',
+                            'factory'
+                        ),
+                    ),
+                    'Zend\Cache\StorageFactory' => array(
+                        'methods' => array(
+                            'factory' => array(
+                                'cfg' => array(
+                                    'required' => true,
+                                    'type' => false
+                                )
+                            )
+                        ),
+                    ),
+                ),
+            ),
             'instance' => array(
+                'Zend\Cache\Storage\Adapter' => array(
+                    'parameters' => array(
+                        'cfg' => array(
+                            'adapter' => 'filesystem'
+                        ),
+                    )
+                ),
                 $modelClassName => array(
                     'parameters' => array(
                         'mvcEvent' => $this->event,
-                        //'adapter' => 'Zend\Paginator\Adapter\DbTableSelect',
+                        'cacheStorageFactory' => 'Zend\Cache\StorageFactory',
                     ),
                 ),
             )

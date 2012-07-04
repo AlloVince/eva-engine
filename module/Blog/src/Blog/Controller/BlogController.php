@@ -18,8 +18,8 @@ class BlogController extends RestfulModuleController
         $page = $request->getQuery()->get('page', 1);
 
         $postModel = Api::_()->getModel('Blog\Model\Post');
-        $postTable = $postModel->getItemTable();
-        $posts = $postTable->enableCount()->order('id DESC')->page($page)->find('all');
+        $posts = $postModel->getPosts();
+        $postModel->cache();
         $paginator = $postModel->getPaginator();
 
         return array(
