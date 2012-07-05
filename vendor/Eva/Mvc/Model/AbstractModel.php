@@ -195,22 +195,14 @@ abstract class AbstractModel
         }
     }
 
-    public function cache($cacheKey = null, $cacheData = null, array $cacheOptions = array())
+    public function cache(\Zend\Cache\Storage\Adapter\AdapterOptions $cacheOptions = null)
     {
         $cacheStorageFactory = $this->getCacheStorageFactory();
         if(!$cacheStorageFactory){
             return false;
         }
-
-        $cacheAdapter = $cacheStorageFactory::getAdapterPluginManager();
+        $cacheAdapter = $cacheStorageFactory::getAdapter();
         return $cacheAdapter;
-        /*
-        p($cacheAdapter->get('filesystem'));
-        $cacheAdapter->get('filesystem')->removeItem('abc');
-        $cacheAdapter->get('filesystem')->setItem('abc', '123');
-        p($cacheAdapter->get('filesystem')->getItem('abc'));
-        */
-
     }
 
     public function setCacheStorageFactory(CacheStorageFactory $cacheStorageFactory)

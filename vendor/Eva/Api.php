@@ -199,11 +199,11 @@ class Api
                 'class' => array(
                     'Zend\Cache\Storage\Adapter' => array(
                         'instantiator' => array(
-                            'Zend\Cache\StorageFactory',
+                            'Eva\Cache\StorageFactory',
                             'factory'
                         ),
                     ),
-                    'Zend\Cache\StorageFactory' => array(
+                    'Eva\Cache\StorageFactory' => array(
                         'methods' => array(
                             'factory' => array(
                                 'cfg' => array(
@@ -216,21 +216,35 @@ class Api
                 ),
             ),
             'instance' => array(
-                'Zend\Cache\Storage\Adapter' => array(
+                'Eva\Cache\StorageFactory' => array(
                     'parameters' => array(
                         'cfg' => array(
-                            'adapter' => 'filesystem'
+                            'adapter' => array(
+                                'name' => 'filesystem',
+                                'options' => array(
+                                    'cacheDir' => EVA_ROOT_PATH . '/data/cache/model/',
+                                ),
+                            ),
+                            'plugins' => array('serializer')
                         ),
                     )
                 ),
                 $modelClassName => array(
                     'parameters' => array(
                         'mvcEvent' => $this->event,
-                        'cacheStorageFactory' => 'Zend\Cache\StorageFactory',
+                        'cacheStorageFactory' => 'Eva\Cache\StorageFactory',
                     ),
                 ),
             )
         );
+
+        /**
+        $globalConfig = $this->getConfig();
+        if(isset($globalConfig['cache']['model_cache']['di'])){
+            $defaultConfig = array_merge($defaultConfig, $globalConfig['cache']['model_cache']['di']);
+        }
+        */
+
         $diConfig = $diConfig ? array_merge($defaultConfig, $diConfig) : $defaultConfig;
         $di->configure(new DiConfiguration($diConfig));
         //\Zend\Di\Display\Console::export($di);

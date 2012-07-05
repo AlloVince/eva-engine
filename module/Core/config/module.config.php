@@ -50,6 +50,43 @@ return array(
         'enable' => 1,
         'model_cache' => array(
             'enable' => 1,
+            'di' => array(
+                'definition' => array(
+                    'class' => array(
+                        'Zend\Cache\Storage\Adapter' => array(
+                            'instantiator' => array(
+                                'Eva\Cache\StorageFactory',
+                                'factory'
+                            ),
+                        ),
+                        'Eva\Cache\StorageFactory' => array(
+                            'methods' => array(
+                                'factory' => array(
+                                    'cfg' => array(
+                                        'required' => true,
+                                        'type' => false
+                                    )
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                'instance' => array(
+                    'Eva\Cache\StorageFactory' => array(
+                        'parameters' => array(
+                            'cfg' => array(
+                                'adapter' => array(
+                                    'name' => 'filesystem',
+                                    'options' => array(
+                                        'cacheDir' => EVA_ROOT_PATH . '/data/cache/model/',
+                                    ),
+                                ),
+                                'plugins' => array('serializer')
+                            ),
+                        )
+                    ),
+                )
+            ),
         ),
         'static_cache' => array(
             'enable' => 0,
