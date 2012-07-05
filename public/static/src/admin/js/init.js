@@ -1,4 +1,8 @@
 eva.construct = function(){
+
+	$(".main-left-col").height($(document).height()).css("background", "#333232");
+
+
 	$(".checkmulti").on("change", function(){
 		var targetClass = $(this).attr("data-checkmulti");
 		var targets = $("." + targetClass);
