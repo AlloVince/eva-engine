@@ -15,6 +15,10 @@ return array(
         'factories'    => array(
             //overwrite and add custom helpers here
             'ViewHelperManager'       => 'Eva\Mvc\Service\ViewHelperManagerFactory',
+            //Add custom Controller Plugins
+            'ControllerPluginManager' => 'Eva\Mvc\Service\ControllerPluginManagerFactory',
+
+            //removed by new zf2 changes
             //'ControllerLoader'                  => 'Eva\Mvc\Service\ControllerLoaderFactory',
         ),
     ),

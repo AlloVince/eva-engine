@@ -88,8 +88,12 @@ return array(
                 )
             ),
         ),
-        'static_cache' => array(
+        'page_capture' => array(
             'enable' => 0,
+            'page_extension' => 'html',
+            'options' => array(
+                'public_dir' => EVA_PUBLIC_PATH . '/static/cache/',
+            ),
         ),
     ),
 );

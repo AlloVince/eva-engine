@@ -35,9 +35,9 @@ class Module
 
     public function onBootstrap($e)
     {
-        $eventManager        = $e->getApplication()->getEventManager();
-        $moduleRouteListener = new ModuleRouteListener();
-        $moduleRouteListener->attach($eventManager);
+        //$eventManager        = $e->getApplication()->getEventManager();
+        //$moduleRouteListener = new ModuleRouteListener();
+        //$moduleRouteListener->attach($eventManager);
         Api::_()->setEvent($e);
     }
 

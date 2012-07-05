@@ -22,6 +22,7 @@ class BlogController extends RestfulModuleController
         $postModel->cache();
         $paginator = $postModel->getPaginator();
 
+        $this->pagecapture('abc');
         return array(
             'posts' => $posts->toArray(),
             'paginator' => $paginator,

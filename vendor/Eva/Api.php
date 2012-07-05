@@ -60,7 +60,7 @@ class Api
     public function getConfig()
     {
         $event = $this->getEvent();
-        $app = $event->getParam('application');
+        $app = $event->getApplication();
         return $app->getConfiguration();
     }
 
