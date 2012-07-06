@@ -5,7 +5,7 @@ $this->headTitle($title, 'SET');
 ?>
 <div class="container">
 	<header class="page-header">
-		<h1><?=$this->escape($title); ?></h1>
+		<h1><?=$this->escapeHtml($title); ?></h1>
 	</header>
 	<div><?=$post['Text']['contentHtml']?></div>
 </div>

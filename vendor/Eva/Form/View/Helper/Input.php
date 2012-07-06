@@ -85,6 +85,12 @@ class Input extends \Zend\Form\View\Helper\AbstractHelper
                 $attributes['options'] = $translatedOptions;
             }
         }
+        if($messages = $element->getMessages()){
+            foreach($messages as $key => $message){
+                $messages[$key] = $this->translator->translate($message);
+            }
+            $element->setMessages($messages);
+        }
         $element->setAttributes($attributes);
 
         return $element;
@@ -136,10 +142,10 @@ class Input extends \Zend\Form\View\Helper\AbstractHelper
         if($options){
             //NOTE: clone element not effect to form original element
             $element = clone $element;
-            $element = $this->translateElement($element);
             foreach($options as $key => $value){
                 $element->setAttribute($key, $value);
             }
+            $element = $this->translateElement($element);
         }
 
         //put element clone into view helper
