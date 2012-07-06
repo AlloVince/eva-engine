@@ -89,6 +89,7 @@ class ModuleViewManager extends \Zend\Mvc\View\ViewManager
         $this->listeners[] = $events->attach('bootstrap', array($this, 'onBootstrap'), 10000);
         $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'beforeDispatch'), 100);
         $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'onDispatch'), 0);
+        $this->listeners[] = $events->attach(MvcEvent::EVENT_RENDER, array($this, 'onRender'), 0);
     }
 
     public function beforeDispatch(MvcEvent $e)
@@ -164,54 +165,11 @@ class ModuleViewManager extends \Zend\Mvc\View\ViewManager
         $this->resolver->attach($templatePathStack);
     }
 
-    /**
-     * Instantiates and configures the renderer's helper loader
-     * 
-     * @return ViewHelperLoader
-     */
-     /*
-    public function getHelperLoader()
+    public function onRender(MvcEvent $event)
     {
-        if ($this->helperLoader) {
-            return $this->helperLoader;
-        }
-
-        $map = array();
-        if (isset($this->config['helper_map'])) {
-            $map = $this->config['helper_map'];
-        }
-        //config will be transform into Zend\Config\Config object
-        if (is_array($map) && !in_array('Zend\Form\View\HelperLoader', $map)) {
-            array_unshift($map, 'Zend\Form\View\HelperLoader');
-        }
-        $this->helperLoader = new ViewHelperLoader($map);
-
-        $this->services->setService('ViewHelperLoader', $this->helperLoader);
-        $this->services->setAlias('Zend\View\HelperLoader', 'ViewHelperLoader');
-
-        return $this->helperLoader;
+        $application  = $event->getApplication();
+        $services     = $application->getServiceManager();
+        $services->get('Translator');
     }
-    */
 
-    /**
-     * Instantiates and configures the default MVC rendering strategy
-     * 
-     * @return DefaultRenderingStrategy
-     */
-     /*
-    public function getMvcRenderingStrategy()
-    {
-        if ($this->mvcRenderingStrategy) {
-            return $this->mvcRenderingStrategy;
-        }
-
-        $this->mvcRenderingStrategy = new \Eva\Mvc\View\DefaultModuleRenderingStrategy($this->getView());
-        $this->mvcRenderingStrategy->setLayoutTemplate($this->getLayoutTemplate());
-
-        $this->services->setService('DefaultRenderingStrategy', $this->mvcRenderingStrategy);
-        $this->services->setAlias('Eva\Mvc\View\DefaultModuleRenderingStrategy', 'DefaultRenderingStrategy');
-
-        return $this->mvcRenderingStrategy;
-    }
-    */
 }

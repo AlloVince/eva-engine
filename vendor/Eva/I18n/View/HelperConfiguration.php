@@ -13,22 +13,22 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Form
+ * @package    Zend_I18n
  * @subpackage View
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace Eva\View;
+namespace Zend\I18n\View;
 
 use Zend\ServiceManager\ConfigurationInterface;
 use Zend\ServiceManager\ServiceManager;
 
 /**
- * Service manager configuration for form view helpers
+ * Service manager configuration for i18n view helpers.
  *
  * @category   Zend
- * @package    Zend_Form
+ * @package    Zend_I18n
  * @subpackage View
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -38,24 +38,17 @@ class HelperConfiguration implements ConfigurationInterface
     /**
      * @var array Pre-aliased view helpers
      */
-     protected $invokables = array(
-         'uri' => 'Eva\View\Helper\Uri',    
-         'link' => 'Eva\View\Helper\Link',
-         'formAttr' => 'Eva\Form\View\Helper\FormAttr',
-         'input' => 'Eva\Form\View\Helper\Input',
-         'label' => 'Eva\Form\View\Helper\Label',
-         'widget' => 'Eva\View\Helper\Widget',
-         '_' => 'Eva\I18n\View\Helper\Translator',
-         'evajs' => 'Core\Helper\Evajs',
-     );
+    protected $invokables = array(
+        'currencyformat'  => 'Zend\I18n\View\Helper\CurrencyFormat',
+        'dateformat'      => 'Zend\I18n\View\Helper\DateFormat',
+        'numberformat'    => 'Zend\I18n\View\Helper\NumberFormat',
+        'translate'       => 'Zend\I18n\View\Helper\Translate',
+        'translateplural' => 'Zend\I18n\View\Helper\TranslatePlural',
+    );
 
     /**
      * Configure the provided service manager instance with the configuration
      * in this class.
-     *
-     * In addition to using each of the internal properties to configure the
-     * service manager, also adds an initializer to inject ServiceManagerAware
-     * classes with the service manager.
      *
      * @param  ServiceManager $serviceManager
      * @return void

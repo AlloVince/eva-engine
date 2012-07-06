@@ -46,6 +46,30 @@ return array(
         
     ),
 
+
+    'translator' => array(
+        'locale' => 'zh_CN',
+        'translation_patterns' => array(
+            array(
+                'type' => 'phparray',
+                'base_dir' => EVA_ROOT_PATH . '/data/languages',
+                'pattern' => 'translation-%s.php'
+            )
+        ),
+        /*
+        'cache' => array(
+            'adapter' => 'memory'
+        )
+        */
+    ),
+
+    'i18n' => array(
+        'enable' => 1,
+        'admin' => array(
+            'enable' => 1,
+        ),
+    ),
+
     'cache' => array(
         'enable' => 1,
         'model_cache' => array(
