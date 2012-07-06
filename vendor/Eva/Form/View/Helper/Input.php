@@ -36,13 +36,68 @@ use Zend\Form\ElementInterface;
 class Input extends \Zend\Form\View\Helper\AbstractHelper
 {
     /**
-     * Invoke helper as functor
+     * Translator instance.
      *
-     * Proxies to {@link render()}.
-     * 
-     * @param  ElementInterface $element 
-     * @return string
+     * @var Translator
      */
+    protected $translator;
+
+    /**
+     * Set translator.
+     *
+     * @param  Translator $translator
+     * @return Translate
+     */
+    public function setTranslator(\Zend\I18n\Translator\Translator $translator)
+    {
+        $this->translator = $translator;
+        return $this;
+    }
+
+    protected function translateElement(ElementInterface $element)
+    {
+        if(!$this->translator){
+            return $element;
+        }
+        $attributes = $element->getAttributes();
+        foreach($attributes as $key => $value){
+            if(isset($attributes['label'])){
+                $attributes['label'] = $this->translator->translate($attributes['label']);
+            }
+
+            if($attributes['type'] == 'select' && isset($attributes['options'])){
+                $elementOptions = $attributes['options'];
+                foreach($elementOptions as $elementOptionsKey => $elementSubOption){
+                    if(!isset($elementSubOption['label'])){
+                        continue;
+                    }
+                    $attributes['options'][$elementOptionsKey]['label'] = $this->translator->translate($elementSubOption['label']);
+                }
+            }
+
+            if($attributes['type'] == 'radio' && isset($attributes['options'])){
+                $elementOptions = $attributes['options'];
+                $translatedOptions = array();
+                foreach($elementOptions as $elementOptionsKey => $elementSubOption){
+                    $translatedKey = $this->translator->translate($elementOptionsKey);
+                    $translatedOptions[$translatedKey] = $elementSubOption;
+                }
+                $attributes['options'] = $translatedOptions;
+            }
+        }
+        $element->setAttributes($attributes);
+
+        return $element;
+    }
+
+    /**
+    * Invoke helper as functor
+    *
+    * Proxies to {@link render()}.
+    * 
+    * @param  ElementInterface $element 
+    * @return string
+    */
     public function __invoke(ElementInterface $element, array $options = array())
     {
         $defaultOptions = array(
@@ -77,9 +132,11 @@ class Input extends \Zend\Form\View\Helper\AbstractHelper
             unset($option['args']);
         }
 
+
         if($options){
             //NOTE: clone element not effect to form original element
             $element = clone $element;
+            $element = $this->translateElement($element);
             foreach($options as $key => $value){
                 $element->setAttribute($key, $value);
             }

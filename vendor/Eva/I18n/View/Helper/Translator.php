@@ -48,7 +48,7 @@ class Translator extends \Zend\View\Helper\AbstractHelper
      * @param  Translator $translator
      * @return Translate
      */
-    public function setTranslator(Translator $translator)
+    public function setTranslator(\Zend\I18n\Translator\Translator $translator)
     {
         $this->translator = $translator;
         return $this;
@@ -73,9 +73,9 @@ class Translator extends \Zend\View\Helper\AbstractHelper
     public function __invoke($message, $textDomain = 'default', $locale = null)
     {
         if ($this->translator === null) {
+            return $message;
         }
 
-        return $message;
-        //return $this->translator->translate($message, $textDomain, $locale);
+        return $this->translator->translate($message, $textDomain, $locale);
     }
 }

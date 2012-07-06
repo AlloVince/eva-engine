@@ -55,7 +55,7 @@ class ModuleManagerFactory extends \Zend\Mvc\Service\ModuleManagerFactory
             'ViewFeedStrategy'        => 'Zend\Mvc\Service\ViewFeedStrategyFactory',
             'ViewJsonRenderer'        => 'Zend\Mvc\Service\ViewJsonRendererFactory',
             'ViewJsonStrategy'        => 'Zend\Mvc\Service\ViewJsonStrategyFactory',
-            'Translator'              => 'Zend\I18n\Translator\TranslatorServiceFactory',
+            'Translator'              => 'Eva\I18n\Translator\TranslatorServiceFactory',
         ),
         'aliases' => array(
             'Config'                            => 'Configuration',
