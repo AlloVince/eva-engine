@@ -26,17 +26,19 @@ class AdminLoginForm extends Form
     protected $baseFilters = array(
         'userName' =>     array(
             'name' => 'userName',
-            'required' => true,
             'filters' => array(
                 array('name' => 'StripTags'),
                 array('name' => 'StringTrim'),
             ),
             'validators' => array(
                 array(
+                    'name' => 'NotEmpty',
+                ),
+                array(
                     'name' => 'StringLength',
                     'options' => array(
                         'encoding' => 'UTF-8',
-                        'min' => 1,
+                        'min' => 4,
                         'max' => 100,
                     ),
                 ),
@@ -44,7 +46,21 @@ class AdminLoginForm extends Form
         ),
         'password' => array(
             'name' => 'password',
-            'required' => true,
+            'validators' => array(
+                array(
+                    'name' => 'NotEmpty',
+                    'options' => array(
+                    ),
+                ),
+                array(
+                    'name' => 'StringLength',
+                    'options' => array(
+                        'encoding' => 'UTF-8',
+                        'min' => 6,
+                        'max' => 32,
+                    ),
+                ),
+            ),
         ),
     );
 }

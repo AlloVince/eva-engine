@@ -140,15 +140,10 @@ class PostForm extends Form
                     ),
                 ),
                 array(
-                    //'name' => 'DbNoRecordExists',
-                    'name' => 'Eva\Validator\Db\NoRecordExistsExcludeSelf',
+                    'name' => 'DbNoRecordExists',
                     'options' => array(
-                        //'adapter' => \Eva\Api::_()->getDbAdapter(),
                         'field' => 'urlName',
                         'table' => 'eva_blog_posts',
-                        'exclude' => array(
-                            'field' => 'id',
-                        ),
                         'messages' => array(
                              \Zend\Validator\Db\NoRecordExists::ERROR_RECORD_FOUND => 'Abc',
                         ), 

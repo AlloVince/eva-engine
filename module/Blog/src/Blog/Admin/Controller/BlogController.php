@@ -26,6 +26,7 @@ class BlogController extends RestfulModuleController
         $postModel = Api::_()->getModel('Blog\Model\Post');
         $posts = $postModel->setItemListParams($selectQuery)->getPosts();
         $paginator = $postModel->getPaginator();
+
         return array(
             'form' => $form,
             'posts' => $posts,
@@ -79,7 +80,7 @@ class BlogController extends RestfulModuleController
     {
         $request = $this->getRequest();
         $postData = $request->getPost();
-        $form = new Form\PostForm();
+        $form = new Form\PostEditForm();
         $subForms = array(
             'Text' => array('Blog\Form\TextForm'),
         );
