@@ -55,7 +55,7 @@ class BlogController extends RestfulModuleController
         );
         $form->setSubforms($subForms)->init();
 
-        $form->enableFilters()->setData($postData);
+        $form->setData($postData)->enableFilters();
         if ($form->isValid()) {
 
             $postData = $form->getData();
@@ -85,7 +85,7 @@ class BlogController extends RestfulModuleController
         );
         $form->setSubforms($subForms)->init();
 
-        $form->enableFilters()->setData($postData);
+        $form->setData($postData)->enableFilters();
         if ($form->isValid()) {
 
             $postData = $form->getData();

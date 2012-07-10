@@ -39,7 +39,15 @@ class TranslatorServiceFactory implements FactoryInterface
     {
         // Configure the translator
         $config = $serviceLocator->get('Configuration');
+        if(!isset($config['translator']) || !is_array($config['translator'])){
+            $config['translator'] = array();
+        }
         $translator = \Zend\I18n\Translator\Translator::factory($config['translator']);
+
+        //NOTE: Zf2 i18n require Locale class installed. Here could invoid no install Locale
+        if(isset($config['translator']['locale'])){
+            $translator->setFallbackLocale($config['translator']['locale']);
+        }
 
         //Custom helper
         $serviceLocator->get('ViewHelperManager')->get('_')->setTranslator($translator);

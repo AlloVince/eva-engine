@@ -194,7 +194,6 @@ class Form extends \Zend\Form\Form
             } else {
                 $this->bind(new \ArrayObject((array) $values));
             }
-            $this->bindValues();
         }
 
         return $this;
@@ -210,9 +209,30 @@ class Form extends \Zend\Form\Form
             $this->setInputFilter($inputFilter);
             return $this;
         }
-        
-        $factory = new FilterFactory();
 
+        //TODO: use di here
+        $requireDbAdapter = array(
+            'dbnorecordexists',
+            'dbrecordexists',
+            'eva\validator\db\norecordexistsexcludeself',
+        );
+        foreach($filters as $key => $filter){
+            if(!isset($filter['validators']) || !is_array($filter['validators'])){
+                continue;
+            }
+
+            foreach($filter['validators'] as $validateKey => $validator){
+                if(isset($validator['name']) && in_array(strtolower($validator['name']), $requireDbAdapter)){
+                    $filters[$key]['validators'][$validateKey]['options']['adapter'] = \Eva\Api::_()->getDbAdapter();
+                }
+                if(isset($validator['options']['exclude']['field']) && $validator['options']['exclude']['field'] && !isset($validator['options']['exclude']['value'])){
+                    $filters[$key]['validators'][$validateKey]['options']['exclude']['value'] = $this->data[$validator['options']['exclude']['field']];
+                }
+            }
+        }
+
+
+        $factory = new FilterFactory();
         $inputFilter = $factory->createInputFilter($filters);
         $this->setInputFilter($inputFilter);
         return $this;
