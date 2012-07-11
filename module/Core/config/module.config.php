@@ -46,6 +46,9 @@ return array(
         
     ),
 
+    'mail' => array(
+        //'transports' => 'file',
+    ),
 
     'translator' => array(
         'locale' => 'zh_CN',
