@@ -11,7 +11,7 @@
 namespace Core;
 
 use Eva\Api;
-use Zend\Mail\Message;
+use Eva\Mail\Message;
 use Zend\Mail\Transport;
 use Zend\Mail\Exception;
 use Zend\Di\Di;
@@ -93,20 +93,69 @@ class Mail
     public function __construct(array $config = array())
     {
         $defaultConfig = array(
-            'transports' => array('file','sendmail'),
+            'transports' => array('file'),
             'message' => array(
             ),
             'di' => array(
+                'definition' => array(
+                    'class' => array(
+                        'Zend\View\Resolver\AggregateResolver' => array(
+                            'attach' => array(
+                                'resolver' => array(
+                                    'required' => true,
+                                    'type'     => 'Zend\View\Resolver\TemplatePathStack',
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
                 'instance' => array(
+                    //Zend View Di Config Start
+                    /*
+                    'Zend\View\Resolver\TemplateMapResolver' => array(
+                        'parameters' => array(
+                            'map'  => array(
+                                Message::VIEW_PATH_NAME => EVA_ROOT_PATH . '/data/mail/abc.phtml',
+                            ),
+                        ),
+                    ),
+                    */
+                    'Zend\View\Resolver\TemplatePathStack' => array(
+                        'parameters' => array(
+                            'paths'  => array(
+                                Message::VIEW_PATH_NAME => EVA_ROOT_PATH . '/data/',
+                            ),
+                        ),
+                    ),
+                    'Zend\View\Resolver\AggregateResolver' => array(
+                        'injections' => array(
+                            //'Zend\View\Resolver\TemplateMapResolver',
+                            'Zend\View\Resolver\TemplatePathStack',
+                        ),
+                    ),
+                    'Zend\View\Renderer\PhpRenderer' => array(
+                        'parameters' => array(
+                            'resolver' => 'Zend\View\Resolver\AggregateResolver',
+                        ),
+                    ),
+                    'Zend\View\Mode\ViewModel' => array(
+                        'parameters' => array(
+                        ),
+                    
+                    ),
+                    //Zend View Di Config End
+
                     'Zend\Mail\Headers' => array(
                         'parameters' => array(
-                          //  'Zend\Mail\Message::addTo:emailOrAddressList' => 'me@mwop.net',
-                          //  'Zend\Mail\Message::setSender:emailOrAddressList' => 'me@mwop.net',
+                            //  'Zend\Mail\Message::addTo:emailOrAddressList' => 'me@mwop.net',
+                            //  'Zend\Mail\Message::setSender:emailOrAddressList' => 'me@mwop.net',
                         )
                     ),
-                    'Zend\Mail\Message' => array(
+                    'Eva\Mail\Message' => array(
                         'parameters' => array(
-                            'headers' => 'Zend\Mail\Headers'
+                            'headers' => 'Zend\Mail\Headers',
+                            'view' => 'Zend\View\Renderer\PhpRenderer',
+                            'viewModel' => 'Zend\View\Model\ViewModel',
                         )
                     ),
                     'Zend\Mail\Transport\FileOptions' => array(
@@ -137,11 +186,10 @@ class Mail
                             'Zend\Mail\Transport\SmtpOptions'
                         )
                     ),
-
-
                 )
             ),
         );
+
         $globalConfig = Api::_()->getConfig();
         if(isset($globalConfig['mail'])){
             $config = array_merge($defaultConfig, $globalConfig['mail'], $config);
@@ -155,7 +203,7 @@ class Mail
         }
         $di = new Di();
         $di->configure(new DiConfiguration($diConfig));
-        $this->message = $di->get('Zend\Mail\Message');
+        $this->message = $di->get('Eva\Mail\Message');
 
         $allowTransports = $this->transportsClasses;
         $transportType = '';

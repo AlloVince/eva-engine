@@ -16,16 +16,6 @@ class BlogController extends RestfulModuleController
 
     public function restIndexBlog()
     {
-        /*
-        $mail = new \Core\Mail();
-
-        $mail->getMessage()->addFrom("allo.vince@gmail.com", "AlloVince")
-        ->addTo("allo.vince@gmail.com")
-        ->setSubject("Sending an email from Zend\Mail!");
-        $mail->send();
-        */
-
-
         $request = $this->getRequest();
 
         $query = $request->getQuery();
