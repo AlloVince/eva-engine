@@ -4,64 +4,60 @@ namespace Blog\Admin\Controller;
 use Blog\Form,
     Eva\Api,
     Eva\Mvc\Controller\RestfulModuleController,
-    Eva\View\Model\ViewModel;
+    Eva\View\Model\ViewModel,
+    Core\Admin\MultiForm,
+    Core\Controller\Exception;
 
 class MultiController extends RestfulModuleController
 {
-    protected $renders = array(
+    protected $addResources = array(
+        'status',
+        'reorder',
     );
 
-    public function restPutMulti()
+    protected $renders = array(
+        'restPostMultiReorder' => 'blank',
+        'restPostMultiStatus' => 'blank',
+    );
+
+    public function restPostMultiReorder()
     {
         $request = $this->getRequest();
         $postData = $request->getPost();
-        $form = new Form\PostForm();
-        $subForms = array(
-            'Text' => array('Blog\Form\TextForm'),
-        );
-        $form->setSubforms($subForms)->init();
+        $dataArray = MultiForm::getPostDataArray($postData);
 
-        $form->enableFilters()->setData($postData);
-        if ($form->isValid()) {
+        $postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
 
-            $postData = $form->getData();
-            $postModel = Api::_()->getModel('Blog\Model\Post');
-            $postData = $form->fieldsMap($postData, true);
-            $postId = $postModel->setSubItemMap($subForms)->setItem($postData)->savePost();
-            $this->redirect()->toUrl('/admin/blog/' . $postData['id']);
-
-        } else {
+        foreach($dataArray as $key => $array){
+            $postTable->where(array('id' => $array['id']))->save(array(
+                'orderNumber' => $array['order']
+            ));
         }
-
-        return array(
-            'form' => $form,
-            'post' => $postData,
-        );
+        $this->redirect()->toUrl('/admin/blog/');
     }
 
-    public function restDeleteBlog()
+    public function restPostMultiStatus()
     {
+        $postStatus = $this->params('id');
+        if(!$postStatus) {
+            throw new Exception\BadRequestException(); 
+        }
+        
         $request = $this->getRequest();
         $postData = $request->getPost();
-        $callback = $request->getPost()->get('callback');
-
-        $form = new Form\PostDeleteForm();
-        $form->enableFilters()->setData($postData);
-        if ($form->isValid()) {
-
-            $postData = $form->getData();
-            $postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
-
-            $postTable->where("id = {$postData['id']}")->remove();
-
-            if($callback){
-                $this->redirect()->toUrl($callback);
+        $dataArray = MultiForm::getPostDataArray($postData);
+        
+        $postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
+        $postTable->where(function($where) use ($dataArray){
+            foreach($dataArray as $key => $array){
+                $where->equalTo('id', $array['id']);
+                $where->or;
             }
-
-        } else {
-            return array(
-                'post' => $postData,
-            );
-        }
+            return $where;
+        })->save(array(
+            'status' => $postStatus
+        ));
+        
+        $this->redirect()->toUrl('/admin/blog/');
     }
 }

@@ -16,6 +16,7 @@ $lableMap = array(
     'draft' => '',
     'published' => 'label-success',
     'pending' => 'label-warning',
+    'deleted' => 'label-inverse',
 );
 ?>
 
@@ -38,18 +39,22 @@ $lableMap = array(
         <div class="btn-group pull-right">
             <a href="<?=$this->uri('/admin/blog/create')?>" class="btn btn-info">Add New Post</a>
         </div>
-        <form action="<?=$this->uri('/admin/blog/multi/')?>" method="post" class="pull-left">
+        <form action="<?=$this->uri('/admin/blog/multi/')?>" method="post" class="pull-left" data-multiform="post">
+            <input type="hidden" name="id" class="multiform-container-main" value="" />
+            <input type="hidden" name="order" class="multiform-container" value="" />
             <div class="btn-group">
-                <span class="btn"><input type="checkbox" class="checkmulti" data-checkmulti="checkmulti-item" /></span>
+                <span class="btn"><input type="checkbox" class="multiform-checker" /></span>
                 <span data-toggle="dropdown" class="btn dropdown-toggle">
                     Status
                     <span class="caret"></span>
                 </span>
                 <ul class="dropdown-menu">
-                    <li><a href="">Published</a></li>
-                    <li><a href="">Draft</a></li>
-                    <li><a href="">Pending</a></li>
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/blog/multi/status/published')?>">Published</a></li>
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/blog/multi/status/draft')?>">Draft</a></li>
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/blog/multi/status/pending')?>">Pending</a></li>
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/blog/multi/status/deleted')?>">Deleted</a></li>
                 </ul>
+                <a href="#" class="btn multiform-submiter" data-multiform-action="<?=$this->uri('/admin/blog/multi/reorder')?>">Re-Order</a>
             </div>
         </form>
     </div>
@@ -87,10 +92,9 @@ $lableMap = array(
                 <tbody>
                     <?if($this->posts):?>
                     <?foreach($this->posts as $key=>$post):?>
-                    <tr id="post_<?=$post['id'] ?>" class="">
+                    <tr class="">
                         <td>
-                            <input type="checkbox" class="checkmulti-item" name="post_ids[]" value="<?=$post['id'] ?>" />
-                            <input type="hidden" name="post_id[]" value="<?=$post['id'] ?>" />
+                            <input name="id" type="checkbox" class="multiform-item-checkbox"  data-multiform="post" data-multiform-itemid="<?=$post['id'] ?>" value="<?=$post['id'] ?>" />
                         </td>	
                         <td>
                             <a href="<?=$this->uri('/admin/blog/' . $post['id'])?>" class="title"><?=$post['title'] ?></a>
@@ -103,7 +107,7 @@ $lableMap = array(
                             </p>
                         </td>
                         <td>
-                            <input tabindex="<?=$key+1 ?>" type="text" class="order span1" size="2" maxlength="3" name="orderNumber[]" value="<?=$post['orderNumber'] ? $post['orderNumber'] : "0" ?>" />
+                            <input name="order" tabindex="<?=$key+1 ?>" type="text" class="span1 multiform-item-input" size="2" maxlength="3"  data-multiform="post" data-multiform-itemid="<?=$post['id'] ?>" value="<?=$post['orderNumber'] ? $post['orderNumber'] : "0" ?>" />
                         </td>
                         <td class="actions">
                             <a href="<?=$this->uri('/admin/blog/remove/' . $post['id'], 'c', array('c' => $this->uri('/admin/blog', array('page' => $this->page)))); ?>" class="btn btn-small btn-danger">Delete</a>

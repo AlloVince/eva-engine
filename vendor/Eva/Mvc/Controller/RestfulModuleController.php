@@ -28,6 +28,7 @@ abstract class RestfulModuleController extends \Zend\Mvc\Controller\AbstractRest
         $moduleName = $routeMatch->getParam('module');
         $moduleNamespace = $routeMatch->getParam('moduleNamespace');
         $controllerName = $routeMatch->getParam('controllerName');
+        $action = $routeMatch->getParam('action');
         $id = $routeMatch->getParam('id');
         $request = $this->getRequest();
         $method = strtolower($request->getMethod());
@@ -48,7 +49,7 @@ abstract class RestfulModuleController extends \Zend\Mvc\Controller\AbstractRest
                 }
                 break;
             default:
-                if($id = $this->getEvent()->getRouteMatch()->getParam('id')){
+                if($id){
                     $method = 'get';
                 } else {
                     $method = 'index';
@@ -57,7 +58,10 @@ abstract class RestfulModuleController extends \Zend\Mvc\Controller\AbstractRest
 
         $resource = '';
         $render = $method;
-        if(true === in_array($id, $this->getAddResources())){
+        if(true === in_array($action, $this->getAddResources())){
+            $resource = $action;
+            $render = $resource;
+        } elseif(true === in_array($id, $this->getAddResources())){
             $resource = $id;
             $render = $resource;
         }

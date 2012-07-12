@@ -345,18 +345,25 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
         $selectOptions = $this->selectOptions;
         $where = isset($selectOptions['where']) ? $selectOptions['where'] : array();
         if(!$selectOptions || !$where){
-            return $this->insert($set);
+            $res = $this->insert($set);
+            $this->reset();
+            return $res;
         }
 
-        return $this->update($set, $where);    
+        $res = $this->update($set, $where);
+        $this->reset();
+        return $res;
     }
 
     public function create(array $set = array())
     {
         if(!$set){
+            $this->reset();
             return false;
         }
-        return $this->insert($set);
+        $res = $this->insert($set);
+        $this->reset();
+        return $res;
     }
 
     public function remove()
@@ -364,10 +371,13 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
         $selectOptions = $this->selectOptions;
         $where = isset($selectOptions['where']) ? $selectOptions['where'] : array();
         if(!$selectOptions || !$where){
+            $this->reset();
             return false;
         }
 
-        return $this->delete($where);    
+        $res = $this->delete($where);
+        $this->reset();
+        return $res;
     }
 
 
