@@ -18,16 +18,17 @@ function p($r)
     \Zend\Debug::dump($r);
 }
 
+/*
 set_include_path(implode(PATH_SEPARATOR, array(
     '.',
     EVA_LIB_PATH,
-    //realpath(EVA_PUBLIC_PATH . '/../vendor/'),
     get_include_path(),
 )));
+*/
 
 //require_once 'Eva/Loader/AutoloaderFactory.php';
 require_once EVA_LIB_PATH . '/zf2/library/Zend/Loader/AutoloaderFactory.php';
-require_once 'Eva/Loader/AutoloaderFactory.php';
+require_once EVA_LIB_PATH . '/Eva/Loader/AutoloaderFactory.php';
 Eva\Loader\AutoloaderFactory::factory(array(
     'Zend\Loader\StandardAutoloader' => array(
         'autoregister_zf' => true
@@ -35,7 +36,7 @@ Eva\Loader\AutoloaderFactory::factory(array(
 ));
 $loader = Eva\Loader\AutoloaderFactory::getRegisteredAutoloaders();
 $loader = $loader[Eva\Loader\AutoloaderFactory::STANDARD_AUTOLOADER];
-$loader->registerNamespace('Eva\\', EVA_PUBLIC_PATH . '/../vendor/Eva');
+$loader->registerNamespace('Eva\\', EVA_LIB_PATH . '/Eva');
 
 $appConfig = include EVA_CONFIG_PATH . DIRECTORY_SEPARATOR . 'application.config.php';
 //\Eva\Registry::set("appConfig", $appConfig);
