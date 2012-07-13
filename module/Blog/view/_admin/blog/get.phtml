@@ -3,6 +3,8 @@ $post = $this->post;
 $title = $post['id'] ? 'Edit Post' : 'Create Post';
 $method = $post['id'] ? 'put' : 'post';
 $this->headTitle($title, 'SET');
+$this->textDelay('breadcrumbText', $title);
+
 if($this->form){
 	$form = $this->form;
 } else {
@@ -33,7 +35,6 @@ $form->init(array(
 //Print out error messages:
 //foreach($form->subForm('Text')->get('content')->getMessages() as $message):
 ?>
-
 <div class="row">
 <form <?=$this->formAttr($form)?>>
     <?=$form->restful();?>

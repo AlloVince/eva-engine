@@ -45,6 +45,7 @@ class HelperConfiguration implements ConfigurationInterface
          'input' => 'Eva\Form\View\Helper\Input',
          'label' => 'Eva\Form\View\Helper\Label',
          'widget' => 'Eva\View\Helper\Widget',
+         'textDelay' => 'Eva\View\Helper\TextDelay',
          '_' => 'Eva\I18n\View\Helper\Translator',
          'evajs' => 'Core\Helper\Evajs',
      );

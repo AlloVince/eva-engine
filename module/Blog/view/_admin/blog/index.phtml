@@ -1,6 +1,7 @@
 <?
-$title = 'Posts List';
+$title = 'Post List';
 $this->headTitle($title, 'SET');
+$this->textDelay('breadcrumbText', 'Post List');
 if($this->form){
 	$form = $this->form;
 } else {
@@ -19,7 +20,6 @@ $lableMap = array(
     'deleted' => 'label-inverse',
 );
 ?>
-
 <div class="row">
     <div class="span10">
         <div class="slate">
