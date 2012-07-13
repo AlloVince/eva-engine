@@ -16,68 +16,57 @@
     <link href="<?=$this->link('/lib/css/fontawesome/css/font-awesome.css')?>" media="all" rel="stylesheet" type="text/css" />
     <link href="<?=$this->link('/src/admin/css/admin.css')?>" media="all" rel="stylesheet" type="text/css" />
     <?=$this->evajs()?>
+
+    <style>
+        html, body {
+            background:#D7D7D7;
+            height:100%;
+        }
+
+        .block {
+          text-align: center;
+          height:100%;
+        }
+         
+        .block:before {
+          content: '';
+          display: inline-block;
+          height: 100%;
+          vertical-align: middle;
+          margin-right: -0.25em; /* Adjusts for spacing */
+         }
+         
+        .centered {
+          display: inline-block;
+          vertical-align: middle;
+         }
+
+        #admin-login {
+            margin:0 auto;
+            text-align:left;
+        }
+    </style>
 </head>
 
-<body class="">
+<body class="admin-login">
 
-    <div class="container">
-
+<div class="block" style="">
+    
+    <div class="centered">
+    <div id="admin-login" class="container">
         <div class="row">
+            <div class="span6 offset3">
+                <?=$this->content?>
+            </div>
+        </div>
+    </div>
+    </div>
+    
+</div>
 
-            <div class="span10">
 
-                <div class="secondary-masthead">
 
-                    <ul class="nav nav-pills pull-right">
-                        <li>
-                        <a href="<?=$this->uri('/')?>"><i class="icon-globe"></i> View Website</a>
-                        </li>
-                        <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i> John Smith <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="profile.html">Your Profile</a></li>
-                            <li class="active"><a href="form.html">Account Settings</a></li>
-                            <li class="divider"></li>
-                            <li><a href="">Logout</a></li>
-                        </ul>
-                        </li>
-                    </ul>
 
-                    <ul class="breadcrumb">
-                        <li>
-                        <a href="#">Admin</a> <span class="divider">/</span>
-                        </li>
-                        <li class="active">Dashboard</li>
-                    </ul>
-
-                </div>
-
-                <div class="main-area dashboard">
-
-                    <div class="row">
-                        <div class="span10">
-                        <?=$this->content?>
-                        </div>
-                    </div>
-
-                    <div class="row">
-
-                        <div class="span10 footer">
-
-                            <p>&copy; <a href="https://github.com/AlloVince/eva-engine">EvaEngine</a> 2012</p>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div> <!-- end span10 -->
-
-        </div> <!-- end row -->
-
-    </div> <!-- end container -->
 
 
     <script src="<?=$this->link('/lib/js/jquery/jquery.min.js')?>"></script>

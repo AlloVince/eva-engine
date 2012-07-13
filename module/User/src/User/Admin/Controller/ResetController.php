@@ -13,11 +13,12 @@ class ResetController extends RestfulModuleController
 
     public function restIndexReset()
     {
-
+        $this->layout('layout/adminindex');
     }
 
     public function restPutReset()
     {
+        $this->layout('layout/adminindex');
         $request = $this->getRequest();
         $form = Api::_()->getForm('User\Form\ResetForm');
         if ($request->isPost()) {
