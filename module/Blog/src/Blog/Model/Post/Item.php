@@ -73,10 +73,8 @@ class Item extends AbstractItem
 
     protected function toMarkdown($content)
     {
-        require_once 'Markdown/markdownextra.php';
-
+        require_once EVA_LIB_PATH . '/Markdown/markdownextra.php';
         $markdown = new \MarkdownExtra_Parser();
-
         return $markdown->transform($content);
     }
 }

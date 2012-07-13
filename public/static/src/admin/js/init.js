@@ -1,8 +1,4 @@
-eva.construct = function(){
-
-	$(".main-left-col").height($(document).height()).css("background", "#333232");
-
-
+eva.multiform = function(){
 	$("form[data-multiform]").each(function(){
 		var form = $(this);
 		var formName = form.attr("data-multiform");
@@ -63,20 +59,39 @@ eva.construct = function(){
 		});
 
 	});
+};
 
-	/*
-	$(".checkmulti").on("change", function(){
-		var targetClass = $(this).attr("data-checkmulti");
-		var targets = $("." + targetClass);
-		//console.log(targets);
-		var checked = $(this).attr("checked");
-		if(checked){
-			targets.attr("checked", "checked");
-		} else {
-			targets.attr("checked", false);
+
+eva.highlightmenu = function(){
+	var url = eva.parseUri();
+	var menuItems = $("li[data-highlight-url]");
+	var path = url.path;
+
+	menuItems.each(function(){
+		var item = $(this);
+		var pattern = item.attr("data-highlight-url");
+		pattern = pattern.replace(/\//g,"\\/");
+		var reg = new RegExp(pattern);
+		var res = reg.exec(path);
+		//eva.p(reg);
+		//eva.p(res);
+
+		if(res) {
+			item.addClass("active");
+			item.parent().removeClass('collapse');
+			item.parent().parent().addClass("active");
+			return false;
 		}
-	});
-   */
+	})
+};
+
+eva.construct = function(){
+
+	$(".main-left-col").height($(document).height()).css("background", "#333232");
+
+	eva.multiform();
+	eva.highlightmenu();
+
 	return false;
 };
 

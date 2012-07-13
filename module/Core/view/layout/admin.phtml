@@ -32,13 +32,15 @@
 
                     <ul class="side-nav">
                         <li>
-                        <a href="<?=$this->uri('/admin/')?>"><i class="icon-home"></i> Dashboard</a>
+                            <a href="<?=$this->uri('/admin/')?>"><i class="icon-home"></i> Dashboard</a>
                         </li>
-                        <li class="dropdown active">
+                        <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="collapse" data-target="#website-dropdown" href="#"><i class="icon-sitemap"></i> Blog <b class="caret"></b></a>
                         <ul id="website-dropdown" class="collapse">
-                            <li class="active"><a href="<?=$this->uri('/admin/blog/')?>">Pages</a></li>
-                            <li><a href="<?=$this->uri('/admin/blog/category/')?>">Page Categories</a></li>
+                            <li data-highlight-url="/admin/blog/(\d+)*$"><a href="<?=$this->uri('/admin/blog/')?>">Pages</a></li>
+                            <li data-highlight-url="/admin/blog/comment/(\d+)*$"><a href="<?=$this->uri('/admin/blog/comment/')?>">Comments</a></li>
+                            <li data-highlight-url="/admin/blog/category/(\d+)*$"><a href="<?=$this->uri('/admin/blog/category/')?>">Page Categories</a></li>
+                            <li data-highlight-url="/admin/blog/tag/(\d+)*$"><a href="<?=$this->uri('/admin/blog/tag/')?>">Page Tags</a></li>
                         </ul>
                         </li>
                         <!--
