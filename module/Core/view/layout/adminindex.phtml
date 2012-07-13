@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta charset="utf-8" />
+    <?=$this->headTitle()?>
+	<!--[if lt IE 9]>
+	<meta http-equiv="PRAGMA" content="NO-CACHE" />
+    <script src="<?=$this->link('/lib/js/html5shiv/html5shiv.min.js')?>"></script>
+	<![endif]-->
+    <?=$this->headMeta()?>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://fonts.googleapis.com/css?family=Oxygen|Marck+Script" rel="stylesheet" type="text/css">
+    <link href="<?=$this->link('/src/admin/css/bootstrap.css')?>" media="all" rel="stylesheet" type="text/css" />
+    <link href="<?=$this->link('/lib/css/fontawesome/css/font-awesome.css')?>" media="all" rel="stylesheet" type="text/css" />
+    <link href="<?=$this->link('/src/admin/css/admin.css')?>" media="all" rel="stylesheet" type="text/css" />
+    <?=$this->evajs()?>
+</head>
+
+<body class="">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="span10">
+
+                <div class="secondary-masthead">
+
+                    <ul class="nav nav-pills pull-right">
+                        <li>
+                        <a href="<?=$this->uri('/')?>"><i class="icon-globe"></i> View Website</a>
+                        </li>
+                        <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i> John Smith <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="profile.html">Your Profile</a></li>
+                            <li class="active"><a href="form.html">Account Settings</a></li>
+                            <li class="divider"></li>
+                            <li><a href="">Logout</a></li>
+                        </ul>
+                        </li>
+                    </ul>
+
+                    <ul class="breadcrumb">
+                        <li>
+                        <a href="#">Admin</a> <span class="divider">/</span>
+                        </li>
+                        <li class="active">Dashboard</li>
+                    </ul>
+
+                </div>
+
+                <div class="main-area dashboard">
+
+                    <div class="row">
+                        <div class="span10">
+                        <?=$this->content?>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="span10 footer">
+
+                            <p>&copy; <a href="https://github.com/AlloVince/eva-engine">EvaEngine</a> 2012</p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div> <!-- end span10 -->
+
+        </div> <!-- end row -->
+
+    </div> <!-- end container -->
+
+
+    <script src="<?=$this->link('/lib/js/jquery/jquery.min.js')?>"></script>
+    <script src="<?=$this->link('/lib/js/bootstrap/bootstrap.min.js')?>"></script>
+    <script src="<?=$this->link('/eva/js/core.js')?>"></script>
+    <script src="<?=$this->link('/src/admin/js/init.js')?>"></script>
+
+</body>
+</html>

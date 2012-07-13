@@ -140,8 +140,15 @@ class ModuleViewManager extends \Zend\Mvc\View\ViewManager
             return false;
         }
 
-        //$controller = $routeParams['controller'];
-        $object = new \ReflectionObject($e->getTarget());
+        $controller = $e->getTarget();
+        if(!$controller instanceof \Zend\Mvc\Controller\AbstractActionController && !$controller instanceof \Zend\Mvc\Controller\AbstractRestfulController){
+            //Event should trigger after route matched and found controller
+            throw new \Zend\Mvc\Exception\RuntimeException(printf(
+                '%s should be only trigger on mvc dispatch event',
+                __METHOD__
+            ));
+        }
+        $object = new \ReflectionObject($controller);
         $controllerFullPath = $object->getFileName();
         $controllerClassname = $object->getName();
 
@@ -155,8 +162,14 @@ class ModuleViewManager extends \Zend\Mvc\View\ViewManager
         }
 
         if($moduleNamespace && isset($this->config['module_namespace_layout_map']) 
-            && !isset($this->config['layout']) && isset($this->config['module_namespace_layout_map'][ucfirst($moduleNamespace)])) {
-            $this->getViewModel()->setTemplate('layout/' . $moduleNamespace);
+            && !isset($this->config['layout'])
+            && isset($this->config['module_namespace_layout_map'][ucfirst($moduleNamespace)])
+        ) {
+            $viewModel = $this->getViewModel();
+            $template = $viewModel->getTemplate();
+            if($template == 'layout/layout'){
+                $controller->layout('layout/' . $moduleNamespace);
+            }
         }
 
         $templatePathStack = new ViewResolver\TemplatePathStack();

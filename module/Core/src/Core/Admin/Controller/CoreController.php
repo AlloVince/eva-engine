@@ -8,15 +8,8 @@ class CoreController extends ActionController
 {
     public function indexAction()
     {
-        $model = new ViewModel(array(
-        ));
-        return $model;
-    }
-
-    public function getAction()
-    {
-        $model = new ViewModel(array(
-        ));
+        $model = new ViewModel();
+        $this->layout('layout/adminindex');
         return $model;
     }
 }
