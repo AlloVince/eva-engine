@@ -26,7 +26,7 @@ set_include_path(implode(PATH_SEPARATOR, array(
 )));
 
 //require_once 'Eva/Loader/AutoloaderFactory.php';
-require_once EVA_LIB_PATH . '/zf2/library/Zend/Loader/AutoloaderFactory.php';
+require_once EVA_LIB_PATH . '/Zend/library/Zend/Loader/AutoloaderFactory.php';
 require_once 'Eva/Loader/AutoloaderFactory.php';
 Eva\Loader\AutoloaderFactory::factory(array(
     'Zend\Loader\StandardAutoloader' => array(
