@@ -1,0 +1,49 @@
+<? 
+$title = 'Form Create Scaffold';
+$this->headTitle($title, 'SET');
+
+$method = 'put';
+if($this->form){
+	$form = $this->form;
+} else {
+    $form = Eva\Api::_()->getForm('\Scaffold\Form\HtmlForm');
+}
+
+$form->init(array(
+    'action' => $this->uri('/scaffold/form/html'),
+    'method' => $method,
+    'values' => $this->tab
+));
+?>
+<div class="container">
+
+	<header class="page-header">
+	<h2 class="">Form Create Scaffold </h2>
+    </header>
+
+     <form action="<?=$this->uri('/scaffold/form/html')?>" method="post" class="pull-left">
+    <?=$form->restful();?>
+    <div class="span10 listing-buttons">
+        <div class="control-group">
+            <label for="mainform" class="control-label">主表单</label>
+            <div class="controls">
+                <input id="mainform" type="text" name="form" value="Scaffold\Form\PostForm"/>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label for="subform" class="control-label">子表单</label>
+            <div class="controls">
+                <input id="subform" type="text" name="subform" value=""/>
+            </div>
+        </div>
+         
+        <div class="btn-group pull-right ">
+            <input type="submit" class="btn btn-info" value="Submit" />
+        </div>
+         
+       
+
+    </div>
+    </form>
+</div>

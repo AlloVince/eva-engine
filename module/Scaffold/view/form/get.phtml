@@ -1,0 +1,89 @@
+<? 
+$title = 'Form Create Scaffold';
+$this->headTitle($title, 'SET');
+
+$method = 'put';
+if($this->form){
+	$form = $this->form;
+} else {
+    $form = Eva\Api::_()->getForm('\Scaffold\Form\PostForm');
+}
+
+$form->init(array(
+    'action' => $this->uri('/scaffold/form/'),
+    'method' => $method,
+    'values' => $this->tab
+));
+?>
+<div class="container">
+
+	<header class="page-header">
+	<h2 class="">Form Create Scaffold </h2>
+    </header>
+
+     <form action="<?=$this->uri('/scaffold/form/' . $this->table)?>" method="post" class="pull-left">
+    <?=$form->restful();?>
+    <div class="span10 listing-buttons">
+         <div class="btn-group pull-right ">
+            <input type="submit" class="btn btn-info" value="Submit" />
+        </div>
+         
+        <div class="btn-group pull-left">
+                <span class="btn"><input type="checkbox" class="checkmulti" data-checkmulti="checkmulti-item" /></span>
+         </div>
+
+    </div>
+
+    <div class="span10">
+        <div class="slate">
+            <table class="orders-table table">
+                <thead>
+                    <tr>
+                        <th class="span1">
+                        </th>
+                        <th>Required</th>
+                        <th>Select Type</th>
+                        <th>Is Hidden</th>
+                        <th>Column Name</th>
+                        <th class="span1">Data Type</th>
+                        <th class="span1">Column Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?if($this->columns):?>
+                <?foreach($this->columns as $key=>$column):?>
+                    <tr id="column_<?=$column['name'] ?>" class="">
+                        <td>
+                            <input type="checkbox" class="checkmulti-item" checked="checked" name="column_ids[]" value="<?=$column['name'] ?>" />
+                        </td>
+                        <td>
+                            <input type="checkbox" checked="checked" name="column_required[]" value="<?=$column['name'] ?>" />
+                        </td>
+                        <td>
+                            <?if($column['data_type'] == 'enum'):?>
+                            <?=$form->helper('select_type[]', 'formSelect')?>
+                            <?else:?>
+                            <input type="hidden" name="select_type[]" value="text" />
+                            <?endif;?>
+                        </td> 
+                        <td>
+                            <input type="checkbox" name="column_hidden[]" value="<?=$column['name'] ?>" />
+                        </td>   
+                        <td>
+                            <a href="<?=$this->uri('/scaffold/form/' . $this->table)?>" class="title"><?=$column['name'] ?></a>
+                        </td>
+                        <td>
+                            <?=$column['data_type'];?>
+                        </td>
+                        <td class="actions">
+                            <?=$column['column_type'];?>
+                        </td>
+                    </tr>
+                    <?endforeach;?>
+                    <?endif;?>
+                </tbody>
+            </table>
+        </div>
+    </div><!--span10 end-->
+    </form>
+</div>
