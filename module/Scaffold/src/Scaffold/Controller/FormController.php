@@ -18,6 +18,8 @@ class FormController extends RestfulModuleController
 
     public function restIndexForm()
     {
+        $this->layout('layout/admin');
+        
         $adapter = Api::_()->getDbAdapter();
         
         $metadata = new Metadata($adapter);
@@ -36,6 +38,8 @@ class FormController extends RestfulModuleController
 
     public function restGetForm() 
     {
+        $this->layout('layout/admin');
+        
         $query = $this->getRequest()->getQuery();
         
         $tab = $this->getEvent()->getRouteMatch()->getParam('id'); 
@@ -68,6 +72,8 @@ class FormController extends RestfulModuleController
     
     public function restPutForm()
     {
+        $this->layout('layout/admin');
+        
         $request = $this->getRequest();
         $postData = $request->getPost();
         
@@ -99,10 +105,20 @@ class FormController extends RestfulModuleController
             foreach ($props as $prop) {
                 $res[$columnName][$prop] = $column->{'get' . str_replace('_', '', $prop)}();
             }
-         
-            $res[$columnName]['required'] = in_array($columnName, $requiredNames) ? true : false;
+            
+            if ($requiredNames) {
+                $res[$columnName]['required'] = in_array($columnName, $requiredNames) ? true : false;
+            } else {
+                $res[$columnName]['required'] = false;
+            }
+            
             $res[$columnName]['inputType'] = $inputTypes[$key];
-            $res[$columnName]['isHidden'] = in_array($columnName, $isHidden) ? true : false;
+            
+            if ($isHidden) {
+                $res[$columnName]['isHidden'] = in_array($columnName, $isHidden) ? true : false;
+            } else {
+                $res[$columnName]['isHidden'] = false;
+            }
         }
 
         $formString = $this->makeForm($res, $tab); 
@@ -114,6 +130,8 @@ class FormController extends RestfulModuleController
     
     public function restPutFormHtml()
     {
+        $this->layout('layout/admin');
+        
         $request = $this->getRequest();
         $postData = $request->getPost();
             
