@@ -130,7 +130,9 @@ class Api
             return $this->dbAdapter;
         }
 
-
+        $dbAdapter = $this->event->getApplication()->getServiceManager()->get('Zend\Db\Adapter\Adapter');
+        return $this->dbAdapter = $dbAdapter;
+        /*
         $dbAdapter = array();
         if(true === is_array($configKeyOrArray)){
             $dbAdapter = new DbAdapter($configKeyOrArray);
@@ -143,6 +145,7 @@ class Api
         }
 
         return $this->dbAdapter = $dbAdapter;
+        */
     }
 
     public function getDbTable($tableClassName)

@@ -20,6 +20,13 @@ return array(
         'prefix' => 'eva_',
     ),
 
+    'service_manager' => array(
+        'factories' => array(
+            'Zend\Db\Adapter\Adapter' => 'Zend\Db\Adapter\AdapterServiceFactory',
+            //'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
+        ),
+    ),
+
     'site' => array(
         'uri' => array(
             'callbackName' => 'callback',

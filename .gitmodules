@@ -13,3 +13,6 @@
 [submodule "vendor/Zend"]
 	path = vendor/Zend
 	url = https://github.com/AlloVince/zf2.git
+[submodule "module/ZendDeveloperTools"]
+	path = module/ZendDeveloperTools
+	url = git://github.com/zendframework/ZendDeveloperTools.git

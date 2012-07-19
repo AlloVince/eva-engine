@@ -6,6 +6,8 @@ return array(
         'Blog',
         'Engine',
         'Scaffold',
+        'BjyProfiler',
+        'ZendDeveloperTools',
     ),
     'service_manager' => array(
         'use_defaults' => true,

@@ -12,6 +12,8 @@ defined('EVA_LIB_PATH')    || define('EVA_LIB_PATH', __DIR__ . '/../vendor');
 defined('EVA_MODULE_PATH')    || define('EVA_MODULE_PATH', __DIR__ . '/../module');
 defined('EVA_CONFIG_PATH')    || define('EVA_CONFIG_PATH', __DIR__ . '/../config');
 
+define('REQUEST_MICROTIME', microtime(true));
+
 /** Public functions */
 function p($r)
 {
