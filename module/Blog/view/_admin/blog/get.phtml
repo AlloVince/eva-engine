@@ -63,7 +63,7 @@ $form->init(array(
                 <div class="control-group <?=$form->isError(array('Text', 'content')) ? 'error' : '';?>">
                     <?=$form->helper(array('Text', 'content'), 'label', array('class' => 'control-label'))?>
                     <div class="controls">
-                        <?=$form->helper(array('Text', 'content'), 'formTextarea', array('class' => 'span9','rows' => '15',))?>
+                        <?=$form->helper(array('Text', 'content'), 'formTextarea', array('class' => 'span9 editor-markdown','rows' => '15',))?>
                     </div>
                     <div class="help-block"><?=$form->helper(array('Text', 'content'), 'formElementErrors')?></div>
                 </div>

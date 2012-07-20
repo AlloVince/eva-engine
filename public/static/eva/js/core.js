@@ -28,6 +28,20 @@ config = {
 	ie : false
 },
 
+dirHandler = function(dir, configDir){
+	if(dir === undefined) {
+		return configDir;
+	}
+
+	if(dir instanceof Array){
+		for(var i in dir){
+			dir[i] = configDir + dir[i];
+		}
+		return dir;
+	}
+	return configDir + dir;
+},
+
 methods = window.eva = {
 	module : {},
 
@@ -46,16 +60,18 @@ methods = window.eva = {
 		}		
 	},
 
+	
+
 	d : function(dir) {
-		return dir === undefined ? config.dir : config.dir + dir;
+		return dirHandler(dir, config.dir);
 	},
 
 	s : function(dir){
-		return dir === undefined ? config.s : config.s + dir;
+		return dirHandler(dir, config.s);
 	},
 
 	f : function(dir){
-		return dir === undefined ? config.f : config.f + dir;
+		return dirHandler(dir, config.f);
 	},
 
 	sv : function(dir){
@@ -93,13 +109,6 @@ methods = window.eva = {
 	loader : function(path, callback) {
 		if($LAB === undefined || path === undefined || !path) {
 			return false;
-		}
-		if(typeof path === "string") {
-			return $LAB.script( eva.sv(path) ).wait(callback);
-		}
-
-		for(var i in path) {
-			path[i] = eva.sv(path[i]);
 		}
 		return $LAB.script(path).wait(callback);
 	},
@@ -169,16 +178,25 @@ methods = window.eva = {
 	},
 	*/
 
-	loadcss : function() {
-		var len = arguments.length;
+	loadcss : function(cssfile) {
 		var head = document.getElementsByTagName("head")[0];
+		if(cssfile instanceof Array){
+			var len = cssfile.length;
+			for(var i = 0; i < len; i++) {
+				var css = document.createElement('link');
+				css.type = 'text/css';
+				css.rel = "stylesheet";
+				css.href = cssfile[i];
+				head.appendChild(css);
+			}		
+			return false;
+		}
 		var css = document.createElement('link');
 		css.type = 'text/css';
 		css.rel = "stylesheet";
-		for(var i = 0; i < len; i++) {
-			css.href = eva.sv(arguments[i]);
-			head.appendChild(css);
-		}
+		css.href = cssfile;
+		head.appendChild(css);
+		return false;
 	},
 
 	parseUri : function(url){

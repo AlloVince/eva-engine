@@ -111,10 +111,15 @@
     </div> <!-- end container -->
 
 
+    <script src="<?=$this->link('/lib/js/labjs/labjs.min.js')?>"></script>
     <script src="<?=$this->link('/lib/js/jquery/jquery.min.js')?>"></script>
     <script src="<?=$this->link('/lib/js/bootstrap/bootstrap.min.js')?>"></script>
     <script src="<?=$this->link('/eva/js/core.js')?>"></script>
+    <script src="<?=$this->link('/eva/js/ui.js')?>"></script>
     <script src="<?=$this->link('/src/admin/js/init.js')?>"></script>
+    <script>
+        eva.init(eva_config);
+    </script>>
 
 </body>
 </html>

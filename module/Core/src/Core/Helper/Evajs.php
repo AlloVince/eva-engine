@@ -59,9 +59,9 @@ class Evajs extends \Zend\Form\View\Helper\AbstractHelper
             'debug' => false,
             'version' => 1,
             'lang' => 'en',
-            'dir' => '',
-            'f' => '',
-            's' => '',
+            'dir' => $this->view->uri('/', '-b'),
+            'f' => $this->view->uri($this->view->serverUrl() . '/', '-b'),
+            's' => $this->view->link('/', '-B'),
             'ie' => false,
         ), $jsParams);
         return '<script type="text/javascript">var eva_config = ' . \Zend\Json\Json::encode($jsConfig) . '</script>';

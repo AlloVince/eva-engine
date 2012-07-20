@@ -3,6 +3,7 @@
 	var methods = {
 
 		config : {
+			pathUiBase : ["/lib/js/bootstrap/bootstrap.min.js"],
 			pathJqueryUi : ["/javascripts/jquery/jquery-ui.js", "/javascripts/jquery/jquery-ui-i18n.js", "/javascripts/jquery/jquery-ui-custom.js"],
 			pathCodeMirror : ["/javascripts/codemirror/lib/codemirror.js"],
 			pathSwfUploader : ["/javascripts/jquery/jquery.swfupload.js", "/javascripts/swfupload/swfupload.js", "/javascripts/swfupload/swfupload.queue.js"],
@@ -19,9 +20,10 @@
 			tabs : '.tabs',
 			grid : '.grid',
 			datepicker : '.datepicker',
-			codeeditor : '.codeeditor',
+			codeeditor : '.editor-code',
+			markdowneditor : '.editor-markdown',
 			swfuploader : '.swfuploader',
-			htmleditor : '.htmleditor'
+			htmleditor : '.editor-html'
 		},
 
 		_getOption : function(item, setting) {
@@ -221,6 +223,45 @@
 			return false;
 		},
 
+		initMarkdowneditor : function(){
+			var mySettings = {
+				nameSpace:          'markdown', // Useful to prevent multi-instances CSS conflict
+				previewParserPath:  '~/sets/markdown/preview.php',
+				onShiftEnter:       {keepDefault:false, openWith:'\n\n'},
+				markupSet: [
+					{name:'First Level Heading', key:"1", placeHolder:'Your title here...', closeWith:function(markItUp) { return miu.markdownTitle(markItUp, '=') } },
+					{name:'Second Level Heading', key:"2", placeHolder:'Your title here...', closeWith:function(markItUp) { return miu.markdownTitle(markItUp, '-') } },
+					{name:'Heading 3', key:"3", openWith:'### ', placeHolder:'Your title here...' },
+					{name:'Heading 4', key:"4", openWith:'#### ', placeHolder:'Your title here...' },
+					{name:'Heading 5', key:"5", openWith:'##### ', placeHolder:'Your title here...' },
+					{name:'Heading 6', key:"6", openWith:'###### ', placeHolder:'Your title here...' },
+					{separator:'---------------' },        
+					{name:'Bold', key:"B", openWith:'**', closeWith:'**'},
+					{name:'Italic', key:"I", openWith:'_', closeWith:'_'},
+					{separator:'---------------' },
+					{name:'Bulleted List', openWith:'- ' },
+					{name:'Numeric List', openWith:function(markItUp) {
+						return markItUp.line+'. ';
+					}},
+					{separator:'---------------' },
+					{name:'Picture', key:"P", replaceWith:'![[![Alternative text]!]]([![Url:!:http://]!] "[![Title]!]")'},
+					{name:'Link', key:"L", openWith:'[', closeWith:']([![Url:!:http://]!] "[![Title]!]")', placeHolder:'Your text to link here...' },
+					{separator:'---------------'},    
+					{name:'Quotes', openWith:'> '},
+					{name:'Code Block / Code', openWith:'(!(\t|!|`)!)', closeWith:'(!(`)!)'},
+					{separator:'---------------'},
+					{name:'Preview', call:'preview', className:"preview"}
+				]
+			}
+			eva.loadcss(eva.s(['lib/js/markitup/skins/markitup/style.css', 'lib/js/markitup/sets/default/markdown.css']));
+			eva.loader(eva.s(['/lib/js/markitup/jquery.markitup.js', '/lib/js/markitup/sets/default/set.js']), function(){
+				$(methods._itemClass.markdowneditor).each(function(){
+					$(this).markItUp(mySettings);
+				});
+			});
+		
+		},
+
 		//beta
 		initSwfuploader : function(){
 			if(!$(this._itemClass.swfuploader)[0]) {
@@ -291,7 +332,7 @@
 
 		init : function(){
 			if(false === this._inited) {
-				eva.loader(this.config.pathJqueryUi, this._init);
+				eva.loader(eva.s(this.config.pathUiBase), this._init);
 				this._inited = true;
 			}
 		}

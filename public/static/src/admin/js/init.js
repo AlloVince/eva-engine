@@ -91,6 +91,7 @@ eva.construct = function(){
 
 	eva.multiform();
 	eva.highlightmenu();
+	eva.ui.init();
 
 	return false;
 };
