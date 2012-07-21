@@ -224,6 +224,7 @@
 		},
 
 		initMarkdowneditor : function(){
+			/*
 			var mySettings = {
 				nameSpace:          'markdown', // Useful to prevent multi-instances CSS conflict
 				previewParserPath:  '~/sets/markdown/preview.php',
@@ -259,7 +260,42 @@
 					$(this).markItUp(mySettings);
 				});
 			});
-		
+		   */
+
+		  	/*
+			eva.loadcss(eva.s(['/lib/js/pagedown/Markdown.Editor.css']));
+			eva.loader(eva.s(['/lib/js/pagedown/Markdown.Converter.js', '/lib/js/pagedown/Markdown.Sanitizer.js', '/lib/js/pagedown/Markdown.Editor.js']), function(){
+            	var converter = Markdown.getSanitizingConverter();
+				$(methods._itemClass.markdowneditor).each(function(){
+					var editor = $(this);
+					editor.live('keyup', function () {
+						var md = converter.makeHtml(editor.val());
+						$(".markdown-preview").html(md);
+					});
+				});
+			});
+		   */
+
+			eva.loadcss(eva.s(['/lib/js/codemirror/lib/codemirror.css', '/lib/js/codemirror/theme/ambiance.css']));
+			eva.loader(eva.s(['/lib/js/codemirror/lib/codemirror.js', '/lib/js/codemirror/mode/xml/xml.js', '/lib/js/codemirror/mode/markdown/markdown.js', '/lib/js/showdown/showdown.js']), function(){
+				var converter = new Showdown.converter();
+				$(methods._itemClass.markdowneditor).each(function(){
+					var textarea = $(this);
+					var width = textarea.outerWidth();
+					var editor = CodeMirror.fromTextArea(this, {
+						"mode":"markdown",
+						"theme":"ambiance",
+						"lineNumbers":true,
+						"lineWrapping":true,
+						"fontsize":"12px",
+						onChange : function(){
+							var md = converter.makeHtml(editor.getValue());
+							$(".markdown-preview").html(md);
+						}
+					});	
+					editor.setSize(width);
+				});
+			});		
 		},
 
 		//beta

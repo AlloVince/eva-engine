@@ -65,7 +65,9 @@ $form->init(array(
                     <div class="controls">
                         <?=$form->helper(array('Text', 'content'), 'formTextarea', array('class' => 'span9 editor-markdown','rows' => '15',))?>
                     </div>
+                    <div class="markdown-preview"></div>
                     <div class="help-block"><?=$form->helper(array('Text', 'content'), 'formElementErrors')?></div>
+                    
                 </div>
             </fieldset>
         </div>
