@@ -279,12 +279,4 @@ abc;
     
         return $html . "\n";
     }
-
-    public function p($data = null) 
-    {
-        echo "<pre>";
-        var_export($data);
-        //print_r($data);
-        echo "</pre>";
-    }
 }
