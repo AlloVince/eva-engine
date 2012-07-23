@@ -36,6 +36,7 @@ return array(
         ),
         'cache_dir'            => EVA_CONFIG_PATH . '/cache',
         'module_paths' => array(
+            EVA_ROOT_PATH . '/depends',
             EVA_MODULE_PATH,
             EVA_ROOT_PATH . '/website',
         ),
