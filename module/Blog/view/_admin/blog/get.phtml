@@ -61,11 +61,38 @@ $form->init(array(
                 </div>
 
                 <div class="control-group <?=$form->isError(array('Text', 'content')) ? 'error' : '';?>">
-                    <?=$form->helper(array('Text', 'content'), 'label', array('class' => 'control-label'))?>
-                    <div class="controls">
+                    <!--<?=$form->helper(array('Text', 'content'), 'label', array('class' => 'control-label'))?>-->
+
+
+                    <div id="editor-left" class="controls">
+                    <div class="btn-toolbar markdown-toolbar">
+                        <div class="btn-group">
+                            <span class="btn"  data-original-title="Bold - Ctrl+B"><i class="icon-bold"></i></span>
+                            <span class="btn"  data-original-title="Italic - Ctrl+I"><i class="icon-italic"></i></span>
+                        </div>
+                        <div class="btn-group">
+                            <span class="btn"  data-original-title="Link - Ctrl+L"><i class="icon-link"></i></span>
+                            <span class="btn"  data-original-title="Blockquote - Ctrl+Q"><i class="icon-blockquote"></i></span>
+                            <span class="btn"  data-original-title="Code Sample - Ctrl+K"><i class="icon-code"></i></span>
+                            <span class="btn"  data-original-title="Image - Ctrl+G"><i class="icon-picture"></i></span>
+                        </div>
+                        <div class="btn-group">
+                            <span class="btn"  data-original-title="Numbered List - Ctrl+O"><i class="icon-list"></i></span>
+                            <span class="btn"  data-original-title="Bulleted List - Ctrl+U"><i class="icon-bullet-list"></i></span>
+                            <span class="btn"  data-original-title="Heading - Ctrl+H"><i class="icon-header"></i></span>
+                            <span class="btn"  data-original-title="Horizontal Rule - Ctrl+R"><i class="icon-hr-line"></i></span>
+                        </div>
+                        <div class="btn-group">
+                            <span class="btn"  data-original-title="Undo - Ctrl+Z" disabled=""><i class="icon-undo"></i></span>
+                            <span class="btn"  data-original-title="Redo - Ctrl+Y" disabled=""><i class="icon-share-alt"></i></span>
+                        </div>
+                        <div class="btn-group">
+                            <span class="btn fullscreen" data-original-title="Full Screen"><i class="icon-fullscreen"></i></span>
+                        </div>
+                    </div>
                         <?=$form->helper(array('Text', 'content'), 'formTextarea', array('class' => 'span9 editor-markdown','rows' => '15',))?>
                     </div>
-                    <div class="markdown-preview"></div>
+                    <div id="editor-right" class="markdown-preview"></div>
                     <div class="help-block"><?=$form->helper(array('Text', 'content'), 'formElementErrors')?></div>
                     
                 </div>

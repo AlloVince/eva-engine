@@ -276,24 +276,70 @@
 			});
 		   */
 
+		  	$(".markdown-toolbar").css({
+				"margin" : 0,
+				"background" : "#EFEFEF"
+			});
+
+		    var editor;
+			var converter;
+		  	var fullscreen = function(){
+				var width = $(document).width() / 2;
+				var height = $(window).height();
+				eva.p(width);
+				$("body").css("overflow", "hidden");
+				$("#editor-left").css({
+					"position" : "fixed",
+					"top" : 0,
+					"left" : 0,
+					"width" : width + 15,
+					"height" : height, 
+					"z-index" : 1000
+				});
+				editor.setSize("100%", height);
+				//eva.p(editor);
+				editor.refresh();
+
+				$("#editor-right").css({
+					"position" : "fixed",
+					"top" : 0,
+					"right" : 0,
+					"padding" : "20px",
+					"width" : width - 40,
+					"height" : height - 40, 
+					"background" : "#FFF",
+					"overflow" : "auto",
+					"z-index" : 1000
+				});
+			};
+
+			var preview = function(){
+				var md = converter.makeHtml(editor.getValue());
+				$(".markdown-preview").html(md);
+			};
+
+			$(".fullscreen").on("click", function(){
+				fullscreen();
+				preview();
+			});
+
 			eva.loadcss(eva.s(['/lib/js/codemirror/lib/codemirror.css', '/lib/js/codemirror/theme/ambiance.css']));
 			eva.loader(eva.s(['/lib/js/codemirror/lib/codemirror.js', '/lib/js/codemirror/mode/xml/xml.js', '/lib/js/codemirror/mode/markdown/markdown.js', '/lib/js/showdown/showdown.js']), function(){
-				var converter = new Showdown.converter();
+				converter = new Showdown.converter();
 				$(methods._itemClass.markdowneditor).each(function(){
 					var textarea = $(this);
 					var width = textarea.outerWidth();
-					var editor = CodeMirror.fromTextArea(this, {
+					editor = CodeMirror.fromTextArea(this, {
 						"mode":"markdown",
 						"theme":"ambiance",
 						"lineNumbers":true,
 						"lineWrapping":true,
-						"fontsize":"12px",
+						//"fontsize":"13px",
 						onChange : function(){
-							var md = converter.makeHtml(editor.getValue());
-							$(".markdown-preview").html(md);
+							preview();
 						}
 					});	
-					editor.setSize(width);
+					//editor.setSize(width);
 				});
 			});		
 		},
