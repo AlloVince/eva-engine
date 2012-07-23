@@ -93,6 +93,8 @@ eva.construct = function(){
 	eva.highlightmenu();
 	eva.ui.init();
 
+	$('.dropdown-toggle').dropdown();
+
 	return false;
 };
 
