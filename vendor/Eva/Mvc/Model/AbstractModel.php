@@ -281,7 +281,7 @@ abstract class AbstractModel
         //p($diConfig['instance']['Eva\Paginator\Paginator']['parameters']);
         
         $di = new \Zend\Di\Di();
-        $di->configure(new \Zend\Di\Configuration($diConfig));
+        $di->configure(new \Zend\Di\Config($diConfig));
         $paginator = $di->get('Eva\Paginator\Paginator');
        // \Zend\Di\Display\Console::export($di);
         return $this->paginator = $paginator;

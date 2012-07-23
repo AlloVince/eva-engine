@@ -11,7 +11,7 @@
 namespace Core;
 
 use Eva\Api;
-use Zend\Session\Configuration\SessionConfiguration;
+use Zend\Session\Config\SessionConfig;
 use Zend\Session\SessionManager;
 use Zend\Session\Container;
 
@@ -83,7 +83,7 @@ class Session
                 $sessionNamespace = $defaultConfig['session']['namespace'];
             }
         }
-        $config = new SessionConfiguration($config);
+        $config = new SessionConfig($config);
         self::$sessionManager = $manager = new SessionManager($config);
         self::$sessionContainer = new Container($sessionNamespace, $manager);
         return self::$sessionInited = true;

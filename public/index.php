@@ -43,6 +43,9 @@ $loader->registerNamespace('Eva\\', EVA_LIB_PATH . '/Eva');
 $appConfig = include EVA_CONFIG_PATH . DIRECTORY_SEPARATOR . 'application.config.php';
 //\Eva\Registry::set("appConfig", $appConfig);
 
+Zend\Mvc\Application::init($appConfig)->run()->send();
+
+/*
 // setup service manager
 $serviceManager = new \Zend\ServiceManager\ServiceManager(new \Zend\Mvc\Service\ServiceManagerConfiguration($appConfig['service_manager']));
 $serviceManager->setService('ApplicationConfiguration', $appConfig);
@@ -53,3 +56,4 @@ $moduleManger->loadModules();
 
 $app = $serviceManager->get('Application');
 $app->bootstrap()->run()->send();
+*/

@@ -96,7 +96,7 @@ class ModuleViewManager extends \Zend\Mvc\View\ViewManager
     {
         //TODO: add here for temporary
         //Auto add controller Di alias by global router
-        $configuration    = $e->getApplication()->getConfiguration();
+        $configuration    = $e->getApplication()->getConfig();
         $routeMatch = $e->getRouteMatch();
         if($routeMatch && $routeMatch  instanceof \Zend\Mvc\Router\RouteMatch){
             $routeMatchName =  $routeMatch->getMatchedRouteName();

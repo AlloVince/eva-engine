@@ -69,7 +69,7 @@ class PageCapture extends AbstractPlugin
     protected function getConfig()
     {
         $controller = $this->getController();
-        return $controller->getEvent()->getApplication()->getConfiguration();
+        return $controller->getEvent()->getApplication()->getConfig();
     }
 
 }

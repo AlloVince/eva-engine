@@ -2,7 +2,7 @@
 namespace Eva;
 
 use Zend\Di\Di,
-    Zend\Di\Configuration as DiConfiguration,
+    Zend\Di\Config as DiConfig,
     Zend\Db\Adapter\Adapter as DbAdapter,
     Eva\Core\Exception\RuntimeException;
 class Api
@@ -61,7 +61,7 @@ class Api
     {
         $event = $this->getEvent();
         $app = $event->getApplication();
-        return $app->getConfiguration();
+        return $app->getConfig();
     }
 
     public function getAppConfig()
@@ -70,7 +70,7 @@ class Api
             return $this->appConfig;
         }
 
-        return $this->event->getApplication()->getServiceManager()->get('ApplicationConfiguration');
+        return $this->event->getApplication()->getServiceManager()->get('ApplicationConfig');
     }
 
 
@@ -249,7 +249,7 @@ class Api
         */
 
         $diConfig = $diConfig ? array_merge($defaultConfig, $diConfig) : $defaultConfig;
-        $di->configure(new DiConfiguration($diConfig));
+        $di->configure(new DiConfig($diConfig));
         //\Zend\Di\Display\Console::export($di);
         return $di->get($modelClassName);
     }

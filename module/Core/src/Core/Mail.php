@@ -15,7 +15,7 @@ use Eva\Mail\Message;
 use Zend\Mail\Transport;
 use Zend\Mail\Exception;
 use Zend\Di\Di;
-use Zend\Di\Configuration as DiConfiguration;
+use Zend\Di\Config as DiConfig;
 
 /**
  * Session ManagerInterface implementation utilizing ext/session
@@ -202,7 +202,7 @@ class Mail
             $diConfig = $config['di'];
         }
         $di = new Di();
-        $di->configure(new DiConfiguration($diConfig));
+        $di->configure(new DiConfig($diConfig));
         $this->message = $di->get('Eva\Mail\Message');
 
         $allowTransports = $this->transportsClasses;

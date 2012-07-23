@@ -35,7 +35,7 @@ class ModuleManagerFactory extends \Zend\Mvc\Service\ModuleManagerFactory
      *
      * @var array
      */
-    protected $defaultServiceConfiguration = array(
+    protected $defaultServiceConfig = array(
         'invokables' => array(
             'DispatchListener' => 'Zend\Mvc\DispatchListener',
             'Request'          => 'Zend\Http\PhpEnvironment\Request',
@@ -45,9 +45,9 @@ class ModuleManagerFactory extends \Zend\Mvc\Service\ModuleManagerFactory
         ),
         'factories' => array(
             'Application'             => 'Zend\Mvc\Service\ApplicationFactory',
-            'Configuration'           => 'Zend\Mvc\Service\ConfigurationFactory',
+            'Config'                  => 'Zend\Mvc\Service\ConfigFactory',
             'ControllerLoader'        => 'Zend\Mvc\Service\ControllerLoaderFactory',
-            'ControllerPluginManager' => 'Eva\Mvc\Service\ControllerPluginManagerFactory',
+            'ControllerPluginManager' => 'Zend\Mvc\Service\ControllerPluginManagerFactory',
             'DependencyInjector'      => 'Zend\Mvc\Service\DiFactory',
             'Router'                  => 'Zend\Mvc\Service\RouterFactory',
             'ViewHelperManager'       => 'Eva\Mvc\Service\ViewHelperManagerFactory',
@@ -58,7 +58,7 @@ class ModuleManagerFactory extends \Zend\Mvc\Service\ModuleManagerFactory
             'Translator'              => 'Eva\I18n\Translator\TranslatorServiceFactory',
         ),
         'aliases' => array(
-            'Config'                            => 'Configuration',
+            'Configuration'                     => 'Config',
             'ControllerPluginBroker'            => 'ControllerPluginManager',
             'Di'                                => 'DependencyInjector',
             'Zend\Di\LocatorInterface'          => 'DependencyInjector',

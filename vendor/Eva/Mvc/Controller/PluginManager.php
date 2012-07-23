@@ -21,11 +21,6 @@
 
 namespace Eva\Mvc\Controller;
 
-use Zend\ServiceManager\AbstractPluginManager;
-use Zend\ServiceManager\ConfigurationInterface;
-use Zend\Stdlib\DispatchableInterface;
-use Zend\Mvc\Exception;
-
 /**
  * Plugin manager implementation for controllers
  *
