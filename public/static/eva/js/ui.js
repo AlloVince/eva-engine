@@ -413,6 +413,7 @@
 		},
 
 		init : function(){
+			//methods._init();
 			if(false === this._inited) {
 				eva.loader(eva.s(this.config.pathUiBase), this._init);
 				this._inited = true;

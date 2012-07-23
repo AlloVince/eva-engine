@@ -39,7 +39,7 @@
                         <ul id="website-dropdown" class="collapse">
                             <li data-highlight-url="/admin/blog/(\d+)*$"><a href="<?=$this->uri('/admin/blog/')?>">Pages</a></li>
                             <li data-highlight-url="/admin/blog/comment/(\d+)*$"><a href="<?=$this->uri('/admin/blog/comment/')?>">Comments</a></li>
-                            <li data-highlight-url="/admin/blog/category/(\d+)*$"><a href="<?=$this->uri('/admin/blog/category/')?>">Page Categories</a></li>
+                            <li data-highlight-url="/admin/blog/category/(\d+|create|remove)*$"><a href="<?=$this->uri('/admin/blog/category/')?>">Page Categories</a></li>
                             <li data-highlight-url="/admin/blog/tag/(\d+)*$"><a href="<?=$this->uri('/admin/blog/tag/')?>">Page Tags</a></li>
                         </ul>
                         </li>
@@ -113,13 +113,12 @@
 
     <script src="<?=$this->link('/lib/js/labjs/labjs.min.js')?>"></script>
     <script src="<?=$this->link('/lib/js/jquery/jquery.min.js')?>"></script>
-    <script src="<?=$this->link('/lib/js/bootstrap/bootstrap.min.js')?>"></script>
     <script src="<?=$this->link('/eva/js/core.js')?>"></script>
     <script src="<?=$this->link('/eva/js/ui.js')?>"></script>
     <script src="<?=$this->link('/src/admin/js/init.js')?>"></script>
     <script>
         eva.init(eva_config);
-    </script>>
+    </script>
 
 </body>
 </html>

@@ -91,10 +91,10 @@ eva.construct = function(){
 
 	eva.multiform();
 	eva.highlightmenu();
+
+	//$('.dropdown-toggle').dropdown();
+
 	eva.ui.init();
-
-	$('.dropdown-toggle').dropdown();
-
 	return false;
 };
 
