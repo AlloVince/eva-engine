@@ -6,82 +6,225 @@ use Zend\Form\Element;
 
 class FormClassGenerator
 {
-    protected $mergeElements = array(
-        'select_type' => array(
-            'name' => 'select_type[]',
+    protected $elements;
+    protected $dbTableName;
+    protected $metadata;
+    protected $validatorGenerator;
+
+    public function getValidatorGenerator()
+    {
+        if($this->validatorGenerator){
+            return $this->validatorGenerator;
+        }
+
+        return new ValidatorOptionGenerator();
+    }
+
+    public function setElements($elements)
+    {
+        $this->elements = $elements;
+        return $this;
+    }
+
+    public function getElements()
+    {
+        return $this->elements;
+    }
+
+    public function setDbTableName($dbTableName)
+    {
+        $this->dbTableName = $dbTableName;
+        return $this;
+    }
+
+    public function getDbMetadata()
+    {
+        if($this->metadata){
+            return $this->metadata;
+        }
+
+        $adapter = \Eva\Api::_()->getDbAdapter();
+        $metadata = new \Eva\Db\Metadata\Metadata($adapter);
+        $columns = $metadata->getColumns($this->dbTableName);
+        $props = array(
+            'name', 'ordinal_position', 'column_default', 'is_nullable',
+            'data_type', 'character_maximum_length', 'character_octet_length',
+            'numeric_precision', 'numeric_scale', 'numeric_unsigned',
+            'erratas', 'column_type'
+        );
+        $res = array();
+        foreach ($columns as $column) {
+            $columnName = $column->getName();
+            foreach ($props as $prop) {
+                $res[$columnName][$prop] = $column->{'get' . str_replace('_', '', $prop)}();
+            }
+        }    
+        return $this->metadata = $res;
+    }
+
+    public function getFormClassName()
+    {
+        $dbTableName = $this->dbTableName;
+        $className = explode("_", $dbTableName);
+        array_shift($className);
+        array_push($className, 'Form');
+        $className = array_map(function($string){
+            return ucfirst($string);
+        }, $className);
+        return implode("\\", $className);
+    }
+
+    public function printCode($array)
+    {
+        $varDump = var_export($array, true);
+        $varDump = preg_replace('/\d+\s+\=>\s+/','',$varDump);
+        $varDump = preg_replace('/=>\s+\n\s+array\s+\(/','=> array (',$varDump);
+        $varDump = str_replace('  ', '    ', $varDump);
+        return $varDump;
+    }
+
+    public function convertToFormArray()
+    {
+        $elements = $this->elements;
+        $columns = $this->getDbMetadata();
+
+        $elementsArray = array();
+        $validatorsArray = array();
+
+        foreach($elements as $key => $element){
+            if($this->isMultiOptionElement($element)){
+                $elementArray = $this->getMultiTypeElement($element); 
+            } else {
+                $elementArray = $this->getSingleTypeElement($element);
+            }
+
+            $validatorArray = array(
+                'name' => $key,
+                'filters' => $this->getFilterArray($element),
+                'validators' => $this->getValidatorArray($element),
+            );
+
+            $elementsArray[$key] = $elementArray;
+            $validatorsArray[$key] = $validatorArray;
+        }
+
+        return array($elementsArray, $validatorsArray);
+    }
+
+    protected function parseEnumString($enum)
+    {
+        $enum = str_replace(array('enum','(', ')', '\''),'', $enum);
+        $enum = explode(',', $enum);
+        $enumArray = array();
+        foreach($enum as $enumName){
+            $enumArray[] = array(
+                'label' => $this->getLabel($enumName),
+                'value' => $enumName,
+            );
+        }
+
+        return $enumArray;
+    }
+
+    protected function getMultiTypeElement($element)
+    {
+        $metadata = $this->metadata;
+        $elementMeta = $metadata[$element['name']];
+        $options = array();
+        if($elementMeta['data_type'] == 'enum'){
+            $options = $this->parseEnumString($elementMeta['column_type']);
+        }
+        $value = null;
+        if($element['default']){
+            if($this->isMultiValueElement($element)){
+                $value = array($element['default']);
+            } else {
+                $value = $element['default'];
+            }
+        }
+        $elementArray = array(
+            'name' => $element['name'],
             'attributes' => array(
-                'type' => 'select',
-                'options' => array(
-                    array(
-                        'label' => 'Text',
-                        'value' => 'text',
-                    ),
-                    array(
-                        'label' => 'Textarea',
-                        'value' => 'textarea',
-                    ),
-                    array(
-                        'label' => 'Number',
-                        'value' => 'number',
-                    ),
-                    array(
-                        'label' => 'Datetime',
-                        'value' => 'datetime',
-                    ),
-                    array(
-                        'label' => 'Password',
-                        'value' => 'password',
-                    ),
-                    array(
-                        'label' => 'Email',
-                        'value' => 'email',
-                    ),
-                    array(
-                        'label' => 'Url',
-                        'value' => 'url',
-                    ),
-                    array(
-                        'label' => 'Select',
-                        'value' => 'select',
-                    ),
-                    array(
-                        'label' => 'Raido',
-                        'value' => 'raido',
-                    ),
-                    array(
-                        'label' => 'MultiCheckbox',
-                        'value' => 'multiCheckbox',
-                    ),
-                    array(
-                        'label' => 'Hidden',
-                        'value' => 'hidden',
-                    ),
-                ),
-                'label' => 'Select Type',
-                'value' => 'text',
+                'type' => $element['type'],
+                'options' => $options,
             ),
-        ),
-        'validtor' => array(
-            'name' => 'validtors[]',
+        );
+        if($value){
+            $elementArray['attributes']['value'] = $value;
+        }
+        return $elementArray;
+    }
+
+    protected function getSingleTypeElement($element)
+    {
+
+        $elementArray = array(
+            'name' => $element['name'],
             'attributes' => array(
-                'type' => 'multiCheckbox',
-                'options' => array(
-                    'NotEmpty' => 'NotEmpty',
-                    'Uri' => 'Uri',
-                    'StringLength' => 'StringLength',
-                    'EmailAddress' => 'EmailAddress',
-                ),
+                'type' => $element['type'],
+                'label' => $this->getLabel($element['name']),
+                'value' => $element['default'],
             ),
-        ),
-        'filter' => array(
-            'name' => 'filters[]',
-            'attributes' => array(
-                'type' => 'multiCheckbox',
-                'options' => array(
-                    'StripTags' => 'StripTags',
-                    'StringTrim' => 'StringTrim',
-                ),
-            ),
-        ),
-    );
+        );
+
+        return $elementArray;
+    }
+
+    protected function isMultiOptionElement($element)
+    {
+        switch($element['type']){
+            case 'select':
+            case 'raido':
+            case 'multiCheckbox':
+            return true;
+            default :
+            return false;
+        }
+    }
+
+    protected function isMultiValueElement($element)
+    {
+        switch($element['type']){
+            case 'multiCheckbox':
+            return true;
+            default :
+            return false;
+        }
+    }
+
+    protected function getLabel($key)
+    {
+        if($key){
+            $key = ucfirst($key);
+            return preg_replace( '/([a-z0-9])([A-Z])/', "$1 $2", $key);
+        }
+    }
+
+    protected function getFilterArray($element)
+    {
+        if(!$element['filters']){
+            return array();
+        }
+
+        $filters = array();
+        foreach($element['filters'] as $filterName){
+            $filters[] = array(
+                'name' => $filterName
+            );
+        }
+
+        return $filters;
+    }
+
+    protected function getValidatorArray($element)
+    {
+        if(!$element['validators']){
+            return array();
+        }
+        $metadata = $this->metadata;
+        $elementMeta = $metadata[$element['name']];
+
+        return $this->getValidatorGenerator()->getValidatorOption($element, $elementMeta);
+    }
+
 }

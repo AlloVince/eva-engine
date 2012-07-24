@@ -68,7 +68,7 @@ function autoCheck($dataName, $dataType, $columnType)
         </header>
     </div>
 
-    <form action="<?=$this->uri('/scaffold/form/' . $this->table)?>" method="post" class="pull-left">
+    <form action="<?=$this->uri('/scaffold/form/' . $this->table)?>" method="post">
         <?=$form->restful();?>
         <div class="span10">
             <div class="slate">
@@ -80,8 +80,9 @@ function autoCheck($dataName, $dataType, $columnType)
                                     <input type="checkbox" class="multiform-checker" />
                                 </span>
                             </th>
-                            <th>Field</th>
+                            <th>Db Column</th>
                             <th class="span2">Input Type</th>
+                            <th class="span1">Default</th>
                             <th class="span2">Validators</th>
                             <th class="span2">Filters</th>
                         </tr>
@@ -91,27 +92,41 @@ function autoCheck($dataName, $dataType, $columnType)
                         <?foreach($this->columns as $key=>$column):?>
                         <tr id="column_<?=$column['name'] ?>" class="">
                             <td>
-                                <input type="checkbox" class="multiform-item-checkbox" <?=autoCheck($column['name'], $column['data_type'], $column['data_type'])?>  data-multiform="createform" name="column_ids[]" value="<?=$column['name'] ?>" />
+                                <input type="checkbox" class="multiform-item-checkbox" <?=autoCheck($column['name'], $column['data_type'], $column['data_type'])?>  data-multiform="createform" name="selectedColumns[]" value="<?=$column['name'] ?>" />
                             </td>
                             <td>
                                 <a href="#"><?=$column['name'] ?></a>
-                                <span class="label"><?=$column['data_type'];?></span>
-                                <p>
-                                <span class="meta"><?=$column['column_type'];?></span>
+                                <span class="label label-info"><?=$column['data_type'];?></span>
+                                <p class="meta">
+                                Column Type: <span class="column_type"><?=$column['column_type'];?></span>
+                                <br />
+                                <?if($column['column_default']):?>
+                                Column Default: <span class="is_nullable"><?=$column['column_default'];?></span>
+                                <br />
+                                <?endif?>
+                                Is Nullable: <span class="is_nullable"><?=$column['is_nullable'] ? $column['is_nullable'] : '0';?></span>
                                 </p>
                             </td>
                             <td>
-                                <?=$form->helper('select_type[]', 'formSelect', array(
+                                <?=$form->helper('inputType[]', 'formSelect', array(
                                     'class' => 'span2',
+                                    'name' => "inputType[$key]",
                                     'id' => 'scaffold-form-postform-select-type-' . $key,
                                     'value' => selectType($column['name'], $column['data_type'], $column['data_type'])
                                 ))?>
                             </td>
                             <td>
-                                <?=$form->helper('validtors[]', 'formMultiCheckbox', array())?>
+                                <input type="text" name="defaults[<?=$key?>]" class="span1" value="<?=$column['column_default'];?>" />
+                            </td>
+                            <td>
+                                <?=$form->helper('validators[]', 'formMultiCheckbox', array(
+                                    'name' => "validators[$key]",
+                                ))?>
                             </td> 
                             <td>
-                                <?=$form->helper('filters[]', 'formMultiCheckbox', array())?>
+                                <?=$form->helper('filters[]', 'formMultiCheckbox', array(
+                                    'name' => "filters[$key]",
+                                ))?>
                             </td> 
                         </tr>
                         <?endforeach;?>
@@ -131,7 +146,10 @@ function autoCheck($dataName, $dataType, $columnType)
     var validatorMapping = {
             'text' : ['StringLength'],
             'email' : ['EmailAddress'],
-            'url' : ['Uri']
+            'url' : ['Uri'],
+            'select' : ['InArray'],
+            'radio' : ['InArray'],
+            'multiCheckbox' : ['InArray'],
     };
 
     var filtersMapping = {
@@ -142,44 +160,50 @@ function autoCheck($dataName, $dataType, $columnType)
     function autoValidators(){
             var typeSelector = $(this);
             var type = $(this).val();
-            var validtor = typeSelector.parentsUntil("tr").parent().find("input[name='validtors[][]']");
-
-            validtor.attr("checked", false);
+            var validator = typeSelector.parentsUntil("tr").parent().find("input[name^='validators']");
+            var isNullable = typeSelector.parentsUntil("tr").parent().find(".is_nullable").html();
+            validator.attr("checked", false);
 
             var filter = [];
+            if(isNullable == '0') {
+                    filter.push("[value='NotEmpty']");
+            }
             if(validatorMapping[type]){
-                for(var i in validatorMapping[type]){
-                        filter.push("[value='" + validatorMapping[type][i] + "']");
-                }
 
-                if(filter.length > 0){
-                       filter = filter.join(",");
-                       validtor.filter(filter).attr("checked", true);
-                }
 
+                    for(var i in validatorMapping[type]){
+                            filter.push("[value='" + validatorMapping[type][i] + "']");
+                    }
+
+
+
+            }
+            if(filter.length > 0){
+                    filter = filter.join(",");
+                    validator.filter(filter).attr("checked", true);
             }
     }
     function autoFilters(){
             var typeSelector = $(this);
             var type = $(this).val();
-            var filters = typeSelector.parentsUntil("tr").parent().find("input[name='filters[][]']");
+            var filters = typeSelector.parentsUntil("tr").parent().find("input[name^='filters']");
 
             filters.attr("checked", false);
 
             var filter = [];
             if(filtersMapping[type]){
-                for(var i in filtersMapping[type]){
-                        filter.push("[value='" + filtersMapping[type][i] + "']");
-                }
+                    for(var i in filtersMapping[type]){
+                            filter.push("[value='" + filtersMapping[type][i] + "']");
+                    }
 
-                if(filter.length > 0){
-                       filter = filter.join(",");
-                       filters.filter(filter).attr("checked", true);
-                }
+                    if(filter.length > 0){
+                            filter = filter.join(",");
+                            filters.filter(filter).attr("checked", true);
+                    }
 
             }
     }
-    $("select[name='select_type[]']").on("change", autoValidators).each(autoValidators);
-    $("select[name='select_type[]']").on("change", autoFilters).each(autoFilters);
+    $("select[name^='inputType']").on("change", autoValidators).each(autoValidators);
+    $("select[name^='inputType']").on("change", autoFilters).each(autoFilters);
 
 </script>

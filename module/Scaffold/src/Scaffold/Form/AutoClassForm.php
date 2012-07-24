@@ -8,7 +8,7 @@ class AutoClassForm extends Form
 {
     protected $mergeElements = array(
         'select_type' => array(
-            'name' => 'select_type[]',
+            'name' => 'inputType[]',
             'attributes' => array(
                 'type' => 'select',
                 'options' => array(
@@ -61,8 +61,8 @@ class AutoClassForm extends Form
                 'value' => 'text',
             ),
         ),
-        'validtor' => array(
-            'name' => 'validtors[]',
+        'validator' => array(
+            'name' => 'validators[]',
             'attributes' => array(
                 'type' => 'multiCheckbox',
                 'options' => array(
@@ -70,6 +70,7 @@ class AutoClassForm extends Form
                     'Uri' => 'Uri',
                     'StringLength' => 'StringLength',
                     'EmailAddress' => 'EmailAddress',
+                    'InArray' => 'InArray',
                 ),
             ),
         ),

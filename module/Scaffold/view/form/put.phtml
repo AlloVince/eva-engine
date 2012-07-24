@@ -11,7 +11,8 @@ $this->headTitle($title, 'SET');
         <span class="btn code-format" onclick="formatCode()"><i class="icon-ok"></i></span>
     </div>
 </div>
-<textarea id="form-code" class="span10 editor-code" rows="20" data-ui='{"mode":"javascript", "lineNumbers":true, "fontsize":"12px"}'><?=$this->formString?></textarea>
+
+<textarea id="form-code" class="span10 editor-code" rows="20" data-ui='{"mode":"javascript", "lineNumbers":true, "fontsize":"12px"}'><?=$this->widget('Scaffold', 'widgets/formclass', $this->vars())?></textarea>
 
 
 <script>

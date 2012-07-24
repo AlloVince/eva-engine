@@ -68,55 +68,37 @@ class FormController extends RestfulModuleController
     {
         $request = $this->getRequest();
         $postData = $request->getPost();
+        $tableName = $this->params()->fromRoute('id'); 
         
-        $tab = $this->getEvent()->getRouteMatch()->getParam('id'); 
-        
-        $columnNames = $postData->column_ids;
-        $requiredNames = $postData->column_required;
-        $inputTypes = $postData->select_type;
-        $isHidden = $postData->column_hidden;
-
-        $adapter = Api::_()->getDbAdapter();
-        $metadata = new Metadata($adapter);
-        $columns = $metadata->getColumns($tab);
-
-        $props = array(
-            'name', 'ordinal_position', 'column_default', 'is_nullable',
-            'data_type', 'character_maximum_length', 'character_octet_length',
-            'numeric_precision', 'numeric_scale', 'numeric_unsigned',
-            'erratas', 'column_type'
-        );
-        
-        foreach ($columns as $key=>$column) {
-            $columnName = $column->getName();
-
-            if ( !in_array($columnName, $columnNames) ) {
-                continue;
-            }
-            
-            foreach ($props as $prop) {
-                $res[$columnName][$prop] = $column->{'get' . str_replace('_', '', $prop)}();
-            }
-            
-            if ($requiredNames) {
-                $res[$columnName]['required'] = in_array($columnName, $requiredNames) ? true : false;
-            } else {
-                $res[$columnName]['required'] = false;
-            }
-            
-            $res[$columnName]['inputType'] = $inputTypes[$key];
-            
-            if ($isHidden) {
-                $res[$columnName]['isHidden'] = in_array($columnName, $isHidden) ? true : false;
-            } else {
-                $res[$columnName]['isHidden'] = false;
-            }
+        if(!$postData['selectedColumns']){
+            return false;
         }
 
-        $formString = $this->makeForm($res, $tab); 
-    
+        $elements = array();
+
+        foreach($postData['selectedColumns'] as $columnName){
+            $elements[$columnName] = array(
+                'name' => $columnName,
+                'type' => @$postData['inputType'][$columnName],
+                'validators' => @$postData['validators'][$columnName],
+                'filters' => @$postData['filters'][$columnName],
+                'default' => @$postData['defaults'][$columnName],
+            );
+        
+        }
+
+        $generator = new \Scaffold\Model\FormClassGenerator();
+        $generator->setElements($elements);
+        $generator->setDbTableName($tableName);
+        list($elements, $validators) = $generator->convertToFormArray();
+
+        $elementsCode = $generator->printCode($elements);
+        $validatorsCode = $generator->printCode($validators);
+        $formClassName = $generator->getFormClassName();
         return array(
-            'formString' => $formString,
+            'formClassName' => $formClassName,
+            'elementsCode' => $elementsCode,
+            'validatorsCode' => $validatorsCode,
         );
     }
     
