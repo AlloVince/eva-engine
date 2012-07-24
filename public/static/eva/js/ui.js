@@ -2,10 +2,14 @@
 
 	var methods = {
 
+		obj : {
+		
+		},
+
 		config : {
 			pathUiBase : ["/lib/js/bootstrap/bootstrap.min.js"],
 			pathJqueryUi : ["/javascripts/jquery/jquery-ui.js", "/javascripts/jquery/jquery-ui-i18n.js", "/javascripts/jquery/jquery-ui-custom.js"],
-			pathCodeMirror : ["/javascripts/codemirror/lib/codemirror.js"],
+			pathCodeMirror : ['/lib/js/codemirror/lib/codemirror.js'],
 			pathSwfUploader : ["/javascripts/jquery/jquery.swfupload.js", "/javascripts/swfupload/swfupload.js", "/javascripts/swfupload/swfupload.queue.js"],
 			pathTinymce : "/javascripts/jquery/jquery.tinymce.js"
 		},
@@ -189,30 +193,31 @@
 				'php' : ['xml', 'css', 'clike', 'javascript']
 			};
 
-			eva.loadcss('/javascripts/codemirror/lib/codemirror.css');
-
-			eva.loader(methods.config.pathCodeMirror, function(){
+			eva.loadcss(eva.s(['/lib/js/codemirror/lib/codemirror.css']));
+			eva.loader(eva.s(methods.config.pathCodeMirror), function(){
 				$(methods._itemClass.codeeditor).each(function(){
 					var opt = methods._getOption(this);
 					var mode = opt.mode;
+					var uiItem = $(this);
 					if(!mode) {
 						return false;
 					}
 
 					//load theme
-					var theme = opt.theme ? opt.theme : 'default';
-					eva.loadcss('/javascripts/codemirror/theme/' + theme + '.css');
+					var theme = opt.theme ? opt.theme : 'ambiance';
+					eva.loadcss(eva.s('/lib/js/codemirror/theme/' + theme + '.css'));
 
-					var modePath = ["/javascripts/codemirror/mode/" + mode + "/" + mode + ".js"];
+					var modePath = ["/lib/js/codemirror/mode/" + mode + "/" + mode + ".js"];
 					if(modeMapping[mode]) {
 						for(var i in modeMapping[mode]) {
-							modePath.push("/javascripts/codemirror/mode/" + modeMapping[mode][i] + "/" + modeMapping[mode][i] + ".js");
+							modePath.push("/lib/js/codemirror/mode/" + modeMapping[mode][i] + "/" + modeMapping[mode][i] + ".js");
 						}
 					}
 					 
 					var textarea = this;
-					eva.loader(modePath, function(){
-						CodeMirror.fromTextArea(textarea, opt);						
+					eva.loader(eva.s(modePath), function(){
+						var editor = CodeMirror.fromTextArea(textarea, opt);
+						uiItem.data("eva-ui-obj", editor);
 					});
 
 					return true;

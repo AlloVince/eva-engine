@@ -1,5 +1,5 @@
 <? 
-$title = 'Form Create Scaffold';
+$title = 'Form Html Generator';
 $this->headTitle($title, 'SET');
 
 $method = 'put';
@@ -15,35 +15,27 @@ $form->init(array(
     'values' => $this->tab
 ));
 ?>
-<div class="container">
+<header class="page-header">
+<h2 class="">Form Html Generator</h2>
+</header>
 
-	<header class="page-header">
-	<h2 class="">Form Create Scaffold </h2>
-    </header>
-
-     <form action="<?=$this->uri('/scaffold/form/html')?>" method="post" class="pull-left">
+<form action="<?=$this->uri('/scaffold/form/html')?>" method="post">
     <?=$form->restful();?>
-    <div class="span10 listing-buttons">
-        <div class="control-group">
-            <label for="mainform" class="control-label">主表单</label>
-            <div class="controls">
-                <input id="mainform" type="text" name="form" value="Scaffold\Form\PostForm"/>
-            </div>
+    <div class="control-group">
+        <label for="mainform" class="control-label">Main Form Class</label>
+        <div class="controls">
+            <input id="mainform" type="text" name="form" class="span5" value="Blog\Form\PostForm"/>
         </div>
-        
-        <div class="control-group">
-            <label for="subform" class="control-label">子表单</label>
-            <div class="controls">
-                <input id="subform" type="text" name="subform" value=""/>
-            </div>
-        </div>
-         
-        <div class="btn-group pull-right ">
-            <input type="submit" class="btn btn-info" value="Submit" />
-        </div>
-         
-       
-
     </div>
-    </form>
-</div>
+
+    <div class="control-group">
+        <label for="subform" class="control-label">Subform Class (Split with conmma if have multi subforms)</label>
+        <div class="controls">
+            <input id="subform" type="text" name="subform" class="span9" value=""/>
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <button class="btn btn-large">Create Form Html</button>
+    </div>
+</form>

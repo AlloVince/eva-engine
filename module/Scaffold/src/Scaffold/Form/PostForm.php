@@ -22,7 +22,7 @@ class PostForm extends Form
                     ),
                 ),
                 'label' => 'Select Type',
-                'value' => 'raido',
+                'value' => 'select',
             ),
         ),
     );

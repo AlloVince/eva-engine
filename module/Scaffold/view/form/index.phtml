@@ -1,18 +1,15 @@
 <? 
-$title = 'Form Create Scaffold';
+$title = 'Form Class Generator';
 $this->headTitle($title, 'SET');
 ?>
-<div class="container">
+<header class="page-header">
+<h2 class="">Select A Database Table:</h2>
+</header>
 
-	<header class="page-header">
-	<h2 class="">Form Create Scaffold </h2>
-    </header>
-
-    <?if($this->tables):?>
-    <?foreach($this->tables as $key=>$table):?>
-        <div>
-        <a href="<?=$this->uri('/scaffold/form/' . $table)?>" class=""><?=$table?></a>
-        </div>
-    <?endforeach;?>
-    <?endif;?>
-</div>
+<?if($this->tables):?>
+<?foreach($this->tables as $key=>$table):?>
+<ul class="nav nav-tabs nav-stacked">
+    <li><a href="<?=$this->uri('/scaffold/form/' . $table)?>" class=""><?=$table?></a></li>
+</ul>
+<?endforeach;?>
+<?endif;?>

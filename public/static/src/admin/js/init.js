@@ -1,5 +1,5 @@
 eva.multiform = function(){
-	$("form[data-multiform]").each(function(){
+	$("form[data-multiform], .form[data-multiform]").each(function(){
 		var form = $(this);
 		var formName = form.attr("data-multiform");
 		var checker = form.find(".multiform-checker");

@@ -1,6 +1,7 @@
 <? 
-$title = 'Form Create Scaffold';
+$title = 'Form Class Generator';
 $this->headTitle($title, 'SET');
+$this->textDelay('breadcrumbText', $title);
 
 $method = 'put';
 if($this->form){
@@ -15,75 +16,72 @@ $form->init(array(
     'values' => $this->tab
 ));
 ?>
-<div class="container">
 
-	<header class="page-header">
-	<h2 class="">Form Create Scaffold </h2>
-    </header>
-
-     <form action="<?=$this->uri('/scaffold/form/' . $this->table)?>" method="post" class="pull-left">
-    <?=$form->restful();?>
-    <div class="span10 listing-buttons">
-         <div class="btn-group pull-right ">
-            <input type="submit" class="btn btn-info" value="Submit" />
-        </div>
-         
-        <div class="btn-group pull-left">
-                <span class="btn"><input type="checkbox" class="checkmulti" data-checkmulti="checkmulti-item" /></span>
-         </div>
-
+<div class="row">
+    <div class="span10">
+        <header class="page-header">
+        <h2 class="">Check Inputs</h2>
+        </header>
     </div>
 
-    <div class="span10">
-        <div class="slate">
-            <table class="orders-table table">
-                <thead>
-                    <tr>
-                        <th class="span1">
-                        </th>
-                        <th>Required</th>
-                        <th>Select Type</th>
-                        <th>Is Hidden</th>
-                        <th>Column Name</th>
-                        <th class="span1">Data Type</th>
-                        <th class="span1">Column Type</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <?if($this->columns):?>
-                <?foreach($this->columns as $key=>$column):?>
-                    <tr id="column_<?=$column['name'] ?>" class="">
-                        <td>
-                            <input type="checkbox" class="checkmulti-item" checked="checked" name="column_ids[]" value="<?=$column['name'] ?>" />
-                        </td>
-                        <td>
-                            <input type="checkbox" checked="checked" name="column_required[]" value="<?=$column['name'] ?>" />
-                        </td>
-                        <td>
-                            <?if($column['data_type'] == 'enum'):?>
-                            <?=$form->helper('select_type[]', 'formSelect')?>
-                            <?else:?>
-                            <input type="hidden" name="select_type[]" value="text" />
-                            <?endif;?>
-                        </td> 
-                        <td>
-                            <input type="checkbox" name="column_hidden[]" value="<?=$column['name'] ?>" />
-                        </td>   
-                        <td>
-                            <a href="<?=$this->uri('/scaffold/form/' . $this->table)?>" class="title"><?=$column['name'] ?></a>
-                        </td>
-                        <td>
-                            <?=$column['data_type'];?>
-                        </td>
-                        <td class="actions">
-                            <?=$column['column_type'];?>
-                        </td>
-                    </tr>
-                    <?endforeach;?>
-                    <?endif;?>
-                </tbody>
-            </table>
+    <form action="<?=$this->uri('/scaffold/form/' . $this->table)?>" method="post" class="pull-left">
+        <?=$form->restful();?>
+        <div class="span10">
+            <div class="slate">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="span1">
+                                <span class="form" data-multiform="createform">
+                                    <input type="checkbox" class="multiform-checker" />
+                                </span>
+                            </th>
+                            <th class="span2">Input Type</th>
+                            <th class="span1">R/H</th>
+                            <th>Field Name</th>
+                            <th class="span2">Db Type</th>
+                            <th class="span1">Db Type Detail</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?if($this->columns):?>
+                        <?foreach($this->columns as $key=>$column):?>
+                        <tr id="column_<?=$column['name'] ?>" class="">
+                            <td>
+                                <input type="checkbox" class="multiform-item-checkbox"  data-multiform="createform" name="column_ids[]" value="<?=$column['name'] ?>" />
+                            </td>
+                            <td>
+                                <?if($column['data_type'] == 'enum'):?>
+                                <?=$form->helper('select_type[]', 'formSelect', array(
+                                    'class' => 'span2',
+                                    'id' => 'scaffold-form-postform-select-type-' . $key,
+                                ))?>
+                                <?else:?>
+                                <input type="hidden" name="select_type[]" value="text" />
+                                <?endif;?>
+                            </td>
+                            <td>
+                                <input type="checkbox" name="column_required[]" value="<?=$column['name'] ?>" />
+                                <input type="checkbox" name="column_hidden[]" value="<?=$column['name'] ?>" />
+                            </td> 
+                            <td>
+                                <?=$column['name'] ?>
+                            </td>
+                            <td>
+                                <?=$column['data_type'];?>
+                            </td>
+                            <td>
+                                <?=$column['column_type'];?>
+                            </td>
+                        </tr>
+                        <?endforeach;?>
+                        <?endif;?>
+                    </tbody>
+                </table>
+            </div>
+        </div><!--span10 end-->
+        <div class="span10 listing-buttons">
+            <button class="btn btn-info btn-large">Create Form Class</button>
         </div>
-    </div><!--span10 end-->
     </form>
 </div>
