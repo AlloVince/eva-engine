@@ -16,6 +16,11 @@
     <link href="<?=$this->link('/lib/css/fontawesome/css/font-awesome.css')?>" media="all" rel="stylesheet" type="text/css" />
     <link href="<?=$this->link('/src/admin/css/admin.css')?>" media="all" rel="stylesheet" type="text/css" />
     <?=$this->evajs()?>
+    <script src="<?=$this->link('/lib/js/labjs/labjs.min.js')?>"></script>
+    <script src="<?=$this->link('/lib/js/jquery/jquery.min.js')?>"></script>
+    <script src="<?=$this->link('/eva/js/core.js')?>"></script>
+    <script src="<?=$this->link('/eva/js/ui.js')?>"></script>
+    <script src="<?=$this->link('/src/admin/js/init.js')?>"></script>
 </head>
 
 <body class="">
@@ -111,11 +116,7 @@
     </div> <!-- end container -->
 
 
-    <script src="<?=$this->link('/lib/js/labjs/labjs.min.js')?>"></script>
-    <script src="<?=$this->link('/lib/js/jquery/jquery.min.js')?>"></script>
-    <script src="<?=$this->link('/eva/js/core.js')?>"></script>
-    <script src="<?=$this->link('/eva/js/ui.js')?>"></script>
-    <script src="<?=$this->link('/src/admin/js/init.js')?>"></script>
+
     <script>
         eva.init(eva_config);
     </script>

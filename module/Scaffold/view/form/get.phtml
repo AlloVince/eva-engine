@@ -40,6 +40,25 @@ function selectType($dataName, $dataType, $columnType)
     }
     return $value;
 }
+
+function autoCheck($dataName, $dataType, $columnType)
+{
+    $check = '';
+    if(strpos($dataName, '_') !== false){
+        return $check;
+    }
+
+    switch($dataType){
+        case 'varchar':
+        case 'enum':
+        case 'text':
+        case 'mediumtext':
+        case 'longtext':
+        $check = 'checked="checked"';
+        break;
+    }
+    return $check;
+}
 ?>
 
 <div class="row">
@@ -61,11 +80,10 @@ function selectType($dataName, $dataType, $columnType)
                                     <input type="checkbox" class="multiform-checker" />
                                 </span>
                             </th>
+                            <th>Field</th>
                             <th class="span2">Input Type</th>
                             <th class="span2">Validators</th>
-                            <th>Field Name</th>
-                            <th class="span2">Db Type</th>
-                            <th class="span1">Db Type Detail</th>
+                            <th class="span2">Filters</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -73,7 +91,14 @@ function selectType($dataName, $dataType, $columnType)
                         <?foreach($this->columns as $key=>$column):?>
                         <tr id="column_<?=$column['name'] ?>" class="">
                             <td>
-                                <input type="checkbox" class="multiform-item-checkbox"  data-multiform="createform" name="column_ids[]" value="<?=$column['name'] ?>" />
+                                <input type="checkbox" class="multiform-item-checkbox" <?=autoCheck($column['name'], $column['data_type'], $column['data_type'])?>  data-multiform="createform" name="column_ids[]" value="<?=$column['name'] ?>" />
+                            </td>
+                            <td>
+                                <a href="#"><?=$column['name'] ?></a>
+                                <span class="label"><?=$column['data_type'];?></span>
+                                <p>
+                                <span class="meta"><?=$column['column_type'];?></span>
+                                </p>
                             </td>
                             <td>
                                 <?=$form->helper('select_type[]', 'formSelect', array(
@@ -83,18 +108,11 @@ function selectType($dataName, $dataType, $columnType)
                                 ))?>
                             </td>
                             <td>
-                                <input type="checkbox" name="column_required[]" value="<?=$column['name'] ?>" />
-                                <input type="checkbox" name="column_hidden[]" value="<?=$column['name'] ?>" />
+                                <?=$form->helper('validtors[]', 'formMultiCheckbox', array())?>
                             </td> 
                             <td>
-                                <?=$column['name'] ?>
-                            </td>
-                            <td>
-                                <?=$column['data_type'];?>
-                            </td>
-                            <td>
-                                <?=$column['column_type'];?>
-                            </td>
+                                <?=$form->helper('filters[]', 'formMultiCheckbox', array())?>
+                            </td> 
                         </tr>
                         <?endforeach;?>
                         <?endif;?>
@@ -107,3 +125,61 @@ function selectType($dataName, $dataType, $columnType)
         </div>
     </form>
 </div>
+
+
+<script>
+    var validatorMapping = {
+            'text' : ['StringLength'],
+            'email' : ['EmailAddress'],
+            'url' : ['Uri']
+    };
+
+    var filtersMapping = {
+            'text' : ['StripTags', 'StringTrim'],
+            'email' : ['StripTags', 'StringTrim'],
+            'url' : ['StripTags', 'StringTrim']
+    };
+    function autoValidators(){
+            var typeSelector = $(this);
+            var type = $(this).val();
+            var validtor = typeSelector.parentsUntil("tr").parent().find("input[name='validtors[][]']");
+
+            validtor.attr("checked", false);
+
+            var filter = [];
+            if(validatorMapping[type]){
+                for(var i in validatorMapping[type]){
+                        filter.push("[value='" + validatorMapping[type][i] + "']");
+                }
+
+                if(filter.length > 0){
+                       filter = filter.join(",");
+                       validtor.filter(filter).attr("checked", true);
+                }
+
+            }
+    }
+    function autoFilters(){
+            var typeSelector = $(this);
+            var type = $(this).val();
+            var filters = typeSelector.parentsUntil("tr").parent().find("input[name='filters[][]']");
+
+            filters.attr("checked", false);
+
+            var filter = [];
+            if(filtersMapping[type]){
+                for(var i in filtersMapping[type]){
+                        filter.push("[value='" + filtersMapping[type][i] + "']");
+                }
+
+                if(filter.length > 0){
+                       filter = filter.join(",");
+                       filters.filter(filter).attr("checked", true);
+                }
+
+            }
+    }
+    $("select[name='select_type[]']").on("change", autoValidators).each(autoValidators);
+    $("select[name='select_type[]']").on("change", autoFilters).each(autoFilters);
+
+</script>

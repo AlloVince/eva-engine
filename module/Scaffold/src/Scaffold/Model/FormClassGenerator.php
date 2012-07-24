@@ -1,10 +1,10 @@
 <?php
-namespace Scaffold\Form;
+namespace Scaffold\Model;
 
 use Eva\Form\Form;
 use Zend\Form\Element;
 
-class AutoClassForm extends Form
+class FormClassGenerator
 {
     protected $mergeElements = array(
         'select_type' => array(

@@ -58,7 +58,6 @@ class FormController extends RestfulModuleController
                 $res[$columnName][$prop] = $column->{'get' . str_replace('_', '', $prop)}();
             }
         }
-
         return array(
             'columns' => $res,
             'table' => $tab
