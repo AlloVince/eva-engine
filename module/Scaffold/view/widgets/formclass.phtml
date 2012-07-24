@@ -19,7 +19,17 @@ namespace Eva\Form;
  */
 class <?=$formClassName?> extends \Zend\Form\Form
 {
-    protected $baseElements = <?=$this->elementsCode?>;
+    /**
+     * Form basic elements
+     *
+     * @var array
+     */
+    protected $baseElements = <?=$this->codeIndent($this->elementsCode)?>;
 
-    protected $baseFilters = <?=$this->validatorsCode?>;
+    /**
+     * Form basic Validators
+     *
+     * @var array
+     */
+    protected $baseFilters = <?=$this->codeIndent($this->validatorsCode)?>;
 }
