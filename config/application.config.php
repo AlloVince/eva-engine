@@ -16,6 +16,7 @@ return array(
         ),
         'factories'    => array(
             'ModuleManager' => 'Eva\Mvc\Service\ModuleManagerFactory',
+            'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
             //overwrite and add custom helpers here
             //'ViewHelperManager'       => 'Eva\Mvc\Service\ViewHelperManagerFactory',
             //Add custom Controller Plugins

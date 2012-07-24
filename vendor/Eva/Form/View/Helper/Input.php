@@ -35,24 +35,6 @@ use Zend\Form\ElementInterface;
  */
 class Input extends \Zend\Form\View\Helper\AbstractHelper
 {
-    /**
-     * Translator instance.
-     *
-     * @var Translator
-     */
-    protected $translator;
-
-    /**
-     * Set translator.
-     *
-     * @param  Translator $translator
-     * @return Translate
-     */
-    public function setTranslator(\Zend\I18n\Translator\Translator $translator)
-    {
-        $this->translator = $translator;
-        return $this;
-    }
 
     protected function translateElement(ElementInterface $element)
     {
