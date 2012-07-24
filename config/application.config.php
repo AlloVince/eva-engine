@@ -11,19 +11,9 @@ return array(
     ),
     'service_manager' => array(
         'use_defaults' => true,
-        'services' => array(
-            //'ViewManager'                  => 'Eva\Mvc\View\ModuleViewManager',
-        ),
         'factories'    => array(
             'ModuleManager' => 'Eva\Mvc\Service\ModuleManagerFactory',
             'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
-            //overwrite and add custom helpers here
-            //'ViewHelperManager'       => 'Eva\Mvc\Service\ViewHelperManagerFactory',
-            //Add custom Controller Plugins
-            //'ControllerPluginManager' => 'Eva\Mvc\Service\ControllerPluginManagerFactory',
-
-            //removed by new zf2 changes
-            //'ControllerLoader'                  => 'Eva\Mvc\Service\ControllerLoaderFactory',
         ),
     ),
     'protected_module_namespace' => array(
