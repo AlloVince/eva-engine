@@ -1,10 +1,27 @@
 <?php
+/**
+ * EvaEngine
+ *
+ * @link      https://github.com/AlloVince/eva-engine
+ * @copyright Copyright (c) 2012 AlloVince (http://avnpc.com/)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @package   Eva_Api.php
+ * @author    AlloVince
+ */
+
 namespace Eva\Mvc\Controller;
 use Eva\View\Model\ViewModel,
     Zend\Http\Request as HttpRequest,
     Zend\Http\PhpEnvironment\Response as HttpResponse,
     Zend\Mvc\MvcEvent;
 
+/**
+ * Add Eva RESTFul resource
+ * 
+ * @category   Eva
+ * @package    Eva_Mvc
+ * @subpackage Controller
+ */
 abstract class RestfulController extends \Zend\Mvc\Controller\AbstractRestfulController
 {
     protected $addResources = array();
