@@ -1,4 +1,14 @@
 <?php
+/**
+ * EvaEngine
+ *
+ * @link      https://github.com/AlloVince/eva-engine
+ * @copyright Copyright (c) 2012 AlloVince (http://avnpc.com/)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @package   Eva_Api.php
+ * @author    AlloVince
+ */
+
 namespace Eva\Mvc\Model;
 
 
@@ -9,6 +19,15 @@ use Eva\Api,
     Zend\Cache\StorageFactory as CacheStorageFactory,
     Zend\Mvc\MvcEvent;
 
+/**
+ * Mvc Abstract Model for item / itemlist / paginator
+ *
+ * @category   Eva
+ * @package    Eva_Mvc
+ * @subpackage Model
+ * @copyright  Copyright (c) 2012 AlloVince (http://avnpc.com/)
+ * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ */
 abstract class AbstractModel
 {
     const CACHE_QUERY = 'query';

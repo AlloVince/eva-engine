@@ -1,10 +1,28 @@
 <?php
+/**
+ * EvaEngine
+ *
+ * @link      https://github.com/AlloVince/eva-engine
+ * @copyright Copyright (c) 2012 AlloVince (http://avnpc.com/)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @package   Eva_Api.php
+ * @author    AlloVince
+ */
 namespace Eva;
 
 use Zend\Di\Di,
     Zend\Di\Config as DiConfig,
     Zend\Db\Adapter\Adapter as DbAdapter,
     Eva\Core\Exception\RuntimeException;
+
+/**
+ * Singleton Pattern Api
+ *
+ * A handler for mvc event, service manager
+ *
+ * @category   Eva
+ * @package    Eva_Api
+ */
 class Api
 {
     protected static $instance;

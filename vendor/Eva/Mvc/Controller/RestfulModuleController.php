@@ -1,4 +1,15 @@
 <?php
+/**
+ * EvaEngine
+ *
+ * @link      https://github.com/AlloVince/eva-engine
+ * @copyright Copyright (c) 2012 AlloVince (http://avnpc.com/)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @package   Eva_Api.php
+ * @author    AlloVince
+ */
+
+
 namespace Eva\Mvc\Controller;
 use Eva\View\Model\ViewModel,
     Zend\Http\Request as HttpRequest,
@@ -7,6 +18,14 @@ use Eva\View\Model\ViewModel,
     Zend\Stdlib\ResponseInterface as Response,
     Zend\Mvc\MvcEvent;
 
+/**
+ * Enable RESTFul style into all controllers
+ * Every normal request could be convert to RESTFul request
+ * 
+ * @category   Eva
+ * @package    Eva_Mvc
+ * @subpackage Controller
+ */
 abstract class RestfulModuleController extends \Zend\Mvc\Controller\AbstractRestfulController
 {
     protected $addResources = array();
