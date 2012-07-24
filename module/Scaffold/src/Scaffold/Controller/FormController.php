@@ -18,8 +18,6 @@ class FormController extends RestfulModuleController
 
     public function restIndexForm()
     {
-        $this->layout('layout/admin');
-        
         $adapter = Api::_()->getDbAdapter();
         
         $metadata = new Metadata($adapter);
@@ -33,13 +31,10 @@ class FormController extends RestfulModuleController
 
     public function restGetFormHtml()
     {
-        $this->layout('layout/admin');
     }
 
     public function restGetForm() 
     {
-        $this->layout('layout/admin');
-        
         $query = $this->getRequest()->getQuery();
         
         $tab = $this->getEvent()->getRouteMatch()->getParam('id'); 
@@ -72,8 +67,6 @@ class FormController extends RestfulModuleController
     
     public function restPutForm()
     {
-        $this->layout('layout/admin');
-        
         $request = $this->getRequest();
         $postData = $request->getPost();
         
@@ -130,8 +123,6 @@ class FormController extends RestfulModuleController
     
     public function restPutFormHtml()
     {
-        $this->layout('layout/admin');
-        
         $request = $this->getRequest();
         $postData = $request->getPost();
             

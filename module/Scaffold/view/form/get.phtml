@@ -4,17 +4,42 @@ $this->headTitle($title, 'SET');
 $this->textDelay('breadcrumbText', $title);
 
 $method = 'put';
-if($this->form){
-	$form = $this->form;
-} else {
-    $form = Eva\Api::_()->getForm('\Scaffold\Form\PostForm');
-}
+$form = Eva\Api::_()->getForm('Scaffold\Form\AutoClassForm');
 
 $form->init(array(
     'action' => $this->uri('/scaffold/form/'),
     'method' => $method,
     'values' => $this->tab
 ));
+
+function selectType($dataName, $dataType, $columnType)
+{
+    $value = 'text';
+    if($dataName == 'id' || strpos($dataName, '_id') !== false){
+        return $value = 'hidden';
+    }
+
+    switch($dataType){
+        case 'varchar':
+        break;
+        case 'int':
+        case 'bigint':
+        $value = 'number';
+        break;
+        case 'enum':
+        $value = 'select';
+        break;
+        case 'datetime':
+        $value = 'datetime';
+        break;
+        case 'text':
+        case 'mediumtext':
+        case 'longtext':
+        $value = 'textarea';
+        break;
+    }
+    return $value;
+}
 ?>
 
 <div class="row">
@@ -37,7 +62,7 @@ $form->init(array(
                                 </span>
                             </th>
                             <th class="span2">Input Type</th>
-                            <th class="span1">R/H</th>
+                            <th class="span2">Validators</th>
                             <th>Field Name</th>
                             <th class="span2">Db Type</th>
                             <th class="span1">Db Type Detail</th>
@@ -51,14 +76,11 @@ $form->init(array(
                                 <input type="checkbox" class="multiform-item-checkbox"  data-multiform="createform" name="column_ids[]" value="<?=$column['name'] ?>" />
                             </td>
                             <td>
-                                <?if($column['data_type'] == 'enum'):?>
                                 <?=$form->helper('select_type[]', 'formSelect', array(
                                     'class' => 'span2',
                                     'id' => 'scaffold-form-postform-select-type-' . $key,
+                                    'value' => selectType($column['name'], $column['data_type'], $column['data_type'])
                                 ))?>
-                                <?else:?>
-                                <input type="hidden" name="select_type[]" value="text" />
-                                <?endif;?>
                             </td>
                             <td>
                                 <input type="checkbox" name="column_required[]" value="<?=$column['name'] ?>" />

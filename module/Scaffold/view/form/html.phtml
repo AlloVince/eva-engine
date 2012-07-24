@@ -3,12 +3,7 @@ $title = 'Form Html Generator';
 $this->headTitle($title, 'SET');
 
 $method = 'put';
-if($this->form){
-	$form = $this->form;
-} else {
-    $form = Eva\Api::_()->getForm('\Scaffold\Form\HtmlForm');
-}
-
+$form = Eva\Api::_()->getForm('Scaffold\Form\AutoHtmlForm');
 $form->init(array(
     'action' => $this->uri('/scaffold/form/html'),
     'method' => $method,
