@@ -1,0 +1,65 @@
+<?
+$method = 'post';
+
+if($this->form){
+	$form = $this->form;
+} else {
+    $form = Eva\Api::_()->getForm('Blog\Form\PostForm');
+}
+$form->setSubForms(array (
+        'Text' => array (
+            'Blog\Form\TextForm',
+        ),
+    ));
+$form->init(array(
+    'action' => $this->uri('/admin/'),
+    'method' => $method,
+    'values' => ''
+));
+?>
+ <?=$form->helper('id', array('class' => ''))?> <div class="control-group <?=$form->isError('title') ? 'error' : '';?>">
+    <?=$form->helper('title', 'label', array('class' => 'control-label'))?>    <div class="controls">
+                <?=$form->helper('title', array('class' => ''))?>                <div class="help-block"><?=$form->helper('title' ,'formElementErrors')?></div>
+    </div>
+</div>
+ <div class="control-group <?=$form->isError('urlName') ? 'error' : '';?>">
+    <?=$form->helper('urlName', 'label', array('class' => 'control-label'))?>    <div class="controls">
+                <?=$form->helper('urlName', array('class' => ''))?>                <div class="help-block"><?=$form->helper('urlName' ,'formElementErrors')?></div>
+    </div>
+</div>
+ <div class="control-group <?=$form->isError('status') ? 'error' : '';?>">
+    <?=$form->helper('status', 'label', array('class' => 'control-label'))?>    <div class="controls">
+                <?=$form->helper('status', 'formSelect', array('class' => ''))?>                <div class="help-block"><?=$form->helper('status' ,'formElementErrors')?></div>
+    </div>
+</div>
+ <div class="control-group <?=$form->isError('visibility') ? 'error' : '';?>">
+    <?=$form->helper('visibility', 'label', array('class' => 'control-label'))?>    <div class="controls">
+                <?=$form->helper('visibility', 'formSelect', array('class' => ''))?>                <div class="help-block"><?=$form->helper('visibility' ,'formElementErrors')?></div>
+    </div>
+</div>
+ <div class="control-group <?=$form->isError('content') ? 'error' : '';?>">
+    <?=$form->helper('content', 'label', array('class' => 'control-label'))?>    <div class="controls">
+                <?=$form->helper('content', 'formTextarea', array('class' => ''))?>                <div class="help-block"><?=$form->helper('content' ,'formElementErrors')?></div>
+    </div>
+</div>
+ <div class="control-group <?=$form->isError('codeType') ? 'error' : '';?>">
+    <?=$form->helper('codeType', 'label', array('class' => 'control-label'))?>    <div class="controls">
+                <?=$form->helper('codeType', 'formRadio', array('class' => ''))?>                <div class="help-block"><?=$form->helper('codeType' ,'formElementErrors')?></div>
+    </div>
+</div>
+ <?=$form->helper(array('Text', 'post_id'), array('class' => ''))?> <div class="control-group <?=$form->isError(array('Text', 'content')) ? 'error' : '';?>">
+    <?=$form->helper(array('Text', 'content'), 'label', array('class' => 'control-label'))?>    <div class="controls">
+                <?=$form->helper(array('Text', 'content'), 'formTextarea', array('class' => ''))?>                <div class="help-block"><?=$form->helper(array('Text', 'content') ,'formElementErrors')?></div>
+    </div>
+</div>
+ <div class="control-group <?=$form->isError(array('Text', 'metaKeywords')) ? 'error' : '';?>">
+    <?=$form->helper(array('Text', 'metaKeywords'), 'label', array('class' => 'control-label'))?>    <div class="controls">
+                <?=$form->helper(array('Text', 'metaKeywords'), array('class' => ''))?>                <div class="help-block"><?=$form->helper(array('Text', 'metaKeywords') ,'formElementErrors')?></div>
+    </div>
+</div>
+ <div class="control-group <?=$form->isError(array('Text', 'metaDescription')) ? 'error' : '';?>">
+    <?=$form->helper(array('Text', 'metaDescription'), 'label', array('class' => 'control-label'))?>    <div class="controls">
+                <?=$form->helper(array('Text', 'metaDescription'), 'formTextarea', array('class' => ''))?>                <div class="help-block"><?=$form->helper(array('Text', 'metaDescription') ,'formElementErrors')?></div>
+    </div>
+</div>
+

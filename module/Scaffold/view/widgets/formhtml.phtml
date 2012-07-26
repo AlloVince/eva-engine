@@ -1,0 +1,19 @@
+<?if($this->elements):?>
+<?foreach($this->elements as $element):?>
+ <?if(@$element['label']):?>
+<div class="control-group <?=htmlentities('<?')?>=$form->isError(<?=$element['name']?>) ? 'error' : '';<?=htmlentities('?>')?>">
+    <?=htmlentities('<?')?>=$form->helper(<?=$element['name']?>, 'label', array('class' => 'control-label'))<?=htmlentities('?>')?>
+    <div class="controls">
+        <?if(@$element['formType']):?>
+        <?=htmlentities('<?')?>=$form->helper(<?=$element['name']?>, <?=$element['formType']?>, <?=$element['class']?>)<?=htmlentities('?>')?>
+        <?else:?>
+        <?=htmlentities('<?')?>=$form->helper(<?=$element['name']?>, <?=$element['class']?>)<?=htmlentities('?>')?>
+        <?endif;?>
+        <div class="help-block"><?=htmlentities('<?')?>=$form->helper(<?=$element['name']?> ,'formElementErrors')<?=htmlentities('?>')?></div>
+    </div>
+</div>
+<?else:?>
+<?=htmlentities('<?')?>=$form->helper(<?=$element['name']?>, <?=$element['class']?>)<?=htmlentities('?>')?>
+<?endif;?>
+<?endforeach;?>
+<?endif;?>

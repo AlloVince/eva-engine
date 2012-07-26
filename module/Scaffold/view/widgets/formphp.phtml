@@ -1,0 +1,16 @@
+<?=htmlentities('<?')?>
+
+$method = 'post';
+
+if($this->form){
+	$form = $this->form;
+} else {
+    $form = Eva\Api::_()->getForm('<?=$formClassName?>');
+}
+$form->setSubForms(<?=$this->codeIndent($this->subFormsCode)?>);
+$form->init(array(
+    'action' => $this->uri('/admin/'),
+    'method' => $method,
+    'values' => ''
+));
+<?=htmlentities('?>') . "\n"?>
