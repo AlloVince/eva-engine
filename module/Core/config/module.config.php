@@ -13,23 +13,16 @@ return array(
             'error/404'     => __DIR__ . '/../view/error/404.phtml',
             'error/index'   => __DIR__ . '/../view/error/index.phtml',
         ),
-        /*
-        'helper_map' => array(
-            'uri' => 'Eva\View\Helper\Uri',    
-            'link' => 'Eva\View\Helper\Link',
-            'formAttr' => 'Eva\Form\View\Helper\FormAttr',
-            'input' => 'Eva\Form\View\Helper\Input',
-            'label' => 'Eva\Form\View\Helper\Label',
-            'widget' => 'Eva\View\Helper\Widget',
-            'evajs' => 'Core\Helper\Evajs',
-        ),
-        */
-
         'module_namespace_layout_map' => array(
             'Admin' => 'layout/admin'
         ),
     ),
 
+    'view_helpers' => array(
+        'invokables' => array(
+            'evajs' => 'Core\Helper\Evajs',
+        ),  
+    ),
 
     'superadmin' => array(
         'id' => 1,

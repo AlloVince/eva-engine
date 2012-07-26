@@ -22,9 +22,9 @@ use Zend\Mvc\Router\RouteStackInterface,
  * Url Generate helper Abstract class
  * 
  * @category   Eva
- * @package    Eva_Form
- * @subpackage View
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @package    Eva_View
+ * @subpackage Helper
+ * @copyright  Copyright (c) 2012 AlloVince (http://avnpc.com/)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class AbstractUri extends \Zend\View\Helper\AbstractHelper

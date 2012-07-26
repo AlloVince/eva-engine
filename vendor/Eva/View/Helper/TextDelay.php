@@ -1,11 +1,12 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
+ * EvaEngine
  *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @link      https://github.com/AlloVince/eva-engine
+ * @copyright Copyright (c) 2012 AlloVince (http://avnpc.com/)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_View
+ * @package   Eva_Api.php
+ * @author    AlloVince
  */
 
 namespace Eva\View\Helper;
@@ -14,10 +15,13 @@ use Zend\View\Helper\Placeholder;
 use Zend\View\Exception;
 
 /**
- * Helper for setting and retrieving title element for HTML head
- *
- * @package    Zend_View
+ * Set a text Placeholder
+ * 
+ * @category   Eva
+ * @package    Eva_View
  * @subpackage Helper
+ * @copyright  Copyright (c) 2012 AlloVince (http://avnpc.com/)
+ * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class TextDelay extends \Zend\View\Helper\Placeholder\Container\AbstractStandalone
 {
