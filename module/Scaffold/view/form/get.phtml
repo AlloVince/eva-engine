@@ -22,6 +22,8 @@ function selectType($dataName, $dataType, $columnType)
     switch($dataType){
         case 'varchar':
         break;
+        case 'tinyint':
+        case 'smallint':
         case 'int':
         case 'bigint':
         $value = 'number';
@@ -33,6 +35,7 @@ function selectType($dataName, $dataType, $columnType)
         $value = 'datetime';
         break;
         case 'text':
+        case 'tinytext':
         case 'mediumtext':
         case 'longtext':
         $value = 'textarea';
@@ -52,6 +55,7 @@ function autoCheck($dataName, $dataType, $columnType)
         case 'varchar':
         case 'enum':
         case 'text':
+        case 'tinytext':
         case 'mediumtext':
         case 'longtext':
         $check = 'checked="checked"';

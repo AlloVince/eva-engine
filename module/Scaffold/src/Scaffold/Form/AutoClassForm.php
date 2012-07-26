@@ -56,6 +56,10 @@ class AutoClassForm extends Form
                         'label' => 'Hidden',
                         'value' => 'hidden',
                     ),
+                    array(
+                        'label' => 'File',
+                        'value' => 'file',
+                    ),
                 ),
                 'label' => 'Select Type',
                 'value' => 'text',

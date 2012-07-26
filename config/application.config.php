@@ -4,7 +4,7 @@ return array(
         'Core',
         'User',
         'Blog',
-        'Engine',
+        'File',
         'Scaffold',
         //'BjyProfiler',
         //'ZendDeveloperTools',
