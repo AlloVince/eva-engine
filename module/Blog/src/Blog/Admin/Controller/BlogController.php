@@ -42,6 +42,7 @@ class BlogController extends RestfulModuleController
         $postinfo = $postModel->setItemParams($id)->getPost();
         return array(
             'post' => $postinfo,
+            'flashMessenger' => $this->flashMessenger()->getMessages(),
         );
     }
 
@@ -87,20 +88,24 @@ class BlogController extends RestfulModuleController
         $form->setSubforms($subForms)->init();
 
         $form->setData($postData)->enableFilters();
-        if ($form->isValid()) {
 
+        $flashMesseger = array();
+        if ($form->isValid()) {
             $postData = $form->getData();
             $postModel = Api::_()->getModel('Blog\Model\Post');
             $postData = $form->fieldsMap($postData, true);
             $postId = $postModel->setSubItemMap($subForms)->setItem($postData)->savePost();
             $this->redirect()->toUrl('/admin/blog/' . $postData['id']);
-
+            $this->flashMessenger()->addMessage('post-edit-succeed');
         } else {
+            //$this->flashMessenger()->addMessage('');
+            $flashMesseger = array('post-edit-failed');
         }
 
         return array(
             'form' => $form,
             'post' => $postData,
+            'flashMessenger' => $flashMesseger
         );
     }
 
