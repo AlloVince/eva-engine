@@ -174,7 +174,7 @@ class FormClassGenerator
     {
         switch($element['type']){
             case 'select':
-            case 'raido':
+            case 'radio':
             case 'multiCheckbox':
             return true;
             default :

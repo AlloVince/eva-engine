@@ -9,6 +9,7 @@ use Eva\Mvc\Controller\RestfulModuleController,
 class FormController extends RestfulModuleController
 {
     protected $addResources = array(
+        'test',
         'html'
     );
     
@@ -32,7 +33,9 @@ class FormController extends RestfulModuleController
     public function restGetFormHtml()
     {
     }
-
+    public function restGetFormTest()
+    {
+    }
     public function restGetForm() 
     {
         $query = $this->getRequest()->getQuery();
@@ -112,28 +115,29 @@ class FormController extends RestfulModuleController
         $form = Api::_()->getForm($mainForm);
         $elements = $form->getMergedElements();
 
-        $formString = '';
-
-        foreach ($elements as $element) {
-            $formString .= $this->makeHtml($element);
-        }
-       
         $subFormString = $postData->subform;
-        
+          
         if ($subFormString) {
             $subForms = explode(',', $subFormString);
             foreach ($subForms as $subForm) {
                 $form = Api::_()->getForm($subForm);
-                $elements = $form->getMergedElements();
-
-                foreach ($elements as $element) {
-                   $formString .= $this->makeHtml($element);
-                } 
+                $subFormElements[$subForm] = $form->getMergedElements();
             }
         }
         
+        $generator = new \Scaffold\Model\FormHtmlGenerator();
+        $generator->setElements($elements);
+        $subFormElements ? $generator->setSubFormElements($subFormElements) : null;
+        $generator->setFormClassName($mainForm);
+        list($elements, $subForms) = $generator->convertToFormHtml();
+
+        $subFormsCode = $generator->printCode($subForms);
+        $formClassName = $generator->getFormClassName();
+   
         return array(
-            'formString' => $formString,
+            'formClassName' => $formClassName,
+            'elements' => $elements,
+            'subFormsCode' => $subFormsCode,
         );
     }
 
@@ -250,5 +254,12 @@ class {$tabName}Form extends Form
 abc;
     
         return $html . "\n";
+    }
+
+    public function p($d)
+    {
+        echo "<pre>";
+        print_r($d);
+        echo "</pre>";
     }
 }

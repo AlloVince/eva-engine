@@ -12,8 +12,14 @@ $this->headTitle($title, 'SET');
     </div>
 </div>
 
+<?if($this->elementsCode):?>
 <textarea id="form-code" class="span10 editor-code" rows="20" data-ui='{"mode":"javascript", "lineNumbers":true, "fontsize":"12px"}'><?=$this->widget('Scaffold', 'widgets/formclass', $this->vars())?></textarea>
-
+<?else:?>
+<textarea id="form-code" class="span10 editor-code" rows="20" data-ui='{"mode":"javascript", "lineNumbers":true, "fontsize":"12px"}'>
+<?=$this->widget('Scaffold', 'widgets/formphp', $this->vars())?>
+<?=$this->widget('Scaffold', 'widgets/formhtml', $this->vars())?>
+</textarea>
+<?endif;?>
 <script>
     function formatCode(){
             var editor = $("#form-code").data("eva-ui-obj");
