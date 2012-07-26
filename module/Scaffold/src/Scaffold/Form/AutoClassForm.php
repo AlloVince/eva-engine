@@ -45,8 +45,8 @@ class AutoClassForm extends Form
                         'value' => 'select',
                     ),
                     array(
-                        'label' => 'Raido',
-                        'value' => 'raido',
+                        'label' => 'Radio',
+                        'value' => 'radio',
                     ),
                     array(
                         'label' => 'MultiCheckbox',

@@ -146,6 +146,7 @@ class FormClassGenerator
             'name' => $element['name'],
             'attributes' => array(
                 'type' => $element['type'],
+                'label' => $this->getLabel($element['name']),
                 'options' => $options,
             ),
         );

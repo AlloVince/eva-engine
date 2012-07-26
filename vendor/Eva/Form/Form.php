@@ -198,6 +198,7 @@ class Form extends \Zend\Form\Form
 
             foreach($elements as $name => $element){
                 $element = $this->autoElementId($element);
+                $element = $this->uniformMultiInputInterface($element);
                 $this->add($element);
             }
             $this->elementInited = true;
@@ -356,9 +357,26 @@ class Form extends \Zend\Form\Form
         $idPrefix = $idPrefix ? $idPrefix : $this->getIdPrefix();
         $elementId = isset($element['attributes']['id']) ? $element['attributes']['id'] : $element['name'];
         $elementId = $idPrefix . '-' . $elementId;
-        $elementId = str_replace(array('\\','_','[',']'), '-', strtolower($elementId));
+        $elementId = str_replace(array('\\', '_', '[', ']'), '-', strtolower($elementId));
         $elementId = trim($elementId, '-');
         $element['attributes']['id'] = $elementId;
+        return $element;
+    }
+
+    public function uniformMultiInputInterface(array $element)
+    {
+        if(!isset($element['attributes']['type'])){
+            return $element;
+        }
+
+        if($element['attributes']['type'] == 'radio' && isset($element['attributes']['options'][0]['value'])){
+            $options = array();
+            foreach($element['attributes']['options'] as $key => $option){
+                $options[$option['label']] = $option['value'];
+            }
+            $element['attributes']['options'] = $options;
+        }
+
         return $element;
     }
 

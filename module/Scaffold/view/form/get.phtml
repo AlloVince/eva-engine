@@ -57,6 +57,10 @@ function autoCheck($dataName, $dataType, $columnType)
         $check = 'checked="checked"';
         break;
     }
+
+    if($dataName == 'id'){
+        $check = 'checked="checked"';
+    }
     return $check;
 }
 ?>
