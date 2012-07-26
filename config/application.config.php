@@ -12,7 +12,7 @@ return array(
     'service_manager' => array(
         'use_defaults' => true,
         'factories'    => array(
-            'ModuleManager' => 'Eva\Mvc\Service\ModuleManagerFactory',
+            'ServiceListener' => 'Eva\Mvc\Service\ServiceListenerFactory',
             'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
         ),
     ),

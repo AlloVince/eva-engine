@@ -24,8 +24,12 @@ defined('EVA_CONFIG_PATH')    || define('EVA_CONFIG_PATH', __DIR__ . '/../config
 define('REQUEST_MICROTIME', microtime(true));
 
 /** Public functions */
-function p($r)
+function p($r, $usePr = false)
 {
+    if($usePr || false === method_exists('\Zend\Debug','dump')){
+        echo '<pre>' . print_r($r, true) . '</pre>';
+        return;
+    }
     \Zend\Debug::dump($r);
 }
 

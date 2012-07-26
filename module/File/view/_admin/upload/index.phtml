@@ -25,7 +25,7 @@ $file = array();
 
 
 <div class="row">
-    <form <?=$this->formAttr($form)?>>
+    <form <?=$this->formAttr($form)?> enctype="multipart/form-data">
         <?=$form->restful();?>
         <?//=$form->helper('id');?>
         <div class="span10">
@@ -44,6 +44,14 @@ $file = array();
                         <div class="controls">
                             <?=$form->helper('title', array('class' => 'span9'))?>
                             <div class="help-block"><?=$form->helper('title', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+
+                    <div class="control-group <?=$form->isError('upload') ? 'error' : '';?>">
+                        <?=$form->helper('upload', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('upload', array('class' => 'span9'))?>
+                            <div class="help-block"><?=$form->helper('upload', 'formElementErrors')?></div>
                         </div>
                     </div>
                 </fieldset>

@@ -26,12 +26,27 @@ class UploadForm extends \Eva\Form\Form
      * @var array
      */
     protected $baseElements = array (
+        'id' => array (
+            'name' => 'id',
+            'attributes' => array (
+                'type' => 'hidden',
+                'label' => 'Id',
+                'value' => '',
+            ),
+        ),
         'title' => array (
             'name' => 'title',
             'attributes' => array (
                 'type' => 'text',
                 'label' => 'Title',
                 'value' => '',
+            ),
+        ),
+        'upload' => array (
+            'name' => 'upload',
+            'attributes' => array (
+                'type' => 'file',
+                'label' => 'Select File',
             ),
         ),
     );
@@ -44,6 +59,7 @@ class UploadForm extends \Eva\Form\Form
     protected $baseFilters = array (
         'title' => array (
             'name' => 'title',
+            'required' => false,
             'filters' => array (
                 array (
                     'name' => 'StripTags',
@@ -61,6 +77,23 @@ class UploadForm extends \Eva\Form\Form
                 ),
             ),
         ),
+        /*
+        'upload' => array (
+            'name' => 'upload',
+            'filters' => array (
+                array (
+                ),
+            ),
+            'validators' => array (
+                array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => '100',
+                    ),
+                ),
+            ),
+        ),
+        */
     );
 }
 

@@ -10,5 +10,6 @@ class UploadController extends RestfulModuleController
 {
     public function restIndexUpload()
     {
+        \File\Model\FileTransferFactory::factory();
     }
 }

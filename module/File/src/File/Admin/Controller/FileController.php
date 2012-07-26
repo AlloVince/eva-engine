@@ -10,7 +10,7 @@ class FileController extends RestfulModuleController
 {
     protected $renders = array(
         'restPutFile' => 'blog/get',    
-        'restPostFile' => 'blog/get',    
+        'restPostFile' => 'upload/index',    
         'restDeleteFile' => 'remove/get',    
     );
 
@@ -34,25 +34,29 @@ class FileController extends RestfulModuleController
     {
         $request = $this->getRequest();
         $postData = $request->getPost();
-        $form = new Form\PostForm();
+        $form = new Form\UploadForm();
 
-        $subForms = array(
-            'Text' => array('File\Form\TextForm'),
-        );
-        $form->setSubforms($subForms)->init();
-
+        $form->init();
         $form->setData($postData)->enableFilters();
-        if ($form->isValid()) {
 
+
+        if ($form->isValid()) {
+            $fileTransfer = new \Zend\File\Transfer\Transfer();
+            if($fileTransfer->receive()) {
+                $files = $fileTransfer->getFileInfo();
+                p($files);
+            }
+            /*
             $postData = $form->getData();
             $postModel = Api::_()->getModel('File\Model\Post');
             $postData = $form->fieldsMap($postData, true);
             $postId = $postModel->setSubItemMap($subForms)->setItem($postData)->createPost();
             $this->redirect()->toUrl('/admin/blog/' . $postId);
+            */
 
         } else {
-            
-            //p($form->getInputFilter()->getInvalidInput());
+
+            p($form->getInputFilter()->getInvalidInput());
         }
 
         return array(
