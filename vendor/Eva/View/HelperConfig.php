@@ -35,8 +35,8 @@ class HelperConfig implements ConfigInterface
          'label' => 'Eva\Form\View\Helper\Label',
          'widget' => 'Eva\View\Helper\Widget',
          'textDelay' => 'Eva\View\Helper\TextDelay',
+         'hasModule' => 'Eva\View\Helper\HasModule',
          '_' => 'Eva\I18n\View\Helper\Translator',
-         'evajs' => 'Core\Helper\Evajs',
      );
 
     /**

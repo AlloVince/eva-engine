@@ -1,44 +1,28 @@
 <?php
-namespace Blog\Admin\Controller;
+namespace File\Admin\Controller;
 
-use Blog\Form,
+use File\Form,
     Eva\Api,
     Eva\Mvc\Controller\RestfulModuleController,
     Eva\View\Model\ViewModel;
 
-class BlogController extends RestfulModuleController
+class FileController extends RestfulModuleController
 {
     protected $renders = array(
-        'restPutBlog' => 'blog/get',    
-        'restPostBlog' => 'blog/get',    
-        'restDeleteBlog' => 'remove/get',    
+        'restPutFile' => 'blog/get',    
+        'restPostFile' => 'upload/index',    
+        'restDeleteFile' => 'remove/get',    
     );
 
-    public function restIndexBlog()
+    public function restIndexFile()
     {
-        $request = $this->getRequest();
 
-        $query = $request->getQuery();
-
-        $form = Api::_()->getForm('Blog\Form\PostSearchForm');
-        $selectQuery = $form->fieldsMap($query, true);
-
-        $postModel = Api::_()->getModel('Blog\Model\Post');
-        $posts = $postModel->setItemListParams($selectQuery)->getPosts();
-        $paginator = $postModel->getPaginator();
-
-        return array(
-            'form' => $form,
-            'posts' => $posts,
-            'query' => $query,
-            'paginator' => $paginator,
-        );
     }
 
-    public function restGetBlog()
+    public function restGetFile()
     {
         $id = (int)$this->getEvent()->getRouteMatch()->getParam('id');
-        $postModel = Api::_()->getModel('Blog\Model\Post');
+        $postModel = Api::_()->getModel('File\Model\Post');
         $postinfo = $postModel->setItemParams($id)->getPost();
         return array(
             'post' => $postinfo,
@@ -46,29 +30,33 @@ class BlogController extends RestfulModuleController
         );
     }
 
-    public function restPostBlog()
+    public function restPostFile()
     {
         $request = $this->getRequest();
         $postData = $request->getPost();
-        $form = new Form\PostForm();
+        $form = new Form\UploadForm();
 
-        $subForms = array(
-            'Text' => array('Blog\Form\TextForm'),
-        );
-        $form->setSubforms($subForms)->init();
-
+        $form->init();
         $form->setData($postData)->enableFilters();
-        if ($form->isValid()) {
 
+
+        if ($form->isValid()) {
+            $fileTransfer = new \Zend\File\Transfer\Transfer();
+            if($fileTransfer->receive()) {
+                $files = $fileTransfer->getFileInfo();
+                p($files);
+            }
+            /*
             $postData = $form->getData();
-            $postModel = Api::_()->getModel('Blog\Model\Post');
+            $postModel = Api::_()->getModel('File\Model\Post');
             $postData = $form->fieldsMap($postData, true);
             $postId = $postModel->setSubItemMap($subForms)->setItem($postData)->createPost();
             $this->redirect()->toUrl('/admin/blog/' . $postId);
+            */
 
         } else {
-            
-            //p($form->getInputFilter()->getInvalidInput());
+
+            p($form->getInputFilter()->getInvalidInput());
         }
 
         return array(
@@ -77,13 +65,13 @@ class BlogController extends RestfulModuleController
         );
     }
 
-    public function restPutBlog()
+    public function restPutFile()
     {
         $request = $this->getRequest();
         $postData = $request->getPost();
         $form = new Form\PostEditForm();
         $subForms = array(
-            'Text' => array('Blog\Form\TextForm'),
+            'Text' => array('File\Form\TextForm'),
         );
         $form->setSubforms($subForms)->init();
 
@@ -92,7 +80,7 @@ class BlogController extends RestfulModuleController
         $flashMesseger = array();
         if ($form->isValid()) {
             $postData = $form->getData();
-            $postModel = Api::_()->getModel('Blog\Model\Post');
+            $postModel = Api::_()->getModel('File\Model\Post');
             $postData = $form->fieldsMap($postData, true);
             $postId = $postModel->setSubItemMap($subForms)->setItem($postData)->savePost();
             $this->redirect()->toUrl('/admin/blog/' . $postData['id']);
@@ -109,7 +97,7 @@ class BlogController extends RestfulModuleController
         );
     }
 
-    public function restDeleteBlog()
+    public function restDeleteFile()
     {
         $request = $this->getRequest();
         $postData = $request->getPost();
@@ -120,7 +108,7 @@ class BlogController extends RestfulModuleController
         if ($form->isValid()) {
 
             $postData = $form->getData();
-            $postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
+            $postTable = Api::_()->getDbTable('File\DbTable\Posts');
 
             $postTable->where("id = {$postData['id']}")->remove();
 

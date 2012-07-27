@@ -1,0 +1,66 @@
+<?
+$title = 'File Upload';
+$this->headTitle($title, 'SET');
+$this->textDelay('breadcrumbText', $title);
+
+$form = Eva\Api::_()->getForm('File\Form\UploadForm');
+$form->init(array(
+    'action' => $this->uri('/admin/file/'),
+    'method' => 'post',
+));
+$file = array();
+?>
+
+<input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
+<div id="post-edit-succeed" class="alert alert-success hide">
+    <a href="#" data-dismiss="alert" class="close">x</a>
+    <h4 class="alert-heading">Upload Succeed</h4>
+</div>
+
+<div id="post-edit-failed" class="alert alert-error hide">
+    <a href="#" data-dismiss="alert" class="close">x</a>
+    <h4 class="alert-heading">Upload Failed</h4>
+</div>
+
+
+
+<div class="row">
+    <form <?=$this->formAttr($form)?> enctype="multipart/form-data">
+        <?=$form->restful();?>
+        <?//=$form->helper('id');?>
+        <div class="span10">
+            <div class="slate">
+                <div class="page-header">
+                    <?if($file):?>
+                    <div class="btn-group pull-right">
+                        <a href="<?=$this->uri('/admin/file/remove/' . $file['id'], 'c', array('c' => $this->uri('/admin/file/' . $file['id']))); ?>" class="btn">Delete</a>
+                    </div>
+                    <?endif?>
+                    <h2><?=$title?></h2>
+                </div>
+                <fieldset class="">
+                    <div class="control-group <?=$form->isError('title') ? 'error' : '';?>">
+                        <?=$form->helper('title', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('title', array('class' => 'span9'))?>
+                            <div class="help-block"><?=$form->helper('title', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+
+                    <div class="control-group <?=$form->isError('upload') ? 'error' : '';?>">
+                        <?=$form->helper('upload', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('upload', array('class' => 'span9'))?>
+                            <div class="help-block"><?=$form->helper('upload', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+        </div><!--span10 end-->
+
+        <div class="span10 listing-buttons">
+            <button class="btn btn-info btn-large">Upload</button>
+        </div>
+    </form>
+</div>

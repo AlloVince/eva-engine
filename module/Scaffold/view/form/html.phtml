@@ -1,6 +1,7 @@
 <? 
 $title = 'Form Html Generator';
 $this->headTitle($title, 'SET');
+$this->textDelay('breadcrumbText', $title);
 
 $method = 'put';
 $form = Eva\Api::_()->getForm('Scaffold\Form\AutoHtmlForm');

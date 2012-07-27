@@ -9,21 +9,10 @@
  * @author    AlloVince
  */
 
-namespace Eva\Mvc\View;
+namespace Eva\Mvc\View\Http;
 
-
-use Traversable;
 use Zend\EventManager\EventManagerInterface;
-use Zend\EventManager\ListenerAggregateInterface;
-use Zend\Mvc\ApplicationInterface;
 use Zend\Mvc\MvcEvent;
-use Zend\Stdlib\ArrayUtils;
-use Zend\View\HelperBroker as ViewHelperBroker;
-use Zend\View\HelperLoader as ViewHelperLoader;
-use Zend\View\Renderer\PhpRenderer as ViewPhpRenderer;
-use Zend\View\Resolver as ViewResolver;
-use Zend\View\Strategy\PhpRendererStrategy;
-use Zend\View\View;
 
 /**
  * Eva Mvc View Bootstrap Manager
@@ -37,7 +26,7 @@ use Zend\View\View;
  * @copyright  Copyright (c) 2012 AlloVince (http://avnpc.com/)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class ModuleViewManager extends \Zend\Mvc\View\ViewManager
+class ViewManager extends \Zend\Mvc\View\Http\ViewManager
 {
 
     protected $viewRootPath;
@@ -52,6 +41,41 @@ class ModuleViewManager extends \Zend\Mvc\View\ViewManager
     {
         $application  = $event->getApplication();
         $services     = $application->getServiceManager();
+        $config       = $services->get('Config');
+        $events       = $application->getEventManager();
+        $sharedEvents = $events->getSharedManager();
+
+        $this->config   = isset($config['view_manager']) && (is_array($config['view_manager']) || $config['view_manager'] instanceof ArrayAccess)
+                        ? $config['view_manager']
+                        : array();
+        $this->services = $services;
+        $this->event    = $event;
+
+        $routeNotFoundStrategy   = $this->getRouteNotFoundStrategy();
+        $exceptionStrategy       = $this->getExceptionStrategy();
+        $mvcRenderingStrategy    = $this->getMvcRenderingStrategy();
+        $createViewModelListener = new \Zend\Mvc\View\Http\CreateViewModelListener();
+        $injectTemplateListener  = new InjectTemplateListener();
+        $injectViewModelListener = new \Zend\Mvc\View\Http\InjectViewModelListener();
+        $sendResponseListener    = new \Zend\Mvc\View\SendResponseListener();
+
+        $this->registerMvcRenderingStrategies($events);
+        $this->registerViewStrategies();
+
+        $events->attach($routeNotFoundStrategy);
+        $events->attach($exceptionStrategy);
+        $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($injectViewModelListener, 'injectViewModel'), -100);
+        $events->attach($mvcRenderingStrategy);
+        $events->attach($sendResponseListener);
+
+        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($createViewModelListener, 'createViewModelFromArray'), -80);
+        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($routeNotFoundStrategy, 'prepareNotFoundViewModel'), -90);
+        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($createViewModelListener, 'createViewModelFromNull'), -80);
+        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($injectTemplateListener, 'injectTemplate'), -90);
+        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($injectViewModelListener, 'injectViewModel'), -100);
+
+        $application  = $event->getApplication();
+        $services     = $application->getServiceManager();
         $config       = $services->get('Configuration');
         $events       = $application->getEventManager();
         $sharedEvents = $events->getSharedManager();
@@ -63,27 +87,6 @@ class ModuleViewManager extends \Zend\Mvc\View\ViewManager
                         : array();
         $this->services = $services;
         $this->event    = $event;
-
-        $routeNotFoundStrategy   = $this->getRouteNotFoundStrategy();
-        $exceptionStrategy       = $this->getExceptionStrategy();
-        $mvcRenderingStrategy    = $this->getMvcRenderingStrategy();
-        $createViewModelListener = new \Zend\Mvc\View\CreateViewModelListener();
-        $injectTemplateListener  = new \Eva\Mvc\View\InjectTemplateListener();
-        $injectViewModelListener = new \Zend\Mvc\View\InjectViewModelListener();
-
-        $this->registerMvcRenderingStrategies($events);
-        $this->registerViewStrategies();
-
-        $events->attach($routeNotFoundStrategy);
-        $events->attach($exceptionStrategy);
-        $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($injectViewModelListener, 'injectViewModel'), -100);
-        $events->attach($mvcRenderingStrategy);
-        
-        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($createViewModelListener, 'createViewModelFromArray'), -80);
-        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($routeNotFoundStrategy, 'prepareNotFoundViewModel'), -90);
-        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($createViewModelListener, 'createViewModelFromNull'), -80);
-        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($injectTemplateListener, 'injectTemplate'), -90);
-        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($injectViewModelListener, 'injectViewModel'), -100);
     }
 
     public function attach(EventManagerInterface $events)
@@ -174,7 +177,7 @@ class ModuleViewManager extends \Zend\Mvc\View\ViewManager
             }
         }
 
-        $templatePathStack = new ViewResolver\TemplatePathStack();
+        $templatePathStack = new \Zend\View\Resolver\TemplatePathStack();
         //All path defined in config will be clear here
         $templatePathStack->setPaths(array($this->viewRootPath));    
         $this->resolver->attach($templatePathStack);

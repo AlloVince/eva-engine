@@ -45,8 +45,8 @@ class AutoClassForm extends Form
                         'value' => 'select',
                     ),
                     array(
-                        'label' => 'Raido',
-                        'value' => 'raido',
+                        'label' => 'Radio',
+                        'value' => 'radio',
                     ),
                     array(
                         'label' => 'MultiCheckbox',
@@ -55,6 +55,10 @@ class AutoClassForm extends Form
                     array(
                         'label' => 'Hidden',
                         'value' => 'hidden',
+                    ),
+                    array(
+                        'label' => 'File',
+                        'value' => 'file',
                     ),
                 ),
                 'label' => 'Select Type',

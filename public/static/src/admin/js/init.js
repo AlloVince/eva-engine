@@ -85,12 +85,27 @@ eva.highlightmenu = function(){
 	})
 };
 
+
+eva.flashMessenger = function(){
+	var messenger = $("#flash-messenger");
+	if(!messenger[0] || messenger.val() == ''){
+		return false;
+	}
+
+	var message = messenger.val();
+	message = message.split(",");
+	for(var i in message){
+		$("#" + message[i]).fadeIn();
+	}
+}
+
 eva.construct = function(){
 
 	$(".main-left-col").height($(document).height()).css("background", "#333232");
 
 	eva.multiform();
 	eva.highlightmenu();
+	eva.flashMessenger();
 
 	//$('.dropdown-toggle').dropdown();
 

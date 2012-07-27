@@ -39,6 +39,7 @@
                         <li data-highlight-url="/admin/core/dashboard/">
                             <a href="<?=$this->uri('/admin/core/dashboard/')?>"><i class="icon-home"></i> Dashboard</a>
                         </li>
+                        <?if($this->hasmodule('Blog')):?>
                         <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="collapse" data-target="#website-dropdown" href="#"><i class="icon-sitemap"></i> Blog <b class="caret"></b></a>
                         <ul id="website-dropdown" class="collapse">
@@ -48,7 +49,17 @@
                             <li data-highlight-url="/admin/blog/tag/(\d+)*$"><a href="<?=$this->uri('/admin/blog/tag/')?>">Page Tags</a></li>
                         </ul>
                         </li>
-                        
+                        <?endif?>
+                        <?if($this->hasmodule('File')):?>
+                        <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="collapse" data-target="#file-dropdown" href="#"><i class="icon-file"></i> File <b class="caret"></b></a>
+                        <ul id="file-dropdown" class="collapse">
+                            <li data-highlight-url="/admin/file/(\d+)*$"><a href="<?=$this->uri('/admin/file/')?>">File Management</a></li>
+                            <li data-highlight-url="/admin/file/upload"><a href="<?=$this->uri('/admin/file/upload')?>">File Upload</a></li>
+                        </ul>
+                        </li>
+                        <?endif?>
+                        <?if($this->hasmodule('Scaffold')):?>
                         <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="collapse" data-target="#scaffold-dropdown" href="#"><i class="icon-gift"></i> Scaffold <b class="caret"></b></a>
                         <ul id="scaffold-dropdown" class="collapse">
@@ -56,6 +67,7 @@
                             <li data-highlight-url="/scaffold/form/html/(\w+)*$"><a href="<?=$this->uri('/scaffold/form/html/')?>">Form Html Generator</a></li>
                         </ul>
                         </li>
+                        <?endif?>
                     </ul>
                 </div> <!-- end main-left-col -->
 

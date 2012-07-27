@@ -82,19 +82,37 @@ class PostForm extends Form
             ),
         ),
 
-        'codeType' => array(
+        'codeType' => array (
             'name' => 'codeType',
-            'attributes' => array(
-                'type'  => 'radio',
+            'attributes' => array (
+                'type' => 'radio',
                 'label' => 'Code Type',
-                'options' => array(
-                    'Markdown' => 'markdown',
-                    'HTML' => 'html',
-                    'Wiki' => 'wiki',
+                'options' => array (
+                    array (
+                        'label' => 'Markdown',
+                        'value' => 'markdown',
+                    ),
+                    array (
+                        'label' => 'Html',
+                        'value' => 'html',
+                    ),
+                    array (
+                        'label' => 'Wiki',
+                        'value' => 'wiki',
+                    ),
+                    array (
+                        'label' => 'Ubb',
+                        'value' => 'ubb',
+                    ),
+                    array (
+                        'label' => 'Other',
+                        'value' => 'other',
+                    ),
                 ),
-                'value' => array('markdown'),
+                'value' => 'markdown',
             ),
         ),
+
     );
 
     protected $baseFilters = array(
@@ -163,10 +181,31 @@ class PostForm extends Form
             'required' => true,
         ),
 
-        'codeType' => array(
+        'codeType' => array (
             'name' => 'codeType',
-            'required' => true,
-        ),        
+            'filters' => array (
+            ),
+            'validators' => array (
+                array (
+                    'name' => 'NotEmpty',
+                    'options' => array (
+                    ),
+                ),
+                array (
+                    'name' => 'InArray',
+                    'options' => array (
+                        'haystack' => array (
+                            'markdown',
+                            'html',
+                            'wiki',
+                            'ubb',
+                            'other',
+                        ),
+                    ),
+                ),
+            ),
+        ),
+   
         
     );
 }
