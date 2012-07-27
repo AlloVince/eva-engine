@@ -40,29 +40,22 @@ class FileController extends RestfulModuleController
              ->enableFilters()
              ->enableFileTransfer();
 
+        $flashMesseger = array();
         if ($form->isValid()) {
-            /*
-            $fileTransfer = new \Zend\File\Transfer\Transfer();
-            if($fileTransfer->receive()) {
-                $files = $fileTransfer->getFileInfo();
-                p($files);
+            if($form->getFileTransfer()->receive()){
+                $files = $form->getFileTransfer()->getFileInfo();
+                
+                $this->flashMessenger()->addMessage('file-upload-succeed');
+                $this->redirect()->toUrl('/admin/file/upload');
             }
-            */
-            /*
-            $postData = $form->getData();
-            $postModel = Api::_()->getModel('File\Model\Post');
-            $postData = $form->fieldsMap($postData, true);
-            $postId = $postModel->setSubItemMap($subForms)->setItem($postData)->createPost();
-            $this->redirect()->toUrl('/admin/blog/' . $postId);
-            */
-
         } else {
-            //p($form->getMessages());
+            $flashMesseger = array('file-upload-failed');
         }
 
         return array(
             'form' => $form,
             'post' => $postData,
+            'flashMessenger' => $flashMesseger
         );
     }
 

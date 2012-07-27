@@ -400,7 +400,10 @@ class Form extends \Zend\Form\Form
             return parent::isValid();
         }
 
-        $this->isValid = $result = parent::isValid() and $this->fileTransfer->isValid();
+        $elementValid = parent::isValid();
+        $fileValid = $this->fileTransfer->isValid();
+        $result = $elementValid && $fileValid;
+        $this->isValid = $result;
         if (!$result) {
             $this->setMessages($this->fileTransfer->getMessages());
         }

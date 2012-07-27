@@ -26,6 +26,32 @@ class Http extends \Zend\File\Transfer\Adapter\Http
      */
     public function isValid($files = null)
     {
+        // Workaround for WebServer not conforming HTTP and omitting CONTENT_LENGTH
+        $content = 0;
+        if (isset($_SERVER['CONTENT_LENGTH'])) {
+            $content = $_SERVER['CONTENT_LENGTH'];
+        } elseif (!empty($_POST)) {
+            $content = serialize($_POST);
+        }
+
+        // Workaround for a PHP error returning empty $_FILES when form data exceeds php settings
+        if (empty($this->files) && ($content > 0)) {
+            if (is_array($files)) {
+                $files = current($files);
+            }
+
+            $temp = array($files => array(
+                'name'  => $files,
+                'error' => 1));
+            $validator = $this->validators['Zend\Validator\File\Upload'];
+            $validator->setTranslator($this->getTranslator())
+                      ->setFiles($temp)
+                      ->isValid($files, null);
+            $this->messages += $validator->getMessages();
+            return false;
+        }
+
+
         $check = $this->getFiles($files, false, true);
         if (empty($check)) {
             return false;
@@ -105,7 +131,10 @@ class Http extends \Zend\File\Transfer\Adapter\Http
                 $this->files[$key]['validated'] = true;
             }
 
-            $this->messages[$key] = $fileerrors;
+            if($fileerrors) {
+                $this->messages[$key] = $fileerrors;
+            }
+
             if ($break) {
                 break;
             }

@@ -82,9 +82,9 @@ class UploadForm extends \Eva\Form\Form
             'required' => false,
             'filters' => array (
                 array (
-                    'name' => 'Word\SeparatorToCamelCase',
+                    'name' => 'File\Rename',
                     'options' => array(
-                        'separator' => ' '
+                        'target' => 'D:\xampp\htdocs\zf2\vendor\Eva\Filter\File\abc.txt',
                     ),
                 ),
             ),
