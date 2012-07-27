@@ -116,7 +116,9 @@ class FormController extends RestfulModuleController
         $elements = $form->getMergedElements();
 
         $subFormString = $postData->subform;
-          
+
+        $subFormElements = array();
+
         if ($subFormString) {
             $subForms = explode(',', $subFormString);
             foreach ($subForms as $subForm) {
