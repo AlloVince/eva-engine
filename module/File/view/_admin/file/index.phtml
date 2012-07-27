@@ -1,14 +1,14 @@
 <?
-$title = 'Post List';
+$title = 'File Management';
 $this->headTitle($title, 'SET');
-$this->textDelay('breadcrumbText', 'Post List');
+$this->textDelay('breadcrumbText', 'File Management');
 if($this->form){
 	$form = $this->form;
 } else {
     $form = Eva\Api::_()->getForm('\Blog\Form\PostSearchForm');
 }
 $form->init(array(
-    'action' => $this->uri('/admin/blog/'),
+    'action' => $this->uri('/admin/file/'),
     'method' => 'get',
     'values' => $this->query
 ));

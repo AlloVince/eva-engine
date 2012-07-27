@@ -3,7 +3,11 @@ $title = 'File Upload';
 $this->headTitle($title, 'SET');
 $this->textDelay('breadcrumbText', $title);
 
-$form = Eva\Api::_()->getForm('File\Form\UploadForm');
+if($this->form){
+	$form = $this->form;
+} else {
+    $form = Eva\Api::_()->getForm('File\Form\UploadForm');
+}
 $form->init(array(
     'action' => $this->uri('/admin/file/'),
     'method' => 'post',

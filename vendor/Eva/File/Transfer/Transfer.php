@@ -1,12 +1,12 @@
 <?php
 
-namespace File\Model;
+namespace Eva\File\Transfer;
 
 use Eva\Api;
 use Zend\File\Transfer\Adapter;
 use Zend\File\Transfer\Exception;
 
-class FileTransfer extends \Zend\File\Transfer\Transfer
+class Transfer extends \Zend\File\Transfer\Transfer
 {
     public function setAdapter($adapter, $direction = false)
     {

@@ -31,10 +31,7 @@ class Form extends \Zend\Form\Form
     protected $mergeFilters = array();
     protected $subFilters = array();
 
-    //protected $defaultValues;
-
     protected $formMethod;
-
     protected $restfulMethod;
 
     protected $autoElementId = true;
@@ -46,7 +43,34 @@ class Form extends \Zend\Form\Form
 
     protected $elementInited = false;
     protected $subFormInited = array();
-    //protected $valuesInited = false;
+
+    protected $fileTransfer;
+    protected $fileTransferOptions = array();
+
+    public function setFileTransferOptions($fileTransferOptions)
+    {
+        $this->fileTransferOptions = $fileTransferOptions;
+        return $this;
+    }
+
+    public function getFileTransferOptions()
+    {
+        return $this->fileTransferOptions;
+    }
+
+    public function setFileTransfer($fileTransfer)
+    {
+        $this->fileTransfer = $fileTransfer;
+        return $this;
+    }
+
+    public function getFileTransfer()
+    {
+        if($this->fileTransfer){
+            return $this->fileTransfer;
+        }
+        return $this->fileTransfer = \Eva\File\Transfer\TransferFactory::factory($this->getFileTransferOptions());
+    }
 
     public function setAutoElementId($autoElementId)
     {
@@ -160,19 +184,6 @@ class Form extends \Zend\Form\Form
         return $data;
     }
 
-    /*
-    public function setDefaultValues($defaultValues)
-    {
-        $this->defaultValues = $defaultValues;
-        return $this;
-    }
-
-    public function getDefaultValues()
-    {
-        return $this->defaultValues;
-    }
-    */
-
     public function init(array $options = array())
     {
         $defaultOptions = array(
@@ -214,6 +225,59 @@ class Form extends \Zend\Form\Form
             }
         }
 
+        return $this;
+    }
+
+    public function enableFileTransfer()
+    {
+        $elements = $this->getMergedElements();
+        $fileElements = array();
+        foreach($elements as $key => $element){
+            if(isset($element['attributes']['type']) && $element['attributes']['type'] == 'file'){
+                $fileElements[$key] = $element;
+            }
+        }
+
+        if(!$fileElements){
+            return $this;
+        }
+
+        $config = array(
+            'di' => array('instance' => array(
+                'Eva\File\Transfer\Adapter\Http' => array(
+                    'parameters' => array(
+                        'validators' => array(
+                        ),
+                        'filters' => array(
+                        ),
+                    ),
+                ),
+                'Eva\File\Transfer\Transfer' => array(
+                    'parameters' => array(
+                        'adapter' => 'Eva\File\Transfer\Adapter\Http',
+                    ),
+                ),
+            )
+        ));
+
+        $mergeFilters = $this->getMergedFilters();
+        foreach($fileElements as $key => $element){
+            if(isset($mergeFilters[$key]['validators'])){
+                foreach($mergeFilters[$key]['validators'] as $validator){
+                    $config['di']['instance']['Eva\File\Transfer\Adapter\Http']['parameters']['validators'][] = array(
+                        $validator['name'], true, $validator['options'], $element['name']
+                    ); 
+                }
+            }
+            if(isset($mergeFilters[$key]['filters'])){
+                foreach($mergeFilters[$key]['filters'] as $filter){
+                    $config['di']['instance']['Eva\File\Transfer\Adapter\Http']['parameters']['filters'][$filter['name']] = $filter['options'];
+                }
+            }
+        }
+
+        $this->fileTransferOptions = $config;
+        $this->getFileTransfer();
         return $this;
     }
 
@@ -277,10 +341,10 @@ class Form extends \Zend\Form\Form
         $restfulMethod = 'get';
         switch($method){
             case 'post' :
-                $restfulMethod = 'post';
-                break;
+            $restfulMethod = 'post';
+            break;
             case 'get' :
-                break;
+            break;
             case 'put' :
                 $restfulMethod = 'put';
                 $method = 'post';
@@ -328,6 +392,19 @@ class Form extends \Zend\Form\Form
 
             $element->setAttribute('value', $value);
         }
+    }
+
+    public function isValid()
+    {
+        if(!$this->fileTransfer){
+            return parent::isValid();
+        }
+
+        $this->isValid = $result = parent::isValid() and $this->fileTransfer->isValid();
+        if (!$result) {
+            $this->setMessages($this->fileTransfer->getMessages());
+        }
+        return $result;
     }
 
     public function getElement($elementNameOrArray)

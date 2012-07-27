@@ -35,17 +35,19 @@ class FileController extends RestfulModuleController
         $request = $this->getRequest();
         $postData = $request->getPost();
         $form = new Form\UploadForm();
-
-        $form->init();
-        $form->setData($postData)->enableFilters();
-
+        $form->init()
+             ->setData($postData)
+             ->enableFilters()
+             ->enableFileTransfer();
 
         if ($form->isValid()) {
+            /*
             $fileTransfer = new \Zend\File\Transfer\Transfer();
             if($fileTransfer->receive()) {
                 $files = $fileTransfer->getFileInfo();
                 p($files);
             }
+            */
             /*
             $postData = $form->getData();
             $postModel = Api::_()->getModel('File\Model\Post');
@@ -55,8 +57,7 @@ class FileController extends RestfulModuleController
             */
 
         } else {
-
-            p($form->getInputFilter()->getInvalidInput());
+            //p($form->getMessages());
         }
 
         return array(

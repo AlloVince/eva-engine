@@ -77,23 +77,26 @@ class UploadForm extends \Eva\Form\Form
                 ),
             ),
         ),
-        /*
         'upload' => array (
             'name' => 'upload',
+            'required' => false,
             'filters' => array (
                 array (
+                    'name' => 'Word\SeparatorToCamelCase',
+                    'options' => array(
+                        'separator' => ' '
+                    ),
                 ),
             ),
             'validators' => array (
                 array (
-                    'name' => 'StringLength',
+                    'name' => 'File\Extension',
                     'options' => array (
-                        'max' => '100',
+                        'extension' => array('txt'),
                     ),
                 ),
             ),
         ),
-        */
     );
 }
 
