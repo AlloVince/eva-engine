@@ -11,6 +11,17 @@
 			pathJqueryUi : ["/javascripts/jquery/jquery-ui.js", "/javascripts/jquery/jquery-ui-i18n.js", "/javascripts/jquery/jquery-ui-custom.js"],
 			pathCodeMirror : ['/lib/js/codemirror/lib/codemirror.js'],
 			pathSwfUploader : ["/javascripts/jquery/jquery.swfupload.js", "/javascripts/swfupload/swfupload.js", "/javascripts/swfupload/swfupload.queue.js"],
+			pathFileUploader : [
+				"/lib/js/jstemplates/tmpl.js", 
+				"/lib/js/loadimage/load-image.js", 
+				"/lib/js/upload/js/vendor/jquery.ui.widget.js", 
+				"/lib/js/upload/js/jquery.iframe-transport.js",
+				"/lib/js/upload/js/jquery.fileupload.js", 
+				"/lib/js/upload/js/jquery.fileupload-fp.js", 
+				"/lib/js/upload/js/jquery.fileupload-ui.js", 
+				"/lib/js/upload/js/locale.js", 
+				"/lib/js/upload/js/main.js", 
+			],
 			pathTinymce : "/javascripts/jquery/jquery.tinymce.js"
 		},
 
@@ -26,7 +37,8 @@
 			datepicker : '.datepicker',
 			codeeditor : '.editor-code',
 			markdowneditor : '.editor-markdown',
-			swfuploader : '.swfuploader',
+			fileuploader : '.fileuploader',
+			//swfuploader : '.swfuploader',
 			htmleditor : '.editor-html'
 		},
 
@@ -349,7 +361,33 @@
 			});		
 		},
 
+		initFileuploader : function(){
+			if(!$(this._itemClass.fileuploader)[0]) {
+				return false;
+			}
+
+			eva.loadcss(eva.s(["/lib/js/upload/css/jquery.fileupload-ui.css"]));
+
+			eva.loader(eva.s(methods.config.pathFileUploader), function(){
+				/*
+				$(methods._itemClass.fileuploader).each(function(){
+					var opt = methods._getOption(this);
+					$(this).fileupload({
+						dataType: 'json',
+						add : function(){
+						
+						},
+						done: function (e, data) {
+						}
+					});
+				});
+			   */
+			});
+			return false;
+		},
+
 		//beta
+		/*
 		initSwfuploader : function(){
 			if(!$(this._itemClass.swfuploader)[0]) {
 				return false;
@@ -405,6 +443,7 @@
 			});
 			return false;
 		},
+	   */
 
 		_inited : false,
 
