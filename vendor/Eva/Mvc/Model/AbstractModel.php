@@ -138,7 +138,7 @@ abstract class AbstractModel
             )); 
         }
 
-        if(!$itemArrayOrObject || !is_array($itemArrayOrObject) && !$itemArrayOrObject instanceof \ArrayObject ){
+        if(!is_array($itemArrayOrObject) && !$itemArrayOrObject instanceof \ArrayObject ){
             throw new \Zend\Mvc\Exception\InvalidArgumentException(sprintf(
                 '%s Item type %s not exist',
                 __method__,

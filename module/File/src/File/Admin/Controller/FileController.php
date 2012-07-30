@@ -22,10 +22,10 @@ class FileController extends RestfulModuleController
     public function restGetFile()
     {
         $id = (int)$this->getEvent()->getRouteMatch()->getParam('id');
-        $postModel = Api::_()->getModel('File\Model\Post');
-        $postinfo = $postModel->setItemParams($id)->getPost();
+        $postModel = Api::_()->getModel('File\Model\File');
+        $fileinfo = $postModel->setItemParams($id)->getFile();
         return array(
-            'post' => $postinfo,
+            'post' => $fileinfo,
             'flashMessenger' => $this->flashMessenger()->getMessages(),
         );
     }
@@ -40,14 +40,18 @@ class FileController extends RestfulModuleController
              ->enableFilters()
              ->enableFileTransfer();
 
+        $fileModel = Api::_()->getModel('File\Model\File');
         $flashMesseger = array();
         if ($form->isValid()) {
             if($form->getFileTransfer()->receive()){
                 $files = $form->getFileTransfer()->getFileInfo();
-                
-                $this->flashMessenger()->addMessage('file-upload-succeed');
-                //$this->redirect()->toUrl('/admin/file/upload');
-
+                $fileModel->setFiles($files);
+                $fileModel->saveFiles();
+                $lastFileId = $fileModel->getLastFileId();
+                if($lastFileId) {
+                    $this->flashMessenger()->addMessage('file-upload-succeed');
+                    $this->redirect()->toUrl('/admin/file/' . $lastFileId);
+                }
             }
         } else {
             $flashMesseger = array('file-upload-failed');

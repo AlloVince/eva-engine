@@ -1,0 +1,61 @@
+<? 
+$title = 'Form Class Generator';
+$this->headTitle($title, 'SET');
+$this->textDelay('breadcrumbText', $title);
+
+$method = 'put';
+$form = Eva\Api::_()->getForm('Scaffold\Form\AutoClassForm');
+
+$form->init(array(
+    'action' => $this->uri('/scaffold/item/'),
+    'method' => $method,
+));
+
+?>
+
+<div class="row">
+    <div class="span10">
+        <header class="page-header">
+        <h2 class="">Check Inputs</h2>
+        </header>
+    </div>
+
+    <form action="<?=$this->uri('/scaffold/item/array')?>" method="post">
+        <?=$form->restful();?>
+        <div class="span10">
+            <div class="slate">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="span1">
+                                <span class="form" data-multiform="createform">
+                                    <input type="checkbox" class="multiform-checker" />
+                                </span>
+                            </th>
+                            <th>Db Column</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?if($this->columns):?>
+                        <?foreach($this->columns as $key=>$column):?>
+                        <tr id="column_<?=$column['name'] ?>" class="">
+                            <td>
+                                <input type="checkbox" class="multiform-item-checkbox" data-multiform="createform" name="selectedColumns[]" value="<?=$column['name'] ?>" />
+                            </td>
+                            <td>
+                                <a href="#"><?=$column['name'] ?></a>
+                                <span class="label label-info"><?=$column['data_type'];?></span>
+                            </td>
+                        </tr>
+                        <?endforeach;?>
+                        <?endif;?>
+                    </tbody>
+                </table>
+            </div>
+        </div><!--span10 end-->
+        <div class="span10 listing-buttons">
+            <button class="btn btn-info btn-large">Create Form Class</button>
+        </div>
+    </form>
+</div>
+

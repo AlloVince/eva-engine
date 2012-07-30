@@ -89,12 +89,14 @@ class UploadForm extends \Eva\Form\Form
                 ),
             ),
             'validators' => array (
+                /*`
                 array (
                     'name' => 'File\Extension',
                     'options' => array (
                         'extension' => array('txt'),
                     ),
                 ),
+                */
             ),
         ),
     );

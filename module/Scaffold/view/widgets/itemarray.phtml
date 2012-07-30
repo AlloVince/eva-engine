@@ -1,0 +1,5 @@
+array(
+<?foreach($this->columns as $column):?>
+    '<?=$column?>' => array('<?=$column?>', 'get<?=ucfirst(preg_replace_callback('/_[a-z]/', function($s){ return ucfirst(trim($s[0], '_')); } ,$column))?>'),
+<?endforeach?>
+);

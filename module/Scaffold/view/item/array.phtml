@@ -1,0 +1,20 @@
+<? 
+$title = 'Item Array Generator';
+$this->headTitle($title, 'SET');
+?>
+<header class="page-header">
+<h2 class="">Form Class Source Code</h2>
+</header>
+
+<?if($this->columns):?>
+<textarea id="form-code" class="span10 editor-code" rows="20" data-ui='{"mode":"javascript", "lineNumbers":true, "fontsize":"12px"}'>
+<?=$this->widget('Scaffold', 'widgets/itemarray', $this->vars())?>
+</textarea>
+<?endif;?>
+
+
+<?if($this->columns):?>
+<textarea id="form-code" class="span10 editor-code" rows="20" data-ui='{"mode":"javascript", "lineNumbers":true, "fontsize":"12px"}'>
+<?=$this->widget('Scaffold', 'widgets/itemclass', $this->vars())?>
+</textarea>
+<?endif;?>

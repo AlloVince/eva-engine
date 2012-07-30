@@ -6,10 +6,10 @@ use Eva\Mvc\Controller\RestfulModuleController,
     Eva\Db\Metadata\Metadata,
     Eva\View\Model\ViewModel;
 
-class FormController extends RestfulModuleController
+class ItemController extends RestfulModuleController
 {
     protected $addResources = array(
-        'test',
+        'array',
         'html'
     );
     
@@ -21,10 +21,7 @@ class FormController extends RestfulModuleController
     {
     }
 
-    public function restGetFormTest()
-    {
-    }
-    public function restGetForm() 
+    public function restGetItem() 
     {
         $query = $this->getRequest()->getQuery();
         
@@ -55,7 +52,7 @@ class FormController extends RestfulModuleController
         );
     }
     
-    public function restPutForm()
+    public function restPutItemArray()
     {
         $request = $this->getRequest();
         $postData = $request->getPost();
@@ -65,31 +62,8 @@ class FormController extends RestfulModuleController
             return false;
         }
 
-        $elements = array();
-
-        foreach($postData['selectedColumns'] as $columnName){
-            $elements[$columnName] = array(
-                'name' => $columnName,
-                'type' => @$postData['inputType'][$columnName],
-                'validators' => @$postData['validators'][$columnName],
-                'filters' => @$postData['filters'][$columnName],
-                'default' => @$postData['defaults'][$columnName],
-            );
-        
-        }
-
-        $generator = new \Scaffold\Model\FormClassGenerator();
-        $generator->setElements($elements);
-        $generator->setDbTableName($tableName);
-        list($elements, $validators) = $generator->convertToFormArray();
-
-        $elementsCode = $generator->printCode($elements);
-        $validatorsCode = $generator->printCode($validators);
-        $formClassName = $generator->getFormClassName();
         return array(
-            'formClassName' => $formClassName,
-            'elementsCode' => $elementsCode,
-            'validatorsCode' => $validatorsCode,
+            'columns' => $postData['selectedColumns'],
         );
     }
     

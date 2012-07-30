@@ -4,7 +4,7 @@ return array(
         'storage' => array(
             'default' => array(
                 'rootpath' => EVA_PUBLIC_PATH . '/static/upload',
-                'pathlevel' => 0, 
+                'pathlevel' => 3, 
             ),
         ),
     ),

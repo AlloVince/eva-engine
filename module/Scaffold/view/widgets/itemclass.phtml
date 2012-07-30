@@ -1,0 +1,33 @@
+/**
+ * EvaEngine
+ *
+ * @link      https://github.com/AlloVince/eva-engine
+ * @copyright Copyright (c) 2012 AlloVince (http://avnpc.com/)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @package   Eva_Api.php
+ * @author    AlloVince
+ */
+
+namespace \Model\;
+
+use Eva\Mvc\Model\AbstractItem,
+    Eva\Api;
+
+/**
+ * @category   Eva
+ * @package    Eva_Model
+ */
+class Item extends AbstractItem
+{
+
+<?foreach($this->columns as $column):?>
+
+    public function get<?=ucfirst(preg_replace_callback('/_[a-z]/', function($s){ return ucfirst(trim($s[0], '_')); } ,$column))?>($<?=preg_replace_callback('/_[a-z]/', function($s){ return ucfirst(trim($s[0], '_')); } ,$column)?>)
+    {
+        return $<?=preg_replace_callback('/_[a-z]/', function($s){ return ucfirst(trim($s[0], '_')); } ,$column)?>;
+    }
+
+<?endforeach?>
+
+}
+

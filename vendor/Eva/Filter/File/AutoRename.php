@@ -14,6 +14,7 @@ use Traversable;
 use Zend\Filter;
 use Zend\Filter\Exception;
 use Zend\Stdlib\ArrayUtils;
+use Zend\Stdlib\ErrorHandler;
 
 /**
  * @category   Zend
@@ -132,6 +133,7 @@ class AutoRename extends \Zend\Filter\AbstractFilter
             $fileextension = '.' . $this->getExtension($fileinfo['name']);
         }
         $filepath = $rootpath . \DIRECTORY_SEPARATOR . $path . $filename . $fileextension;
+        $this->prepareDirectoryStructure($filepath);
         return $filepath;
     }
 
@@ -166,6 +168,114 @@ class AutoRename extends \Zend\Filter\AbstractFilter
     {
         return strtolower(end(explode(".", $fileFullName)));
     }
+
+    /**
+     * Prepares a directory structure for the given file(spec)
+     * using the configured directory level.
+     *
+     * @param string $file
+     * @return void
+     * @throws Exception\RuntimeException
+     */
+    protected function prepareDirectoryStructure($file)
+    {
+        $level   = $this->pathlevel;
+
+        // Directory structure is required only if directory level > 0
+        if (!$level) {
+            return;
+        }
+
+        // Directory structure already exists
+        $pathname = dirname($file);
+        if (file_exists($pathname)) {
+            return;
+        }
+
+        $perm     = 0700;
+        $umask    = false;
+
+        if ($umask !== false && $perm !== false) {
+            $perm = $perm & ~$umask;
+        }
+
+        ErrorHandler::start();
+
+        if ($perm === false || $level == 1) {
+            // build-in mkdir function is enough
+
+            $umask = ($umask !== false) ? umask($umask) : false;
+            $res   = mkdir($pathname, ($perm !== false) ? $perm : 0777, true);
+
+            if ($umask !== false) {
+                umask($umask);
+            }
+
+            if (!$res) {
+                $oct = ($perm === false) ? '777' : decoct($perm);
+                $err = ErrorHandler::stop();
+                throw new Exception\RuntimeException(
+                    "mkdir('{$pathname}', 0{$oct}, true) failed", 0, $err
+                );
+            }
+
+            if ($perm !== false && !chmod($pathname, $perm)) {
+                $oct = decoct($perm);
+                $err = ErrorHandler::stop();
+                throw new Exception\RuntimeException(
+                    "chmod('{$pathname}', 0{$oct}) failed", 0, $err
+                );
+            }
+
+        } else {
+            // build-in mkdir function sets permission together with current umask
+            // which doesn't work well on multo threaded webservers
+            // -> create directories one by one and set permissions
+
+            // find existing path and missing path parts
+            $parts = array();
+            $path  = $pathname;
+            while (!file_exists($path)) {
+                array_unshift($parts, basename($path));
+                $nextPath = dirname($path);
+                if ($nextPath === $path) {
+                    break;
+                }
+                $path = $nextPath;
+            }
+
+            // make all missing path parts
+            foreach ($parts as $part) {
+                $path.= \DIRECTORY_SEPARATOR . $part;
+
+                // create a single directory, set and reset umask immediatly
+                $umask = ($umask !== false) ? umask($umask) : false;
+                $res   = mkdir($path, ($perm === false) ? 0777 : $perm, false);
+                if ($umask !== false) {
+                    umask($umask);
+                }
+
+                if (!$res) {
+                    $oct = ($perm === false) ? '777' : decoct($perm);
+                    $err = ErrorHandler::stop();
+                    throw new Exception\RuntimeException(
+                        "mkdir('{$path}', 0{$oct}, false) failed"
+                    );
+                }
+
+                if ($perm !== false && !chmod($path, $perm)) {
+                    $oct = decoct($perm);
+                    $err = ErrorHandler::stop();
+                    throw new Exception\RuntimeException(
+                        "chmod('{$path}', 0{$oct}) failed"
+                    );
+                }
+            }
+        }
+
+        ErrorHandler::stop();
+    }
+
 
     /**
      * Defined by Zend\Filter\Filter

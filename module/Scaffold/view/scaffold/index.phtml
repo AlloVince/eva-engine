@@ -1,0 +1,42 @@
+<? 
+$title = 'Select DB Table';
+$this->headTitle($title, 'SET');
+$this->textDelay('breadcrumbText', $title);
+?>
+<div class="row">
+
+    <div class="span10">
+        <div class="slate">
+            <div class="page-header">
+                <h2 class="">Select A Database Table:</h2>
+            </div>
+
+            <table class="orders-table table">
+                <thead>
+                    <tr>
+                        <th>Table Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <?if($this->tables):?>
+                    <?foreach($this->tables as $key=>$table):?>
+                    <tr class="">
+                        <td>
+                            <a href="" class="title"><?=$table?></a>
+                        </td>
+                        <td>
+                            <a href="<?=$this->uri('/scaffold/form/' . $table)?>" class="btn btn-small">Create Form Class</a>
+                            <a href="<?=$this->uri('/scaffold/item/' . $table)?>" class="btn btn-small">Create Item Mapping Array</a>
+                        </td>
+                    </tr>
+                    <?endforeach;?>
+                    <?endif;?>
+                </tbody>
+            </table>
+        </div>
+    </div><!--span10 end-->
+
+</div>
+
