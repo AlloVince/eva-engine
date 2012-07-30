@@ -18,6 +18,79 @@ namespace Eva\File\Transfer\Adapter;
  */
 class Http extends \Zend\File\Transfer\Adapter\Http
 {
+
+    /**
+     * Receive the file from the client (Upload)
+     *
+     * @param  string|array $files (Optional) Files to receive
+     * @return boolean
+     */
+    public function receive($files = null)
+    {
+        if (!$this->isValid($files)) {
+            return false;
+        }
+
+        $check = $this->getFiles($files);
+        foreach ($check as $file => $content) {
+            if (!$content['received']) {
+                $directory   = '';
+                $destination = $this->getDestination($file);
+                if ($destination !== null) {
+                    $directory = $destination . DIRECTORY_SEPARATOR;
+                }
+
+                $filename = $directory . $content['name'];
+                $rename   = $this->getFilter('Rename');
+                if ($rename !== null) {
+                    //EvaEngine: input file info into filter
+                    $tmp = $rename->getNewName($content['tmp_name'], false, $content);
+                    if ($tmp != $content['tmp_name']) {
+                        $filename = $tmp;
+                    }
+
+                    if (dirname($filename) == '.') {
+                        $filename = $directory . $filename;
+                    }
+
+                    $key = array_search(get_class($rename), $this->files[$file]['filters']);
+                    unset($this->files[$file]['filters'][$key]);
+                }
+
+                // Should never return false when it's tested by the upload validator
+                if (!move_uploaded_file($content['tmp_name'], $filename)) {
+                    if ($content['options']['ignoreNoFile']) {
+                        $this->files[$file]['received'] = true;
+                        $this->files[$file]['filtered'] = true;
+                        continue;
+                    }
+
+                    $this->files[$file]['received'] = false;
+                    return false;
+                }
+
+                if ($rename !== null) {
+                    $this->files[$file]['destination'] = dirname($filename);
+                    $this->files[$file]['name']        = basename($filename);
+                }
+
+                $this->files[$file]['tmp_name'] = $filename;
+                $this->files[$file]['received'] = true;
+            }
+
+            if (!$content['filtered']) {
+                if (!$this->filter($file)) {
+                    $this->files[$file]['filtered'] = false;
+                    return false;
+                }
+
+                $this->files[$file]['filtered'] = true;
+            }
+        }
+
+        return true;
+    }
+
     /**
      * Checks if the files are valid
      *
@@ -131,6 +204,7 @@ class Http extends \Zend\File\Transfer\Adapter\Http
                 $this->files[$key]['validated'] = true;
             }
 
+            //EvaEngine : Changed messages by key sort
             if($fileerrors) {
                 $this->messages[$key] = $fileerrors;
             }

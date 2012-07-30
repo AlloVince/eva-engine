@@ -21,10 +21,9 @@ use Zend\Stdlib\ArrayUtils;
  */
 class AutoRename extends \Zend\Filter\AbstractFilter
 {
-    /**
-     * Internal array of array(source, target, overwrite)
-     */
-    protected $_files = array();
+    protected $rootpath;
+    protected $pathkey;
+    protected $pathlevel;
 
     /**
      * Class constructor
@@ -42,68 +41,74 @@ class AutoRename extends \Zend\Filter\AbstractFilter
     {
         if ($options instanceof Traversable) {
             $options = ArrayUtils::iteratorToArray($options);
-        } elseif (is_string($options)) {
-            $options = array('target' => $options);
         } elseif (!is_array($options)) {
             throw new Exception\InvalidArgumentException('Invalid options argument provided to filter');
         }
 
-        $this->setFile($options);
+        $defaultOptions = array(
+            'pathkey' => '',
+            'rootpath' => '',
+            'pathlevel' => 0,
+        );
+        $this->setOptions(array_merge($defaultOptions, $options));
     }
 
-    /**
-     * Returns the files to rename and their new name and location
-     *
-     * @return array
-     */
-    public function getFile()
+    public function setPathkey($pathkey = null)
     {
-        return $this->_files;
-    }
-
-    /**
-     * Sets a new file or directory as target, deleting existing ones
-     *
-     * Array accepts the following keys:
-     * 'source'    => Source filename or directory which will be renamed
-     * 'target'    => Target filename or directory, the new name of the sourcefile
-     * 'overwrite' => Shall existing files be overwritten ?
-     *
-     * @param  string|array $options Old file or directory to be rewritten
-     * @return \Zend\Filter\File\Rename
-     */
-    public function setFile($options)
-    {
-        $this->_files = array();
-        $this->addFile($options);
-
-        return $this;
-    }
-
-    /**
-     * Adds a new file or directory as target to the existing ones
-     *
-     * Array accepts the following keys:
-     * 'source'    => Source filename or directory which will be renamed
-     * 'target'    => Target filename or directory, the new name of the sourcefile
-     * 'overwrite' => Shall existing files be overwritten ?
-     *
-     * @param  string|array $options Old file or directory to be rewritten
-     * @return Rename
-     * @throws Exception\InvalidArgumentException
-     */
-    public function addFile($options)
-    {
-        if (is_string($options)) {
-            $options = array('target' => $options);
-        } elseif (!is_array($options)) {
-            throw new Exception\InvalidArgumentException('Invalid options to rename filter provided');
+        if(!$pathkey){
+            $pathkey = 'default';
         }
 
-        $this->_convertOptions($options);
+        $config = \Eva\Api::_()->getConfig();
+        if(isset($config['upload']['storage'][$pathkey])){
+            $config = $config['upload']['storage'][$pathkey];
+            if(isset($config['rootpath'])){
+                $this->rootpath = $config['rootpath'];
+            }
+
+            if(isset($config['pathlevel'])){
+                $this->pathlevel = $config['pathlevel'];
+            }
+        }
+
+        $this->pathkey = $pathkey;
+        return $this;
+    }
+
+
+    public function setRootpath($rootpath = null)
+    {
+        if($rootpath){
+            $this->rootpath = $rootpath;
+        }
+
+        $rootpath = $this->rootpath;
+
+        if (!$rootpath) {
+            throw new Exception\RuntimeException(sprintf("File storage root path %s not set", $rootpath));
+        }
+
+        if(false === file_exists($rootpath)){
+            throw new Exception\RuntimeException(sprintf("File storage root path %s is not an exist folder", $rootpath));
+        }
 
         return $this;
     }
+
+
+
+    public function setPathlevel($pathlevel = null)
+    {
+        if($pathlevel > 0){
+            $this->pathlevel = $pathlevel;
+        } else {
+            if(!$this->pathlevel){
+                $this->pathlevel = 0;
+            }
+        }
+        return $this;
+    }
+
 
     /**
      * Returns only the new filename without moving it
@@ -114,36 +119,52 @@ class AutoRename extends \Zend\Filter\AbstractFilter
      * @return string The new filename which has been set
      * @throws Exception\InvalidArgumentException If the target file already exists.
      */
-    public function getNewName($value, $source = false)
+    public function getNewName($value, $source = false, $fileinfo)
     {
-        $file = $this->_getFileName($value);
-        if (!is_array($file)) {
-            return $file;
+        $rootpath = $this->rootpath;
+        $path = $this->getPath();
+
+
+        $filename = \Eva\Stdlib\String\Hash::uniqueHash();
+
+        $fileextension = '';
+        if(isset($fileinfo['name'])){
+            $fileextension = '.' . $this->getExtension($fileinfo['name']);
+        }
+        $filepath = $rootpath . \DIRECTORY_SEPARATOR . $path . $filename . $fileextension;
+        return $filepath;
+    }
+
+    protected function getPath()
+    {
+        $uniquId = uniqid('', true);
+        $hash = md5($uniquId);
+        $level = $this->pathlevel;
+        $path = '';
+
+        if($level > 10){
+            throw new Exception\RuntimeException(sprintf("File storage path level %s is over limit, max level is 10.", $level));
         }
 
-        if ($file['source'] == $file['target']) {
-            return $value;
+        if ($level > 0) {
+            for ($i = 0, $max = ($level * 2); $i < $max; $i+= 2) {
+                $path .= $hash[$i] . $hash[$i+1] . \DIRECTORY_SEPARATOR;
+            }
         }
+        return $path;
+    }
 
-        if (!file_exists($file['source'])) {
-            return $value;
-        }
-
-        if (($file['overwrite'] == true) && (file_exists($file['target']))) {
-            unlink($file['target']);
-        }
-
-        if (file_exists($file['target'])) {
-            throw new Exception\InvalidArgumentException(
-                sprintf("File '%s' could not be renamed. It already exists.", $value)
-            );
-        }
-
-        if ($source) {
-            return $file;
-        }
-
-        return $file['target'];
+    /**
+     * Get file extension 
+     *
+     * @access public
+     * @param string $name  file name string
+     *
+     * @return string file extension
+     */ 
+    protected function getExtension($fileFullName)
+    {
+        return strtolower(end(explode(".", $fileFullName)));
     }
 
     /**
@@ -172,113 +193,5 @@ class AutoRename extends \Zend\Filter\AbstractFilter
         return $file['target'];
     }
 
-    /**
-     * Internal method for creating the file array
-     * Supports single and nested arrays
-     *
-     * @param  array $options
-     * @return array
-     */
-    protected function _convertOptions($options)
-    {
-        $files = array();
-        foreach ($options as $key => $value) {
-            if (is_array($value)) {
-                $this->_convertOptions($value);
-                continue;
-            }
 
-            switch ($key) {
-                case "source":
-                    $files['source'] = (string) $value;
-                    break;
-
-                case 'target' :
-                    $files['target'] = (string) $value;
-                    break;
-
-                case 'overwrite' :
-                    $files['overwrite'] = (boolean) $value;
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        if (empty($files)) {
-            return $this;
-        }
-
-        if (empty($files['source'])) {
-            $files['source'] = '*';
-        }
-
-        if (empty($files['target'])) {
-            $files['target'] = '*';
-        }
-
-        if (empty($files['overwrite'])) {
-            $files['overwrite'] = false;
-        }
-
-        $found = false;
-        foreach ($this->_files as $key => $value) {
-            if ($value['source'] == $files['source']) {
-                $this->_files[$key] = $files;
-                $found              = true;
-            }
-        }
-
-        if (!$found) {
-            $count                = count($this->_files);
-            $this->_files[$count] = $files;
-        }
-
-        return $this;
-    }
-
-    /**
-     * Internal method to resolve the requested source
-     * and return all other related parameters
-     *
-     * @param  string $file Filename to get the informations for
-     * @return array|string
-     */
-    protected function _getFileName($file)
-    {
-        $rename = array();
-        foreach ($this->_files as $value) {
-            if ($value['source'] == '*') {
-                if (!isset($rename['source'])) {
-                    $rename           = $value;
-                    $rename['source'] = $file;
-                }
-            }
-
-            if ($value['source'] == $file) {
-                $rename = $value;
-            }
-        }
-
-        if (!isset($rename['source'])) {
-            return $file;
-        }
-
-        if (!isset($rename['target']) or ($rename['target'] == '*')) {
-            $rename['target'] = $rename['source'];
-        }
-
-        if (is_dir($rename['target'])) {
-            $name = basename($rename['source']);
-            $last = $rename['target'][strlen($rename['target']) - 1];
-            if (($last != '/') and ($last != '\\')) {
-                $rename['target'] .= DIRECTORY_SEPARATOR;
-            }
-
-            $rename['target'] .= $name;
-        }
-
-        return $rename;
-    }
 }

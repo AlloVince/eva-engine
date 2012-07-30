@@ -46,7 +46,8 @@ class FileController extends RestfulModuleController
                 $files = $form->getFileTransfer()->getFileInfo();
                 
                 $this->flashMessenger()->addMessage('file-upload-succeed');
-                $this->redirect()->toUrl('/admin/file/upload');
+                //$this->redirect()->toUrl('/admin/file/upload');
+
             }
         } else {
             $flashMesseger = array('file-upload-failed');

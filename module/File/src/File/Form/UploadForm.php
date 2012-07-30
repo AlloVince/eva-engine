@@ -82,9 +82,9 @@ class UploadForm extends \Eva\Form\Form
             'required' => false,
             'filters' => array (
                 array (
-                    'name' => 'File\Rename',
+                    'name' => '\Eva\Filter\File\AutoRename',
                     'options' => array(
-                        'target' => 'D:\xampp\htdocs\zf2\vendor\Eva\Filter\File\abc.txt',
+                        'pathkey' => 'default',
                     ),
                 ),
             ),
