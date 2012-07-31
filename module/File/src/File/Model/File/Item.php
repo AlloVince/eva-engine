@@ -28,19 +28,14 @@ class Item extends AbstractItem
 
     public function getTitle($title)
     {
-        if(!$title){
         $file = $this->model->getFile();
-
-        $nameArray = explode(".", $file['name']);
-        
+        $fileName = isset($file['original_name']) && $file['original_name'] ? $file['original_name'] : $file['name'];
+        $nameArray = explode(".", $fileName);
         if(count($nameArray) == 1){
-            return $file['name'];
+            return $fileName;
         }
-        
         array_pop($nameArray);
         return implode(".", $nameArray);
-        }
-        return $title;
     }
 
 
@@ -67,11 +62,19 @@ class Item extends AbstractItem
         return $file['name'];
     }
 
+    public function getFileExtension($fileExtension)
+    {
+        $file = $this->model->getFile();
+        if($file['name']) {
+            return strtolower(end(explode(".", $file['name'])));
+        }
+    }
 
     public function getOriginalName($originalName)
     {
         $file = $this->model->getFile();
-        return $file['name'];
+        $fileName = isset($file['original_name']) && $file['original_name'] ? $file['original_name'] : $file['name'];
+        return $fileName;
     }
 
 

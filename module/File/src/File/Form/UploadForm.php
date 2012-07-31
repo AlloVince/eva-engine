@@ -80,6 +80,9 @@ class UploadForm extends \Eva\Form\Form
         'upload' => array (
             'name' => 'upload',
             'required' => false,
+            'options' => array(
+                'ignoreNoFile' => true,
+            ),
             'filters' => array (
                 array (
                     'name' => '\Eva\Filter\File\AutoRename',

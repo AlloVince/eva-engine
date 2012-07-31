@@ -56,7 +56,7 @@ class File extends AbstractModel
     public function saveFile()
     {
         $file = $this->file;
-        if(!$file){
+        if(!$file || !$file['received']){
             return false;
         }
 
@@ -64,6 +64,7 @@ class File extends AbstractModel
             'title' => array('title', 'getTitle'),
             'isImage' => array('isImage', 'getIsImage'),
             'fileName' => array('fileName', 'getFileName'),
+            'fileExtension' => array('fileExtension', 'getFileExtension'),
             'originalName' => array('originalName', 'getOriginalName'),
             'serverKey' => array('serverKey', 'getServerKey'),
             'serverName' => array('serverName', 'getServerName'),

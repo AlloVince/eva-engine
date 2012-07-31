@@ -274,6 +274,9 @@ class Form extends \Zend\Form\Form
                     $config['di']['instance']['Eva\File\Transfer\Adapter\Http']['parameters']['filters'][$filter['name']] = $filter['options'];
                 }
             }
+            if(isset($mergeFilters[$key]['options'])){
+                $config['di']['instance']['Eva\File\Transfer\Adapter\Http']['parameters']['options'] = $mergeFilters[$key]['options'];
+            }
         }
 
         $this->fileTransferOptions = $config;

@@ -42,7 +42,7 @@ class FileController extends RestfulModuleController
 
         $fileModel = Api::_()->getModel('File\Model\File');
         $flashMesseger = array();
-        if ($form->isValid()) {
+        if ($form->isValid() && $form->getFileTransfer()->isUploaded()) {
             if($form->getFileTransfer()->receive()){
                 $files = $form->getFileTransfer()->getFileInfo();
                 $fileModel->setFiles($files);
@@ -54,6 +54,8 @@ class FileController extends RestfulModuleController
                 }
             }
         } else {
+            //p($form->getFileTransfer());
+            p($form->getFileTransfer()->isUploaded());
             $flashMesseger = array('file-upload-failed');
         }
 

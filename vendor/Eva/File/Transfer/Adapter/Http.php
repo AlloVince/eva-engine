@@ -33,6 +33,12 @@ class Http extends \Zend\File\Transfer\Adapter\Http
 
         $check = $this->getFiles($files);
         foreach ($check as $file => $content) {
+
+            //Eva: if any php upload error found, will not upload anymore
+            if($content['error'] > 0) {
+                continue;
+            }
+
             if (!$content['received']) {
                 $directory   = '';
                 $destination = $this->getDestination($file);
@@ -40,10 +46,13 @@ class Http extends \Zend\File\Transfer\Adapter\Http
                     $directory = $destination . DIRECTORY_SEPARATOR;
                 }
 
+                //Eva: Save file original name here
+                $this->files[$file]['original_name'] = $content['name'];
+
                 $filename = $directory . $content['name'];
                 $rename   = $this->getFilter('Rename');
                 if ($rename !== null) {
-                    //EvaEngine: input file info into filter
+                    //Eva: input file info into filter
                     $tmp = $rename->getNewName($content['tmp_name'], false, $content);
                     if ($tmp != $content['tmp_name']) {
                         $filename = $tmp;
@@ -216,6 +225,34 @@ class Http extends \Zend\File\Transfer\Adapter\Http
 
         if (count($this->messages) > 0) {
             return false;
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Has a file been uploaded ?
+     *
+     * @param  array|string|null $file
+     * @return boolean
+     */
+    public function isUploaded($files = null)
+    {
+        $files = $this->getFiles($files, false, true);
+        if (empty($files)) {
+            return false;
+        }
+
+        $options = $this->getOptions();
+        foreach ($files as $key => $file) {
+            if(isset($options[$key]['ignoreNoFile']) && true === $options[$key]['ignoreNoFile']){
+                if (!empty($file['name'])) {
+                    return true;
+                }
+            } elseif (empty($file['name'])) {
+                return false;
+            }
         }
 
         return true;
