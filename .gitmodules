@@ -16,3 +16,6 @@
 [submodule "depends/ZendDeveloperTools"]
 	path = depends/ZendDeveloperTools
 	url = git://github.com/zendframework/ZendDeveloperTools.git
+[submodule "depends/BjyProfiler"]
+	path = depends/BjyProfiler
+	url = git://github.com/bjyoungblood/BjyProfiler.git
