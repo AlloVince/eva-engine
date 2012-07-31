@@ -23,7 +23,7 @@ $form->init(array(
             <div class="slate">
                 <div class="page-header">
                     <div class="btn-group pull-right">
-                        <a href="<?=$file['Url']?>" class="btn">Open File</a>
+                        <a href="<?=$file['Url']?>" class="btn">Download File</a>
                         <a href="<?=$this->uri('/admin/file/remove/' . $file['id'], 'c', array('c' => $this->uri('/admin/file/' . $file['id']))); ?>" class="btn">Delete</a>
                     </div>
                     <h2><?=$title?></h2>

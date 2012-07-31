@@ -9,7 +9,7 @@ if($this->form){
     $form = Eva\Api::_()->getForm('File\Form\UploadForm');
 }
 $form->init(array(
-    'action' => $this->uri('/admin/file/'),
+    'action' => $this->uri('/api/file/'),
     'method' => 'post',
 ));
 $file = array();
@@ -29,7 +29,6 @@ $file = array();
 
 
 <div class="row">
-    <!--
     <form <?=$this->formAttr($form)?> enctype="multipart/form-data">
         <?=$form->restful();?>
         <?//=$form->helper('id');?>
@@ -67,7 +66,6 @@ $file = array();
             <button class="btn btn-info btn-large">Upload</button>
         </div>
     </form>
-    -->
 
     <form id="fileupload" <?=$this->formAttr($form)?> enctype="multipart/form-data" class="fileuploader">
         <?=$form->restful();?>
@@ -102,6 +100,16 @@ $file = array();
                     <div class="fileupload-loading"></div>
                     <!-- The table listing the files available for upload/download -->
                     <table role="presentation" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Preview</th>
+                                <th>File Name</th>
+                                <th>File Size</th>
+                                <th>Upload Process</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
                         <tbody class="files">
                         </tbody>
                     </table>
@@ -133,30 +141,35 @@ $file = array();
 <script id="template-upload" type="text/x-tmpl">
     {% for (var i=0, file; file=o.files[i]; i++) { %}
     <tr class="template-upload fade">
-        <td class="preview span1"><span class="fade"></span></td>
+        <td class="span1"></td>
+        <td class="preview span2"><span class="fade"></span></td>
         <td class="name"><span>{%=file.name%}</span></td>
         <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
-        {% if (file.error) { %}
-        <td class="error" colspan="2"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
-        {% } else if (o.files.valid && !i) { %}
-        <td>
+        <td class="error">
+            {% if (file.error) { %}
+                <span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}
+            {% } else if (o.files.valid && !i) { %}
             <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar" style="width:0%;"></div></div>
+            {% } %}
         </td>
-        <td class="start span1">{% if (!o.options.autoUpload) { %}
-            <button class="btn">
-                <i class="icon-upload icon-white"></i>
-                <span>{%=locale.fileupload.start%}</span>
-            </button>
-            {% } %}</td>
-        {% } else { %}
-        <td colspan="2"></td>
-        {% } %}
-        <td class="cancel span1">{% if (!i) { %}
-            <button class="btn">
-                <i class="icon-ban-circle icon-white"></i>
-                <span>{%=locale.fileupload.cancel%}</span>
-            </button>
-            {% } %}</td>
+        <td>
+            {% if (!o.options.autoUpload) { %}
+            <span class="start span0">
+                <button class="btn">
+                    <i class="icon-upload icon-white"></i>
+                    <span>Upload</span>
+                </button>
+            </span>
+            {% } %}
+            {% if (!i) { %}
+            <span class="cancel span1">
+                <button class="btn">
+                    <i class="icon-ban-circle icon-white"></i>
+                    <span>Cancel</span>
+                </button>
+            </span>
+            {% } %}
+        </td>
     </tr>
     {% } %}
 </script>
@@ -164,29 +177,27 @@ $file = array();
 <script id="template-download" type="text/x-tmpl">
     {% for (var i=0, file; file=o.files[i]; i++) { %}
         <tr class="template-download fade">
-            <td class="delete"><input type="checkbox" name="delete" value="1"></td>
+            <td class="delete span1"><input type="checkbox" name="delete" value="1"></td>
             {% if (file.error) { %}
+                <td class="preview span2"></td>
                 <td class="name"><span>{%=file.name%}</span></td>
                 <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
-                <td class="error" colspan="2"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
-                {% } else { %}
-                <td class="preview">{% if (file.thumbnail_url) { %}
-                    <a href="{%=file.url%}" title="{%=file.name%}" rel="gallery" download="{%=file.name%}"><img src="{%=file.thumbnail_url%}"></a>
+                <td class="error"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
+            {% } else { %}
+                <td class="preview span2">{% if (file.thumbnail_url) { %}
+                    <a href="{%=file.url%}" title="{%=file.name%}" rel="gallery" download="{%=file.name%}"><img src="{%=file.thumbnail_url%}" class="span2" /></a>
                     {% } %}</td>
                 <td class="name">
                     <a href="{%=file.url%}" title="{%=file.name%}" rel="{%=file.thumbnail_url&&'gallery'%}" download="{%=file.name%}">{%=file.name%}</a>
                 </td>
                 <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
-                <td colspan="2"></td>
-                {% } %}
+                <td class="error"></td>
+            {% } %}
             <td class="delete">
-                <button class="btn" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}">
-                    <i class="icon-trash icon-white"></i>
-                    <span>{%=locale.fileupload.destroy%}</span>
-                </button>
+                <a class="btn" href="<?=$this->uri('/admin/file/')?>{%=file.id%}" >Edit</a>
             </td>
         </tr>
-        {% } %}
+    {% } %}
 </script>
 
 <!-- The XDomainRequest Transport is included for cross-domain file deletion for IE8+ -->

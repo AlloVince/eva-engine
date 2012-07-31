@@ -110,8 +110,11 @@ abstract class RestfulModuleController extends \Zend\Mvc\Controller\AbstractRest
             throw new \Eva\Core\Exception\RestfulException(sprintf('Request restful resource %s not exist', $function));
         }
 
-        $model = new ViewModel();
         $variables = $this->$function();
+        if($variables instanceof \Zend\View\Model\ModelInterface){
+            return $variables;
+        }
+        $model = new ViewModel();
         if($variables) {
             $model->setVariables($variables);
         }

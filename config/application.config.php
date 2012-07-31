@@ -17,7 +17,7 @@ return array(
         ),
     ),
     'protected_module_namespace' => array(
-        'Admin',    
+        'Admin', 'Api'   
     ),
     'use_module_template_path_stack' => true,
     'module_listener_options' => array( 

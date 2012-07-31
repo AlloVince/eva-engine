@@ -1,5 +1,13 @@
 <?php
 return array(
+    /*
+    'view_manager' => array(
+        'strategies' => array(
+            'ViewJsonStrategy',
+        ),
+    ),
+    */
+
     'upload' => array(
         'storage' => array(
             'default' => array(
