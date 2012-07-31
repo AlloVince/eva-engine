@@ -101,6 +101,7 @@ class FormController extends RestfulModuleController
         $mainForm = $postData->form;
 
         $form = Api::_()->getForm($mainForm);
+        $form->init()->enableFilters();
         $elements = $form->getMergedElements();
 
         $subFormString = $postData->subform;
@@ -111,6 +112,7 @@ class FormController extends RestfulModuleController
             $subForms = explode(',', $subFormString);
             foreach ($subForms as $subForm) {
                 $form = Api::_()->getForm($subForm);
+                $form->init();
                 $subFormElements[$subForm] = $form->getMergedElements();
             }
         }
@@ -131,125 +133,4 @@ class FormController extends RestfulModuleController
         );
     }
 
-    public function makeForm($columns, $tabName)
-    {
-        if (!$columns || !$tabName) {
-            return $columns;
-        }
-
-        $tabNameArray = explode('_',$tabName);
-
-        $moduleName = ucfirst($tabNameArray[1]);
-
-        $tabName = count($tabNameArray) == 3 ? ucfirst($tabNameArray[2]) : ( ucfirst($tabNameArray[2]) . ucfirst($tabNameArray[3]) );
-
-        $baseElements = array();
-        
-        $baseFilters = array();
-            
-        foreach ($columns as $column) {
-            $baseElements[$column['name']] = array(
-                'name' => $column['name'],
-            );  
-
-            $baseFilters[$column['name']] = array(
-                'name' => $column['name'],
-                'required' => $column['required'] ? true : false,
-                'filters' => array(
-                ),
-                'validators' => array(
-                ),
-            );   
-
-            if ($column['data_type'] != 'enum') {
-                $baseElements[$column['name']]['attributes'] = array(
-                    'type' => $column['data_type'] == 'longtext' ? 'textarea' : 'text',
-                    'label' => ucfirst($column['name']),
-                );
-
-                if ($column['isHidden'] == true) {
-                    $baseElements[$column['name']]['attributes']['type'] = 'hidden'; 
-                }
-            
-            } else {
-
-                if ($column['column_type']) {
-                    $selectString = str_replace(array('enum','(', ')', '\''),'', $column['column_type']);
-                    $selectArray = explode(',' ,$selectString);
-                    $selectOptions = array();
-
-                    if ($column['inputType'] == 'raido') {
-                        foreach ($selectArray as $select) {
-                            $selectOptions[ucfirst($select)] = $select;
-                        } 
-                    } else {
-                        foreach ($selectArray as $select) {
-                            $selectOptions[] = array(
-                                'label' => ucfirst($select),
-                                'value' => $select,
-                            );
-                        }
-                    }
-                }            
-
-                $baseElements[$column['name']]['attributes'] = array(
-                    'type' => $column['inputType'] == 'raido' ? 'raido' : 'select',
-                    'label' => ucfirst($column['name']),
-                    'options' => $selectOptions,
-                ); 
-
-                if ($column['column_default']) {
-                    $baseElements[$column['name']]['attributes']['value'] = $column['column_default']; 
-                }    
-            }
-        }
-
-        $baseElementsString = var_export($baseElements, true);
-        $baseFiltersString = var_export($baseFilters, true);
-
-        $formString = 
-            "<?php
-namespace $moduleName\Form;
-
-use Eva\Form\Form;
-use Zend\Form\Element;
-
-class {$tabName}Form extends Form
-{
-    ".'   protected $baseElements = ' . $baseElementsString . ';
-
-    protected $baseFilters = ' . $baseFiltersString . ';
-
-    }';
-        
-        $formString = preg_replace('/\d \=>/','',$formString);
-
-        return $formString;
-    }
-    
-    public function makeHtml($element)
-    {
-        if (!$element) {
-            return $element;
-        }   
-    
-        $html = <<<abc
-<div class="control-group <?=\$form->isError('{$element['name']}') ? 'error' : '';?>">
-    <?=\$form->helper('{$element['name']}', 'label', array('class' => 'control-label'))?>
-    <div class="controls">
-        <?=\$form->helper('{$element['name']}', array('class' => ''))?>
-        <div class="help-block"><?=\$form->helper('{$element['name']}', 'formElementErrors')?></div>
-    </div>
-</div>
-abc;
-    
-        return $html . "\n";
-    }
-
-    public function p($d)
-    {
-        echo "<pre>";
-        print_r($d);
-        echo "</pre>";
-    }
 }

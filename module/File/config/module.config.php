@@ -5,8 +5,8 @@ return array(
             'default' => array(
                 'rootpath' => EVA_PUBLIC_PATH . '/static/upload',
                 'pathlevel' => 3, 
-                'urlroot' => EVA_PUBLIC_PATH . '/static',
-                'urldomain' => '',
+                'urlroot' => EVA_PUBLIC_PATH ,
+                'domain' => '',
             ),
         ),
     ),

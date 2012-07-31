@@ -18,42 +18,90 @@ class File extends AbstractModel
         return $this->lastFileId;
     }
 
-    public function setFiles($files)
+    public function setUploadFiles($files)
     {
         $this->files = $files;
         return $this;
     }
 
-    public function getFiles()
+    public function getUploadFiles()
     {
         return $this->files;
     }
 
-    public function setFile($file)
+    public function setUploadFile($file)
     {
         $this->file = $file;
         return $this;
     }
 
-    public function getFile()
+    public function getUploadFile()
     {
         return $this->file;
     }
 
-    public function saveFiles()
+
+    public function getFile()
+    {
+        $params = $this->getItemParams();
+        if(!$params || !is_numeric($params)){
+            throw new \Core\Model\Exception\InvalidArgumentException(sprintf(
+                '%s params %s not correct',
+                __METHOD__,
+                $params
+            ));
+        }
+
+
+        $itemTable = $this->getItemTable();
+
+        $this->item = $item = $itemTable->where(array('id' => $params))->find('one');
+
+        if($item) {
+            $this->item = $item = $this->setItemAttrMap(array(
+                'Url' => array('configKey', 'getUrl'),
+                'ReadableFileSize' => array('fileSize', 'getReadableFileSize'),
+                'description' => array('description', 'getDescription'),
+            ))->getItemArray();
+        }
+
+        return $this->item = $item;
+    }
+
+    public function getFiles()
+    {
+        $defaultParams = array(
+            'enableCount' => true,
+            'keyword' => '',
+            'extension' => '',
+            'page' => 1,
+            'order' => 'iddesc',
+        );
+        $params = $this->getItemListParams();
+        $params = new \Zend\Stdlib\Parameters(array_merge($defaultParams, $params));
+
+        $itemTable = $this->getItemTable();
+
+        $itemTable->selectFiles($params);
+        $items = $itemTable->find('all');
+
+        return $this->itemList = $items;
+    }
+
+    public function createFiles()
     {
         $files = $this->files;
         $items = array();
         foreach($files as $key => $file){
             $this->file = $file;
             $this->item = array();
-            $this->saveFile();
+            $this->createFile();
         }
 
         return true;
     }
 
-    public function saveFile()
+    public function createFile()
     {
         $file = $this->file;
         if(!$file || !$file['received']){
@@ -62,6 +110,7 @@ class File extends AbstractModel
 
         $item = $this->setItemAttrMap(array(
             'title' => array('title', 'getTitle'),
+            'status' => array('status', 'getStatus'),
             'isImage' => array('isImage', 'getIsImage'),
             'fileName' => array('fileName', 'getFileName'),
             'fileExtension' => array('fileExtension', 'getFileExtension'),
@@ -73,7 +122,6 @@ class File extends AbstractModel
             'fileSize' => array('fileSize', 'getFileSize'),
             'imageWidth' => array('imageWidth', 'getImageWidth'),
             'imageHeight' => array('imageHeight', 'getImageHeight'),
-            'description' => array('description', 'getDescription'),
             'user_id' => array('user_id', 'getUserId'),
             'user_name' => array('user_name', 'getUserName'),
             'createTime' => array('createTime', 'getCreateTime'),

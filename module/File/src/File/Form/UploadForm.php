@@ -42,6 +42,32 @@ class UploadForm extends \Eva\Form\Form
                 'value' => '',
             ),
         ),
+        'status' => array (
+            'name' => 'status',
+            'attributes' => array (
+                'type' => 'select',
+                'label' => 'Status',
+                'options' => array (
+                    array (
+                        'label' => 'Deleted',
+                        'value' => 'deleted',
+                    ),
+                    array (
+                        'label' => 'Draft',
+                        'value' => 'draft',
+                    ),
+                    array (
+                        'label' => 'Published',
+                        'value' => 'published',
+                    ),
+                    array (
+                        'label' => 'Pending',
+                        'value' => 'pending',
+                    ),
+                ),
+                'value' => 'published',
+            ),
+        ),
         'upload' => array (
             'name' => 'upload',
             'attributes' => array (
@@ -73,6 +99,25 @@ class UploadForm extends \Eva\Form\Form
                     'name' => 'StringLength',
                     'options' => array (
                         'max' => '100',
+                    ),
+                ),
+            ),
+        ),
+        'status' => array (
+            'name' => 'status',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+                array (
+                    'name' => 'InArray',
+                    'options' => array (
+                        'haystack' => array (
+                            'deleted',
+                            'draft',
+                            'published',
+                            'pending',
+                        ),
                     ),
                 ),
             ),

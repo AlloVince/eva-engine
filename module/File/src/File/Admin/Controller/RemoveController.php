@@ -14,11 +14,12 @@ class RemoveController extends RestfulModuleController
     public function restGetRemove()
     {
         $id = (int)$this->getEvent()->getRouteMatch()->getParam('id');
-        $postTable = Api::_()->getDbTable('File\DbTable\Posts');
-        $postinfo = $postTable->find($id);
+        $postModel = Api::_()->getModel('File\Model\File');
+        $fileinfo = $postModel->setItemParams($id)->getFile();
+
         return array(
             'callback' => $this->getRequest()->getQuery()->get('callback'),
-            'post' => $postinfo,
+            'file' => $fileinfo,
         );
     }
 }

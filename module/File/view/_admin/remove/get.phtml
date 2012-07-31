@@ -2,10 +2,10 @@
 $file = $this->file;
 $title = 'Delete File';
 $this->headTitle($title, 'SET');
-$form = Eva\Api::_()->getForm('\Blog\Form\FileDeleteForm');
+$form = Eva\Api::_()->getForm('\File\Form\FileDeleteForm');
 
 $form->init(array(
-	'action' => $this->uri('/admin/blog/'),
+    'action' => $this->uri('/admin/file/'),
 	'method' => 'delete',
 	'values' => $this->file
 ));

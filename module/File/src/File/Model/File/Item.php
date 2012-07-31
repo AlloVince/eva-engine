@@ -11,7 +11,7 @@ class Item extends AbstractItem
     protected function mergePath()
     {
         $config = Api::_()->getConfig();
-        $file = $this->model->getFile();
+        $file = $this->model->getUploadFile();
         if(isset($config['upload']['storage']['default'])){
             $rootpath = $config['upload']['storage']['default']['rootpath'];
             $rootpath = str_replace(array('/', '\\'), \DIRECTORY_SEPARATOR, $rootpath);
@@ -26,9 +26,48 @@ class Item extends AbstractItem
         return $file['destination'];
     }
 
+    public function getUrl()
+    {
+        $item = $this->item;
+
+        $configKey = $item['configKey'] ? $item['configKey'] : 'default';
+        $config = Api::_()->getConfig();
+        $dir = str_replace(array('/', '\\'), '/', $item['filePath']);
+        $dir = trim($dir, '/\\');
+        $domain = '';
+        $dirPrefix = '';
+        if(isset($config['upload']['storage'][$configKey])){
+            $config = $config['upload']['storage'][$configKey];
+            $rootpath = $config['rootpath'];
+            $urlroot = $config['urlroot'];
+            $domain = $config['domain'];
+
+            $dirPrefix = str_replace($urlroot, '', $rootpath);
+            if($dirPrefix){
+                $dirPrefix = trim($dirPrefix, '/\\');
+                $dirPrefix = str_replace(array('/', '\\'), '/', $dirPrefix);
+            }
+        }
+
+        $url = $domain ? 'http://' . $domain . '/' : '/'; 
+        $url .= $dirPrefix . '/' . $dir . '/' . $item['fileName'];
+        return $url;
+    }
+
+    public function getReadableFileSize()
+    {
+        $item = $this->item;
+        $size = $item['fileSize'];
+        $units = array(' B', ' KB', ' MB', ' GB', ' TB');
+        for ($i = 0; $size >= 1024 && $i < 4; $i++) {
+            $size /= 1024;
+        }
+        return round($size, 2).$units[$i];
+    }
+
     public function getTitle($title)
     {
-        $file = $this->model->getFile();
+        $file = $this->model->getUploadFile();
         $fileName = isset($file['original_name']) && $file['original_name'] ? $file['original_name'] : $file['name'];
         $nameArray = explode(".", $fileName);
         if(count($nameArray) == 1){
@@ -38,10 +77,19 @@ class Item extends AbstractItem
         return implode(".", $nameArray);
     }
 
+    public function getStatus($status)
+    {
+        if(!$status){
+            return 'published';
+        }
+        return $status;
+    }
+
+
 
     public function getIsImage()
     {
-        $file = $this->model->getFile();
+        $file = $this->model->getUploadFile();
         if($this->image){
             return 1;
         }
@@ -58,13 +106,13 @@ class Item extends AbstractItem
 
     public function getFileName($fileName)
     {
-        $file = $this->model->getFile();
+        $file = $this->model->getUploadFile();
         return $file['name'];
     }
 
     public function getFileExtension($fileExtension)
     {
-        $file = $this->model->getFile();
+        $file = $this->model->getUploadFile();
         if($file['name']) {
             return strtolower(end(explode(".", $file['name'])));
         }
@@ -72,7 +120,7 @@ class Item extends AbstractItem
 
     public function getOriginalName($originalName)
     {
-        $file = $this->model->getFile();
+        $file = $this->model->getUploadFile();
         $fileName = isset($file['original_name']) && $file['original_name'] ? $file['original_name'] : $file['name'];
         return $fileName;
     }
@@ -98,7 +146,7 @@ class Item extends AbstractItem
 
     public function getFileHash($fileHash)
     {
-        $file = $this->model->getFile();
+        $file = $this->model->getUploadFile();
         //Hash file small than 10M
         if($file['size'] < 1048576 * 10){
             return hash_file('CRC32', $file['tmp_name'], false);
@@ -109,7 +157,7 @@ class Item extends AbstractItem
 
     public function getFileSize($fileSize)
     {
-        $file = $this->model->getFile();
+        $file = $this->model->getUploadFile();
         return $file['size'];
     }
 
