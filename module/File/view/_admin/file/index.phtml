@@ -19,6 +19,14 @@ $lableMap = array(
     'pending' => 'label-warning',
     'deleted' => 'label-inverse',
 );
+
+function getFileTypeIcon($ext)
+{
+    if(file_exists(EVA_PUBLIC_PATH . '/static/lib/icon/filetypes/' . $ext . '.png')){
+        return '/lib/icon/filetypes/' . $ext . '.png';
+    }
+    return '/lib/icon/filetypes/_blank.png';
+}
 ?>
 <div class="row">
     <div class="span10">
@@ -85,6 +93,8 @@ $lableMap = array(
                         <th class="span1">
                         </th>
                         <th>File Name</th>
+                        <th class="span1">
+                        </th>
                         <th class="span1">Order</th>
                         <th class="actions">Actions</th>
                     </tr>
@@ -96,6 +106,7 @@ $lableMap = array(
                         <td>
                             <input name="id" type="checkbox" class="multiform-item-checkbox"  data-multiform="post" data-multiform-itemid="<?=$file['id'] ?>" value="<?=$file['id'] ?>" />
                         </td>	
+
                         <td>
                             <a href="<?=$this->uri('/admin/file/' . $file['id'])?>" class="title"><?=$file['title'] ?></a>
                             <span class="label <?=$lableMap[$file['status']]?>"><?=$file['status']?></span>
@@ -104,6 +115,13 @@ $lableMap = array(
                             <span class="meta"><?=$file['user_name'] ?> <?=$file['createTime'];?></span>
                             </p>
                         </td>
+                        <td>
+                            <?if($file['isImage']):?>
+                            <img src="<?=$this->link(getFileTypeIcon($file['fileExtension']))?>" alt="<?=$file['fileExtension']?>" />
+                            <?else:?>
+                            <img src="<?=$this->link(getFileTypeIcon($file['fileExtension']))?>" alt="<?=$file['fileExtension']?>" />
+                            <?endif?>
+                        </td>	
                         <td>
                             <input name="order" tabindex="<?=$key+1 ?>" type="text" class="span1 multiform-item-input" size="2" maxlength="3"  data-multiform="post" data-multiform-itemid="<?=$file['id'] ?>" value="<?=$file['orderNumber'] ? $file['orderNumber'] : "0" ?>" />
                         </td>

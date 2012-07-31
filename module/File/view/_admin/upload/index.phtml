@@ -29,6 +29,7 @@ $file = array();
 
 
 <div class="row">
+    <!--
     <form <?=$this->formAttr($form)?> enctype="multipart/form-data">
         <?=$form->restful();?>
         <?//=$form->helper('id');?>
@@ -43,16 +44,6 @@ $file = array();
                     <h2><?=$title?></h2>
                 </div>
                 <fieldset class="">
-                    <!--
-                    <div class="control-group <?=$form->isError('title') ? 'error' : '';?>">
-                        <?=$form->helper('title', 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper('title', array('class' => 'span9'))?>
-                            <div class="help-block"><?=$form->helper('title', 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    -->
-
                     <div class="control-group <?=$form->isError('upload') ? 'error' : '';?>">
                         <?=$form->helper('upload', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
@@ -70,14 +61,15 @@ $file = array();
                 </fieldset>
             </div>
 
-        </div><!--span10 end-->
+        </div>
 
         <div class="span10 listing-buttons">
             <button class="btn btn-info btn-large">Upload</button>
         </div>
     </form>
+    -->
 
-    <form id="fileupload" <?=$this->formAttr($form)?> enctype="multipart/form-data">
+    <form id="fileupload" <?=$this->formAttr($form)?> enctype="multipart/form-data" class="fileuploader">
         <?=$form->restful();?>
         <div class="span10 listing-buttons">
             <div class="btn-group pull-right">

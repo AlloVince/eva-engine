@@ -23,41 +23,41 @@ class MultiController extends RestfulModuleController
     public function restPostMultiReorder()
     {
         $request = $this->getRequest();
-        $postData = $request->getPost();
-        $dataArray = MultiForm::getPostDataArray($postData);
+        $fileData = $request->getPost();
+        $dataArray = MultiForm::getPostDataArray($fileData);
 
-        $postTable = Api::_()->getDbTable('File\DbTable\Posts');
+        $fileTable = Api::_()->getDbTable('File\DbTable\Files');
 
         foreach($dataArray as $key => $array){
-            $postTable->where(array('id' => $array['id']))->save(array(
+            $fileTable->where(array('id' => $array['id']))->save(array(
                 'orderNumber' => $array['order']
             ));
         }
-        $this->redirect()->toUrl('/admin/blog/');
+        $this->redirect()->toUrl('/admin/file/');
     }
 
     public function restPostMultiStatus()
     {
-        $postStatus = $this->params('id');
-        if(!$postStatus) {
+        $fileStatus = $this->params('id');
+        if(!$fileStatus) {
             throw new Exception\BadRequestException(); 
         }
         
         $request = $this->getRequest();
-        $postData = $request->getPost();
-        $dataArray = MultiForm::getPostDataArray($postData);
+        $fileData = $request->getPost();
+        $dataArray = MultiForm::getPostDataArray($fileData);
         
-        $postTable = Api::_()->getDbTable('File\DbTable\Posts');
-        $postTable->where(function($where) use ($dataArray){
+        $fileTable = Api::_()->getDbTable('File\DbTable\Files');
+        $fileTable->where(function($where) use ($dataArray){
             foreach($dataArray as $key => $array){
                 $where->equalTo('id', $array['id']);
                 $where->or;
             }
             return $where;
         })->save(array(
-            'status' => $postStatus
+            'status' => $fileStatus
         ));
         
-        $this->redirect()->toUrl('/admin/blog/');
+        $this->redirect()->toUrl('/admin/file/');
     }
 }
