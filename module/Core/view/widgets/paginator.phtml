@@ -35,7 +35,7 @@ if($paginator && $paginator['pageCount'] > 1):
     <li class="disabled"><a href="javascript:;">...</a></li>
     <?endif?>
     <?if($paginator['nextPageRangeSkip'] && $paginator['lastPage']):?>
-    <li><a href="<?=$this->uri($path, 'dq', array('Q' => $baseQuery, 'q' => array($queryKey => $paginator['lastPage'])))?>">»</a></li>
+    <li><a href="<?=$this->uri($path, 'dq', array('Q' => $baseQuery, 'q' => array($queryKey => $paginator['lastPage'])))?>"><?=$paginator['lastPage']?></a></li>
     <?endif?>
     <?if($paginator['nextPage']):?>
     <li><a href="<?=$this->uri($path, 'dq', array('Q' => $baseQuery, 'q' => array($queryKey => $paginator['nextPage'])))?>">»</a></li>

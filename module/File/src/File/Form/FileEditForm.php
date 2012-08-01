@@ -42,6 +42,7 @@ class FileEditForm extends UploadForm
                 'value' => '',
             ),
         ),
+
     );
 
     /**

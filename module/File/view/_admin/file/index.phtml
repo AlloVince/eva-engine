@@ -32,13 +32,38 @@ function getFileTypeIcon($ext)
     <div class="span10">
         <div class="slate">
             <form <?=$this->formAttr($form)?> class="form-inline">
+                <fieldset>
                 <?=$form->helper('keyword', array('class' => 'input-large', 'placeholder' => 'Keyword...'))?>
                 <?=$form->helper('status', 'formSelect', array('class' => 'span2'))?>
-                <?//=$form->helper('visibility', 'formSelect', array('class' => 'span2'))?>
+                <label><?=$form->helper('isImage', 'formCheckbox')?>Only Images</label>
                 <button class="btn" type="submit">Filter Files</button>
-            </form>
-        </div>
+            </fieldset>
+            <dl class="dl-horizontal">
+                <dt>File Size:</dt>
+                <dd class="well"> 
+                <?=$form->helper('fileSizeFrom', 'label', array('class' => 'control-label'))?>
+                <?=$form->helper('fileSizeFrom', 'formNumber', array('class' => 'span1'))?>
+                <?=$form->helper('fileSizeTo', 'label', array('class' => 'control-label'))?>
+                <?=$form->helper('fileSizeTo', 'formNumber', array('class' => 'span1'))?>
+                </dd>
+                <dt>Image Width:</dt>
+                <dd class="well"> 
+                <?=$form->helper('imageWidthFrom', 'label', array('class' => 'control-label'))?>
+                <?=$form->helper('imageWidthFrom', 'formNumber', array('class' => 'span1'))?>
+                <?=$form->helper('imageWidthTo', 'label', array('class' => 'control-label'))?>
+                <?=$form->helper('imageWidthTo', 'formNumber', array('class' => 'span1'))?>
+                </dd>
+                <dt>Image Height:</dt>
+                <dd class="well"> 
+                <?=$form->helper('imageHeightFrom', 'label', array('class' => 'control-label'))?>
+                <?=$form->helper('imageHeightFrom', 'formNumber', array('class' => 'span1'))?>
+                <?=$form->helper('imageHeightTo', 'label', array('class' => 'control-label'))?>
+                <?=$form->helper('imageHeightTo', 'formNumber', array('class' => 'span1'))?>
+                </dd>
+            </dl>
+        </form>
     </div>
+</div>
 </div>
 
 

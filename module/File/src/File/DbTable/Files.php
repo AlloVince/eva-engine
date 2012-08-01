@@ -24,9 +24,40 @@ class Files extends TableGateway
             });
         }
 
-        if($params->status){
-            $this->where(array('fileExtension' => $params->extension));
+        if(!empty($params->isImage)){
+            $this->where(array('isImage' => (string)$params->isImage));
         }
+
+        if($params->status){
+            $this->where(array('status' => $params->status));
+        }
+
+        if($params->fileExtension){
+            $this->where(array('fileExtension' => $params->fileExtension));
+        }
+
+        if($params->fileSizeFrom){
+            $this->where(array('fileSize > ?' => $params->fileSizeFrom));
+        }
+        if($params->fileSizeTo){
+            $this->where(array('fileSize < ?' => $params->fileSizeTo));
+        }
+
+        if($params->imageWidthFrom){
+            $this->where(array('imageWidth > ?' => $params->imageWidthFrom));
+        }
+        if($params->imageWidthTo){
+            $this->where(array('imageWidth < ?' => $params->imageWidthTo));
+        }
+
+
+        if($params->imageHeightFrom){
+            $this->where(array('imageHeight > ?' => $params->imageHeightFrom));
+        }
+        if($params->imageHeightTo){
+            $this->where(array('imageHeight < ?' => $params->imageHeightTo));
+        }
+
 
         if($params->page){
             $this->page($params->page);

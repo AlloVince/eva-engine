@@ -73,7 +73,15 @@ class File extends AbstractModel
         $defaultParams = array(
             'enableCount' => true,
             'keyword' => '',
-            'extension' => '',
+            'status' => '',
+            'fileExtension' => '',
+            'isImage' => null,
+            'fileSizeFrom' => '',
+            'fileSizeTo' => '',
+            'imageWidthFrom' => '',
+            'imageWidthTo' => '',
+            'imageHeightFrom' => '',
+            'imageHeightTo' => '',
             'page' => 1,
             'order' => 'iddesc',
         );

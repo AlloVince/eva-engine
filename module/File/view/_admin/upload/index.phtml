@@ -29,7 +29,7 @@ $file = array();
 
 
 <div class="row">
-    <form <?=$this->formAttr($form)?> enctype="multipart/form-data">
+    <form <?=$this->formAttr($form)?> enctype="multipart/form-data" class="hide">
         <?=$form->restful();?>
         <?//=$form->helper('id');?>
         <div class="span10">
@@ -191,7 +191,7 @@ $file = array();
                     <a href="{%=file.url%}" title="{%=file.name%}" rel="{%=file.thumbnail_url&&'gallery'%}" download="{%=file.name%}">{%=file.name%}</a>
                 </td>
                 <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
-                <td class="error"></td>
+                <td class="error"><div class="progress progress-success" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><div class="bar" style="width:100%;"></div></div></td>
             {% } %}
             <td class="delete">
                 <a class="btn" href="<?=$this->uri('/admin/file/')?>{%=file.id%}" >Edit</a>
