@@ -102,8 +102,8 @@ $file = array();
                     <table role="presentation" class="table table-striped">
                         <thead>
                             <tr>
-                                <th></th>
-                                <th>Preview</th>
+                                <th class="span1"></th>
+                                <th class="span2">Preview</th>
                                 <th>File Name</th>
                                 <th>File Size</th>
                                 <th>Upload Process</th>
@@ -141,8 +141,8 @@ $file = array();
 <script id="template-upload" type="text/x-tmpl">
     {% for (var i=0, file; file=o.files[i]; i++) { %}
     <tr class="template-upload fade">
-        <td class="span1"></td>
-        <td class="preview span2"><span class="fade"></span></td>
+        <td class=""></td>
+        <td class="preview"><span class="fade"></span></td>
         <td class="name"><span>{%=file.name%}</span></td>
         <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
         <td class="error">
@@ -154,7 +154,7 @@ $file = array();
         </td>
         <td>
             {% if (!o.options.autoUpload) { %}
-            <span class="start span0">
+            <span class="start">
                 <button class="btn">
                     <i class="icon-upload icon-white"></i>
                     <span>Upload</span>
@@ -162,7 +162,7 @@ $file = array();
             </span>
             {% } %}
             {% if (!i) { %}
-            <span class="cancel span1">
+            <span class="cancel">
                 <button class="btn">
                     <i class="icon-ban-circle icon-white"></i>
                     <span>Cancel</span>
