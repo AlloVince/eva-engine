@@ -6,205 +6,121 @@ use Zend\Form\Element;
 
 class CategoryForm extends Form
 {
+    /**
+     * Form basic elements
+     *
+     * @var array
+     */
     protected $baseElements = array (
-        'id' => 
-        array (
+        'id' => array (
             'name' => 'id',
-            'attributes' => 
-            array (
+            'attributes' => array (
                 'type' => 'hidden',
                 'label' => 'Id',
+                'value' => '',
             ),
         ),
-        'categoryName' => 
-        array (
+        'categoryName' => array (
             'name' => 'categoryName',
-            'attributes' => 
-            array (
+            'attributes' => array (
                 'type' => 'text',
-                'label' => 'CategoryName',
+                'label' => 'Category Name',
+                'value' => '',
             ),
         ),
-        'urlName' => 
-        array (
+        'urlName' => array (
             'name' => 'urlName',
-            'attributes' => 
-            array (
+            'attributes' => array (
                 'type' => 'text',
-                'label' => 'UrlName',
+                'label' => 'Url Name',
+                'value' => '',
             ),
         ),
-        'description' => 
-        array (
+        'description' => array (
             'name' => 'description',
-            'attributes' => 
-            array (
-                'type' => 'text',
+            'attributes' => array (
+                'type' => 'textarea',
                 'label' => 'Description',
-            ),
-        ),
-        'parentId' => 
-        array (
-            'name' => 'parentId',
-            'attributes' => 
-            array (
-                'type' => 'text',
-                'label' => 'ParentId',
-            ),
-        ),
-        'rootId' => 
-        array (
-            'name' => 'rootId',
-            'attributes' => 
-            array (
-                'type' => 'text',
-                'label' => 'RootId',
-            ),
-        ),
-        'orderNumber' => 
-        array (
-            'name' => 'orderNumber',
-            'attributes' => 
-            array (
-                'type' => 'text',
-                'label' => 'OrderNumber',
-            ),
-        ),
-        'createTime' => 
-        array (
-            'name' => 'createTime',
-            'attributes' => 
-            array (
-                'type' => 'text',
-                'label' => 'CreateTime',
-            ),
-        ),
-        'count' => 
-        array (
-            'name' => 'count',
-            'attributes' => 
-            array (
-                'type' => 'text',
-                'label' => 'Count',
+                'value' => '',
             ),
         ),
     );
 
+    /**
+     * Form basic Validators
+     *
+     * @var array
+     */
     protected $baseFilters = array (
-        'id' => 
-        array (
+        'id' => array (
             'name' => 'id',
             'required' => false,
-            'filters' => 
-            array (
-                array('name' => 'Int'),
+            'filters' => array (
             ),
-            'validators' => 
-            array (
+            'validators' => array (
+                'notEmpty' => array (
+                    'name' => 'NotEmpty',
+                    'options' => array (
+                    ),
+                ),
             ),
         ),
-        'categoryName' => 
-        array (
+        'categoryName' => array (
             'name' => 'categoryName',
-            'required' => true,
-            'filters' => 
-            array (
+            'required' => false,
+            'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
             ),
-            'validators' => 
-            array (
-            ),
-        ),
-        'urlName' => 
-        array (
-            'name' => 'urlName',
-            'filters' => array(
-                array('name' => 'StringTrim'),
-            ),
-            'validators' => array(
-                array(
+            'validators' => array (
+                'notEmpty' => array (
+                    'name' => 'NotEmpty',
+                    'options' => array (
+                    ),
+                ),
+                'stringLength' => array (
                     'name' => 'StringLength',
-                    'options' => array(
-                        'encoding' => 'UTF-8',
-                        'max' => 100,
+                    'options' => array (
+                        'max' => '100',
                     ),
-                ),
-                array(
-                    'name' => 'DbNoRecordExists',
-                    'options' => array(
-                        'field' => 'urlName',
-                        'table' => 'eva_blog_categories',
-                        'messages' => array(
-                             \Zend\Validator\Db\NoRecordExists::ERROR_RECORD_FOUND => 'Abc',
-                        ), 
-                    ),
-
                 ),
             ),
         ),
-        'description' => 
-        array (
+        'urlName' => array (
+            'name' => 'urlName',
+            'required' => false,
+            'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+                'notEmpty' => array (
+                    'name' => 'NotEmpty',
+                    'options' => array (
+                    ),
+                ),
+                'stringLength' => array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => '100',
+                    ),
+                ),
+            ),
+        ),
+        'description' => array (
             'name' => 'description',
             'required' => false,
-            'filters' => 
-            array (
+            'filters' => array (
             ),
-            'validators' => 
-            array (
-            ),
-        ),
-        'parentId' => 
-        array (
-            'name' => 'parentId',
-            'required' => false,
-            'filters' => 
-            array (
-            ),
-            'validators' => 
-            array (
-            ),
-        ),
-        'rootId' => 
-        array (
-            'name' => 'rootId',
-            'required' => false,
-            'filters' => 
-            array (
-            ),
-            'validators' => 
-            array (
-            ),
-        ),
-        'orderNumber' => 
-        array (
-            'name' => 'orderNumber',
-            'required' => false,
-            'filters' => 
-            array (
-            ),
-            'validators' => 
-            array (
-            ),
-        ),
-        'createTime' => 
-        array (
-            'name' => 'createTime',
-            'required' => false,
-            'filters' => 
-            array (
-            ),
-            'validators' => 
-            array (
-            ),
-        ),
-        'count' => 
-        array (
-            'name' => 'count',
-            'required' => false,
-            'filters' => 
-            array (
-            ),
-            'validators' => 
-            array (
+            'validators' => array (
             ),
         ),
     );

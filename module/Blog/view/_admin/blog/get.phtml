@@ -16,6 +16,7 @@ if($this->form){
 }
 $form->setSubForms(array(
     'Text' => array('Blog\Form\TextForm'),
+    'CategoryPost' => array('Blog\Form\CategoryPostForm'),
 ));
 $form->init(array(
     'action' => $this->uri('/admin/blog/'),
@@ -81,11 +82,20 @@ $moduleConfig = \Eva\Api::_()->getModuleConfig('Blog');
                         </div>
                     </div>
 
+                    <div class="control-group <?=$form->isError('urlName') ? 'error' : '';?>">
+                        <?=$form->helper('urlName', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <div class="input-prepend input-append">
+                                <span class="add-on"><?=$this->serverUrl() . '/pages/'?></span><?=$form->helper('urlName', array('class' => 'span6'))?><span class="add-on">/</span>
+                            </div>
+                            <div class="help-block">No input will create a random url</div>
+                            <div class="help-block"><?=$form->helper('urlName', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+
                     <div class="control-group <?=$form->isError(array('Text', 'content')) ? 'error' : '';?>">
-                        <!--<?=$form->helper(array('Text', 'content'), 'label', array('class' => 'control-label'))?>-->
-
-
                         <div id="editor-left" class="controls">
+                            <!--
                             <div class="btn-toolbar markdown-toolbar">
                                 <div class="btn-group">
                                     <span class="btn"  data-original-title="Bold - Ctrl+B"><i class="icon-bold"></i></span>
@@ -111,6 +121,7 @@ $moduleConfig = \Eva\Api::_()->getModuleConfig('Blog');
                                     <span class="btn fullscreen" data-original-title="Full Screen"><i class="icon-fullscreen"></i></span>
                                 </div>
                             </div>
+                            -->
                             <?=$form->helper(array('Text', 'content'), 'formTextarea', array('class' => 'span9 editor-markdown','rows' => '15',))?>
                         </div>
                         <div id="editor-right" class="markdown-preview"></div>
@@ -126,16 +137,10 @@ $moduleConfig = \Eva\Api::_()->getModuleConfig('Blog');
                 <div class="page-header">
                     <h3>Post Setting</h3>
                 </div>
+
+
+
                 <fieldset class="form-horizontal">
-
-                    <div class="control-group <?=$form->isError('urlName') ? 'error' : '';?>">
-                        <?=$form->helper('urlName', 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper('urlName', array('class' => 'input-xlarge'))?>
-                            <div class="help-block"><?=$form->helper('urlName', 'formElementErrors')?></div>
-                        </div>
-                    </div>
-
 
                     <div class="control-group <?=$form->isError('urlName') ? 'error' : '';?>">
                         <?=$form->helper('status', 'label', array('class' => 'control-label'))?>
@@ -160,6 +165,52 @@ $moduleConfig = \Eva\Api::_()->getModuleConfig('Blog');
                         </div>
                     </div>
 
+                </fieldset>
+            </div>
+        </div><!--span5 end-->
+
+        <div class="span5">
+            <div class="slate">
+                <div class="page-header">
+                    <h3>Comment Setting</h3>
+                </div>
+                <fieldset class="form-horizontal">
+
+                    <div class="control-group <?=$form->isError('commentStatus') ? 'error' : '';?>">
+                        <?=$form->helper('commentStatus', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('commentStatus', 'formSelect', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('commentStatus', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError('postPassword') ? 'error' : '';?>">
+                        <?=$form->helper('postPassword', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('postPassword', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('postPassword', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError('commentType') ? 'error' : '';?>">
+                        <?=$form->helper('commentType', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('commentType', 'formSelect', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('commentType', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div><!--span5 end-->
+
+        <div class="span5">
+            <div class="slate">
+                <div class="page-header">
+                    <h3>Category And Tags</h3>
+                </div>
+                <fieldset class="form-horizontal">
+                    <?=$form->helper(array('CategoryPost', 'category_id'), 'formText', array('class' => ''))?>
+                    <?=$form->helper(array('CategoryPost', 'post_id'), 'formText', array(
+                        'value' => $post['id']
+                    ))?>
                 </fieldset>
             </div>
         </div><!--span5 end-->

@@ -71,6 +71,17 @@ class Item extends AbstractItem
         return $content;
     }
 
+    public function getCategoryPost()
+    {
+        $subTable = Api::_()->getDbTable('Blog\DbTable\CategoriesPosts');
+        $item = $this->item;
+        $res = $subTable->where(array('post_id' => $item['id']))->find("one");
+        if(!$res){
+            return array();
+        }
+        return $res;
+    }
+
     protected function toMarkdown($content)
     {
         require_once EVA_LIB_PATH . '/Markdown/markdownextra.php';

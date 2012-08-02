@@ -17,70 +17,47 @@ $form->init(array(
 ));
 ?>
 <div class="row">
-<form <?=$this->formAttr($form)?>>
-    <?=$form->restful();?>
-    <?=$form->helper('id');?>
-    <div class="span10">
-        <div class="slate">
-            <div class="page-header">
-                <?if($category):?>
-                <div class="btn-group pull-right">
-                    <a href="<?=$this->uri('/admin/blog/category/create')?>" class="btn">Create New</a>
+    <form <?=$this->formAttr($form)?>>
+        <?=$form->restful();?>
+        <?=$form->helper('id');?>
+        <div class="span10">
+            <div class="slate">
+                <div class="page-header">
+                    <?if($category):?>
+                    <div class="btn-group pull-right">
+                        <a href="<?=$this->uri('/admin/blog/category/create')?>" class="btn">Create New</a>
+                    </div>
+                    <?endif?>
+                    <h2><?=$title?></h2>
                 </div>
-                <?endif?>
-                <h2><?=$title?></h2>
+                <fieldset class="">
+                    <div class="control-group <?=$form->isError('categoryName') ? 'error' : '';?>">
+                        <?=$form->helper('categoryName', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('categoryName', array('class' => 'span5'))?>        
+                            <div class="help-block"><?=$form->helper('categoryName', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError('urlName') ? 'error' : '';?>">
+                        <?=$form->helper('urlName', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('urlName', array('class' => 'span5'))?>        
+                            <div class="help-block"><?=$form->helper('urlName', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError('description') ? 'error' : '';?>">
+                        <?=$form->helper('description', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('description', 'formTextarea', array('class' => 'span9'))?>        
+                            <div class="help-block"><?=$form->helper('description', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                </fieldset>
             </div>
-            <fieldset class="">
-                <div class="control-group <?=$form->isError('categoryName') ? 'error' : '';?>">
-                    <?=$form->helper('categoryName', 'label', array('class' => 'control-label'))?>
-                    <div class="controls">
-                        <?=$form->helper('categoryName', array('class' => ''))?>
-                        <div class="help-block"><?=$form->helper('categoryName', 'formElementErrors')?></div>
-                    </div>
-                </div>
-                <div class="control-group <?=$form->isError('urlName') ? 'error' : '';?>">
-                    <?=$form->helper('urlName', 'label', array('class' => 'control-label'))?>
-                    <div class="controls">
-                        <?=$form->helper('urlName', array('class' => ''))?>
-                        <div class="help-block"><?=$form->helper('urlName', 'formElementErrors')?></div>
-                    </div>
-                </div>
+        </div><!--span10 end-->
 
-                <div class="control-group <?=$form->isError('orderNumber') ? 'error' : '';?>">
-                    <?=$form->helper('orderNumber', 'label', array('class' => 'control-label'))?>
-                    <div class="controls">
-                        <?=$form->helper('orderNumber', array('class' => ''))?>
-                        <div class="help-block"><?=$form->helper('orderNumber', 'formElementErrors')?></div>
-                    </div>
-                </div>
-                <div class="control-group <?=$form->isError('createTime') ? 'error' : '';?>">
-                    <?=$form->helper('createTime', 'label', array('class' => 'control-label'))?>
-                    <div class="controls">
-                        <?=$form->helper('createTime', array('class' => ''))?>
-                       <div class="help-block"><?=$form->helper('createTime', 'formElementErrors')?></div>
-                    </div>
-                </div>
-                <div class="control-group <?=$form->isError('count') ? 'error' : '';?>">
-                    <?=$form->helper('count', 'label', array('class' => 'control-label'))?>
-                    <div class="controls">
-                        <?=$form->helper('count', array('class' => ''))?>
-                        <div class="help-block"><?=$form->helper('count', 'formElementErrors')?></div>
-                    </div>
-                </div>
-                
-                <div class="control-group <?=$form->isError('description') ? 'error' : '';?>">
-                    <?=$form->helper('description', 'label', array('class' => 'control-label'))?>
-                    <div class="controls">
-                        <?=$form->helper('description', 'formTextarea')?>
-                        <div class="help-block"><?=$form->helper('description', 'formElementErrors')?></div>
-                    </div>
-                </div>
-            </fieldset>
+        <div class="span10 listing-buttons">
+            <button class="btn btn-info btn-large">Save</button>
         </div>
-    </div><!--span10 end-->
-
-    <div class="span10 listing-buttons">
-        <button class="btn btn-info btn-large">Save Category</button>
-    </div>
-</form>
+    </form>
 </div>

@@ -54,6 +54,7 @@ class BlogController extends RestfulModuleController
 
         $subForms = array(
             'Text' => array('Blog\Form\TextForm'),
+            'CategoryPost' => array('Blog\Form\CategoryPostForm'),
         );
         $form->setSubforms($subForms)->init();
 
@@ -84,10 +85,13 @@ class BlogController extends RestfulModuleController
         $form = new Form\PostEditForm();
         $subForms = array(
             'Text' => array('Blog\Form\TextForm'),
+            'CategoryPost' => array('Blog\Form\CategoryPostForm'),
         );
-        $form->setSubforms($subForms)->init();
 
-        $form->setData($postData)->enableFilters();
+        $form->setSubforms($subForms)
+             ->init()
+             ->setData($postData)
+             ->enableFilters();
 
         $flashMesseger = array();
         if ($form->isValid()) {

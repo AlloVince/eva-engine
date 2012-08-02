@@ -112,32 +112,7 @@ class PostForm extends Form
                 'value' => 'en',
             ),
         ),
-        'postUsage' => array (
-            'name' => 'postUsage',
-            'attributes' => array (
-                'type' => 'select',
-                'label' => 'Post Usage',
-                'options' => array (
-                    array (
-                        'label' => 'Post',
-                        'value' => 'post',
-                    ),
-                    array (
-                        'label' => 'Page',
-                        'value' => 'page',
-                    ),
-                    array (
-                        'label' => 'Faq',
-                        'value' => 'faq',
-                    ),
-                    array (
-                        'label' => 'News',
-                        'value' => 'news',
-                    ),
-                ),
-                'value' => 'post',
-            ),
-        ),
+
 
         'urlName' => array (
             'name' => 'urlName',
@@ -154,15 +129,6 @@ class PostForm extends Form
                 'type' => 'text',
                 'label' => 'Post Password',
                 'value' => '',
-            ),
-        ),
-
-        'setting' => array (
-            'name' => 'setting',
-            'attributes' => array (
-                'type' => 'number',
-                'label' => 'Setting',
-                'value' => '0',
             ),
         ),
 
@@ -324,25 +290,7 @@ class PostForm extends Form
                 ),
             ),
         ),
-        'postUsage' => array (
-            'name' => 'postUsage',
-            'required' => false,
-            'filters' => array (
-            ),
-            'validators' => array (
-                'inArray' => array (
-                    'name' => 'InArray',
-                    'options' => array (
-                        'haystack' => array (
-                            'post',
-                            'page',
-                            'faq',
-                            'news',
-                        ),
-                    ),
-                ),
-            ),
-        ),
+
         'urlName' => array (
             'name' => 'urlName',
             'required' => false,
@@ -378,19 +326,7 @@ class PostForm extends Form
                 ),
             ),
         ),
-        'setting' => array (
-            'name' => 'setting',
-            'required' => false,
-            'filters' => array (
-            ),
-            'validators' => array (
-                'notEmpty' => array (
-                    'name' => 'NotEmpty',
-                    'options' => array (
-                    ),
-                ),
-            ),
-        ),
+
         'postPassword' => array (
             'name' => 'postPassword',
             'required' => false,

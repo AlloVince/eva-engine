@@ -65,6 +65,19 @@ class Post extends AbstractModel
             $textData = $textItem->toArray();
             $textTable->create($textData);
         }
+
+        if($postId && $this->getSubItem('CategoryPost')){
+            $subData = $this->getSubItem('CategoryPost');
+            $subTable = Api::_()->getDbTable('Blog\DbTable\CategoriesPosts');
+            $subItem = $this->getItemClass($subData, array(
+                'post_id' => array('post_id', 'getPostId')
+            ), 'Blog\Model\CategoryPost\Item');
+            $subData = $subItem->toArray();
+            $subTable->where(array('post_id' => $postId))->remove();
+            if($subData['category_id']) {
+                $subTable->where(array('post_id' => $postId))->create($subData);
+            }
+        }
         
 
         $this->getEvent()->trigger('createPost.post', $this);
@@ -102,6 +115,20 @@ class Post extends AbstractModel
             $textTable->where(array('post_id' => $postId))->save($textData);
         }
 
+        if($postId && $this->getSubItem('CategoryPost')){
+            $subData = $this->getSubItem('CategoryPost');
+
+            $subTable = Api::_()->getDbTable('Blog\DbTable\CategoriesPosts');
+            $subItem = $this->getItemClass($subData, array(
+                'post_id' => array('post_id', 'getPostId')
+            ), 'Blog\Model\CategoryPost\Item');
+            $subData = $subItem->toArray();
+            $subTable->where(array('post_id' => $postId))->remove();
+            if($subData['category_id']) {
+                $subTable->where(array('post_id' => $postId))->create($subData);
+            }
+        }
+
         $this->getEvent()->trigger('savePost.post', $this);
 
         return $postId;
@@ -137,6 +164,9 @@ class Post extends AbstractModel
                 'Url' => array('urlName', 'getUrl', 'callback'),
                 'Text' => array(
                     'contentHtml' => array('contentHtml', 'getContentHtml'),
+                ),
+                'CategoryPost' => array(
+                    'category_id' => null,
                 ),
             ))->getItemArray();
         }
