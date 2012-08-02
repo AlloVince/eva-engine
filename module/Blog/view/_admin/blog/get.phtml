@@ -19,6 +19,9 @@ $form->init(array(
     'values' => $this->post
 ));
 
+$moduleConfig = \Eva\Api::_()->getModuleConfig('Blog');
+//p($config);
+
 //Form usage:
 //is error
 //$form->subForm('Text')->get('content')->getMessages() ? 'error' : '';

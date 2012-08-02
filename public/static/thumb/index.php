@@ -61,6 +61,15 @@ class EvaCloudImage
         'largeSizeHeight' => '',
         'maxAllowWidth' => '',
         'maxAllowHeight' => '',
+        'watermark' => array(
+            'enable' => false,
+            'enableWidth' => 500,
+            'enableHeight' => 400,
+            'position' => '',
+            'text' => 'watermark',
+            'font' => '',
+            'fontfile' => '',
+        ),
         'saveImage' => true,
         'allowExpendResize' => false,
         'fileSizeLimit' => 1048576,  //1MB = 1 048 576 bytes
@@ -356,7 +365,7 @@ class EvaCloudImage
                 $thumb->resize($params['width'], $params['height']);
             } else {
                 $percent = $params['width'];
-                $percent = $percent > 0 && $percent < $params['height'] ? $percent : $params['height'];
+                $percent = !$percent || $percent > 0 && $percent < $params['height'] ? $params['height'] : $percent;
                 $percent = $percent * 100;
                 $thumb->resizePercent($percent);
             }

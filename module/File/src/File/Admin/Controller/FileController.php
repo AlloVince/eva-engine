@@ -71,9 +71,9 @@ class FileController extends RestfulModuleController
                 }
             }
         } else {
-            p($form->getFileTransfer()->getMessages());
-            p($form->getFileTransfer()->isUploaded());
-            p($form->getMessages());
+            //p($form->getFileTransfer()->getMessages());
+            //p($form->getFileTransfer()->isUploaded());
+            //p($form->getMessages());
             $flashMesseger = array('file-upload-failed');
         }
 

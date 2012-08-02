@@ -31,6 +31,7 @@ class Api
     protected $appConfig;
     protected $dbAdapter;
     protected $moduleLoaded;
+    protected $moduleConfig;
     protected $di;
     protected $view;
 
@@ -92,8 +93,29 @@ class Api
     }
 
 
-    public function getModuleLocalConfig()
+    public function getModuleConfig($moduleName)
     {
+        $configKey = ucfirst($moduleName);
+        if(isset($this->moduleConfig[$configKey])) {
+            return $this->moduleConfig[$configKey];
+        }
+
+        $path = EVA_MODULE_PATH . DIRECTORY_SEPARATOR . $configKey . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR;
+        $globalConfig =  $path . 'module.global.config.php';
+        $localConfig = $path . 'module.local.config.php';
+        if(false === file_exists($globalConfig)) {
+            return $this->moduleConfig[$configKey] = array();
+        }
+
+        if(!file_exists($localConfig)){
+            return $this->moduleConfig[$configKey] = include $globalConfig;
+        }
+
+        $globalConfig = new \Zend\Config\Config(include $globalConfig);
+        $localConfig = new \Zend\Config\Config(include $localConfig);
+
+        $globalConfig->merge($localConfig);
+        return $this->moduleConfig[$configKey] = $globalConfig->toArray();
     }
 
     public function getModuleLoaded()
