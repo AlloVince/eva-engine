@@ -5,14 +5,30 @@ $this->headTitle($title, 'SET');
 if($this->form){
 	$form = $this->form;
 } else {
-    $form = Eva\Api::_()->getForm('User\Form\AdminLoginForm');
+    $form = Eva\Api::_()->getForm('Core\Form\SuperAdminLoginForm');
+}
+
+if($this->hasModule('User')){
+    $url = $this->uri('/admin/user/login/');
+} else {
+    $url = $this->uri('/admin/core/login/');
 }
 $form->init(array(
-	'action' => $this->uri('/admin/user/login/'),
+	'action' => $url,
 	'method' => 'put',
 	'values' => $this->user
 ));
 ?>
+<input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
+<div id="user-name-failed" class="alert alert-error hide">
+    <a href="#" data-dismiss="alert" class="close">x</a>
+    <h4 class="alert-heading">Input user not exist</h4>
+</div>
+<div id="password-failed" class="alert alert-error hide">
+    <a href="#" data-dismiss="alert" class="close">x</a>
+    <h4 class="alert-heading">Password not match</h4>
+</div>
+
 
 <div class="slate">
     <form class="form-horizontal" <?=$this->formAttr($form)?> >
@@ -37,7 +53,9 @@ $form->init(array(
             </div>
             <div class="form-actions">
                 <button class="btn btn-primary" type="submit">Login</button>
+                <?if($this->hasModule('User')):?>
                 <a href="<?=$this->uri('/admin/user/reset/')?>">Forget Passsword</a>
+                <?endif?>
             </div>
         </fieldset>
     </form>

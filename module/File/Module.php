@@ -12,6 +12,9 @@ class Module
     public function registerJsonStrategy($e)
     {
         $matches    = $e->getRouteMatch();
+        if(!$matches) {
+            return;
+        }
         $controller = $matches->getParam('controller');
         //only render on Api controller
         if($controller !== 'File\Api\Controller\FileController'){

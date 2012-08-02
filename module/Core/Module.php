@@ -6,14 +6,6 @@ use Zend\Mvc\ModuleRouteListener;
 
 class Module
 {
-    /*
-    public function init(ModuleManager $moduleManager)
-    {
-        $events = StaticEventManager::getInstance();
-        $events->attach('bootstrap', 'bootstrap', array($this, 'initializeView'), 100);
-    }
-     */
-
     public function getAutoloaderConfig()
     {
         return array(
@@ -32,39 +24,6 @@ class Module
 
     public function onBootstrap($e)
     {
-        //$eventManager        = $e->getApplication()->getEventManager();
-        //$moduleRouteListener = new ModuleRouteListener();
-        //$moduleRouteListener->attach($eventManager);
         Api::_()->setEvent($e);
     }
-
-    /*
-    public function getServiceConfiguration()
-    {
-        return array(
-            'factories' => array(
-                'db-adapter' =>  function($sm) {
-                    $config = $sm->get('config');
-                    $config = $config['db'];
-                    $dbAdapter = new \Zend\Db\Adapter\Adapter($config);
-
-                    //\Eva\Registry::set("dbAdapter", $dbAdapter);
-                    return $dbAdapter;
-                },
-            ),
-        );
-    }
-     */
-    
-    /*
-    public function initializeView($e)
-    {
-        $app          = $e->getParam('application');
-        $basePath     = $app->getRequest()->getBasePath();
-        $locator      = $app->getLocator();
-        $renderer     = $locator->get('Zend\View\Renderer\PhpRenderer');
-        $renderer->plugin('url')->setRouter($app->getRouter());
-        $renderer->plugin('basePath')->setBasePath($basePath);
-    }
-     */
 }
