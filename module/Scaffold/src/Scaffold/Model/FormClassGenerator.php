@@ -100,6 +100,7 @@ class FormClassGenerator
 
             $validatorArray = array(
                 'name' => $key,
+                'required' => false,
                 'filters' => $this->getFilterArray($element),
                 'validators' => $this->getValidatorArray($element),
             );
@@ -109,6 +110,10 @@ class FormClassGenerator
         }
 
         return array($elementsArray, $validatorsArray);
+    }
+
+    protected function checkRequired($element)
+    {
     }
 
     protected function parseEnumString($enum)
@@ -209,7 +214,7 @@ class FormClassGenerator
 
         $filters = array();
         foreach($element['filters'] as $filterName){
-            $filters[] = array(
+            $filters[lcfirst($filterName)] = array(
                 'name' => $filterName
             );
         }

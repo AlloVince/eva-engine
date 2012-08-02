@@ -11,81 +11,73 @@ class PostForm extends Form
     );
 
     protected $baseElements = array(
-        'id' => array(
+        'id' => array (
             'name' => 'id',
-            'attributes' => array(
+            'attributes' => array (
                 'type' => 'hidden',
+                'label' => 'Id',
+                'value' => '',
             ),
         ),
-
-        'title' =>     array(
+        'title' => array (
             'name' => 'title',
-            'attributes' => array(
+            'attributes' => array (
                 'type' => 'text',
-                'label' => 'Post Title',
+                'label' => 'Title',
+                'value' => '',
             ),
         ),
-
-        'urlName' =>     array(
-            'name' => 'urlName',
-            'attributes' => array(
-                'type' => 'text',
-                'label' => 'Post Url',
-            ),
-        ),
-
-        'status' => array(
+        'status' => array (
             'name' => 'status',
-            'attributes' => array(
+            'attributes' => array (
                 'type' => 'select',
-                'options' => array(
-                    array(
+                'label' => 'Status',
+                'options' => array (
+                    array (
+                        'label' => 'Deleted',
+                        'value' => 'deleted',
+                    ),
+                    array (
                         'label' => 'Draft',
                         'value' => 'draft',
                     ),
-                    array(
+                    array (
+                        'label' => 'Published',
+                        'value' => 'published',
+                    ),
+                    array (
                         'label' => 'Pending',
                         'value' => 'pending',
                     ),
-                    array(
-                        'label' => 'Published',
-                        'value' => 'published',
-                    ),    
                 ),
-                'label' => 'Post Status',
+                'value' => 'published',
             ),
         ),
-
-        'visibility' => array(
+        'visibility' => array (
             'name' => 'visibility',
-            'attributes' => array(
+            'attributes' => array (
                 'type' => 'select',
-                'options' => array(
-                    array(
+                'label' => 'Visibility',
+                'options' => array (
+                    array (
                         'label' => 'Public',
                         'value' => 'public',
-                    ),    
-                    array(
+                    ),
+                    array (
                         'label' => 'Private',
                         'value' => 'private',
-                    ),    
+                    ),
+                    array (
+                        'label' => 'Password',
+                        'value' => 'password',
+                    ),
                 ),
-                'label' => 'Post Visibility',
             ),
         ),
-
-        'content' => array(
-            'name' => 'content',
-            'attributes' => array(
-                'type'  => 'textarea',
-                'label' => 'Content',
-            ),
-        ),
-
         'codeType' => array (
             'name' => 'codeType',
             'attributes' => array (
-                'type' => 'radio',
+                'type' => 'select',
                 'label' => 'Code Type',
                 'options' => array (
                     array (
@@ -112,86 +104,213 @@ class PostForm extends Form
                 'value' => 'markdown',
             ),
         ),
+        'language' => array (
+            'name' => 'language',
+            'attributes' => array (
+                'type' => 'text',
+                'label' => 'Language',
+                'value' => 'en',
+            ),
+        ),
+        'postUsage' => array (
+            'name' => 'postUsage',
+            'attributes' => array (
+                'type' => 'select',
+                'label' => 'Post Usage',
+                'options' => array (
+                    array (
+                        'label' => 'Post',
+                        'value' => 'post',
+                    ),
+                    array (
+                        'label' => 'Page',
+                        'value' => 'page',
+                    ),
+                    array (
+                        'label' => 'Faq',
+                        'value' => 'faq',
+                    ),
+                    array (
+                        'label' => 'News',
+                        'value' => 'news',
+                    ),
+                ),
+                'value' => 'post',
+            ),
+        ),
+
+        'urlName' => array (
+            'name' => 'urlName',
+            'attributes' => array (
+                'type' => 'text',
+                'label' => 'Post Url',
+                'value' => '',
+            ),
+        ),
+
+        'postPassword' => array (
+            'name' => 'postPassword',
+            'attributes' => array (
+                'type' => 'text',
+                'label' => 'Post Password',
+                'value' => '',
+            ),
+        ),
+
+        'setting' => array (
+            'name' => 'setting',
+            'attributes' => array (
+                'type' => 'number',
+                'label' => 'Setting',
+                'value' => '0',
+            ),
+        ),
+
+
+        'commentStatus' => array (
+            'name' => 'commentStatus',
+            'attributes' => array (
+                'type' => 'select',
+                'label' => 'Comment Status',
+                'options' => array (
+                    array (
+                        'label' => 'Open',
+                        'value' => 'open',
+                    ),
+                    array (
+                        'label' => 'Closed',
+                        'value' => 'closed',
+                    ),
+                    array (
+                        'label' => 'Authority',
+                        'value' => 'authority',
+                    ),
+                ),
+                'value' => 'open',
+            ),
+        ),
+        'commentType' => array (
+            'name' => 'commentType',
+            'attributes' => array (
+                'type' => 'select',
+                'label' => 'Comment Type',
+                'options' => array (
+                    array (
+                        'label' => 'Local',
+                        'value' => 'local',
+                    ),
+                    array (
+                        'label' => 'Disqus',
+                        'value' => 'disqus',
+                    ),
+                    array (
+                        'label' => 'Youyan',
+                        'value' => 'youyan',
+                    ),
+                    array (
+                        'label' => 'Duoshuo',
+                        'value' => 'duoshuo',
+                    ),
+                ),
+                'value' => 'local',
+            ),
+        ),
 
     );
 
-    protected $baseFilters = array(
-        'id' => array(
+    /**
+     * Form basic Validators
+     *
+     * @var array
+     */
+    protected $baseFilters = array (
+        'id' => array (
             'name' => 'id',
-            'required' => true,
-            'filters' => array(
-               array('name' => 'Int'),
-            ),
-        ),
-
-        'title' =>     array(
-            'name' => 'title',
-            'required' => true,
-            'filters' => array(
-                array('name' => 'StripTags'),
-                array('name' => 'StringTrim'),
-            ),
-            'validators' => array(
-                array(
-                    'name' => 'StringLength',
-                    'options' => array(
-                        'encoding' => 'UTF-8',
-                        'min' => 1,
-                        'max' => 100,
-                    ),
-                ),
-            ),
-        ),
-
-        'urlName' =>     array(
-            'name' => 'urlName',
             'required' => false,
-            'filters' => array(
-                array('name' => 'StringTrim'),
-            ),
-            'validators' => array(
-                array(
-                    'name' => 'StringLength',
-                    'options' => array(
-                        'encoding' => 'UTF-8',
-                        'max' => 100,
-                    ),
-                ),
-                array(
-                    'name' => 'DbNoRecordExists',
-                    'options' => array(
-                        'field' => 'urlName',
-                        'table' => 'eva_blog_posts',
-                        'messages' => array(
-                             \Zend\Validator\Db\NoRecordExists::ERROR_RECORD_FOUND => 'Abc',
-                        ), 
-                    ),
-
-                ),
-            ),
-        ),
-
-        'status' => array(
-            'name' => 'status',
-            'required' => true,
-        ),
-
-        'visibility' => array(
-            'name' => 'visibility',
-            'required' => true,
-        ),
-
-        'codeType' => array (
-            'name' => 'codeType',
             'filters' => array (
             ),
             'validators' => array (
-                array (
+                'notEmpty' => array (
                     'name' => 'NotEmpty',
                     'options' => array (
                     ),
                 ),
-                array (
+            ),
+        ),
+        'title' => array (
+            'name' => 'title',
+            'required' => true,
+            'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+                'notEmpty' => array (
+                    'name' => 'NotEmpty',
+                    'options' => array (
+                    ),
+                ),
+                'stringLength' => array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => '255',
+                    ),
+                ),
+            ),
+        ),
+        'status' => array (
+            'name' => 'status',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+                'inArray' => array (
+                    'name' => 'InArray',
+                    'options' => array (
+                        'haystack' => array (
+                            'deleted',
+                            'draft',
+                            'published',
+                            'pending',
+                        ),
+                    ),
+                ),
+            ),
+        ),
+        'visibility' => array (
+            'name' => 'visibility',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+                'notEmpty' => array (
+                    'name' => 'NotEmpty',
+                    'options' => array (
+                    ),
+                ),
+                'inArray' => array (
+                    'name' => 'InArray',
+                    'options' => array (
+                        'haystack' => array (
+                            'public',
+                            'private',
+                            'password',
+                        ),
+                    ),
+                ),
+            ),
+        ),
+        'codeType' => array (
+            'name' => 'codeType',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+                'inArray' => array (
                     'name' => 'InArray',
                     'options' => array (
                         'haystack' => array (
@@ -205,7 +324,129 @@ class PostForm extends Form
                 ),
             ),
         ),
-   
-        
+        'postUsage' => array (
+            'name' => 'postUsage',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+                'inArray' => array (
+                    'name' => 'InArray',
+                    'options' => array (
+                        'haystack' => array (
+                            'post',
+                            'page',
+                            'faq',
+                            'news',
+                        ),
+                    ),
+                ),
+            ),
+        ),
+        'urlName' => array (
+            'name' => 'urlName',
+            'required' => false,
+            'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+                'notEmpty' => array (
+                    'name' => 'NotEmpty',
+                    'options' => array (
+                    ),
+                ),
+                'stringLength' => array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => '255',
+                    ),
+                ),
+                'db' => array(
+                    'name' => 'DbNoRecordExists',
+                    'options' => array(
+                        'field' => 'urlName',
+                        'table' => 'eva_blog_posts',
+                        'messages' => array(
+                            //\Zend\Validator\Db\NoRecordExists::ERROR_RECORD_FOUND => 'Abc',
+                        ), 
+                    ),
+                ),
+            ),
+        ),
+        'setting' => array (
+            'name' => 'setting',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+                'notEmpty' => array (
+                    'name' => 'NotEmpty',
+                    'options' => array (
+                    ),
+                ),
+            ),
+        ),
+        'postPassword' => array (
+            'name' => 'postPassword',
+            'required' => false,
+            'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+                'stringLength' => array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => '32',
+                    ),
+                ),
+            ),
+        ),
+        'commentStatus' => array (
+            'name' => 'commentStatus',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+                'inArray' => array (
+                    'name' => 'InArray',
+                    'options' => array (
+                        'haystack' => array (
+                            'open',
+                            'closed',
+                            'authority',
+                        ),
+                    ),
+                ),
+            ),
+        ),
+        'commentType' => array (
+            'name' => 'commentType',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+                'inArray' => array (
+                    'name' => 'InArray',
+                    'options' => array (
+                        'haystack' => array (
+                            'local',
+                            'disqus',
+                            'youyan',
+                            'duoshuo',
+                        ),
+                    ),
+                ),
+            ),
+        ),
     );
 }

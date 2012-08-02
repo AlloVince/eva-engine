@@ -6,26 +6,17 @@ use Zend\Form\Element;
 
 class PostEditForm extends PostForm
 {
+    protected $mergeElements = array(
+    );
+
     protected $mergeFilters = array(
         'urlName' =>     array(
-            'name' => 'urlName',
-            'required' => false,
-            'filters' => array(
-                array('name' => 'StringTrim'),
-            ),
             'validators' => array(
-                array(
-                    'name' => 'StringLength',
-                    'options' => array(
-                        'encoding' => 'UTF-8',
-                        'max' => 100,
-                    ),
-                ),
-                array(
+                'db' => array(
                     'name' => 'Eva\Validator\Db\NoRecordExistsExcludeSelf',
+                    'field' => 'urlName',
+                    'table' => 'eva_blog_posts',
                     'options' => array(
-                        'field' => 'urlName',
-                        'table' => 'eva_blog_posts',
                         'exclude' => array(
                             'field' => 'id',
                         ),
@@ -33,7 +24,6 @@ class PostEditForm extends PostForm
                              'recordFound' => 'Abc',
                         ), 
                     ),
-
                 ),
             ),
         ),

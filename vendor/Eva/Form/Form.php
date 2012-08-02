@@ -11,6 +11,7 @@
 
 namespace Eva\Form;
 
+use Zend\Config\Config;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\Factory as FilterFactory;
 
@@ -95,12 +96,12 @@ class Form extends \Zend\Form\Form
 
     public function getMergedElements()
     {
-        return array_merge($this->baseElements, $this->mergeElements);
+        return $this->merge($this->baseElements, $this->mergeElements);
     }
 
     public function getMergedFilters()
     {
-        return array_merge($this->baseFilters, $this->mergeFilters);
+        return $this->merge($this->baseFilters, $this->mergeFilters);
     }
 
     public function setSubForms(array $subForms = array())
@@ -205,7 +206,7 @@ class Form extends \Zend\Form\Form
         }
 
         if(false === $this->elementInited){
-            $elements = array_merge($this->baseElements, $this->mergeElements);
+            $elements = $this->getMergedElements();
 
             foreach($elements as $name => $element){
                 $element = $this->autoElementId($element);
@@ -286,8 +287,7 @@ class Form extends \Zend\Form\Form
 
     public function enableFilters(array $filterOptions = array())
     {
-
-        $filters = array_merge($this->baseFilters, $this->mergeFilters, $filterOptions);
+        $filters = $this->merge($this->getMergedFilters(), $filterOptions);
 
         if(!$filters){
             $inputFilter = new InputFilter;
@@ -302,9 +302,16 @@ class Form extends \Zend\Form\Form
             'eva\validator\db\norecordexistsexcludeself',
         );
         foreach($filters as $key => $filter){
+            //Auto close received option here
+            //if(!isset($filters[$key]['required'])){
+               // $filters[$key]['required'] = false;
+            //}
+
             if(!isset($filter['validators']) || !is_array($filter['validators'])){
                 continue;
             }
+
+
 
             foreach($filter['validators'] as $validateKey => $validator){
                 if(isset($validator['name']) && in_array(strtolower($validator['name']), $requireDbAdapter)){
@@ -315,7 +322,6 @@ class Form extends \Zend\Form\Form
                 }
             }
         }
-
 
         $factory = new FilterFactory();
         $inputFilter = $factory->createInputFilter($filters);
@@ -485,4 +491,15 @@ class Form extends \Zend\Form\Form
         return $element->getMessages() ? true : false;
     }
 
+    protected function merge(array $global, array $local)
+    {
+        if(!$local) {
+            return $global;
+        }
+
+        $global = new Config($global);
+        $local = new Config($local);
+        $global->merge($local);
+        return $global->toArray();
+    }
 }

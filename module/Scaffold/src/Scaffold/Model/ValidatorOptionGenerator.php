@@ -49,7 +49,8 @@ class ValidatorOptionGenerator
         foreach($element['validators'] as $validatorName){
             $method = 'getValidator' . $validatorName . 'Option';
             $option = method_exists($this, $method) ? $this->$method() : array();
-            $validators[] = array(
+            $key = $this->getValidatorKey($validatorName);
+            $validators[$key] = array(
                 'name' => $validatorName,
                 'options' => $option,
             );
@@ -58,4 +59,10 @@ class ValidatorOptionGenerator
         return $validators;
     }
 
+    protected function getValidatorKey($key)
+    {
+        if($key){
+            return lcfirst(preg_replace( '/([a-z0-9])([A-Z])/', "$1$2", $key));
+        }
+    }
 }
