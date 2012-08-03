@@ -255,6 +255,9 @@ methods = window.eva = {
 			if(router) {
 				router();
 			}
+			if(eva.runtime !== undefined) {
+				eva.runtime();
+			}
 
 			if(eva.destruct !== undefined) {
 				eva.destruct();

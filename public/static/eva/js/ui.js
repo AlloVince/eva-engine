@@ -22,7 +22,7 @@
 				"/lib/js/upload/js/locale.js", 
 				"/lib/js/upload/js/main.js", 
 			],
-			pathTinymce : "/javascripts/jquery/jquery.tinymce.js"
+			pathTinymce : "/lib/js/tiny_mce/jquery.tinymce.js"
 		},
 
 		_itemClass : {
@@ -152,33 +152,29 @@
 			}
 
 			var mceGlobelConfig = {
-				mode : "exact",
-				theme : "simple",
-				//skin_variant : "silver",
-				//use absolute url
-				relative_urls : false,
-				//plugins :"autosave,contextmenu,fullscreen,inlinepopups,insertdatetime,save,searchreplace,safari,preview,style,layer,table,spellchecker,media",
-				
+				mode : "textareas",
+				theme : "advanced",
 				plugins : "autolink,lists,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+
+				// Theme options
 				theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
-				theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
+				theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
 				theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
 				theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,spellchecker,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,blockquote,pagebreak,|,insertfile,insertimage",
-
-
 				theme_advanced_toolbar_location : "top",
 				theme_advanced_toolbar_align : "left",
 				theme_advanced_statusbar_location : "bottom",
 				theme_advanced_resizing : true,
+				
 				remove_linebreaks : false,
 				extended_valid_elements : "pre[cols|rows|disabled|name|readonly|class]",
-				script_url : eva.s('/javascripts/tiny_mce/tiny_mce.js'),
-				//script_url : '/javascripts/tiny_mce/tiny_mce_gzip.php',
-				//content_css: eva.s("/skins/tinymce.css"),
-				spellchecker_rpc_url : eva.s('/javascripts/tiny_mce/plugins/spellchecker/rpc.php')
+				script_url : eva.s('/lib/js/tiny_mce/tiny_mce.js'),
+				
+				content_css: eva.s("/lib/css/typo/typo.min.css"),
+				spellchecker_rpc_url : eva.s('/lib/js/tiny_mce/plugins/spellchecker/rpc.php')
 			};
 
-			eva.loader(methods.config.pathTinymce, function(){
+			eva.loader(eva.s(methods.config.pathTinymce), function(){
 				$(methods._itemClass.htmleditor).each(function(){
 					var opt = methods._getOption(this);
 					var mceconfig = mceGlobelConfig;
@@ -188,7 +184,7 @@
 						}
 					}
 					mceconfig.editor_selector = this;
-					$(this).width("100%").tinymce(mceconfig);
+					$(this).tinymce(mceconfig);
 				});				
 			});
 
@@ -240,70 +236,17 @@
 			return false;
 		},
 
-		initMarkdowneditor : function(){
+		initMarkdowneditor : function(editor){
 			/*
-			var mySettings = {
-				nameSpace:          'markdown', // Useful to prevent multi-instances CSS conflict
-				previewParserPath:  '~/sets/markdown/preview.php',
-				onShiftEnter:       {keepDefault:false, openWith:'\n\n'},
-				markupSet: [
-					{name:'First Level Heading', key:"1", placeHolder:'Your title here...', closeWith:function(markItUp) { return miu.markdownTitle(markItUp, '=') } },
-					{name:'Second Level Heading', key:"2", placeHolder:'Your title here...', closeWith:function(markItUp) { return miu.markdownTitle(markItUp, '-') } },
-					{name:'Heading 3', key:"3", openWith:'### ', placeHolder:'Your title here...' },
-					{name:'Heading 4', key:"4", openWith:'#### ', placeHolder:'Your title here...' },
-					{name:'Heading 5', key:"5", openWith:'##### ', placeHolder:'Your title here...' },
-					{name:'Heading 6', key:"6", openWith:'###### ', placeHolder:'Your title here...' },
-					{separator:'---------------' },        
-					{name:'Bold', key:"B", openWith:'**', closeWith:'**'},
-					{name:'Italic', key:"I", openWith:'_', closeWith:'_'},
-					{separator:'---------------' },
-					{name:'Bulleted List', openWith:'- ' },
-					{name:'Numeric List', openWith:function(markItUp) {
-						return markItUp.line+'. ';
-					}},
-					{separator:'---------------' },
-					{name:'Picture', key:"P", replaceWith:'![[![Alternative text]!]]([![Url:!:http://]!] "[![Title]!]")'},
-					{name:'Link', key:"L", openWith:'[', closeWith:']([![Url:!:http://]!] "[![Title]!]")', placeHolder:'Your text to link here...' },
-					{separator:'---------------'},    
-					{name:'Quotes', openWith:'> '},
-					{name:'Code Block / Code', openWith:'(!(\t|!|`)!)', closeWith:'(!(`)!)'},
-					{separator:'---------------'},
-					{name:'Preview', call:'preview', className:"preview"}
-				]
-			}
-			eva.loadcss(eva.s(['lib/js/markitup/skins/markitup/style.css', 'lib/js/markitup/sets/default/markdown.css']));
-			eva.loader(eva.s(['/lib/js/markitup/jquery.markitup.js', '/lib/js/markitup/sets/default/set.js']), function(){
-				$(methods._itemClass.markdowneditor).each(function(){
-					$(this).markItUp(mySettings);
-				});
-			});
-		   */
-
-		  	/*
-			eva.loadcss(eva.s(['/lib/js/pagedown/Markdown.Editor.css']));
-			eva.loader(eva.s(['/lib/js/pagedown/Markdown.Converter.js', '/lib/js/pagedown/Markdown.Sanitizer.js', '/lib/js/pagedown/Markdown.Editor.js']), function(){
-            	var converter = Markdown.getSanitizingConverter();
-				$(methods._itemClass.markdowneditor).each(function(){
-					var editor = $(this);
-					editor.live('keyup', function () {
-						var md = converter.makeHtml(editor.val());
-						$(".markdown-preview").html(md);
-					});
-				});
-			});
-		   */
-
 		  	$(".markdown-toolbar").css({
 				"margin" : 0,
 				"background" : "#EFEFEF"
 			});
 
-		    var editor;
 			var converter;
 		  	var fullscreen = function(){
 				var width = $(document).width() / 2;
 				var height = $(window).height();
-				eva.p(width);
 				$("body").css("overflow", "hidden");
 				$("#editor-left").css({
 					"position" : "fixed",
@@ -339,26 +282,27 @@
 				fullscreen();
 				preview();
 			});
+		   */
+
+		  	var initEditor = function(mdEditor){
+				CodeMirror.fromTextArea(mdEditor[0], {
+					"mode":"markdown",
+					"theme":"ambiance",
+					"lineNumbers":true,
+					"lineWrapping":true,
+					onChange : function(){
+						//preview();
+					}
+				});				
+			}
 
 			eva.loadcss(eva.s(['/lib/js/codemirror/lib/codemirror.css', '/lib/js/codemirror/theme/ambiance.css']));
 			eva.loader(eva.s(['/lib/js/codemirror/lib/codemirror.js', '/lib/js/codemirror/mode/xml/xml.js', '/lib/js/codemirror/mode/markdown/markdown.js', '/lib/js/showdown/showdown.js']), function(){
 				converter = new Showdown.converter();
 				$(methods._itemClass.markdowneditor).each(function(){
-					var textarea = $(this);
-					var width = textarea.outerWidth();
-					editor = CodeMirror.fromTextArea(this, {
-						"mode":"markdown",
-						"theme":"ambiance",
-						"lineNumbers":true,
-						"lineWrapping":true,
-						//"fontsize":"13px",
-						onChange : function(){
-							preview();
-						}
-					});	
-					//editor.setSize(width);
+					initEditor($(this));
 				});
-			});		
+			});
 		},
 
 		initFileuploader : function(){

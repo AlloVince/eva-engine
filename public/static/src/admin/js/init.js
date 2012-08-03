@@ -115,5 +115,3 @@ eva.construct = function(){
 
 eva.destruct = function(){
 };
-
-eva.init();

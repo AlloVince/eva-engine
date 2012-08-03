@@ -43,13 +43,70 @@ class TextForm extends Form
         )
     );
 
-    protected $baseFilters = array(
-        'content' => array(
+    /**
+     * Form basic Validators
+     *
+     * @var array
+     */
+    protected $baseFilters = array (
+        'post_id' => array (
+            'name' => 'post_id',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+                'notEmpty' => array (
+                    'name' => 'NotEmpty',
+                    'options' => array (
+                    ),
+                ),
+            ),
+        ),
+        'metaKeywords' => array (
+            'name' => 'metaKeywords',
+            'required' => false,
+            'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+            ),
+        ),
+        'metaDescription' => array (
+            'name' => 'metaDescription',
+            'required' => false,
+            'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+            ),
+        ),
+        'content' => array (
             'name' => 'content',
             'required' => true,
-            'filters' => array(
-                array('name' => 'StringTrim'),
+            'filters' => array (
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+                'notEmpty' => array (
+                    'name' => 'NotEmpty',
+                    'options' => array (
+                    ),
+                ),
             ),
         ),
     );
+
+
 }

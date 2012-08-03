@@ -88,6 +88,7 @@ class PostForm extends Form
                         'label' => 'Html',
                         'value' => 'html',
                     ),
+                    /*
                     array (
                         'label' => 'Wiki',
                         'value' => 'wiki',
@@ -100,6 +101,7 @@ class PostForm extends Form
                         'label' => 'Other',
                         'value' => 'other',
                     ),
+                    */
                 ),
                 'value' => 'markdown',
             ),
