@@ -28,6 +28,7 @@ class HelperConfig implements ConfigInterface
      * @var array Pre-aliased view helpers
      */
      protected $invokables = array(
+         'action' => 'Eva\View\Helper\Action',
          'uri' => 'Eva\View\Helper\Uri',    
          'link' => 'Eva\View\Helper\Link',
          'formAttr' => 'Eva\Form\View\Helper\FormAttr',

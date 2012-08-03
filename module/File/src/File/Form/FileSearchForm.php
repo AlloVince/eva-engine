@@ -5,30 +5,11 @@ class FileSearchForm extends FileEditForm
 {
     protected $mergeElements = array(
         'status' => array (
-            'name' => 'status',
             'attributes' => array (
-                'type' => 'select',
-                'label' => 'Status',
                 'options' => array (
                     array (
                         'label' => 'Select Status',
                         'value' => '',
-                    ),
-                    array (
-                        'label' => 'Deleted',
-                        'value' => 'deleted',
-                    ),
-                    array (
-                        'label' => 'Draft',
-                        'value' => 'draft',
-                    ),
-                    array (
-                        'label' => 'Published',
-                        'value' => 'published',
-                    ),
-                    array (
-                        'label' => 'Pending',
-                        'value' => 'pending',
                     ),
                 ),
                 'value' => '',

@@ -21,6 +21,7 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
     protected $lastSelectString;
 
     protected $enableCount = false;
+    protected $autoLimit = true;
     protected $lastSelectCount;
 
     protected $paginatorOptions = array();
@@ -89,6 +90,7 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
         $this->select = null;
         $this->selectOptions = array(); 
         $this->enableCount = false;
+        $this->autoLimit = true;
         return $this;
     }
 
@@ -307,9 +309,8 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 
         $selectOptions = $this->selectOptions;
 
-
         //Auto enable limit to prevent load full table
-        if(!isset($selectOptions['limit']) || !$selectOptions['limit']) {
+        if($this->autoLimit && (!isset($selectOptions['limit']) || !$selectOptions['limit'])) {
             $select->limit(10);
         }
 
@@ -400,6 +401,12 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
     public function disableCount()
     {
         $this->enableCount = false;
+        return $this;
+    }
+
+    public function disableLimit()
+    {
+        $this->autoLimit = false;
         return $this;
     }
 

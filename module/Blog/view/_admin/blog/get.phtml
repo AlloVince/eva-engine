@@ -207,10 +207,18 @@ $moduleConfig = \Eva\Api::_()->getModuleConfig('Blog');
                     <h3>Category And Tags</h3>
                 </div>
                 <fieldset class="form-horizontal">
-                    <?=$form->helper(array('CategoryPost', 'category_id'), 'formText', array('class' => ''))?>
-                    <?=$form->helper(array('CategoryPost', 'post_id'), 'formText', array(
-                        'value' => $post['id']
-                    ))?>
+                    <div class="control-group <?=$form->isError(array('CategoryPost', 'category_id')) ? 'error' : '';?>">
+                        <?=$form->helper(array('CategoryPost', 'category_id'), 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper(array('CategoryPost', 'category_id'), 'formSelect', array(
+                                'options' => $this->action('Blog\Api\Controller\CategoryController', 'selectAction'),
+                            ), array('replace' => false, 'i18n' => false))?>
+                            <?=$form->helper(array('CategoryPost', 'post_id'), 'formHidden', array(
+                                'value' => $post['id']
+                            ))?>    
+                            <div class="help-block"><?=$form->helper(array('CategoryPost', 'category_id'), 'formElementErrors')?></div>
+                        </div>
+                    </div>
                 </fieldset>
             </div>
         </div><!--span5 end-->

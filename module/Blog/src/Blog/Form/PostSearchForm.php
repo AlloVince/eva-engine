@@ -12,51 +12,40 @@ class PostSearchForm extends PostForm
             ),
         ),
         'status' => array(
-            'name' => 'status',
             'attributes' => array(
-                'type' => 'select',
                 'options' => array(
                     array(
                         'label' => 'Post Status',
                         'value' => '',
                     ),
-                    array(
-                        'label' => 'Draft',
-                        'value' => 'draft',
-                    ),
-                    array(
-                        'label' => 'Pending',
-                        'value' => 'pending',
-                    ),
-                    array(
-                        'label' => 'Published',
-                        'value' => 'published',
-                    ),    
                 ),
-                'label' => 'Post Status',
+                'value' => '',
             ),
         ),
         'visibility' => array(
-            'name' => 'visibility',
             'attributes' => array(
-                'type' => 'select',
                 'options' => array(
                     array(
                         'label' => 'Select Visibility',
                         'value' => '',
                     ),  
-                    array(
-                        'label' => 'Public',
-                        'value' => 'public',
-                    ),    
-                    array(
-                        'label' => 'Private',
-                        'value' => 'private',
-                    ),    
                 ),
-                'label' => 'Post Visibility',
+                'value' => '',
             ),
         ),
-
+        'category' => array(
+            'name' => 'category',
+            'label' => 'Category',
+            'attributes' => array(
+                'type' => 'select',
+                'options' => array(
+                    array(
+                        'label' => 'Select Category',
+                        'value' => '',
+                    ),  
+                ),
+                'value' => '',
+            ),
+        ),
     );
 }

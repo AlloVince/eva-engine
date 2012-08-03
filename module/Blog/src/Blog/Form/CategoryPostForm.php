@@ -29,8 +29,14 @@ class CategoryPostForm extends \Eva\Form\Form
         'category_id' => array (
             'name' => 'category_id',
             'attributes' => array (
-                'type' => 'hidden',
-                'label' => 'Category_id',
+                'type' => 'text',
+                'label' => 'Category',
+                'options' => array(
+                    array(
+                        'label' => 'Select Category',
+                        'value' => '',
+                    ),  
+                ),
                 'value' => '',
             ),
         ),

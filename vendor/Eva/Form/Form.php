@@ -469,12 +469,17 @@ class Form extends \Zend\Form\Form
         return $element;
     }
 
-    public function helper($elementName, $optionOrInputType = null, array $options = array())
+    public function helper($elementName, $optionOrInputType = null, array $options = array(), array $setting = array())
     {
-        $view = \Eva\Api::_()->getView();
+        $defaultSetting = array(
+            'i18n' => true,
+            'replace' => true,
+            'reorder' => false,
+        );
+        $setting = array_merge($defaultSetting, $setting);
 
         $element = $this->getElement($elementName);
-
+        $view = \Eva\Api::_()->getView();
         if($optionOrInputType){
             if(is_string($optionOrInputType)){
                 $options = array_merge(array('type' => $optionOrInputType), $options);
@@ -482,6 +487,12 @@ class Form extends \Zend\Form\Form
                 $options = array_merge($optionOrInputType, $options);
             }
         }
+
+        //Merge options with element attributes
+        if(false === $setting['replace']){
+            $options = $this->merge($element->getAttributes(), $options);
+        }
+
         return $view->input($element, $options); 
     }
 

@@ -19,6 +19,7 @@ $lableMap = array(
     'pending' => 'label-warning',
     'deleted' => 'label-inverse',
 );
+
 ?>
 <div class="row">
     <div class="span10">
@@ -27,6 +28,10 @@ $lableMap = array(
                 <?=$form->helper('keyword', array('class' => 'input-large', 'placeholder' => 'Keyword...'))?>
                 <?=$form->helper('status', 'formSelect', array('class' => 'span2'))?>
                 <?=$form->helper('visibility', 'formSelect', array('class' => 'span2'))?>
+                <?=$form->helper('category', 'formSelect', array(
+                    'class' => 'span2',
+                    'options' => $this->action('Blog\Api\Controller\CategoryController', 'selectAction'),
+                ), array('replace' => false, 'i18n' => false))?>
                 <button class="btn" type="submit">Filter Posts</button>
             </form>
         </div>
