@@ -65,6 +65,7 @@ class BlogController extends RestfulModuleController
             $postModel = Api::_()->getModel('Blog\Model\Post');
             $postData = $form->fieldsMap($postData, true);
             $postId = $postModel->setSubItemMap($subForms)->setItem($postData)->createPost();
+            $this->flashMessenger()->addMessage('post-create-succeed');
             $this->redirect()->toUrl('/admin/blog/' . $postId);
 
         } else {
