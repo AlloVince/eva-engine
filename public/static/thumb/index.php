@@ -53,12 +53,6 @@ class EvaCloudImage
         'sourceRootPath' => '',
         'thumbFileRootPath' => '',
         'thumbUrlRootPath' => '',
-        'smallSizeWidth' => '',
-        'smallSizeHeight' => '',
-        'mediumSizeWidth' => '',
-        'mediumSizeHeight' => '',
-        'largeSizeWidth' => '',
-        'largeSizeHeight' => '',
         'maxAllowWidth' => '',
         'maxAllowHeight' => '',
         'watermark' => array(
@@ -180,7 +174,9 @@ class EvaCloudImage
         }
 
         $options = $this->options;
-        $relativePath = str_replace($options['thumbUrlRootPath'], '', $options['thumbFileRootPath']);
+
+        //NOTE : realpath performance not good
+        $relativePath = str_replace(realpath($options['thumbUrlRootPath']), '', realpath($options['thumbFileRootPath']));
         if($relativePath) {
             $relativePath = trim($relativePath, '/\\');
         }
@@ -336,15 +332,19 @@ class EvaCloudImage
 
         $url = $this->getUniqueUrl();
         if($this->url != $url){
-            //header("HTTP/1.1 301 Moved Permanently");
-            //return header('Location:' . $url);
+            header("HTTP/1.1 301 Moved Permanently");
+            return header('Location:' . $url);
         }
 
-        //$this->prepareDirectoryStructure($targetImage, $this->pathlevel);
         $thumb = PhpThumbFactory::create($sourceImage);
         $this->transferImage($thumb);
-        $thumb->show(); 
-        //$thumb->save($targetImage)->show(); 
+
+        if(true === $this->options['saveImage']){
+            $this->prepareDirectoryStructure($targetImage, $this->pathlevel);
+            $thumb->save($targetImage)->show(); 
+        } else {
+            $thumb->show(); 
+        }
     }
 
     public function transferImage(GdThumb $thumb)
@@ -393,10 +393,17 @@ class EvaCloudImage
     {
         $url = $url ? $url : $this->getCurrentUrl();
         $this->url = $url;
-        $this->options = $options = array_merge($this->options, $options);
-        //$params = $this->getTransferParameters();
-        //$paramsString = $this->parametersToString($params);
-        //p($paramsString);
+        $options = array_merge($this->options, $options);
+        if(!$options['sourceRootPath']) {
+            throw new InvalidArgumentException('Source file path not set');
+        }
+        if(!$options['thumbFileRootPath']){
+            throw new InvalidArgumentException('Thumb file path not set');
+        }
+        if(!$options['thumbUrlRootPath']){
+            throw new InvalidArgumentException('Thumb file url path not set');
+        }
+        $this->options = $options;
     }
 
 
