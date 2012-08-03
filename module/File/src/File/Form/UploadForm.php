@@ -132,7 +132,7 @@ class UploadForm extends \Eva\Form\Form
                 array (
                     'name' => '\Eva\Filter\File\AutoRename',
                     'options' => array(
-                        'pathkey' => 'default',
+                        'configkey' => 'default',
                     ),
                 ),
             ),

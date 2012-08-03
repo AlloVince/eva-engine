@@ -22,8 +22,8 @@ use Zend\Stdlib\ErrorHandler;
  */
 class AutoRename extends \Zend\Filter\AbstractFilter
 {
+    protected $configkey;
     protected $rootpath;
-    protected $pathkey;
     protected $pathlevel;
 
     /**
@@ -47,22 +47,22 @@ class AutoRename extends \Zend\Filter\AbstractFilter
         }
 
         $defaultOptions = array(
-            'pathkey' => '',
+            'configkey' => '',
             'rootpath' => '',
             'pathlevel' => 0,
         );
         $this->setOptions(array_merge($defaultOptions, $options));
     }
 
-    public function setPathkey($pathkey = null)
+    public function setConfigkey($configkey = null)
     {
-        if(!$pathkey){
-            $pathkey = 'default';
+        if(!$configkey){
+            $configkey = 'default';
         }
 
         $config = \Eva\Api::_()->getConfig();
-        if(isset($config['upload']['storage'][$pathkey])){
-            $config = $config['upload']['storage'][$pathkey];
+        if(isset($config['upload']['storage'][$configkey])){
+            $config = $config['upload']['storage'][$configkey];
             if(isset($config['rootpath'])){
                 $this->rootpath = $config['rootpath'];
             }
@@ -72,7 +72,7 @@ class AutoRename extends \Zend\Filter\AbstractFilter
             }
         }
 
-        $this->pathkey = $pathkey;
+        $this->configkey = $configkey;
         return $this;
     }
 

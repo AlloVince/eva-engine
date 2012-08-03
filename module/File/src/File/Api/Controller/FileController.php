@@ -8,26 +8,6 @@ use File\Form,
 
 class FileController extends RestfulModuleController
 {
-    /*
-    public function restIndexFile()
-    {
-        $lastFileId = 1;
-        $fileModel = Api::_()->getModel('File\Model\File');
-        $fileinfo = $fileModel->setItemParams($lastFileId)->getFile();
-        $file = array(
-            'name' => $fileinfo['originalName'],
-            'size' => $fileinfo['fileSize'],
-            'url' => $fileinfo['Url'],
-        );
-
-
-        $response = array(
-            $file
-        );
-        return new JsonModel($response);
-    }
-    */
-
     public function restPostFile()
     {
         $request = $this->getRequest();
@@ -44,7 +24,7 @@ class FileController extends RestfulModuleController
             if($form->getFileTransfer()->receive()){
                 $files = $form->getFileTransfer()->getFileInfo();
                 $fileModel->setUploadFiles($files);
-                $fileModel->createFiles();
+                $fileModel->setConfigKey('default')->createFiles();
                 $lastFileId = $fileModel->getLastFileId();
                 if($lastFileId) {
                     $fileinfo = $fileModel->setItemParams($lastFileId)->getFile();

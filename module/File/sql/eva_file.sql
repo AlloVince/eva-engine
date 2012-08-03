@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2012 年 07 月 31 日 05:35
+-- 生成日期: 2012 年 08 月 03 日 10:41
 -- 服务器版本: 5.5.16
 -- PHP 版本: 5.3.8
 
@@ -30,13 +30,16 @@ DROP TABLE IF EXISTS `eva_file_files`;
 CREATE TABLE IF NOT EXISTS `eva_file_files` (
   `id` bigint(30) NOT NULL AUTO_INCREMENT,
   `title` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `category_id` int(5) DEFAULT NULL,
+  `status` enum('deleted','draft','published','pending') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'published',
   `isImage` tinyint(1) NOT NULL DEFAULT '0',
   `fileName` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `fileExtension` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `originalName` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `serverKey` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `serverName` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `configKey` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `fileServerKey` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `fileServerName` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `cdnServerKey` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `cdnServerName` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `filePath` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `fileHash` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `fileSize` bigint(20) DEFAULT NULL,

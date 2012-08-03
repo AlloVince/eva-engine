@@ -54,6 +54,11 @@ class Item extends AbstractItem
         return $url;
     }
 
+    public function getConfigKey()
+    {
+        return $this->model->getConfigKey();
+    }
+
     public function getReadableFileSize()
     {
         $item = $this->item;

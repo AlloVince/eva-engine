@@ -13,6 +13,19 @@ class File extends AbstractModel
     protected $file;
     protected $lastFileId;
 
+    protected $configKey;
+
+    public function getConfigKey()
+    {
+        return $this->configKey;
+    }
+
+    public function setConfigKey($configKey)
+    {
+        $this->configKey = $configKey;
+        return $this;
+    }
+
     public function getLastfileId()
     {
         return $this->lastFileId;
@@ -116,15 +129,24 @@ class File extends AbstractModel
             return false;
         }
 
+        $configKey = $this->getConfigKey();
+        $globelConfig = Api::_()->getConfig();
+        if(!$configKey || !isset($globelConfig['upload']['storage'][$configKey])){
+            throw new Exception\InvalidArgumentException(printf(
+                'No file config key found.'
+            ));
+        }
+
         $item = $this->setItemAttrMap(array(
             'title' => array('title', 'getTitle'),
             'status' => array('status', 'getStatus'),
             'isImage' => array('isImage', 'getIsImage'),
+            'configKey' => array('configKey', 'getConfigKey'),
             'fileName' => array('fileName', 'getFileName'),
             'fileExtension' => array('fileExtension', 'getFileExtension'),
             'originalName' => array('originalName', 'getOriginalName'),
-            'serverKey' => array('serverKey', 'getServerKey'),
-            'serverName' => array('serverName', 'getServerName'),
+            'fileServerKey' => array('fileServerKey', 'getServerKey'),
+            'fileServerName' => array('fileServerName', 'getServerName'),
             'filePath' => array('filePath', 'getFilePath'),
             'fileHash' => array('fileHash', 'getFileHash'),
             'fileSize' => array('fileSize', 'getFileSize'),

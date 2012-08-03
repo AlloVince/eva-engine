@@ -31,7 +31,6 @@ $file = array();
 <div class="row">
     <form <?=$this->formAttr($form)?> enctype="multipart/form-data" class="hide">
         <?=$form->restful();?>
-        <?//=$form->helper('id');?>
         <div class="span10">
             <div class="slate">
                 <div class="page-header">
@@ -83,10 +82,6 @@ $file = array();
                 <button type="reset" class="btn cancel">
                     <i class="icon-ban-circle icon-white"></i>
                     <span>Cancel</span>
-                </button>
-                <button type="button" class="btn delete">
-                    <i class="icon-trash icon-white"></i>
-                    <span>Delete</span>
                 </button>
             </div>
         </div>
@@ -194,7 +189,7 @@ $file = array();
                 <td class="error"><div class="progress progress-success" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><div class="bar" style="width:100%;"></div></div></td>
             {% } %}
             <td class="delete">
-                <a class="btn" href="<?=$this->uri('/admin/file/')?>{%=file.id%}" >Edit</a>
+                <a class="btn" href="<?=$this->uri('/admin/file/')?>{%=file.id%}" target="_blank">Edit</a>
             </td>
         </tr>
     {% } %}

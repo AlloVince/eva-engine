@@ -63,7 +63,7 @@ class FileController extends RestfulModuleController
             if($form->getFileTransfer()->receive()){
                 $files = $form->getFileTransfer()->getFileInfo();
                 $fileModel->setUploadFiles($files);
-                $fileModel->createFiles();
+                $fileModel->setConfigKey('default')->createFiles();
                 $lastFileId = $fileModel->getLastFileId();
                 if($lastFileId) {
                     $this->flashMessenger()->addMessage('file-upload-succeed');
