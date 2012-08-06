@@ -67,6 +67,10 @@ return array(
         ),
     ),
 
+    'authentication' => array(
+    
+    ),
+
     'cache' => array(
         'enable' => 1,
         'model_cache' => array(

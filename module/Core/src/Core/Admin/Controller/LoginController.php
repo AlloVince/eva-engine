@@ -4,6 +4,7 @@ namespace Core\Admin\Controller;
 use Eva\Api,
     Eva\Mvc\Controller\ActionController,
     Eva\View\Model\ViewModel;
+use Zend\Authentication\Result;
 
 class LoginController extends ActionController
 {
@@ -31,18 +32,24 @@ class LoginController extends ActionController
             return $viewVariables;
         }
 
-        $config = Api::_()->getConfig();
-        if($postData['userName'] != $config['superadmin']['username']){
+        $auth = new \Core\Auth();
+        $authResult = $auth->configAuthenticate($postData['userName'], $postData['password']);
+
+        if($authResult->isValid()){
+            $this->redirect()->toUrl('/admin/core/dashboard');
+            return array();
+        }
+
+        switch($authResult->getCode()){
+            case Result::FAILURE_IDENTITY_NOT_FOUND:
             $flashMesseger = array('user-name-failed');
             return $viewVariables;
-        }
-
-        if($postData['password'] != $config['superadmin']['password']){
+            case Result::FAILURE_CREDENTIAL_INVALID:
             $flashMesseger = array('password-failed');
             return $viewVariables;
+            default:
+            return $viewVariables;
         }
-
-        $this->redirect()->toUrl('/admin/core/dashboard');
     }
 
     public function indexAction()

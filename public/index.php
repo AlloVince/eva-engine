@@ -26,11 +26,11 @@ define('REQUEST_MICROTIME', microtime(true));
 /** Public functions */
 function p($r, $usePr = false)
 {
-    if($usePr || false === method_exists('\Zend\Debug','dump')){
+    if($usePr || false === method_exists('\Zend\Debug\Debug','dump')){
         echo '<pre>' . print_r($r, true) . '</pre>';
         return;
     }
-    \Zend\Debug::dump($r);
+    \Zend\Debug\Debug::dump($r);
 }
 
 /*
