@@ -66,8 +66,20 @@ class Auth
         return $config;
     }
 
+    public function getStorage(array $config = array())
+    {
+        if($this->authService){
+            return $this->authService->getStorage();
+        }
 
-    public function configAuthenticate($username, $password, array $autoConfig = array())
+        $config = $this->getDiConfig($config);
+
+        $di = new Di();
+        $di->configure(new DiConfig($config));
+        return $di->get('Zend\Authentication\Storage\Session');
+    }
+
+    public function configAuthenticate($username, $password, array $authConfig = array())
     {
         $config = array('instance' => array(
             'Eva\Authentication\Adapter\Config' => array(
@@ -84,6 +96,11 @@ class Auth
         $this->authService = $di->get('Zend\Authentication\AuthenticationService');
 
         return $this->authService->getAdapter()->authenticate();
+    }
+
+    public function isConfigAuthValid()
+    {
+    
     }
 
     public function dbAuthenticate()

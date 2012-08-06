@@ -36,6 +36,7 @@ class LoginController extends ActionController
         $authResult = $auth->configAuthenticate($postData['userName'], $postData['password']);
 
         if($authResult->isValid()){
+            $auth->getStorage()->write($authResult->getIdentity());
             $this->redirect()->toUrl('/admin/core/dashboard');
             return array();
         }
