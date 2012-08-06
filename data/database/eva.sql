@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2012 年 06 月 28 日 04:52
+-- 生成日期: 2012 年 08 月 06 日 04:56
 -- 服务器版本: 5.5.16
 -- PHP 版本: 5.3.8
 
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `eva_album_albums` (
   `orderNumber` int(10) DEFAULT NULL,
   `createTime` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -153,10 +153,11 @@ CREATE TABLE IF NOT EXISTS `eva_blog_posts` (
   `editor_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `postPassword` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `commentStatus` enum('open','closed','authority') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'open',
+  `commentType` enum('local','disqus','youyan','duoshuo') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'local',
   `commentCount` int(10) NOT NULL DEFAULT '0',
   `viewCount` bigint(20) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -204,7 +205,7 @@ CREATE TABLE IF NOT EXISTS `eva_blog_texts` (
   `content` longtext COLLATE utf8_unicode_ci NOT NULL,
   `contentHtml` longtext COLLATE utf8_unicode_ci,
   PRIMARY KEY (`post_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -312,30 +313,48 @@ CREATE TABLE IF NOT EXISTS `eva_dict_dicts` (
 
 DROP TABLE IF EXISTS `eva_file_files`;
 CREATE TABLE IF NOT EXISTS `eva_file_files` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint(30) NOT NULL AUTO_INCREMENT,
   `title` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `connect_id` int(10) DEFAULT NULL,
-  `category_id` int(5) DEFAULT NULL,
+  `status` enum('deleted','draft','published','pending') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'published',
   `isImage` tinyint(1) NOT NULL DEFAULT '0',
-  `fileUsage` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `fileExt` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `fileName` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `fileExtension` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `originalName` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `dirName` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `crc32` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `fileSize` int(10) DEFAULT NULL,
+  `configKey` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `fileServerKey` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `fileServerName` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `cdnServerKey` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `cdnServerName` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `filePath` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `fileHash` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `fileSize` bigint(20) DEFAULT NULL,
   `imageWidth` smallint(5) DEFAULT NULL,
   `imageHeight` smallint(5) DEFAULT NULL,
-  `hasThumbSmall` tinyint(1) NOT NULL DEFAULT '0',
-  `hasThumbMedium` tinyint(1) NOT NULL DEFAULT '0',
-  `hasThumbLarge` tinyint(1) NOT NULL DEFAULT '0',
-  `description` tinytext COLLATE utf8_unicode_ci,
+  `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `orderNumber` int(10) DEFAULT NULL,
   `user_id` int(10) DEFAULT NULL,
   `user_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `createTime` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `eva_file_syncs`
+--
+
+DROP TABLE IF EXISTS `eva_file_syncs`;
+CREATE TABLE IF NOT EXISTS `eva_file_syncs` (
+  `id` bigint(40) NOT NULL AUTO_INCREMENT,
+  `file_id` bigint(30) NOT NULL,
+  `syncType` enum('fastDFS','googleCloud','amazonCloud','flickr') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'fastDFS',
+  `syncServer` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `syncPath` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `syncFilename` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `syncExtra` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
