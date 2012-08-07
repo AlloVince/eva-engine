@@ -11,8 +11,9 @@
 
 namespace Eva\I18n\View\Helper;
 
-use Zend\View\Helper\AbstractHelper;
+use Zend\I18n\View\Helper\AbstractTranslatorHelper;
 use Zend\I18n\Exception;
+use Eva\Api;
 
 /**
  * View helper for translating messages.
@@ -21,7 +22,7 @@ use Zend\I18n\Exception;
  * @package    Eva_I18n
  * @subpackage View
  */
-class Translator extends \Zend\View\Helper\AbstractHelper
+class Translate extends AbstractTranslatorHelper
 {
     /**
      * Translator instance.
@@ -29,25 +30,6 @@ class Translator extends \Zend\View\Helper\AbstractHelper
      * @var Translator
      */
     protected $translator;
-
-    /**
-     * Set translator.
-     *
-     * @param  Translator $translator
-     * @return Translate
-     */
-    public function setTranslator(\Zend\I18n\Translator\Translator $translator)
-    {
-        $this->translator = $translator;
-        return $this;
-    }
-
-    public function getTranslator()
-    {
-        if($this->translator) {
-            return $this->translator;
-        }
-    }
 
     /**
      * Translate a message.
@@ -63,7 +45,6 @@ class Translator extends \Zend\View\Helper\AbstractHelper
         if ($this->translator === null) {
             return $message;
         }
-
         return $this->translator->translate($message, $textDomain, $locale);
     }
 }

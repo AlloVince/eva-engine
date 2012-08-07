@@ -27,7 +27,7 @@ class ViewHelperManagerFactory extends \Zend\Mvc\Service\ViewHelperManagerFactor
      */
     protected $defaultHelperMapClasses = array(
         'Zend\Form\View\HelperConfig',
-        'Zend\I18n\View\HelperConfig',
+        'Eva\I18n\View\HelperConfig',
         'Zend\Navigation\View\HelperConfig',
         'Eva\View\HelperConfig'
     );

@@ -34,7 +34,7 @@ $form->init(array(
     <form class="form-horizontal" <?=$this->formAttr($form)?> >
         <?=$form->restful();?>
         <header class="page-header">
-        <h3>Admin Login</h3>
+        <h3><?=$this->_('Admin Login')?></h3>
         </header>
         <fieldset>
             <div class="control-group <?=$form->isError('userName') ? 'error' : '';?>">
@@ -53,9 +53,9 @@ $form->init(array(
             </div>
             <div class="form-actions">
                 <input name="callback" type="hidden" value="<?=$callback?>" />
-                <button class="btn btn-primary" type="submit">Login</button>
+                <button class="btn btn-primary" type="submit"><?=$this->_('Login')?></button>
                 <?if($this->hasModule('User')):?>
-                <a href="<?=$this->uri('/admin/user/reset/')?>">Forget Passsword</a>
+                <a href="<?=$this->uri('/admin/user/reset/')?>"><?=$this->_('Forgot Passsword')?></a>
                 <?endif?>
             </div>
         </fieldset>

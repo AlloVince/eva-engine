@@ -48,10 +48,21 @@ return array(
         'locale' => 'zh_CN',
         'translation_patterns' => array(
             array(
+                'type' => 'csv',
+                'base_dir' => EVA_ROOT_PATH . '/data/languages',
+                'pattern' => '%s/main.csv'
+            )
+            /*
+            array(
                 'type' => 'phparray',
                 'base_dir' => EVA_ROOT_PATH . '/data/languages',
                 'pattern' => 'translation-%s.php'
             )
+            */
+        ),
+        'scaffold' => array(
+            'enable' => 1,
+            'path' => EVA_ROOT_PATH . '/data/languages/scaffold'
         ),
         /*
         'cache' => array(

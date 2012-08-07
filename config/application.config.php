@@ -13,7 +13,7 @@ return array(
         'use_defaults' => true,
         'factories'    => array(
             'ServiceListener' => 'Eva\Mvc\Service\ServiceListenerFactory',
-            'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
+            'translator' => 'Eva\I18n\Translator\TranslatorServiceFactory',
         ),
     ),
     'protected_module_namespace' => array(

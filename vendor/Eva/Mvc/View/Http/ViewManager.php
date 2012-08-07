@@ -94,7 +94,7 @@ class ViewManager extends \Zend\Mvc\View\Http\ViewManager
         $this->listeners[] = $events->attach('bootstrap', array($this, 'onBootstrap'), 10000);
         $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'beforeDispatch'), 100);
         $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'onDispatch'), 0);
-        $this->listeners[] = $events->attach(MvcEvent::EVENT_RENDER, array($this, 'onRender'), 0);
+        //$this->listeners[] = $events->attach(MvcEvent::EVENT_RENDER, array($this, 'onRender'), 0);
     }
 
     public function beforeDispatch(MvcEvent $e)
@@ -183,11 +183,13 @@ class ViewManager extends \Zend\Mvc\View\Http\ViewManager
         $this->resolver->attach($templatePathStack);
     }
 
+    /*
     public function onRender(MvcEvent $event)
     {
         $application  = $event->getApplication();
         $services     = $application->getServiceManager();
         $services->get('Translator');
     }
+    */
 
 }
