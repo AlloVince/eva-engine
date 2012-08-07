@@ -37,7 +37,8 @@ class LoginController extends ActionController
 
         if($authResult->isValid()){
             $auth->getStorage()->write($authResult->getIdentity());
-            $this->redirect()->toUrl('/admin/core/dashboard');
+            $callback = $this->params()->fromPost('callback', '/admin/core/dashboard');
+            $this->redirect()->toUrl($callback);
             return array();
         }
 

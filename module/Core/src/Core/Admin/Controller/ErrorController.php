@@ -11,6 +11,24 @@ class ErrorController extends ActionController
     const ERROR_NO_ROUTE = 404;
     const ERROR_NO_CONTROLLER = 404;
 
+    protected function getCurrentUrl()
+    {
+        $pageURL = 'http';
+
+        if (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on"){
+            $pageURL .= "s";
+        }
+        $pageURL .= "://";
+
+        if ($_SERVER["SERVER_PORT"] != "80"){
+            $pageURL .= $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . $_SERVER["REQUEST_URI"];
+        }
+        else {
+            $pageURL .= $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
+        }
+        return $pageURL;
+    }
+
     public function indexAction()
     {
         $this->layout('layout/adminindex');
@@ -27,7 +45,8 @@ class ErrorController extends ActionController
                 break;
         }
 
-        return $this->redirect()->toUrl('/admin/');
-        //return new ViewModel(array('message' => $error['message']));
+        return $this->redirect()->toUrl('/admin/?' . http_build_query(array(
+            'callback' => $this->getCurrentUrl()
+        )));
     }
 }

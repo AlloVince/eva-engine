@@ -10,6 +10,9 @@ class CoreController extends ActionController
     {
         $model = new ViewModel();
         $this->layout('layout/adminindex');
+        $model->setVariables(array(
+            'callback' => $this->params()->fromQuery('callback')
+        ));
         return $model;
     }
 }

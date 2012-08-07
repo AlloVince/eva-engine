@@ -52,6 +52,7 @@ $form->init(array(
                 </div>
             </div>
             <div class="form-actions">
+                <input name="callback" type="hidden" value="<?=$callback?>" />
                 <button class="btn btn-primary" type="submit">Login</button>
                 <?if($this->hasModule('User')):?>
                 <a href="<?=$this->uri('/admin/user/reset/')?>">Forget Passsword</a>

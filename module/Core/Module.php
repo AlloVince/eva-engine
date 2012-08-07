@@ -63,10 +63,10 @@ class Module
 
             /*
             $e->setError(\Core\Admin\Controller\ErrorController::ERROR_UNAUTHORIZED)
-              ->setController($errorController)
-              ->setControllerClass($errorController);
-              */
-//            $results = $event->trigger(MvcEvent::EVENT_DISPATCH_ERROR, $e);
+            ->setController($errorController)
+            ->setControllerClass($errorController);
+            */
+            //$results = $event->trigger(MvcEvent::EVENT_DISPATCH_ERROR, $e);
 
 
             /*
