@@ -26,189 +26,83 @@ use Eva\View\Model\ViewModel,
  * @package    Eva_Mvc
  * @subpackage Controller
  */
-abstract class RestfulModuleController extends \Zend\Mvc\Controller\AbstractRestfulController
+abstract class RestfulModuleController extends RestfulController
 {
-    protected $addResources = array();
-    protected $renders = array();
-    protected $restfulResource = array();
-
-    public function getAddResources()
-    {
-        return $this->addResources;    
-    }
-
-    public function getRestfulResource()
-    {
-        if($this->restfulResource) {
-            return $this->restfulResource;
-        }
-
-        $routeMatch = $this->getEvent()->getRouteMatch();
-        $moduleName = $routeMatch->getParam('module');
-        $moduleNamespace = $routeMatch->getParam('moduleNamespace');
-        $controllerName = $routeMatch->getParam('controllerName');
-        $action = $routeMatch->getParam('action');
-        $id = $routeMatch->getParam('id');
-        $request = $this->getRequest();
-        $method = strtolower($request->getMethod());
-        if(!$moduleName || !$controllerName || !$method){
-            throw new \Eva\Core\Exception\RestfulException('Restful route argument not exist');
-        }
-
-        switch($method) {
-            case 'put':
-            case 'delete':
-                break;
-            case 'post':
-                //POST method could pretend as put or delete method
-                $postParams = $request->getPost();
-                $methodRecover = isset($postParams['_method']) && $postParams['_method'] ? $postParams['_method'] : '';
-                if($methodRecover == 'put' || $methodRecover == 'delete'){
-                    $method = $methodRecover;
-                }
-                break;
-            default:
-                if($id){
-                    $method = 'get';
-                } else {
-                    $method = 'index';
-                }
-        }
-
-        $resource = '';
-        $render = $method;
-        if(true === in_array($action, $this->getAddResources())){
-            $resource = $action;
-            $render = $resource;
-        } elseif(true === in_array($id, $this->getAddResources())){
-            $resource = $id;
-            $render = $resource;
-        }
-        $render = $controllerName . '/' . $render;
-
-        $resource = $method . ucfirst($controllerName) . ucfirst($resource);
-        $function = 'rest' . ucfirst($resource);
-
-        return $this->restfulResource = array(
-            'module' => $moduleName,
-            'moduleNamespace' => $moduleNamespace,
-            'controller' => $controllerName,    
-            'method' => $method,
-            'resource' => $resource,
-            'function' => $function,
-            'render' => $render,
-        );
-    }
-
-    protected function restfulAutoRender()
-    {
-        $resource = $this->getRestfulResource();
-        $function = $resource['function'];
-        $render = $resource['render'];
-
-        if(false === method_exists($this, $function)) {
-            throw new \Eva\Core\Exception\RestfulException(sprintf('Request restful resource %s not exist', $function));
-        }
-
-        $variables = $this->$function();
-        if($variables instanceof \Zend\View\Model\ModelInterface){
-            return $variables;
-        }
-        $model = new ViewModel();
-        if($variables) {
-            $model->setVariables($variables);
-        }
-        if(isset($this->renders[$function]) && $this->renders[$function]){
-            $render = $this->renders[$function];
-        }
-        $model->setTemplate($render);
-        return $model;
-    }
-
-    public function getList()
-    {
-        return $this->restfulAutoRender();
-    }
-
-    public function get($id)
-    {
-        return $this->restfulAutoRender();
-    }
-
-    public function create($data)
-    {
-        return $this->restfulAutoRender();
-    }
-
-    public function update($id, $data)
-    {
-        return $this->restfulAutoRender();
-    }
-
-    public function delete($id)
-    {
-        return $this->restfulAutoRender();
-    }
-
-
-    public function execute(MvcEvent $e)
+    /**
+     * Handle the request
+     *
+     * @param  MvcEvent $e
+     * @return mixed
+     * @throws Exception\DomainException if no route matches in event or invalid HTTP method
+     */
+    public function onDispatch(MvcEvent $e)
     {
         $routeMatch = $e->getRouteMatch();
         if (!$routeMatch) {
-            throw new \DomainException('Missing route matches; unsure how to retrieve action');
+            /**
+             * @todo Determine requirements for when route match is missing.
+             *       Potentially allow pulling directly from request metadata?
+             */
+            throw new Exception\DomainException('Missing route matches; unsure how to retrieve action');
         }
 
         $request = $e->getRequest();
         $action  = $routeMatch->getParam('action', false);
-        if ($action) {
-            // Handle arbitrary methods, ending in Action
-            $method = static::getMethodFromAction($action);
-            if (true === method_exists($this, $method)) {
-                $return = $this->$method();
-                goto complete;
-            }
-        } 
 
-        // RESTful methods
-        switch (strtolower($request->getMethod())) {
-        case 'get':
-            if (null !== $id = $routeMatch->getParam('id')) {
-                $return = $this->get($id);
-                break;
-            }
-            if (null !== $id = $request->query()->get('id')) {
-                $return = $this->get($id);
-                break;
-            }
-            $return = $this->getList();
-            break;
-        case 'post':
-            $return = $this->create($request->getPost()->toArray());
-            break;
-        case 'put':
-            if (null === $id = $routeMatch->getParam('id')) {
-                if (!($id = $request->query()->get('id', false))) {
-                    throw new \DomainException('Missing identifier');
-                }
-            }
-            $content = $request->getContent();
-            parse_str($content, $parsedParams);
-            $return = $this->update($id, $parsedParams);
-            break;
-        case 'delete':
-            if (null === $id = $routeMatch->getParam('id')) {
-                if (!($id = $request->query()->get('id', false))) {
-                    throw new \DomainException('Missing identifier');
-                }
-            }
-            $return = $this->delete($id);
-            break;
-        default:
-            throw new \DomainException('Invalid HTTP method!');
+        //EvaEngine : Default route will certainly have action param
+        $method  = '';
+        if($action){
+            $method = static::getMethodFromAction($action);
         }
 
-        complete:
+        if ($action && method_exists($this, $method)) {
+            $return = $this->$method();
+        } else {
+            // RESTful methods
+            switch (strtolower($request->getMethod())) {
+                case 'get':
+                    if (null !== $id = $routeMatch->getParam('id')) {
+                        $action = 'get';
+                        $return = $this->get($id);
+                        break;
+                    }
+                    if (null !== $id = $request->getQuery()->get('id')) {
+                        $action = 'get';
+                        $return = $this->get($id);
+                        break;
+                    }
+                    $action = 'getList';
+                    $return = $this->getList();
+                    break;
+                case 'post':
+                    $action = 'create';
+                    $return = $this->processPostData($request);
+                    break;
+                case 'put':
+                    $action = 'update';
+                    $return = $this->processPutData($request, $routeMatch);
+                    break;
+                case 'delete':
+                    if (null === $id = $routeMatch->getParam('id')) {
+                        if (!($id = $request->getQuery()->get('id', false))) {
+                            throw new Exception\DomainException('Missing identifier');
+                        }
+                    }
+                    $action = 'delete';
+                    $return = $this->delete($id);
+                    break;
+                default:
+                    throw new Exception\DomainException('Invalid HTTP method!');
+            }
+
+            $routeMatch->setParam('action', $action);
+        }
+
+        // Emit post-dispatch signal, passing:
+        // - return from method, request, response
+        // If a listener returns a response object, return it immediately
         $e->setResult($return);
+
         return $return;
     }
 }

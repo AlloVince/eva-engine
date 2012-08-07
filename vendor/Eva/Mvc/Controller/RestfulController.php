@@ -24,8 +24,8 @@ use Eva\View\Model\ViewModel,
  */
 abstract class RestfulController extends \Zend\Mvc\Controller\AbstractRestfulController
 {
-    protected $addResources = array();
     protected $renders = array();
+    protected $addResources = array();
     protected $restfulResource = array();
 
     public function getAddResources()
@@ -39,9 +39,14 @@ abstract class RestfulController extends \Zend\Mvc\Controller\AbstractRestfulCon
             return $this->restfulResource;
         }
 
-        $moduleName = \Eva\Core\Module::getModuleName($this);
-        $controllerName = $this->getEvent()->getRouteMatch()->getParam('controller');
-        $method = strtolower($this->getRequest()->getMethod());
+        $routeMatch = $this->getEvent()->getRouteMatch();
+        $moduleName = $routeMatch->getParam('module');
+        $moduleNamespace = $routeMatch->getParam('moduleNamespace');
+        $controllerName = $routeMatch->getParam('controllerName');
+        $action = $routeMatch->getParam('action');
+        $id = $routeMatch->getParam('id');
+        $request = $this->getRequest();
+        $method = strtolower($request->getMethod());
         if(!$moduleName || !$controllerName || !$method){
             throw new \Eva\Core\Exception\RestfulException('Restful route argument not exist');
         }
@@ -52,14 +57,14 @@ abstract class RestfulController extends \Zend\Mvc\Controller\AbstractRestfulCon
                 break;
             case 'post':
                 //POST method could pretend as put or delete method
-                if($methodRecover = strtolower($this->getRequest()->getParam('_method'))
-                    && ($methodRecover == 'put' || $methodRecover == 'delete')
-                ){
+                $postParams = $request->getPost();
+                $methodRecover = isset($postParams['_method']) && $postParams['_method'] ? $postParams['_method'] : '';
+                if($methodRecover == 'put' || $methodRecover == 'delete'){
                     $method = $methodRecover;
-                    break;
                 }
+                break;
             default:
-                if($id = $this->getEvent()->getRouteMatch()->getParam('id')){
+                if($id){
                     $method = 'get';
                 } else {
                     $method = 'index';
@@ -68,7 +73,10 @@ abstract class RestfulController extends \Zend\Mvc\Controller\AbstractRestfulCon
 
         $resource = '';
         $render = $method;
-        if(true === in_array($id, $this->getAddResources())){
+        if(true === in_array($action, $this->getAddResources())){
+            $resource = $action;
+            $render = $resource;
+        } elseif(true === in_array($id, $this->getAddResources())){
             $resource = $id;
             $render = $resource;
         }
@@ -79,6 +87,7 @@ abstract class RestfulController extends \Zend\Mvc\Controller\AbstractRestfulCon
 
         return $this->restfulResource = array(
             'module' => $moduleName,
+            'moduleNamespace' => $moduleNamespace,
             'controller' => $controllerName,    
             'method' => $method,
             'resource' => $resource,
@@ -94,11 +103,14 @@ abstract class RestfulController extends \Zend\Mvc\Controller\AbstractRestfulCon
         $render = $resource['render'];
 
         if(false === method_exists($this, $function)) {
-            throw new \Eva\Core\Exception\RestfulException('Request restful resource not exist');
+            throw new \Eva\Core\Exception\RestfulException(sprintf('Request restful resource %s not exist', $function));
         }
 
-        $model = new ViewModel();
         $variables = $this->$function();
+        if($variables instanceof \Zend\View\Model\ModelInterface){
+            return $variables;
+        }
+        $model = new ViewModel();
         if($variables) {
             $model->setVariables($variables);
         }
