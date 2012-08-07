@@ -3,7 +3,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta charset="utf-8" />
-    <?=$this->headTitle()?>
+    <?=$this->_($this->headTitle())?>
 	<!--[if lt IE 9]>
 	<meta http-equiv="PRAGMA" content="NO-CACHE" />
     <script src="<?=$this->link('/lib/js/html5shiv/html5shiv.min.js')?>"></script>
@@ -98,7 +98,7 @@
                         <li>
                         <a href="<?=$this->uri('/admin/core/dashboard/')?>"><?=$this->_('Admin Panel')?></a> <span class="divider">/</span>
                         </li>
-                        <li class="active"><?=$this->textDelay('breadcrumbText')?></li>
+                        <li class="active"><?=$this->_($this->textDelay('breadcrumbText'))?></li>
                     </ul>
 
                 </div>

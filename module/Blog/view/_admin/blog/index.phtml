@@ -32,7 +32,7 @@ $lableMap = array(
                     'class' => 'span2',
                     'options' => $this->action('Blog\Api\Controller\CategoryController', 'selectAction'),
                 ), array('replace' => false, 'i18n' => false))?>
-                <button class="btn" type="submit">Filter Posts</button>
+                <button class="btn" type="submit"><?=$this->_('Filter Posts')?></button>
             </form>
         </div>
     </div>
@@ -42,7 +42,7 @@ $lableMap = array(
 <div class="row">
     <div class="span10 listing-buttons">
         <div class="btn-group pull-right">
-            <a href="<?=$this->uri('/admin/blog/create')?>" class="btn btn-info">Add New Post</a>
+            <a href="<?=$this->uri('/admin/blog/create')?>" class="btn btn-info"><?=$this->_('Add New Post')?></a>
         </div>
         <form action="<?=$this->uri('/admin/blog/multi/')?>" method="post" class="pull-left" data-multiform="post">
             <input type="hidden" name="id" class="multiform-container-main" value="" />
@@ -50,16 +50,16 @@ $lableMap = array(
             <div class="btn-group">
                 <span class="btn"><input type="checkbox" class="multiform-checker" /></span>
                 <span data-toggle="dropdown" class="btn dropdown-toggle">
-                    Status
+                    <?=$this->_('Status')?>
                     <span class="caret"></span>
                 </span>
                 <ul class="dropdown-menu">
-                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/blog/multi/status/published')?>">Published</a></li>
-                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/blog/multi/status/draft')?>">Draft</a></li>
-                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/blog/multi/status/pending')?>">Pending</a></li>
-                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/blog/multi/status/deleted')?>">Deleted</a></li>
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/blog/multi/status/published')?>"><?=$this->_('Published')?></a></li>
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/blog/multi/status/draft')?>"><?=$this->_('Draft')?></a></li>
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/blog/multi/status/pending')?>"><?=$this->_('Pending')?></a></li>
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/blog/multi/status/deleted')?>"><?=$this->_('Deleted')?></a></li>
                 </ul>
-                <a href="#" class="btn multiform-submiter" data-multiform-action="<?=$this->uri('/admin/blog/multi/reorder')?>">Re-Order</a>
+                <a href="#" class="btn multiform-submiter" data-multiform-action="<?=$this->uri('/admin/blog/multi/reorder')?>"><?=$this->_('Re-Order')?></a>
             </div>
         </form>
     </div>
@@ -69,8 +69,7 @@ $lableMap = array(
             <div class="page-header">
                 <div class="btn-group pull-right">
                     <span data-toggle="dropdown" class="btn dropdown-toggle">
-                        Order
-                        <span class="caret"></span>
+                        <?=$this->_('Order')?> <span class="caret"></span>
                     </span>
                     <ul class="dropdown-menu">
                         <li><a href="<?=$this->uri('/admin/blog/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'idasc',),));?>" class=""><i class="icon-arrow-up"></i> Id</a></li>
@@ -89,9 +88,9 @@ $lableMap = array(
                     <tr>
                         <th class="span1">
                         </th>
-                        <th>Post Name</th>
-                        <th class="span1">Order</th>
-                        <th class="actions">Actions</th>
+                        <th><?=$this->_('Post Title')?></th>
+                        <th class="span1"><?=$this->_('Order')?></th>
+                        <th class="actions"><?=$this->_('Actions')?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -103,9 +102,9 @@ $lableMap = array(
                         </td>	
                         <td>
                             <a href="<?=$this->uri('/admin/blog/' . $post['id'])?>" class="title"><?=$post['title'] ?></a>
-                            <span class="label <?=$lableMap[$post['status']]?>"><?=$post['status']?></span>
+                            <span class="label <?=$lableMap[$post['status']]?>"><?=$this->_($post['status'])?></span>
                             <?if($post['visibility'] == 'private'):?>
-                            <span class="label label-important">private</span>
+                            <span class="label label-important"><?=$this->_('private')?></span>
                             <?endif?>
                             <p>
                             <span class="meta"><?=$post['user_name'] ?> <?=$post['createTime'];?></span>
@@ -115,9 +114,9 @@ $lableMap = array(
                             <input name="order" tabindex="<?=$key+1 ?>" type="text" class="span1 multiform-item-input" size="2" maxlength="3"  data-multiform="post" data-multiform-itemid="<?=$post['id'] ?>" value="<?=$post['orderNumber'] ? $post['orderNumber'] : "0" ?>" />
                         </td>
                         <td class="actions">
-                            <a href="<?=$this->uri('/admin/blog/remove/' . $post['id'], 'c', array('c' => $this->uri('/admin/blog', array('page' => $this->page)))); ?>" class="btn btn-small btn-danger">Delete</a>
-                            <a href="<?=$this->uri('/blog/page/' . $post['urlName'])?>" class="btn btn-small">View</a>
-                            <a href="<?=$this->uri('/admin/blog/' . $post['id'])?>" class="btn btn-small">Edit</a>
+                            <a href="<?=$this->uri('/admin/blog/remove/' . $post['id'], 'c', array('c' => $this->uri('/admin/blog', array('page' => $this->page)))); ?>" class="btn btn-small btn-danger"><?=$this->_('Delete')?></a>
+                            <a href="<?=$this->uri('/blog/page/' . $post['urlName'])?>" class="btn btn-small"><?=$this->_('View')?></a>
+                            <a href="<?=$this->uri('/admin/blog/' . $post['id'])?>" class="btn btn-small"><?=$this->_('Edit')?></a>
                         </td>
                     </tr>
                     <?endforeach;?>

@@ -52,16 +52,15 @@ return array(
                 'base_dir' => EVA_ROOT_PATH . '/data/languages',
                 'pattern' => '%s/main.csv'
             )
-            /*
-            array(
-                'type' => 'phparray',
-                'base_dir' => EVA_ROOT_PATH . '/data/languages',
-                'pattern' => 'translation-%s.php'
-            )
-            */
+        ),
+        'translation_files' => array(
+            'zh_CN' => array(
+                'type' => 'csv',
+                'filename' =>  EVA_ROOT_PATH . '/data/languages/zh_CN/admin.csv',
+            ),
         ),
         'scaffold' => array(
-            'enable' => 1,
+            'enable' => 0,
             'path' => EVA_ROOT_PATH . '/data/languages/scaffold'
         ),
         /*

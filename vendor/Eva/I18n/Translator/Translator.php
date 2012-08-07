@@ -102,6 +102,7 @@ class Translator extends \Zend\I18n\Translator\Translator
         }
 
         $messages = array_unique($messages);
+        sort($messages);
         $fp = fopen($file, 'wb');
         foreach($messages as $message){
             fputcsv($fp, array($message, ''));
