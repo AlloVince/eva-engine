@@ -79,15 +79,20 @@
 
                     <ul class="nav nav-pills pull-right">
                         <li>
-                        <a href="<?=$this->uri('/')?>"><i class="icon-globe"></i> <?=$this->_('View Website')?></a>
+                        <a href="<?=$this->uri('/')?>"><i class="icon-home"></i> <?=$this->_('View Website')?></a>
                         </li>
                         <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i> Admin <b class="caret"></b>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-globe"></i> <?=$this->_('Languages')?> <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                            <!--
-                            <li class="active"><a href="form.html">Account Settings</a></li>
-                            -->
+                            <li class="divider"></li>
+                            <li><a href="<?=$this->uri('/admin/core/language/switch/en')?>">English</a></li>
+                            <li><a href="<?=$this->uri('/admin/core/language/switch/zh-CN')?>">中文</a></li>
+                        </ul>
+                        </li>
+                        <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i> Admin <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
                             <li class="divider"></li>
                             <li><a href="<?=$this->uri('/admin/core/logout/')?>"><?=$this->_('Logout')?></a></li>
                         </ul>

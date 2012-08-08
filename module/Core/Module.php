@@ -25,12 +25,26 @@ class Module
     public function onBootstrap($e)
     {
         Api::_()->setEvent($e);
+        $event = $e->getApplication()->getEventManager();
 
         if(!Api::_()->isModuleLoaded('User')){
-            $e->getApplication()->getEventManager()->attach(MvcEvent::EVENT_DISPATCH, array($this, 'authority'), 100);
+            $event->attach(MvcEvent::EVENT_DISPATCH, array($this, 'authority'), 100);
         } else {
-            $e->getApplication()->getEventManager()->attach(MvcEvent::EVENT_DISPATCH, array('User\Module', 'authority'), 100);
+            $event->attach(MvcEvent::EVENT_DISPATCH, array('User\Module', 'authority'), 100);
         }
+
+        $event->attach(MvcEvent::EVENT_DISPATCH, array($this, 'language'));
+    }
+
+    public function language($e)
+    {
+        $controller = $e->getTarget();
+        $language = $controller->cookie()->read('lang');
+
+        $config = $e->getApplication()->getConfig();
+        $config['translator']['locale'] = $language;
+        //p($e->getApplication()->getServiceManager()->setService('Configuration', $config));
+        //$e->getApplication()->setConfig($config);
     }
 
     public function authority($e)

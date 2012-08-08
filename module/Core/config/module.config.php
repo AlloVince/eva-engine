@@ -46,10 +46,19 @@ return array(
 
     'translator' => array(
         'locale' => 'zh_CN',
+        'force_locale' => '',  //force_locale will cover locale
+        'languages' => array(
+            'en', 'zh_CN'
+        ),
+        'auto_switch' => 0,
+        'enable_text_domains' => array(
+            'admin',
+        ),
         'translation_patterns' => array(
             array(
                 'type' => 'csv',
                 'base_dir' => EVA_ROOT_PATH . '/data/languages',
+                //'text_domain' => 'admin',
                 'pattern' => '%s/main.csv'
             )
         ),
@@ -57,6 +66,7 @@ return array(
             'zh_CN' => array(
                 'type' => 'csv',
                 'filename' =>  EVA_ROOT_PATH . '/data/languages/zh_CN/admin.csv',
+                //'text_domain' => 'admin',
             ),
         ),
         'scaffold' => array(
