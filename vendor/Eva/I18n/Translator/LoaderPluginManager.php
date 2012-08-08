@@ -1,11 +1,12 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
+ * EvaEngine
  *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @link      https://github.com/AlloVince/eva-engine
+ * @copyright Copyright (c) 2012 AlloVince (http://avnpc.com/)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_I18n
+ * @package   Eva_Api.php
+ * @author    AlloVince
  */
 
 namespace Eva\I18n\Translator;
@@ -19,8 +20,8 @@ use Zend\I18n\Exception;
  * Loader\LoaderInterface. Additionally, it registers a number of default
  * loaders.
  *
- * @category   Zend
- * @package    Zend_I18n
+ * @category   Eva
+ * @package    Eva_I18n
  * @subpackage Translator
  */
 class LoaderPluginManager extends \Zend\I18n\Translator\LoaderPluginManager

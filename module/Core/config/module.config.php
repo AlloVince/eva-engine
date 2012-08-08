@@ -55,20 +55,26 @@ return array(
             'admin',
         ),
         'translation_patterns' => array(
-            array(
+            'main' => array(
                 'type' => 'csv',
                 'base_dir' => EVA_ROOT_PATH . '/data/languages',
                 //'text_domain' => 'admin',
                 'pattern' => '%s/main.csv'
+            ),
+            'admin' => array(
+                'type' => 'csv',
+                'base_dir' => EVA_ROOT_PATH . '/data/languages',
+                'pattern' => '%s/admin.csv'
             )
         ),
+        /*
         'translation_files' => array(
             'zh_CN' => array(
                 'type' => 'csv',
                 'filename' =>  EVA_ROOT_PATH . '/data/languages/zh_CN/admin.csv',
-                //'text_domain' => 'admin',
             ),
         ),
+        */
         'scaffold' => array(
             'enable' => 1,
             'path' => EVA_ROOT_PATH . '/data/languages/scaffold'

@@ -40,11 +40,15 @@ class Module
     {
         $controller = $e->getTarget();
         $language = $controller->cookie()->read('lang');
-
+        if(!$language){
+            return $this;
+        }
         $config = $e->getApplication()->getConfig();
         $config['translator']['locale'] = $language;
-        //p($e->getApplication()->getServiceManager()->setService('Configuration', $config));
-        //$e->getApplication()->setConfig($config);
+        $mm = $e->getApplication()->getServiceManager()->get('ModuleManager');
+        $mm->getEvent()->getParam('configListener')->setMergedConfig($config);
+
+        return $this;
     }
 
     public function authority($e)

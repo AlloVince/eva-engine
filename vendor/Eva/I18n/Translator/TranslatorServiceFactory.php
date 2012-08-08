@@ -1,25 +1,16 @@
 <?php
 /**
- * Zend Framework
+ * EvaEngine
  *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * @category   Zend
- * @package    Zend_I18n
- * @subpackage Translator
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @link      https://github.com/AlloVince/eva-engine
+ * @copyright Copyright (c) 2012 AlloVince (http://avnpc.com/)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @package   Eva_Api.php
+ * @author    AlloVince
  */
 
 namespace Eva\I18n\Translator;
+
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -27,22 +18,24 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 /**
  * Translator.
  *
- * @category   Zend
- * @package    Zend_I18n
+ * @category   Eva
+ * @package    Eva_I18n
  * @subpackage Translator
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class TranslatorServiceFactory implements FactoryInterface
 {
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         // Configure the translator
-        $config = $serviceLocator->get('Configuration');
-        if(!isset($config['translator']) || !is_array($config['translator'])){
-            $config['translator'] = array();
-        }
-        $translator = \Eva\I18n\Translator\Translator::factory($config['translator']);
+        //$config = $serviceLocator->get('Configuration');
+        //if(!isset($config['translator']) || !is_array($config['translator'])){
+        //    $config['translator'] = array();
+        //}
+
+        //Use ModuleManager here to get changed config
+        $mm = $serviceLocator->get('ModuleManager');
+        $config = $mm->getEvent()->getParam('configListener')->getMergedConfig()->toArray();
+        $translator = Translator::factory($config['translator']);
 
         //NOTE: Zf2 i18n require Locale class installed. Here could invoid no install Locale
         if(isset($config['translator']['locale'])){

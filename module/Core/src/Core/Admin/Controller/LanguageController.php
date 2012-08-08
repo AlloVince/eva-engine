@@ -25,7 +25,6 @@ class LanguageController extends ActionController
         if($language == $defaultLanguage){
             $this->cookie()->clear('lang');
         } else {
-            Session::setSession('language', $language);
             $this->cookie()->write('lang', $language, 3600*24*365);
         }
 
