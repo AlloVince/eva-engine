@@ -60,7 +60,7 @@ return array(
             ),
         ),
         'scaffold' => array(
-            'enable' => 0,
+            'enable' => 1,
             'path' => EVA_ROOT_PATH . '/data/languages/scaffold'
         ),
         /*

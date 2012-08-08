@@ -12,12 +12,12 @@ $posts = $this->posts;
             <div class="slate clearfix">
                 <a href="<?=$this->uri('/admin/blog/')?>" class="stat-column">
                     <span class="number"><?=$this->postsCount ? $this->postsCount : '0'?></span>
-                    <span>Blog Posts</span>
+                    <span><?=$this->_('Blog Posts')?></span>
                 </a>
 
                 <a href="<?=$this->uri('/admin/file/')?>" class="stat-column">
                     <span class="number"><?=$this->filesCount ? $this->filesCount : '0'?></span>
-                    <span>Uploaded Files</span>
+                    <span><?=$this->_('Uploaded Files')?></span>
                 </a>
 
             </div>
@@ -29,7 +29,7 @@ $posts = $this->posts;
         <div class="span5">
             <div class="slate">
                 <div class="page-header">
-                    <h2><a href="" class="pull-right iconlink"><i class="icon-rss"></i></a>New Posts</h2>
+                    <h2><a href="" class="pull-right iconlink"><i class="icon-rss"></i></a><?=$this->_('New Posts')?></h2>
                 </div>
                 <table class="orders-table table">
                     <tbody>
@@ -49,7 +49,7 @@ $posts = $this->posts;
         <div class="span5">
             <div class="slate">
                 <div class="page-header">
-                    <h2><i class="icon-file pull-right"></i>Uploaded Files</h2>
+                    <h2><i class="icon-file pull-right"></i><?=$this->_('Uploaded Files')?></h2>
                 </div>
                 <table class="orders-table table">
                     <tbody>

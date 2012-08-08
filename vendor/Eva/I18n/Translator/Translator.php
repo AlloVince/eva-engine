@@ -10,6 +10,8 @@
 
 namespace Eva\I18n\Translator;
 
+use Zend\I18n\Translator\TextDomain;
+
 /**
  * Translator.
  *
@@ -131,5 +133,74 @@ class Translator extends \Zend\I18n\Translator\Translator
             return $message;
         }
         return $trdMessage;
+    }
+
+    protected function mergeMessages($textDomain, $locale, $messages)
+    {
+        if(!isset($this->messages[$textDomain][$locale])){
+            return $this->messages[$textDomain][$locale] = $messages;
+        }
+
+        $loadedMessages = $this->messages[$textDomain][$locale];
+        return $this->messages[$textDomain][$locale] = new TextDomain(array_merge((array) $loadedMessages, (array) $messages));
+    }
+
+    /**
+     * Load messages for a given language and domain.
+     *
+     * @param  string $textDomain
+     * @param  string $locale
+     * @return void
+     */
+    protected function loadMessages($textDomain, $locale)
+    {
+        if (!isset($this->messages[$textDomain])) {
+            $this->messages[$textDomain] = array();
+        }
+
+        if (null !== ($cache = $this->getCache())) {
+            $cacheId = 'Zend_I18n_Translator_Messages_' . md5($textDomain . $locale);
+
+            if (false !== ($result = $cache->getItem($cacheId))) {
+                $this->messages[$textDomain][$locale] = $result;
+                return;
+            }
+        }
+
+        // Try to load from pattern
+        if (isset($this->patterns[$textDomain])) {
+            foreach ($this->patterns[$textDomain] as $pattern) {
+                $filename = $pattern['baseDir']
+                          . '/' . sprintf($pattern['pattern'], $locale);
+                if (is_file($filename)) {
+                    $messages = $this->getPluginManager()
+                         ->get($pattern['type'])
+                         ->load($filename, $locale);
+                    //EvaEngine : add merge array
+                    $this->mergeMessages($textDomain, $locale, $messages);
+                }
+            }
+        }
+
+        // Load concrete files, may override those loaded from patterns
+        foreach (array($locale, '*') as $currentLocale) {
+            if (!isset($this->files[$textDomain][$currentLocale])) {
+                continue;
+            }
+
+            $file = $this->files[$textDomain][$currentLocale];
+            $messages = $this->getPluginManager()
+                 ->get($file['type'])
+                 ->load($file['filename'], $locale);
+            //EvaEngine : add merge array
+            $this->mergeMessages($textDomain, $locale, $messages);
+
+            unset($this->files[$textDomain][$currentLocale]);
+        }
+
+        // Cache the loaded text domain
+        if ($cache !== null) {
+            $cache->setItem($cacheId, $this->messages[$textDomain][$locale]);
+        }
     }
 }
