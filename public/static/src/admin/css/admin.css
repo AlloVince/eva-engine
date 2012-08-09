@@ -6,7 +6,7 @@
 
 h1, h2, h3, h4, h5, h6 {
 	font-weight: normal;
-	font-family: "Oxygen", sans-serif;
+	font-family: Microsoft YaHei,Trebuchet MS, Verdana, Helvetica, Arial, sans-serif;
 }
 
 /* Masthead */
@@ -23,7 +23,6 @@ h1, h2, h3, h4, h5, h6 {
 	font-weight: normal;
 	color: #FFF;
 	margin-bottom: 0;
-	font-family: "Marck Script", sans-serif;
 	margin-left: 2px;
 	background: rgba(0,0,0,0.3);
 	-webkit-border-radius: 60px;
@@ -114,7 +113,6 @@ h1, h2, h3, h4, h5, h6 {
 	padding: 0;
 	font-size: 18px;
 	color: #AAA;
-	font-family: "Oxygen", sans-serif;
 	font-weight: normal;
 }
 
@@ -174,7 +172,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .slate h2 {
 	font-weight: normal;
-	font-family: "Oxygen", sans-serif;
 	font-size: 18px;
 }
 
@@ -199,7 +196,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .stat-column span {
 	font-weight: normal;
-	font-family: "Oxygen", sans-serif;
 	font-size: 14px;
 	display: block;
 }
@@ -207,7 +203,6 @@ h1, h2, h3, h4, h5, h6 {
 .stat-column span.number {
 	font-size: 32px;
 	font-weight: normal;
-	font-family: "Oxygen", sans-serif;
 	margin: 0;
 	margin: 14px 0 10px 0;
 }
