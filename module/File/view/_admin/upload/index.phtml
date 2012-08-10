@@ -1,5 +1,5 @@
 <?
-$title = 'File Upload';
+$title = $this->_('File Upload');
 $this->headTitle($title, 'SET');
 $this->textDelay('breadcrumbText', $title);
 
@@ -18,12 +18,12 @@ $file = array();
 <input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
 <div id="file-upload-succeed" class="alert alert-success hide">
     <a href="#" data-dismiss="alert" class="close">x</a>
-    <h4 class="alert-heading">Upload Succeed</h4>
+    <h4 class="alert-heading"><?=$this->_('Upload Succeed')?></h4>
 </div>
 
 <div id="file-upload-failed" class="alert alert-error hide">
     <a href="#" data-dismiss="alert" class="close">x</a>
-    <h4 class="alert-heading">Upload Failed</h4>
+    <h4 class="alert-heading"><?=$this->_('Upload Failed')?></h4>
 </div>
 
 
@@ -36,7 +36,7 @@ $file = array();
                 <div class="page-header">
                     <?if($file):?>
                     <div class="btn-group pull-right">
-                        <a href="<?=$this->uri('/admin/file/remove/' . $file['id'], 'c', array('c' => $this->uri('/admin/file/' . $file['id']))); ?>" class="btn">Delete</a>
+                        <a href="<?=$this->uri('/admin/file/remove/' . $file['id'], 'c', array('c' => $this->uri('/admin/file/' . $file['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
                     </div>
                     <?endif?>
                     <h2><?=$title?></h2>
@@ -62,7 +62,7 @@ $file = array();
         </div>
 
         <div class="span10 listing-buttons">
-            <button class="btn btn-info btn-large">Upload</button>
+            <button class="btn btn-info btn-large"><?=$this->_('Upload')?></button>
         </div>
     </form>
 
@@ -73,7 +73,7 @@ $file = array();
                 <!-- The fileinput-button span is used to style the file input field as button -->
                 <span class="btn fileinput-button">
                     <i class="icon-plus icon-white"></i>
-                    <span>Add files...</span>
+                    <span><?=$this->_('Add files')?>...</span>
                     <input type="file" name="upload[]" multiple>
                 </span>
             </div>
@@ -81,7 +81,7 @@ $file = array();
                 <span class="btn"><input type="checkbox" class="toggle"></span>
                 <button type="reset" class="btn cancel">
                     <i class="icon-ban-circle icon-white"></i>
-                    <span>Cancel</span>
+                    <span><?=$this->_('Cancel')?></span>
                 </button>
             </div>
         </div>
@@ -98,11 +98,11 @@ $file = array();
                         <thead>
                             <tr>
                                 <th class="span1"></th>
-                                <th class="span2">Preview</th>
-                                <th>File Name</th>
-                                <th>File Size</th>
-                                <th>Upload Process</th>
-                                <th>Actions</th>
+                                <th class="span2"><?=$this->_('Preview')?></th>
+                                <th><?=$this->_('File Name')?></th>
+                                <th><?=$this->_('File Size')?></th>
+                                <th><?=$this->_('Upload Process')?></th>
+                                <th><?=$this->_('Actions')?></th>
                             </tr>
                         </thead>
                         <tbody class="files">
@@ -125,7 +125,7 @@ $file = array();
             </div>
             <button type="submit" class="btn start">
                 <i class="icon-upload icon-white"></i>
-                <span>Start upload</span>
+                <span><?=$this->_('Start upload')?></span>
             </button>
         </div>
     </form>
@@ -152,7 +152,7 @@ $file = array();
             <span class="start">
                 <button class="btn">
                     <i class="icon-upload icon-white"></i>
-                    <span>Upload</span>
+                    <span><?=$this->_('Upload')?></span>
                 </button>
             </span>
             {% } %}
@@ -160,7 +160,7 @@ $file = array();
             <span class="cancel">
                 <button class="btn">
                     <i class="icon-ban-circle icon-white"></i>
-                    <span>Cancel</span>
+                    <span><?=$this->_('Cancel')?></span>
                 </button>
             </span>
             {% } %}
@@ -189,7 +189,7 @@ $file = array();
                 <td class="error"><div class="progress progress-success" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><div class="bar" style="width:100%;"></div></div></td>
             {% } %}
             <td class="delete">
-                <a class="btn" href="<?=$this->uri('/admin/file/')?>{%=file.id%}" target="_blank">Edit</a>
+                <a class="btn" href="<?=$this->uri('/admin/file/')?>{%=file.id%}" target="_blank"><?=$this->_('Edit')?></a>
             </td>
         </tr>
     {% } %}

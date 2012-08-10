@@ -9,13 +9,29 @@ class Category extends AbstractModel
 {
     protected $itemTableName = 'Blog\DbTable\Categories';
 
-    protected $data;
-    protected $subData;
-
-    protected $user;
-
     protected $events = array(
     );
+
+
+    public function createCategory()
+    {
+        $item = $this->setItemAttrMap(array(
+            'urlName' => array('urlName', 'getUrlName'),
+            'createTime' => array('createTime', 'getCreateTime'),
+        ))->getItemArray();
+
+        $itemTable = $this->getItemTable();
+        $itemTable->create($item);
+        $itemId = $itemTable->getLastInsertValue();
+
+        if($itemId){
+            $item['id'] = $itemId;
+            $this->item = $item;
+        }
+
+        return $itemId;
+    }
+
 
     public function getCategories()
     {

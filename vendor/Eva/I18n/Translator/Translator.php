@@ -27,17 +27,31 @@ class Translator extends \Zend\I18n\Translator\Translator
     protected $scaffoldFile;
     protected $scaffoldArray;
 
+    public function getMessages()
+    {
+        return $this->messages;
+    }
+
     public static function factory($options)
     {
         $translator = parent::factory($options);
 
-        if(isset($options['scaffold']['enable']) 
-            && $options['scaffold']['enable'] 
-            && isset($options['scaffold']['path'])
-            && $options['scaffold']['path']
+        $options = $options['scaffold'];
+
+        if(isset($options['enable']) 
+            && $options['enable'] 
+            && isset($options['path'])
+            && $options['path']
         ){
-            $translator->scaffoldPath = $path = $options['scaffold']['path'];
-            $translator->scaffoldFile = $file = $translator->scaffoldPath . DIRECTORY_SEPARATOR . 'main.csv';
+            $translator->scaffoldPath = $path = $options['path'];
+
+            if(isset($options['level']) && isset($_SERVER["REQUEST_URI"])){
+                $pathArray = explode('/', $_SERVER["REQUEST_URI"]);
+                $pathArray = array_splice($pathArray, 1, (int) $options['level']);
+                $translator->scaffoldFile = $file = $translator->scaffoldPath . DIRECTORY_SEPARATOR . implode('_', $pathArray) . '.csv';
+            } else {
+                $translator->scaffoldFile = $file = $translator->scaffoldPath . DIRECTORY_SEPARATOR . 'main.csv';
+            }
 
             if(!is_writable($path)){
                 return $translator;
@@ -106,12 +120,34 @@ class Translator extends \Zend\I18n\Translator\Translator
 
         $messages = array_unique($messages);
         sort($messages);
-        $fp = fopen($file, 'wb');
+        if(file_exists($file)){
+            $fp = fopen($file, 'ab');
+        } else {
+            $fp = fopen($file, 'wb');
+            //Create UTF-8 file
+            fwrite($fp,pack("CCC",0xef,0xbb,0xbf));
+        }
         foreach($messages as $message){
             fputcsv($fp, array($message, ''));
         }
         fclose($fp);
         return true;
+    }
+
+    protected function translateTemplate($template, array $replaces = array())
+    {
+        $template = preg_replace_callback("/%(\w+?)%/", function($matches) use (&$replaces){
+            $key = $matches[1];
+            if(isset($replaces[$key])){
+                $return = $replaces[$key];
+                unset($replaces[$key]);
+                return $return;
+            }
+            if(isset($replaces[0])){
+                return array_shift($replaces);
+            }
+        }, $template);
+        return $template;
     }
 
     /**
@@ -124,6 +160,12 @@ class Translator extends \Zend\I18n\Translator\Translator
      */
     public function translate($message, $textDomain = 'default', $locale = null)
     {
+        $messageArray = array();
+        if(is_array($message)){
+            $messageArray = $message;
+            $message = array_shift($messageArray);
+        }
+
         if(true === $this->scaffold){
             $this->scaffold($message);
         }
@@ -131,8 +173,17 @@ class Translator extends \Zend\I18n\Translator\Translator
         $trMessage = strtolower($message);
         $trdMessage = parent::translate($trMessage, $textDomain, $locale);
         if($trMessage == $trdMessage){
-            return $message;
+            if($messageArray){
+                return $this->translateTemplate($message, $messageArray);
+            } else {
+                return $message;
+            }
         }
+
+        if($messageArray){
+            return $this->translateTemplate($trdMessage, $messageArray);
+        }
+
         return $trdMessage;
     }
 

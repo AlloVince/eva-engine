@@ -33,7 +33,7 @@ class FileController extends RestfulModuleController
                         'name' => $fileinfo['originalName'],
                         'size' => (int)$fileinfo['fileSize'],
                         'url' => $fileinfo['Url'],
-                        'thumbnail_url' => $fileinfo['Url'],
+                        'thumbnail_url' => $fileinfo['Thumb'],
                     );
                     $response = array(
                         $file

@@ -1,0 +1,26 @@
+<? 
+$title = 'Csv Merger';
+$this->headTitle($title, 'SET');
+?>
+<header class="page-header">
+<h2 class="">Csv Merger</h2>
+</header>
+
+<div class="btn-toolbar">
+    <div class="btn-group">
+        <span class="btn code-format" onclick="formatCode()"><i class="icon-ok"></i></span>
+    </div>
+</div>
+
+<textarea id="form-code" class="span10 editor-code" rows="20" data-ui='{"mode":"javascript", "lineNumbers":true, "fontsize":"12px"}'><?=$this->csv?></textarea>
+</textarea>
+<script>
+    function formatCode(){
+            var editor = $("#form-code").data("eva-ui-obj");
+            eva.loader(eva.s('/lib/js/codemirror/lib/util/formatting.js'), function(){
+                    CodeMirror.commands["selectAll"](editor);
+                    editor.autoFormatRange(editor.getCursor(true), editor.getCursor(false));
+            });
+    }
+</script>
+

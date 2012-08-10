@@ -1,7 +1,7 @@
 <?
-$title = 'Category List';
+$title = $this->_('Category List');
 $this->headTitle($title, 'SET');
-$this->textDelay('breadcrumbText', 'Category List');
+$this->textDelay('breadcrumbText', $title);
 if($this->form){
 	$form = $this->form;
 } else {
@@ -18,14 +18,14 @@ $form->init(array(
 <div class="row">
     <div class="span10 listing-buttons">
         <div class="btn-group pull-right">
-            <a href="<?=$this->uri('/admin/blog/category/create')?>" class="btn btn-info">Add New Category</a>
+            <a href="<?=$this->uri('/admin/blog/category/create')?>" class="btn btn-info"><?=$this->_('Add New Category')?></a>
         </div>
         <form action="<?=$this->uri('/admin/blog/multi/')?>" method="post" class="pull-left" data-multiform="post">
             <input type="hidden" name="id" class="multiform-container-main" value="" />
             <input type="hidden" name="order" class="multiform-container" value="" />
             <div class="btn-group">
                 <span class="btn"><input type="checkbox" class="multiform-checker" /></span>
-                <a href="#" class="btn multiform-submiter" data-multiform-action="<?=$this->uri('/admin/blog/categorymulti/reorder')?>">Re-Order</a>
+                <a href="#" class="btn multiform-submiter" data-multiform-action="<?=$this->uri('/admin/blog/categorymulti/reorder')?>"><?=$this->_('Re-Order')?></a>
             </div>
         </form>
     </div>
@@ -35,16 +35,16 @@ $form->init(array(
             <div class="page-header">
                 <div class="btn-group pull-right">
                     <span data-toggle="dropdown" class="btn dropdown-toggle">
-                        Order
-                        <span class="caret"></span>
+                        <?=$this->_('Order')?><span class="caret"></span>
                     </span>
                     <ul class="dropdown-menu">
-                        <li><a href="<?=$this->uri('/admin/blog/category/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'idasc',),));?>" class=""><i class="icon-arrow-up"></i> Id</a></li>
-                        <li><a href="<?=$this->uri('/admin/blog/category/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'iddesc',),));?>" class=""><i class="icon-arrow-down"></i> Id</a></li>
-                        <li><a href="<?=$this->uri('/admin/blog/category/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'titleasc',),));?>" class=""><i class="icon-arrow-up"></i> Title</a></li>
-                        <li><a href="<?=$this->uri('/admin/blog/category/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'titledesc',),));?>" class=""><i class="icon-arrow-down"></i> Title</a></li>
-                        <li><a href="<?=$this->uri('/admin/blog/category/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'timeasc',),));?>" class=""><i class="icon-arrow-up"></i> Time</a></li>
-                        <li><a href="<?=$this->uri('/admin/blog/category/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'timedesc',),));?>" class=""><i class="icon-arrow-down"></i> Time</a></li>
+                        <li><a href="<?=$this->uri('/admin/blog/category/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'idasc',),));?>" class=""><i class="icon-arrow-up"></i> <?=$this->_('Id')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/blog/category/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'iddesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Id')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/blog/category/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'titleasc',),));?>" class=""><i class="icon-arrow-up"></i> <?=$this->_('Title')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/blog/category/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'titledesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Title')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/blog/category/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'timeasc',),));?>" class=""><i class="icon-arrow-up"></i> <?=$this->_('Time')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/blog/category/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'timedesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Time')?></a></li>
+
                     </ul>
                 </div>
                 <h2><?=$title?></h2>
@@ -55,9 +55,9 @@ $form->init(array(
                     <tr>
                         <th class="span1">
                         </th>
-                        <th>Category Name</th>
-                        <th class="span1">Order</th>
-                        <th class="actions">Actions</th>
+                        <th><?=$this->_('Category Name')?></th>
+                        <th class="span1"><?=$this->_('Order')?></th>
+                        <th class="actions"><?=$this->_('Actions')?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -80,8 +80,9 @@ $form->init(array(
                             <input name="order" tabindex="<?=$key+1 ?>" type="text" class="span1 multiform-item-input" size="2" maxlength="3"  data-multiform="post" data-multiform-itemid="<?=$category['id'] ?>" value="<?=$category['orderNumber'] ? $category['orderNumber'] : "0" ?>" />
                         </td>
                         <td class="actions">
-                            <a href="<?=$this->uri('/admin/blog/category/remove/' . $category['id'], 'c', array('c' => $this->uri('/admin/blog/category', array('page' => $this->page)))); ?>" class="btn btn-small btn-danger">Delete</a>
-                            <a href="<?=$this->uri('/admin/blog/category/' . $category['id'])?>" class="btn btn-small">Edit</a>
+                            <a href="<?=$this->uri('/admin/blog/category/remove/' . $category['id'], 'c', array('c' => $this->uri('/admin/blog/category', array('page' => $this->page)))); ?>" class="btn btn-small btn-danger"><?=$this->_('Delete')?></a>
+                            <a href="<?=$this->uri('/admin/blog/?category=' . $category['id'])?>" class="btn btn-small"><?=$this->_('Search Posts')?></a>
+                            <a href="<?=$this->uri('/admin/blog/category/' . $category['id'])?>" class="btn btn-small"><?=$this->_('Edit')?></a>
                         </td>
                     </tr>
                     <?endforeach;?>

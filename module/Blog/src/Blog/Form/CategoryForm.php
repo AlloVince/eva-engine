@@ -32,7 +32,7 @@ class CategoryForm extends Form
             'name' => 'urlName',
             'attributes' => array (
                 'type' => 'text',
-                'label' => 'Url Name',
+                'label' => 'Category Url',
                 'value' => '',
             ),
         ),

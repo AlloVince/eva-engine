@@ -1,4 +1,4 @@
-﻿Admin Panel,管理面板
+﻿"Admin Panel",管理面板
 Blog,博客
 Comments,评论
 Dashboard,信息面板
@@ -10,7 +10,7 @@ File Upload,文件上传
 Keyword,关键词
 Logout,登出
 Order,排序
-Page Categories,文章分类
+Page Categories,文章目录
 Page Tags,文章标签
 Pages,文章页面
 Password,密码
@@ -25,3 +25,14 @@ Login,登录
 User Name,用户名
 Admin Login,管理员登录
 Languages,语言
+View,访问
+Delete,删除
+Save,保存
+Edit,编辑
+Title,标题
+Upload,上传
+Cancel,取消
+Preview,预览
+Status,状态
+Actions,操作
+User,用户

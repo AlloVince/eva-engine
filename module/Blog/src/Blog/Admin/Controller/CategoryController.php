@@ -53,9 +53,6 @@ class CategoryController extends RestfulModuleController
 
     public function restGetCategoryCreate()
     {
-        return array(
-            'title' => 'Test',
-        );
     }
 
     public function restGetCategory()
@@ -89,6 +86,7 @@ class CategoryController extends RestfulModuleController
         
         $form->setData($categoryData)->enableFilters();
         if ($form->isValid()) {
+<<<<<<< HEAD
             $categoryData = $form->getData();
             $categoryData = $form->fieldsMap($categoryData, true);
             $categoryData['createTime'] = isset($categoryData['createTime']) ? $categoryData['createTime'] : \Eva\Date\Date::getNow();
@@ -100,6 +98,15 @@ class CategoryController extends RestfulModuleController
             $categoryId = $tree->insertNode($categoryData);
             
             $this->redirect()->toUrl('/admin/blog/category/' . $categoryId);
+=======
+
+            $postData = $form->getData();
+            $itemModel = Api::_()->getModel('Blog\Model\Category');
+            $postData = $form->fieldsMap($postData, true);
+            $itemId = $itemModel->setItem($postData)->createCategory();
+            $this->flashMessenger()->addMessage('category-create-succeed');
+            $this->redirect()->toUrl('/admin/blog/category/' . $itemId);
+>>>>>>> 8e5c63161f8e4146ec415f935d324455f40096c7
 
         } else {
 
@@ -108,7 +115,7 @@ class CategoryController extends RestfulModuleController
 
         return array(
             'form' => $form,
-            'category' => $categoryData,
+            'category' => $postData,
         );
     }
 

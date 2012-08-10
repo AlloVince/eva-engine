@@ -77,6 +77,7 @@ return array(
         */
         'scaffold' => array(
             'enable' => 1,
+            'level' => 2,
             'path' => EVA_ROOT_PATH . '/data/languages/scaffold'
         ),
         /*

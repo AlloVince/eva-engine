@@ -1,7 +1,7 @@
 <?
-$title = 'Post List';
+$title = $this->_('Post List');
 $this->headTitle($title, 'SET');
-$this->textDelay('breadcrumbText', 'Post List');
+$this->textDelay('breadcrumbText', $title);
 if($this->form){
 	$form = $this->form;
 } else {
@@ -72,12 +72,12 @@ $lableMap = array(
                         <?=$this->_('Order')?> <span class="caret"></span>
                     </span>
                     <ul class="dropdown-menu">
-                        <li><a href="<?=$this->uri('/admin/blog/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'idasc',),));?>" class=""><i class="icon-arrow-up"></i> Id</a></li>
-                        <li><a href="<?=$this->uri('/admin/blog/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'iddesc',),));?>" class=""><i class="icon-arrow-down"></i> Id</a></li>
-                        <li><a href="<?=$this->uri('/admin/blog/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'titleasc',),));?>" class=""><i class="icon-arrow-up"></i> Title</a></li>
-                        <li><a href="<?=$this->uri('/admin/blog/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'titledesc',),));?>" class=""><i class="icon-arrow-down"></i> Title</a></li>
-                        <li><a href="<?=$this->uri('/admin/blog/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'timeasc',),));?>" class=""><i class="icon-arrow-up"></i> Time</a></li>
-                        <li><a href="<?=$this->uri('/admin/blog/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'timedesc',),));?>" class=""><i class="icon-arrow-down"></i> Time</a></li>
+                        <li><a href="<?=$this->uri('/admin/blog/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'idasc',),));?>" class=""><i class="icon-arrow-up"></i> <?=$this->_('Id')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/blog/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'iddesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Id')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/blog/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'titleasc',),));?>" class=""><i class="icon-arrow-up"></i> <?=$this->_('Title')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/blog/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'titledesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Title')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/blog/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'timeasc',),));?>" class=""><i class="icon-arrow-up"></i> <?=$this->_('Time')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/blog/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'timedesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Time')?></a></li>
                     </ul>
                 </div>
                 <h2><?=$title?></h2>

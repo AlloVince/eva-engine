@@ -1,11 +1,11 @@
 <? 
-$title = 'Blog Posts ';
+$title = $this->_('Blog Posts');
 $this->headTitle($title, 'SET');
 ?>
 <div class="container">
 
 	<header class="page-header">
-	<h2 class="">Blog Posts</h2>
+    <h2 class=""><?=$title?></h2>
 	</header>
 
 	<?if($this->posts):?>
@@ -16,7 +16,7 @@ $this->headTitle($title, 'SET');
 	</div>
 	<?endforeach;?>
 	<?else:?>
-	<p>No blog post found.</p>
+    <p><?=$this->_('No blog post found')?></p>
 	<?endif;?>
 
 </div>
