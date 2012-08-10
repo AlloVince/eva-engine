@@ -46,17 +46,17 @@ $form->init(array(
 <input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
 <div id="post-create-succeed" class="alert alert-success hide">
     <a href="#" data-dismiss="alert" class="close">x</a>
-    <h4 class="alert-heading">New Post Created</h4>
+    <h4 class="alert-heading"><?=$this->_('New Post Created')?></h4>
 </div>
 
 <div id="post-edit-succeed" class="alert alert-success hide">
     <a href="#" data-dismiss="alert" class="close">x</a>
-    <h4 class="alert-heading">Post Edit Succeed</h4>
+    <h4 class="alert-heading"><?=$this->_('Post Edit Succeed')?></h4>
 </div>
 
 <div id="post-edit-failed" class="alert alert-error hide">
     <a href="#" data-dismiss="alert" class="close">x</a>
-    <h4 class="alert-heading">Post Edit Failed</h4>
+    <h4 class="alert-heading"><?=$this->_('Post Edit Failed')?></h4>
 </div>
 
 

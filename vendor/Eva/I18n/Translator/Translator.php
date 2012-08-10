@@ -173,7 +173,11 @@ class Translator extends \Zend\I18n\Translator\Translator
         $trMessage = strtolower($message);
         $trdMessage = parent::translate($trMessage, $textDomain, $locale);
         if($trMessage == $trdMessage){
-            return $message;
+            if($messageArray){
+                return $this->translateTemplate($message, $messageArray);
+            } else {
+                return $message;
+            }
         }
 
         if($messageArray){

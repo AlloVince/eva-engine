@@ -1,7 +1,7 @@
 <?
-$title = 'File Edit';
+$title = $this->_('Edit File');
 $this->headTitle($title, 'SET');
-$this->textDelay('breadcrumbText', 'File Edit');
+$this->textDelay('breadcrumbText', $title);
 
 if($this->form){
 	$form = $this->form;
@@ -23,8 +23,8 @@ $form->init(array(
             <div class="slate">
                 <div class="page-header">
                     <div class="btn-group pull-right">
-                        <a href="<?=$file['Url']?>" class="btn">Download File</a>
-                        <a href="<?=$this->uri('/admin/file/remove/' . $file['id'], 'c', array('c' => $this->uri('/admin/file/' . $file['id']))); ?>" class="btn">Delete</a>
+                        <a href="<?=$file['Url']?>" class="btn"><?=$this->_('Download File')?></a>
+                        <a href="<?=$this->uri('/admin/file/remove/' . $file['id'], 'c', array('c' => $this->uri('/admin/file/' . $file['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
                     </div>
                     <h2><?=$title?></h2>
                 </div>
@@ -34,7 +34,7 @@ $form->init(array(
         <div class="span5">
             <div class="slate">
                 <div class="page-header">
-                    <h3>Edit File Info</h3>
+                    <h3><?=$this->_('Edit File Info')?></h3>
                 </div>
                 <fieldset class="form-horizontal">
 
@@ -61,7 +61,7 @@ $form->init(array(
                     </div>
 
                     <div class="form-actions">
-                        <button class="btn btn-info btn-large">Save</button>
+                        <button class="btn btn-info btn-large"><?=$this->_('Save')?></button>
                     </div>
                 </fieldset>
             </div>
@@ -70,21 +70,21 @@ $form->init(array(
         <div class="span5">
             <div class="slate">
                 <div class="page-header">
-                    <h3>File Info</h3>
+                    <h3><?=$this->_('File Info')?></h3>
                 </div>
                 <dl class="well dl-horizontal">
-                    <dt>File Original Name</dt>
+                    <dt><?=$this->_('Original Name')?>:</dt>
                     <dd><?=$file['originalName']?></dd>
-                    <dt>File Size:</dt>
+                    <dt><?=$this->_('File Size')?>:</dt>
                     <dd><?=$file['ReadableFileSize']?></dd>
-                    <dt>File Hash:</dt>
+                    <dt><?=$this->_('File Hash')?>:</dt>
                     <dd><?=$file['fileHash']?></dd>
-                    <dt>File Upload Time:</dt>
+                    <dt><?=$this->_('File Upload Time')?>:</dt>
                     <dd><?=$file['createTime']?></dd>
                     <?if($file['isImage']):?>
-                    <dt>Image Width:</dt>
+                    <dt><?=$this->_('Image Width')?>:</dt>
                     <dd><?=$file['imageWidth']?> px</dd>
-                    <dt>Image Height:</dt>
+                    <dt><?=$this->_('Image Height')?>:</dt>
                     <dd><?=$file['imageHeight']?> px</dd>
                     <?endif?>
                 </dl>
@@ -96,14 +96,14 @@ $form->init(array(
     <div class="span10">
         <div class="slate">
             <div class="page-header">
-                <h2>Thumbnail</h2>
+                <h2><?=$this->_('Thumbnail')?></h2>
             </div>
             <fieldset class="">
                 <div class="control-group">
-                    <label class="control-label">Thumbnail Url</label>
+                    <label class="control-label"><?=$this->_('Thumbnail Url')?></label>
                     <div class="controls">
                         <div class="input-append">
-                            <input type="text" value="<?=$file['Thumb']?>" class="span3" /><a href="<?=$file['Thumb']?>" class="btn" target="blank">Open</a><a href="<?=$file['Thumb']?>" class="btn" target="blank">Copy</a>
+                            <input type="text" value="<?=$file['Thumb']?>" class="span3" /><a href="<?=$file['Thumb']?>" class="btn" target="blank"><?=$this->_('Open')?></a><a href="<?=$file['Thumb']?>" class="btn" target="blank"><?=$this->_('Copy')?></a>
                         </div>
                     </div>
                 </div>

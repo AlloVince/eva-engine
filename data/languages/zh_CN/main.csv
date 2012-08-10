@@ -42,7 +42,7 @@ Open,打开
 "Post Setting",文章设置
 "Post Status",文章状态
 "Post Title",文章标题
-"Post Url",文章网址
+"Post Url",文章URL
 "SEO Setting",SEO设置
 "Save As Draft",存为草稿
 "Select Category",选择目录
@@ -57,3 +57,25 @@ To,到
 "Upload Process",上传进度
 "Upload Succeed",上传成功
 Visibility,可见性
+﻿"Add New Category",添加新目录
+"Category Name",目录名称
+"Category Url",目录URL
+"No input will create a random url",无输入则自动生成随机URL
+"Create Category",新建目录
+"Category %name% will be deleted, are you sure?",目录%name%将会被删除，确定吗？
+Copy,复制
+"Delete Category",删除目录
+"Download File",下载文件
+"Edit Category",编辑目录
+"Edit File",编辑文件
+"Edit File Info",编辑文件信息
+"File Hash",文件哈希值
+"File Info",文件信息
+"File Upload Time",文件上传时间
+"Go Back",返回
+"New Post Created",文章创建成功
+"Post Edit Failed",文章创建失败
+"Post Edit Succeed",文件编辑成功
+Thumbnail,缩略图
+"Thumbnail Url",缩略图链接
+"Search Posts",搜索文章

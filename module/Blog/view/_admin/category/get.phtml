@@ -1,6 +1,7 @@
 <?
 $category = $this->category;
 $title = $category['id'] ? 'Edit Category' : 'Create Category';
+$title = $this->_($title);
 $method = $category['id'] ? 'put' : 'post';
 $this->headTitle($title, 'SET');
 $this->textDelay('breadcrumbText', $title);
@@ -25,7 +26,7 @@ $form->init(array(
                 <div class="page-header">
                     <?if($category):?>
                     <div class="btn-group pull-right">
-                        <a href="<?=$this->uri('/admin/blog/category/create')?>" class="btn"><?=$this->_('Create')?></a>
+                        <a href="<?=$this->uri('/admin/blog/category/create')?>" class="btn"><?=$this->_('Create Category')?></a>
                         <a href="<?=$this->uri('/admin/blog/category/remove/' . $category['id'], 'c', array('c' => $this->uri('/admin/category/' . $category['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
                     </div>
                     <?endif?>
