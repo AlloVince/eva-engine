@@ -27,6 +27,11 @@ class Translator extends \Zend\I18n\Translator\Translator
     protected $scaffoldFile;
     protected $scaffoldArray;
 
+    public function getMessages()
+    {
+        return $this->messages;
+    }
+
     public static function factory($options)
     {
         $translator = parent::factory($options);
