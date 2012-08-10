@@ -88,9 +88,19 @@ $form->init(array(
                     <dd><?=$file['imageHeight']?> px</dd>
                     <?endif?>
                 </dl>
-
+                <?if($file['isImage']):?>
+                <fieldset class="">
+                    <div class="control-group">
+                        <label class="control-label">Thumbnail Url</label>
+                        <div class="controls">
+                            <div class="input-append">
+                                <input type="text" value="<?=$file['Thumb']?>" class="span3" /><a href="<?=$file['Thumb']?>" class="btn" target="blank">Open</a><a href="<?=$file['Thumb']?>" class="btn" target="blank">Copy</a>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <?endif?>
             </div>
         </div><!--span5 end-->
-
     </form>
 </div><!--row end-->

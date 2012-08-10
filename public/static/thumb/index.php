@@ -9,7 +9,7 @@
  * @author    AlloVince
  */
 
-require_once 'EvaCloudImage.php';
+require_once __DIR__ . '/../../../vendor/EvaCloudImage/EvaCloudImage.php';
 error_reporting(E_ALL);
 
 // Check php version

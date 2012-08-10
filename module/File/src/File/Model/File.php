@@ -73,6 +73,7 @@ class File extends AbstractModel
         if($item) {
             $this->item = $item = $this->setItemAttrMap(array(
                 'Url' => array('configKey', 'getUrl'),
+                'Thumb' => array('configKey', 'getThumb'),
                 'ReadableFileSize' => array('fileSize', 'getReadableFileSize'),
                 'description' => array('description', 'getDescription'),
             ))->getItemArray();

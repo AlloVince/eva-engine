@@ -1,5 +1,5 @@
 *
 !.htaccess
 !index.php
-!config.php
+!config.inc.php
 !.gitignore

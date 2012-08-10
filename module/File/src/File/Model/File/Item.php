@@ -54,6 +54,19 @@ class Item extends AbstractItem
         return $url;
     }
 
+    public function getThumb()
+    {
+        $item = $this->item;
+        $configKey = $item['configKey'] ? $item['configKey'] : 'default';
+        $config = Api::_()->getConfig();
+        if(!isset($config['upload']['storage'][$configKey]['thumburl'])){
+            return '';
+        }
+
+        $thumb = $config['upload']['storage'][$configKey]['thumburl'] .  str_replace(array('/', '\\'), '/', $item['filePath']) . '/' . $item['fileName'];
+        return $thumb;
+    }
+
     public function getConfigKey()
     {
         return $this->model->getConfigKey();
