@@ -28,10 +28,20 @@ class CategoryController extends RestfulModuleController
 
         $form = Api::_()->getForm('Blog\Form\CategoryForm');
         $selectQuery = $form->fieldsMap($query, true);
-        
+       
+        /* 
         $categoryModel = Api::_()->getModel('Blog\Model\Category');
         $categories = $categoryModel->setItemListParams($selectQuery)->getCategories();
         $paginator = $categoryModel->getPaginator();
+        */
+        
+        $paginator = null;
+
+        $tree = new \Core\Tree\Tree('BinaryTreeDb',false,
+            array('dbTable' => 'Blog\DbTable\Categories')
+        );
+
+        $categories = $tree->getTree();
 
         return array(
             'form' => $form,
@@ -40,14 +50,14 @@ class CategoryController extends RestfulModuleController
             'paginator' => $paginator,
         );
     }
-    
+
     public function restGetCategoryCreate()
     {
         return array(
             'title' => 'Test',
         );
     }
-    
+
     public function restGetCategory()
     {
         $id = (int)$this->getEvent()->getRouteMatch()->getParam('id');
@@ -58,7 +68,7 @@ class CategoryController extends RestfulModuleController
             'category' => $categoryinfo,
         );
     }
-    
+
     public function restGetCategoryRemove()
     {
         $id = (int)$this->getEvent()->getRouteMatch()->getParam('id');
@@ -70,22 +80,25 @@ class CategoryController extends RestfulModuleController
             'callback' => $this->getRequest()->getQuery()->get('callback'),
         );
     }
-    
+
     public function restPostCategory()
     {
         $request = $this->getRequest();
         $categoryData = $request->getPost();
         $form = new Form\CategoryForm();
-
+        
         $form->setData($categoryData)->enableFilters();
         if ($form->isValid()) {
-
             $categoryData = $form->getData();
-            $categoryDb = Api::_()->getDbTable('Blog\DbTable\Categories');
             $categoryData = $form->fieldsMap($categoryData, true);
-            $categoryData['createTime'] = $categoryData['createTime'] ? $categoryData['createTime'] : \Eva\Date\Date::getNow();
-            $categoryDb->create($categoryData);
-            $categoryId = $categoryDb->getLastInsertValue();
+            $categoryData['createTime'] = isset($categoryData['createTime']) ? $categoryData['createTime'] : \Eva\Date\Date::getNow();
+
+            $tree = new \Core\Tree\Tree('BinaryTreeDb',false,
+                array('dbTable' => 'Blog\DbTable\Categories')
+            );
+
+            $categoryId = $tree->insertNode($categoryData);
+            
             $this->redirect()->toUrl('/admin/blog/category/' . $categoryId);
 
         } else {
@@ -105,13 +118,21 @@ class CategoryController extends RestfulModuleController
         $categoryData = $request->getPost();
         $form = new Form\CategoryEditForm();
         $form->init();
-        
+
         $form->setData($categoryData)->enableFilters();
         if ($form->isValid()) {
 
             $categoryData = $form->getData();
             $categoryDb = Api::_()->getDbTable('Blog\DbTable\Categories');
             $categoryData = $form->fieldsMap($categoryData, true);
+            
+            $tree = new \Core\Tree\Tree('BinaryTreeDb',false,
+                array('dbTable' => 'Blog\DbTable\Categories')
+            );
+
+            $categoryId = $tree->updateNode($categoryData);
+
+
             $categoryDb->where(array('id' => $categoryData['id']))->save($categoryData);
             $this->redirect()->toUrl('/admin/blog/category/' . $categoryData['id']);
 
@@ -131,7 +152,7 @@ class CategoryController extends RestfulModuleController
         $request = $this->getRequest();
         $postData = $request->getPost();
         $callback = $request->getPost()->get('callback');
-        
+
         $form = new Form\CategoryDeleteForm();
         $form->enableFilters()->setData($postData);
         if ($form->isValid()) {
@@ -139,8 +160,14 @@ class CategoryController extends RestfulModuleController
             $categoryData = $form->getData();
             $categoryTable = Api::_()->getDbTable('Blog\DbTable\Categories');
 
-            $categoryTable->where("id = {$categoryData['id']}")->remove();
+            $categoryData = $categoryTable->where("id = {$categoryData['id']}")->find('one');
+            
+            $tree = new \Core\Tree\Tree('BinaryTreeDb',false,
+                array('dbTable' => 'Blog\DbTable\Categories')
+            );
 
+            $tree->deleteNode($categoryData);
+            
             if($callback){
                 $this->redirect()->toUrl($callback);
             }

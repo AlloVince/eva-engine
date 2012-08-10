@@ -38,6 +38,15 @@ $form->init(array(
                             <div class="help-block"><?=$form->helper('categoryName', 'formElementErrors')?></div>
                         </div>
                     </div>
+                    <div class="control-group <?=$form->isError('parentId') ? 'error' : '';?>">
+                        <?=$form->helper('parentId', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('parentId', 'formSelect', array(
+                                'options' => $this->action('Blog\Api\Controller\CategoryController', 'selectAction'),
+                            ), array('replace' => false, 'i18n' => false))?>
+                            <div class="help-block"><?=$form->helper('parentId', 'formElementErrors')?></div>
+                        </div>
+                    </div>
                     <div class="control-group <?=$form->isError('urlName') ? 'error' : '';?>">
                         <?=$form->helper('urlName', 'label', array('class' => 'control-label'))?>
                         <div class="controls">

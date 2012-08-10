@@ -68,6 +68,9 @@ $form->init(array(
                             <input name="id" type="checkbox" class="multiform-item-checkbox"  data-multiform="post" data-multiform-itemid="<?=$category['id'] ?>" value="<?=$category['id'] ?>" />
                         </td>	
                         <td>
+                               <?if($category['level'] > 1) {
+			                        echo str_repeat("&nbsp;&nbsp;&nbsp;",$category['level']).'|_';
+			                    }?>
                             <a href="<?=$this->uri('/admin/blog/category/' . $category['id'])?>" class="title"><?=$category['categoryName'] ?></a>
                             <p>
                             <span class="meta"><?=$category['urlName'] ?> <?=$category['createTime'];?></span>

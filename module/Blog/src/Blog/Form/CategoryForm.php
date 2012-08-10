@@ -36,6 +36,20 @@ class CategoryForm extends Form
                 'value' => '',
             ),
         ),
+        'parentId' => array (
+            'name' => 'parentId',
+            'attributes' => array (
+                'type' => 'text',
+                'label' => 'Parent Id',
+                'options' => array(
+                    array(
+                        'label' => 'Select Parent',
+                        'value' => '',
+                    ),  
+                ),
+                'value' => '',
+            ),
+        ),
         'description' => array (
             'name' => 'description',
             'attributes' => array (
@@ -113,6 +127,14 @@ class CategoryForm extends Form
                         'max' => '100',
                     ),
                 ),
+            ),
+        ),
+        'parentId' => array (
+            'name' => 'parentId',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
             ),
         ),
         'description' => array (
