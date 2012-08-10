@@ -88,19 +88,28 @@ $form->init(array(
                     <dd><?=$file['imageHeight']?> px</dd>
                     <?endif?>
                 </dl>
-                <?if($file['isImage']):?>
-                <fieldset class="">
-                    <div class="control-group">
-                        <label class="control-label">Thumbnail Url</label>
-                        <div class="controls">
-                            <div class="input-append">
-                                <input type="text" value="<?=$file['Thumb']?>" class="span3" /><a href="<?=$file['Thumb']?>" class="btn" target="blank">Open</a><a href="<?=$file['Thumb']?>" class="btn" target="blank">Copy</a>
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
-                <?endif?>
             </div>
         </div><!--span5 end-->
     </form>
+
+    <?if($file['isImage']):?>
+    <div class="span10">
+        <div class="slate">
+            <div class="page-header">
+                <h2>Thumbnail</h2>
+            </div>
+            <fieldset class="">
+                <div class="control-group">
+                    <label class="control-label">Thumbnail Url</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <input type="text" value="<?=$file['Thumb']?>" class="span3" /><a href="<?=$file['Thumb']?>" class="btn" target="blank">Open</a><a href="<?=$file['Thumb']?>" class="btn" target="blank">Copy</a>
+                        </div>
+                    </div>
+                </div>
+                <div><img src="<?=$this->thumb($file['Thumb'], array('w_100'))?>" alt="" /></div>
+            </fieldset>
+        </div>
+    </div><!--span10 end-->
+    <?endif?>
 </div><!--row end-->
