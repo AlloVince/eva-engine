@@ -132,7 +132,7 @@ function getFileTypeIcon($ext)
 
                         <td>
                             <a href="<?=$this->uri('/admin/file/' . $file['id'])?>" class="title"><?=$file['title'] ?></a>
-                            <span class="label <?=$lableMap[$file['status']]?>"><?=$file['status']?></span>
+                            <span class="label <?=$lableMap[$file['status']]?>"><?=$this->_($file['status'])?></span>
                             <span class="label"><?=$file['fileExtension']?></span>
                             <p>
                             <span class="meta"><?=$file['user_name'] ?> <?=$file['createTime'];?></span>
