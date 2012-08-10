@@ -25,7 +25,8 @@ $form->init(array(
                 <div class="page-header">
                     <?if($category):?>
                     <div class="btn-group pull-right">
-                        <a href="<?=$this->uri('/admin/blog/category/create')?>" class="btn">Create New</a>
+                        <a href="<?=$this->uri('/admin/blog/category/create')?>" class="btn"><?=$this->_('Create')?></a>
+                        <a href="<?=$this->uri('/admin/blog/category/remove/' . $category['id'], 'c', array('c' => $this->uri('/admin/category/' . $category['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
                     </div>
                     <?endif?>
                     <h2><?=$title?></h2>
@@ -38,13 +39,18 @@ $form->init(array(
                             <div class="help-block"><?=$form->helper('categoryName', 'formElementErrors')?></div>
                         </div>
                     </div>
+
                     <div class="control-group <?=$form->isError('urlName') ? 'error' : '';?>">
                         <?=$form->helper('urlName', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper('urlName', array('class' => 'span5'))?>        
+                            <div class="input-prepend input-append">
+                                <span class="add-on"><?=$this->serverUrl() . '/category/'?></span><?=$form->helper('urlName', array('class' => 'span6'))?><span class="add-on">/</span>
+                            </div>
+                            <div class="help-block"><?=$this->_('No input will create a random url')?></div>
                             <div class="help-block"><?=$form->helper('urlName', 'formElementErrors')?></div>
                         </div>
                     </div>
+
                     <div class="control-group <?=$form->isError('description') ? 'error' : '';?>">
                         <?=$form->helper('description', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
@@ -57,7 +63,7 @@ $form->init(array(
         </div><!--span10 end-->
 
         <div class="span10 listing-buttons">
-            <button class="btn btn-info btn-large">Save</button>
+            <button class="btn btn-info btn-large"><?=$this->_('Save')?></button>
         </div>
     </form>
 </div>

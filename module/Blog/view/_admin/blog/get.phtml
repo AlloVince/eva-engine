@@ -1,6 +1,7 @@
 <?
 $post = $this->post;
 $title = $post['id'] ? 'Edit Post' : 'Create Post';
+$title = $this->_($title);
 $method = $post['id'] ? 'put' : 'post';
 $this->headTitle($title, 'SET');
 $this->textDelay('breadcrumbText', $title);
@@ -69,9 +70,9 @@ $form->init(array(
                 <div class="page-header">
                     <?if($post):?>
                     <div class="btn-group pull-right">
-                        <a href="<?=$this->uri('/blog/page/' . $post['urlName'])?>" class="btn">View</a>
-                        <a href="<?=$this->uri('/admin/blog/create')?>" class="btn">Clear Cache</a>
-                        <a href="<?=$this->uri('/admin/blog/remove/' . $post['id'], 'c', array('c' => $this->uri('/admin/blog/' . $post['id']))); ?>" class="btn">Delete</a>
+                        <a href="<?=$this->uri('/blog/page/' . $post['urlName'])?>" class="btn"><?=$this->_('View')?></a>
+                        <a href="<?=$this->uri('/admin/blog/create')?>" class="btn"><?=$this->_('Clear Cache')?></a>
+                        <a href="<?=$this->uri('/admin/blog/remove/' . $post['id'], 'c', array('c' => $this->uri('/admin/blog/' . $post['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
                     </div>
                     <?endif?>
                     <h2><?=$title?></h2>
@@ -138,7 +139,7 @@ $form->init(array(
         <div class="span5">
             <div class="slate">
                 <div class="page-header">
-                    <h3>Post Setting</h3>
+                    <h3><?=$this->_('Post Setting')?></h3>
                 </div>
 
 
@@ -175,7 +176,7 @@ $form->init(array(
         <div class="span5">
             <div class="slate">
                 <div class="page-header">
-                    <h3>Comment Setting</h3>
+                    <h3><?=$this->_('Comment Setting')?></h3>
                 </div>
                 <fieldset class="form-horizontal">
 
@@ -207,7 +208,7 @@ $form->init(array(
         <div class="span5">
             <div class="slate">
                 <div class="page-header">
-                    <h3>Category And Tags</h3>
+                    <h3><?=$this->_('Category And Tags')?></h3>
                 </div>
                 <fieldset class="form-horizontal">
                     <div class="control-group <?=$form->isError(array('CategoryPost', 'category_id')) ? 'error' : '';?>">
@@ -229,7 +230,7 @@ $form->init(array(
         <div class="span10">
             <div class="slate">
                 <div class="page-header">
-                    <h3>SEO Setting:</h3>
+                    <h3><?=$this->_('SEO Setting')?></h3>
                 </div>
                 <fieldset class="">
                     <div class="control-group <?=$form->isError(array('Text', 'metaKeywords')) ? 'error' : '';?>">
@@ -252,8 +253,8 @@ $form->init(array(
         </div><!--span10 end-->
 
         <div class="span10 listing-buttons">
-            <button id="save-draft" class="btn btn-info btn-large">Save As Draft</button>
-            <button id="save-publish" class="btn btn-success btn-large">Save</button>
+            <button id="save-draft" class="btn btn-info btn-large"><?=$this->_('Save As Draft')?></button>
+            <button id="save-publish" class="btn btn-success btn-large"><?=$this->_('Save')?></button>
         </div>
     </form>
 </div>

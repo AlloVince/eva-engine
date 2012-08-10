@@ -47,6 +47,7 @@ abstract class AbstractModel
     protected $itemListParams = array();
     protected $itemList;
 
+    protected $subItemMap = array();
     protected $subItemsMap;
     protected $subItems;
 

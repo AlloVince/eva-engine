@@ -1,7 +1,7 @@
 <?
-$title = 'File Management';
+$title = $this->_('File Management');
 $this->headTitle($title, 'SET');
-$this->textDelay('breadcrumbText', 'File Management');
+$this->textDelay('breadcrumbText', $title);
 if($this->form){
 	$form = $this->form;
 } else {
@@ -35,25 +35,25 @@ function getFileTypeIcon($ext)
                 <fieldset>
                 <?=$form->helper('keyword', array('class' => 'input-large', 'placeholder' => 'Keyword...'))?>
                 <?=$form->helper('status', 'formSelect', array('class' => 'span2'))?>
-                <label><?=$form->helper('isImage', 'formCheckbox')?>Only Images</label>
-                <button class="btn" type="submit">Filter Files</button>
+                <label><?=$form->helper('isImage', 'formCheckbox')?><?=$this->_('Only Images')?></label>
+                <button class="btn" type="submit"><?=$this->_('Filter Files')?></button>
             </fieldset>
             <dl class="dl-horizontal">
-                <dt>File Size:</dt>
+                <dt><?=$this->_('File Size')?>:</dt>
                 <dd class="well"> 
                 <?=$form->helper('fileSizeFrom', 'label', array('class' => 'control-label'))?>
                 <?=$form->helper('fileSizeFrom', 'formNumber', array('class' => 'span1'))?>
                 <?=$form->helper('fileSizeTo', 'label', array('class' => 'control-label'))?>
                 <?=$form->helper('fileSizeTo', 'formNumber', array('class' => 'span1'))?>
                 </dd>
-                <dt>Image Width:</dt>
+                <dt><?=$this->_('Image Width')?>:</dt>
                 <dd class="well"> 
                 <?=$form->helper('imageWidthFrom', 'label', array('class' => 'control-label'))?>
                 <?=$form->helper('imageWidthFrom', 'formNumber', array('class' => 'span1'))?>
                 <?=$form->helper('imageWidthTo', 'label', array('class' => 'control-label'))?>
                 <?=$form->helper('imageWidthTo', 'formNumber', array('class' => 'span1'))?>
                 </dd>
-                <dt>Image Height:</dt>
+                <dt><?=$this->_('Image Height')?>:</dt>
                 <dd class="well"> 
                 <?=$form->helper('imageHeightFrom', 'label', array('class' => 'control-label'))?>
                 <?=$form->helper('imageHeightFrom', 'formNumber', array('class' => 'span1'))?>
@@ -70,7 +70,7 @@ function getFileTypeIcon($ext)
 <div class="row">
     <div class="span10 listing-buttons">
         <div class="btn-group pull-right">
-            <a href="<?=$this->uri('/admin/file/upload')?>" class="btn btn-info">Upload File</a>
+            <a href="<?=$this->uri('/admin/file/upload')?>" class="btn btn-info"><?=$this->_('Upload File')?></a>
         </div>
         <form action="<?=$this->uri('/admin/file/multi/')?>" method="post" class="pull-left" data-multiform="post">
             <input type="hidden" name="id" class="multiform-container-main" value="" />
@@ -78,16 +78,15 @@ function getFileTypeIcon($ext)
             <div class="btn-group">
                 <span class="btn"><input type="checkbox" class="multiform-checker" /></span>
                 <span data-toggle="dropdown" class="btn dropdown-toggle">
-                    Status
-                    <span class="caret"></span>
+                    <?=$this->_('Status')?> <span class="caret"></span>
                 </span>
                 <ul class="dropdown-menu">
-                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/file/multi/status/published')?>">Published</a></li>
-                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/file/multi/status/draft')?>">Draft</a></li>
-                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/file/multi/status/pending')?>">Pending</a></li>
-                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/file/multi/status/deleted')?>">Deleted</a></li>
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/file/multi/status/published')?>"><?=$this->_('Published')?></a></li>
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/file/multi/status/draft')?>"><?=$this->_('Draft')?></a></li>
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/file/multi/status/pending')?>"><?=$this->_('Pending')?></a></li>
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/file/multi/status/deleted')?>"><?=$this->_('Deleted')?></a></li>
                 </ul>
-                <a href="#" class="btn multiform-submiter" data-multiform-action="<?=$this->uri('/admin/file/multi/reorder')?>">Re-Order</a>
+                <a href="#" class="btn multiform-submiter" data-multiform-action="<?=$this->uri('/admin/file/multi/reorder')?>"><?=$this->_('Re-Order')?></a>
             </div>
         </form>
     </div>
@@ -97,16 +96,15 @@ function getFileTypeIcon($ext)
             <div class="page-header">
                 <div class="btn-group pull-right">
                     <span data-toggle="dropdown" class="btn dropdown-toggle">
-                        Order
-                        <span class="caret"></span>
+                        <?=$this->_('Order')?> <span class="caret"></span>
                     </span>
                     <ul class="dropdown-menu">
-                        <li><a href="<?=$this->uri('/admin/file/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'idasc',),));?>" class=""><i class="icon-arrow-up"></i> Id</a></li>
-                        <li><a href="<?=$this->uri('/admin/file/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'iddesc',),));?>" class=""><i class="icon-arrow-down"></i> Id</a></li>
-                        <li><a href="<?=$this->uri('/admin/file/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'titleasc',),));?>" class=""><i class="icon-arrow-up"></i> Title</a></li>
-                        <li><a href="<?=$this->uri('/admin/file/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'titledesc',),));?>" class=""><i class="icon-arrow-down"></i> Title</a></li>
-                        <li><a href="<?=$this->uri('/admin/file/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'timeasc',),));?>" class=""><i class="icon-arrow-up"></i> Time</a></li>
-                        <li><a href="<?=$this->uri('/admin/file/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'timedesc',),));?>" class=""><i class="icon-arrow-down"></i> Time</a></li>
+                        <li><a href="<?=$this->uri('/admin/file/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'idasc',),));?>" class=""><i class="icon-arrow-up"></i> <?=$this->_('Id')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/file/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'iddesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Id')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/file/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'titleasc',),));?>" class=""><i class="icon-arrow-up"></i> <?=$this->_('Title')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/file/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'titledesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Title')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/file/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'timeasc',),));?>" class=""><i class="icon-arrow-up"></i> <?=$this->_('Time')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/file/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'timedesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Time')?></a></li>
                     </ul>
                 </div>
                 <h2><?=$title?></h2>
@@ -117,11 +115,11 @@ function getFileTypeIcon($ext)
                     <tr>
                         <th class="span1">
                         </th>
-                        <th>File Name</th>
+                        <th><?=$this->_('File Name')?></th>
                         <th class="span1">
                         </th>
-                        <th class="span1">Order</th>
-                        <th class="actions">Actions</th>
+                        <th class="span1"><?=$this->_('Order')?></th>
+                        <th class="actions"><?=$this->_('Actions')?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -151,8 +149,8 @@ function getFileTypeIcon($ext)
                             <input name="order" tabindex="<?=$key+1 ?>" type="text" class="span1 multiform-item-input" size="2" maxlength="3"  data-multiform="post" data-multiform-itemid="<?=$file['id'] ?>" value="<?=$file['orderNumber'] ? $file['orderNumber'] : "0" ?>" />
                         </td>
                         <td class="actions">
-                            <a href="<?=$this->uri('/admin/file/remove/' . $file['id'], 'c', array('c' => $this->uri('/admin/file', array('page' => $this->page)))); ?>" class="btn btn-small btn-danger">Delete</a>
-                            <a href="<?=$this->uri('/admin/file/' . $file['id'])?>" class="btn btn-small">Edit</a>
+                            <a href="<?=$this->uri('/admin/file/remove/' . $file['id'], 'c', array('c' => $this->uri('/admin/file', array('page' => $this->page)))); ?>" class="btn btn-small btn-danger"><?=$this->_('Delete')?></a>
+                            <a href="<?=$this->uri('/admin/file/' . $file['id'])?>" class="btn btn-small"><?=$this->_('Edit')?></a>
                         </td>
                     </tr>
                     <?endforeach;?>
