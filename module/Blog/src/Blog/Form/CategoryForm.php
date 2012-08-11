@@ -40,10 +40,10 @@ class CategoryForm extends Form
             'name' => 'parentId',
             'attributes' => array (
                 'type' => 'text',
-                'label' => 'Parent Id',
+                'label' => 'Parent Category',
                 'options' => array(
                     array(
-                        'label' => 'Select Parent',
+                        'label' => 'Select Parent Category',
                         'value' => '',
                     ),  
                 ),
@@ -81,7 +81,7 @@ class CategoryForm extends Form
         ),
         'categoryName' => array (
             'name' => 'categoryName',
-            'required' => false,
+            'required' => true,
             'filters' => array (
                 'stripTags' => array (
                     'name' => 'StripTags',

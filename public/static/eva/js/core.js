@@ -242,6 +242,8 @@ methods = window.eva = {
 		return template;
 	},
 
+	callback : {},
+
 	init : function(setting){
 		config = methods.getConfig(setting);
 		methods.config = config;

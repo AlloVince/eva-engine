@@ -107,6 +107,12 @@ class File extends AbstractModel
         $itemTable->selectFiles($params);
         $items = $itemTable->find('all');
 
+        $newItems = array();
+        foreach($items as $key => $item){
+            $newItems[$key] = $this->setItemParams($item['id'])->getFile();
+        }
+        $items = $newItems;
+
         return $this->itemList = $items;
     }
 

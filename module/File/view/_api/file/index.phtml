@@ -1,0 +1,170 @@
+<?
+$title = $this->_('File Management');
+$this->headTitle($title, 'SET');
+$this->textDelay('breadcrumbText', $title);
+if($this->form){
+	$form = $this->form;
+} else {
+    $form = Eva\Api::_()->getForm('\File\Form\FileSearchForm');
+}
+$form->init(array(
+    'action' => $this->uri('/api/file/'),
+    'method' => 'get',
+    'values' => $this->query
+));
+
+$lableMap = array(
+    'draft' => '',
+    'published' => 'label-success',
+    'pending' => 'label-warning',
+    'deleted' => 'label-inverse',
+);
+
+function getFileTypeIcon($ext)
+{
+    if(file_exists(EVA_PUBLIC_PATH . '/static/lib/icon/filetypes/' . $ext . '.png')){
+        return '/lib/icon/filetypes/' . $ext . '.png';
+    }
+    return '/lib/icon/filetypes/_blank.png';
+}
+?>
+
+
+<div class="container-fluid">
+
+    <ul class="nav nav-tabs">
+        <li>
+        <a href="<?=$this->uri('/api/file/upload')?>">File Upload</a>
+        </li>
+        <li class="active"><a href="<?=$this->uri('/api/file')?>">File Select</a></li>
+    </ul>
+
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a href="#collapseOne" data-toggle="collapse" class="accordion-toggle">
+                <?=$this->_('Search File')?>
+            </a>
+        </div>
+        <div class="accordion-body collapse out" id="collapseOne">
+            <div class="accordion-inner">
+                <form id="form-file-search" <?=$this->formAttr($form)?> class="form-inline">
+                    <fieldset>
+                        <?=$form->helper('keyword', array('class' => 'input-large', 'placeholder' => 'Keyword...'))?>
+                        <?=$form->helper('status', 'formSelect', array('class' => 'span2'))?>
+                        <label><?=$form->helper('isImage', 'formCheckbox')?><?=$this->_('Only Images')?></label>
+                        <button class="btn" type="submit"><?=$this->_('Filter Files')?></button>
+                    </fieldset>
+                    <dl class="dl-horizontal">
+                        <dt><?=$this->_('File Size')?>:</dt>
+                        <dd class="well"> 
+                        <?=$form->helper('fileSizeFrom', 'label', array('class' => 'control-label'))?>
+                        <?=$form->helper('fileSizeFrom', 'formNumber', array('class' => 'span1'))?>
+                        <?=$form->helper('fileSizeTo', 'label', array('class' => 'control-label'))?>
+                        <?=$form->helper('fileSizeTo', 'formNumber', array('class' => 'span1'))?>
+                        </dd>
+                        <dt><?=$this->_('Image Width')?>:</dt>
+                        <dd class="well"> 
+                        <?=$form->helper('imageWidthFrom', 'label', array('class' => 'control-label'))?>
+                        <?=$form->helper('imageWidthFrom', 'formNumber', array('class' => 'span1'))?>
+                        <?=$form->helper('imageWidthTo', 'label', array('class' => 'control-label'))?>
+                        <?=$form->helper('imageWidthTo', 'formNumber', array('class' => 'span1'))?>
+                        </dd>
+                        <dt><?=$this->_('Image Height')?>:</dt>
+                        <dd class="well"> 
+                        <?=$form->helper('imageHeightFrom', 'label', array('class' => 'control-label'))?>
+                        <?=$form->helper('imageHeightFrom', 'formNumber', array('class' => 'span1'))?>
+                        <?=$form->helper('imageHeightTo', 'label', array('class' => 'control-label'))?>
+                        <?=$form->helper('imageHeightTo', 'formNumber', array('class' => 'span1'))?>
+                        </dd>
+                    </dl>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="slate">
+        <div class="page-header">
+            <div class="btn-group pull-right">
+                <span data-toggle="dropdown" class="btn dropdown-toggle">
+                    <?=$this->_('Order')?> <span class="caret"></span>
+                </span>
+                <ul class="dropdown-menu">
+                    <li><a href="<?=$this->uri('/api/file/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'idasc',),));?>" class=""><i class="icon-arrow-up"></i> <?=$this->_('Id')?></a></li>
+                    <li><a href="<?=$this->uri('/api/file/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'iddesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Id')?></a></li>
+                    <li><a href="<?=$this->uri('/api/file/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'titleasc',),));?>" class=""><i class="icon-arrow-up"></i> <?=$this->_('Title')?></a></li>
+                    <li><a href="<?=$this->uri('/api/file/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'titledesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Title')?></a></li>
+                    <li><a href="<?=$this->uri('/api/file/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'timeasc',),));?>" class=""><i class="icon-arrow-up"></i> <?=$this->_('Time')?></a></li>
+                    <li><a href="<?=$this->uri('/api/file/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'timedesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Time')?></a></li>
+                </ul>
+            </div>
+            <h2><?=$title?></h2>
+        </div>
+
+        <table class="orders-table table">
+            <thead>
+                <tr>
+                    <th class="span1">
+                    </th>
+                    <th><?=$this->_('File Name')?></th>
+                    <th class="span1">
+                    </th>
+                    <th class="actions"><?=$this->_('Actions')?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?if($files):?>
+                <?foreach($files as $key=>$file):?>
+                <tr class="">
+                    <td>
+                        <input name="id" type="checkbox" class="multiform-item-checkbox"  data-multiform="post" data-multiform-itemid="<?=$file['id'] ?>" value="<?=$file['id'] ?>" />
+                    </td>	
+
+                    <td>
+                        <a href="<?=$this->uri('/api/file/' . $file['id'])?>" class="title"><?=$file['title'] ?></a>
+                        <span class="label <?=$lableMap[$file['status']]?>"><?=$this->_($file['status'])?></span>
+                        <span class="label"><?=$file['fileExtension']?></span>
+                        <p>
+                        <span class="meta"><?=$file['user_name'] ?> <?=$file['createTime'];?></span>
+                        </p>
+                    </td>
+                    <td>
+                        <?if($file['isImage']):?>
+                        <img src="<?=$this->thumb($file['Thumb'], array('w_50'))?>" alt="<?=$file['fileExtension']?>" />
+                        <?else:?>
+                        <img src="<?=$this->link(getFileTypeIcon($file['fileExtension']))?>" alt="<?=$file['fileExtension']?>" />
+                        <?endif?>
+                    </td>	
+                    <td class="actions">
+                        <a href="<?=$this->uri('/admin/file/' . $file['id'])?>" class="btn btn-small action-connect" data-connect-id="<?=$file['id']?>" data-connect-method="connectFile" data-connect-json="<?=$this->escapeHtmlAttr($this->json($file))?>"><?=$this->_('Connect')?></a>
+                        <a href="<?=$this->uri('/admin/file/' . $file['id'])?>" class="btn btn-small action-insert" data-connect-id="<?=$file['id']?>"><?=$this->_('Insert')?></a>
+                        <a href="<?=$this->uri('/admin/file/' . $file['id'])?>" class="btn btn-small" target="_blank"><?=$this->_('Manage')?></a>
+                    </td>
+                </tr>
+                <?endforeach;?>
+                <?endif;?>
+            </tbody>
+        </table>
+    </div>
+</div><!--span12 end-->
+
+<div class="span12">
+    <?if($this->paginator):?>
+    <?=$this->paginator->setPath('/api/file/')->setBaseQuery($this->query);?>
+    <?=$this->widget('Core', 'widgets/paginator', $this->vars())?>
+    <?endif;?>
+</div>
+
+
+<script>eva.ui.runtime = function(){
+        var connect = function(item){
+            if(window === window.parent){
+                    return false;
+            }
+            window.parent.eva.callback.connect(item, window);
+        };
+        $(".action-connect").on('click', function(){
+            var item = $(this);
+            connect(item);
+            return false;
+        });
+}</script>

@@ -8,6 +8,28 @@ use File\Form,
 
 class FileController extends RestfulModuleController
 {
+    public function restIndexFile()
+    {
+        $request = $this->getRequest();
+
+        $query = $request->getQuery();
+
+        $form = Api::_()->getForm('File\Form\FileSearchForm');
+        $selectQuery = $form->fieldsMap($query, true);
+
+        $fileModel = Api::_()->getModel('File\Model\File');
+        $files = $fileModel->setItemListParams($selectQuery)->getFiles();
+        $paginator = $fileModel->getPaginator();
+        $this->layout('layout/adminblank');
+
+        return array(
+            'form' => $form,
+            'files' => $files,
+            'query' => $query,
+            'paginator' => $paginator,
+        );
+    }
+
     public function restPostFile()
     {
         $request = $this->getRequest();
