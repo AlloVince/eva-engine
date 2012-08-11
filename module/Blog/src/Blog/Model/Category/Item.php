@@ -35,11 +35,11 @@ class Item extends AbstractItem
         return \Eva\Stdlib\String\Hash::uniqueHash();
     }
 
-    public function getFileCategory()
+    public function getFileConnect()
     {
-        $subTable = Api::_()->getDbTable('File\DbTable\FilesCategories');
+        $subTable = Api::_()->getDbTable('File\DbTable\FilesConnections');
         $item = $this->item;
-        $res = $subTable->where(array('category_id' => $item['id']))->find("one");
+        $res = $subTable->where(array('connect_id' => $item['id'], 'connectType' => 'category'))->find("one");
         if(!$res){
             return array();
         }
@@ -51,11 +51,11 @@ class Item extends AbstractItem
         $subTable = Api::_()->getDbTable('File\DbTable\Files');
         $item = $this->item;
         
-        if (!$item['FileCategory']) {
+        if (!$item['FileConnect']) {
             return array();
         }
 
-        $res = $subTable->where(array('id' => $item['FileCategory']['file_id']))->find("one");
+        $res = $subTable->where(array('id' => $item['FileConnect']['file_id']))->find("one");
         if(!$res){
             return array();
         }

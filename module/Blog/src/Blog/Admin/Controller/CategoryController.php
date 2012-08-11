@@ -74,7 +74,7 @@ class CategoryController extends RestfulModuleController
         $form = new Form\CategoryForm();
         
         $subForms = array(
-            'FileCategory' => array('File\Form\FileCategoryForm'),
+            'FileConnect' => array('File\Form\FileConnectForm'),
         );
         $form->setSubforms($subForms)->init();
         $form->setData($categoryData)->enableFilters();
@@ -102,7 +102,7 @@ class CategoryController extends RestfulModuleController
         $postData = $request->getPost();
         $form = new Form\CategoryEditForm();
         $subForms = array(
-            'FileCategory' => array('File\Form\FileCategoryForm'),
+            'FileConnect' => array('File\Form\FileConnectForm'),
         );
 
         $form->setSubforms($subForms)

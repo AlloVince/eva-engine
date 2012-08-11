@@ -12,7 +12,7 @@ if($this->form){
     $form = Eva\Api::_()->getForm('\Blog\Form\CategoryForm');
 }
 $form->setSubForms(array(
-    'FileCategory' => array('File\Form\FileCategoryForm'),
+    'FileConnect' => array('File\Form\FileConnectForm'),
 ));
 $form->init(array(
     'action' => $this->uri('/admin/blog/category/'),
@@ -95,14 +95,14 @@ $form->init(array(
         <div class="span5">
             <div class="slate">
                 <fieldset class="form-horizontal">
-                    <div class="control-group <?=$form->isError(array('FileCategory', 'file_id')) ? 'error' : '';?>">
-                        <?=$form->helper(array('FileCategory', 'file_id'), 'label', array('class' => 'control-label'))?>
+                    <div class="control-group <?=$form->isError(array('FileConnect', 'file_id')) ? 'error' : '';?>">
+                        <?=$form->helper(array('FileConnect', 'file_id'), 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper(array('FileCategory', 'file_id'), array('class' => 'span5'))?>
-                            <?=$form->helper(array('FileCategory', 'category_id'), 'formHidden', array(
+                            <?=$form->helper(array('FileConnect', 'file_id'), array('class' => 'span5'))?>
+                            <?=$form->helper(array('FileConnect', 'connect_id'), 'formHidden', array(
                                 'value' => $category['id']
                             ))?>    
-                            <div class="help-block"><?=$form->helper(array('FileCategory', 'file_id'), 'formElementErrors')?></div>
+                            <div class="help-block"><?=$form->helper(array('FileConnect', 'file_id'), 'formElementErrors')?></div>
                         </div>
                     </div>
                 </fieldset>

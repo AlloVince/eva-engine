@@ -37,16 +37,17 @@ class Category extends AbstractModel
             $this->item = $item;
         }
         
-        if($itemId && $this->getSubItem('FileCategory')){
-            $subData = $this->getSubItem('FileCategory');
-            $subTable = Api::_()->getDbTable('File\DbTable\FilesCategories');
+        if($itemId && $this->getSubItem('FileConnect')){
+            $subData = $this->getSubItem('FileConnect');
+            $subTable = Api::_()->getDbTable('File\DbTable\FilesConnections');
             $subItem = $this->getItemClass($subData, array(
-                'category_id' => array('category_id', 'getCategoryId')
-            ), 'File\Model\FileCategory\Item');
+                'connect_id' => array('connect_id', 'getConnectId'),
+                'connectType' => array('connectType', 'getConnectType')
+            ), 'File\Model\FileConnect\Item');
             $subData = $subItem->toArray();
-            $subTable->where(array('category_id' => $itemId))->remove();
-            if($subData['category_id']) {
-                $subTable->where(array('category_id' => $itemId))->create($subData);
+            $subTable->where(array('connect_id' => $itemId, 'connectType' => 'category'))->remove();
+            if($subData['connect_id'] && $subData['file_id']) {
+                $subTable->where(array('connect_id' => $itemId, 'connectType' => 'category'))->create($subData);
             }
         }
 
@@ -66,27 +67,28 @@ class Category extends AbstractModel
             $item['id'] = $itemId;
             $this->item = $item;
         }
-        
-        if($itemId && $this->getSubItem('FileCategory')){
-            $subData = $this->getSubItem('FileCategory');
-            $subTable = Api::_()->getDbTable('File\DbTable\FilesCategories');
+
+        if($itemId && $this->getSubItem('FileConnect')){
+            $subData = $this->getSubItem('FileConnect');
+            $subTable = Api::_()->getDbTable('File\DbTable\FilesConnections');
             $subItem = $this->getItemClass($subData, array(
-                'category_id' => array('category_id', 'getCategoryId')
-            ), 'File\Model\FileCategory\Item');
+                'connect_id' => array('connect_id', 'getConnectId'),
+                'connectType' => array('connectType', 'getConnectType')
+            ), 'File\Model\FileConnect\Item');
             $subData = $subItem->toArray();
-            $subTable->where(array('category_id' => $itemId))->remove();
-            if($subData['category_id']) {
-                $subTable->where(array('category_id' => $itemId))->create($subData);
+            $subTable->where(array('connect_id' => $itemId, 'connectType' => 'category'))->remove();
+            if($subData['connect_id'] && $subData['file_id']) {
+                $subTable->where(array('connect_id' => $itemId, 'connectType' => 'category'))->create($subData);
             }
         }
 
         return $itemId;
     }
-    
+
     public function deleteCategory()
     {
         $item = $this->getItemArray();
-        
+
         $tree = new \Core\Tree\Tree($this->treeConfig['adapter'], $this->treeConfig['direction'], $this->treeConfig['options']);
         $itemId = $tree->deleteNode($item);
 
@@ -94,9 +96,9 @@ class Category extends AbstractModel
             $item['id'] = $itemId;
             $this->item = $item;
         }
-        $subTable = Api::_()->getDbTable('File\DbTable\FilesCategories');
-        $subTable->where(array('category_id' => $itemId))->remove();
-        
+        $subTable = Api::_()->getDbTable('File\DbTable\FilesConnections');
+        $subTable->where(array('connect_id' => $itemId, 'connectType' => 'category'))->remove();
+
         return $itemId;
     }
 
@@ -119,18 +121,18 @@ class Category extends AbstractModel
         } else {
             $this->item = $category = $itemTable->where(array('urlName' => $params))->find('one');
         }
-        
+
         if($category) {
             $this->item = $category = $this->setItemAttrMap(array(
-                'FileCategory' => array(
-                    'category_id' => null,
+                'FileConnect' => array(
+                    'connect_id' => null,
                 ),
                 'File' => array(
-                    'category_id' => null,
+                    'connect_id' => null,
                 ),
             ))->getItemArray();
         }
-        
+
         return $this->item = $category;
     }
 
@@ -143,10 +145,10 @@ class Category extends AbstractModel
         );
         $params = $this->getItemListParams();
         $params = new \Zend\Stdlib\Parameters(array_merge($defaultParams, $params));
-        
+
         $tree = new \Core\Tree\Tree($this->treeConfig['adapter'], $this->treeConfig['direction'], $this->treeConfig['options']);
         $categories = $tree->getTree(); 
-        
+
         $res = array();
 
         if ($categories) {

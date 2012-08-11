@@ -18,7 +18,7 @@ namespace File\Form;
  * @category   Eva
  * @package    Eva_Form
  */
-class FileCategoryForm extends \Eva\Form\Form
+class FileConnectForm extends \Eva\Form\Form
 {
     /**
      * Form basic elements
@@ -40,11 +40,11 @@ class FileCategoryForm extends \Eva\Form\Form
                 'value' => '',
             ),
         ),
-        'category_id' => array (
-            'name' => 'category_id',
+        'connect_id' => array (
+            'name' => 'connect_id',
             'attributes' => array (
                 'type' => 'hidden',
-                'label' => 'Category_id',
+                'label' => 'Connect_id',
                 'value' => '',
             ),
         ),
@@ -56,8 +56,8 @@ class FileCategoryForm extends \Eva\Form\Form
      * @var array
      */
     protected $baseFilters = array (
-        'category_id' => array (
-            'name' => 'category_id',
+        'connect_id' => array (
+            'name' => 'connect_id',
             'required' => false,
             'filters' => array (
             ),

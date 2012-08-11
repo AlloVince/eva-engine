@@ -18,6 +18,7 @@ if($this->form){
 $form->setSubForms(array(
     'Text' => array('Blog\Form\TextForm'),
     'CategoryPost' => array('Blog\Form\CategoryPostForm'),
+    'FileConnect' => array('File\Form\FileConnectForm'),
 ));
 $form->init(array(
     'action' => $this->uri('/admin/blog/'),
@@ -221,6 +222,23 @@ $form->init(array(
                                 'value' => $post['id']
                             ))?>    
                             <div class="help-block"><?=$form->helper(array('CategoryPost', 'category_id'), 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div><!--span5 end-->
+       
+        <div class="span5">
+            <div class="slate">
+                <fieldset class="form-horizontal">
+                    <div class="control-group <?=$form->isError(array('FileConnect', 'file_id')) ? 'error' : '';?>">
+                        <?=$form->helper(array('FileConnect', 'file_id'), 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper(array('FileConnect', 'file_id'), array('class' => 'span5'))?>
+                            <?=$form->helper(array('FileConnect', 'connect_id'), 'formHidden', array(
+                                'value' => $post['id']
+                            ))?>    
+                            <div class="help-block"><?=$form->helper(array('FileConnect', 'file_id'), 'formElementErrors')?></div>
                         </div>
                     </div>
                 </fieldset>

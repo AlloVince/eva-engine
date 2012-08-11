@@ -336,7 +336,7 @@ class BinaryTreeDb extends AbstractAdapter
 
         $width = $node['right'] - $node['left'] + 1;
         
-        if ($nodeUpdate['parentId'] != $node['parentId']) {
+        if ( (int) $nodeUpdate['parentId'] != (int) $node['parentId']) {
             if ($nodeUpdate['parentId']) {
                 $parentNode = $dbTable->where(array('id' => $nodeUpdate['parentId']))->find('one');
             } else {
