@@ -439,7 +439,7 @@ class BinaryTreeDb extends AbstractAdapter
 
         $node = $dbTable->where(array('id' => $node['id']))->save($nodeUpdate);
 
-        return true;
+        return $nodeUpdate['id'];
     }
 
     public function insertNode($node)
@@ -516,7 +516,7 @@ class BinaryTreeDb extends AbstractAdapter
             'right' => new Expression("`right` - $width")
         ));  
 
-        return true;
+        return $node['id'];
 /*
         $dbTable->where(function($where) use ($node){
             $where->greaterThan('left', $node['left']);

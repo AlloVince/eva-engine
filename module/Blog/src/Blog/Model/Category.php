@@ -36,6 +36,19 @@ class Category extends AbstractModel
             $item['id'] = $itemId;
             $this->item = $item;
         }
+        
+        if($itemId && $this->getSubItem('FileCategory')){
+            $subData = $this->getSubItem('FileCategory');
+            $subTable = Api::_()->getDbTable('File\DbTable\FilesCategories');
+            $subItem = $this->getItemClass($subData, array(
+                'category_id' => array('category_id', 'getCategoryId')
+            ), 'File\Model\FileCategory\Item');
+            $subData = $subItem->toArray();
+            $subTable->where(array('category_id' => $itemId))->remove();
+            if($subData['category_id']) {
+                $subTable->where(array('category_id' => $itemId))->create($subData);
+            }
+        }
 
         return $itemId;
     }
@@ -53,6 +66,19 @@ class Category extends AbstractModel
             $item['id'] = $itemId;
             $this->item = $item;
         }
+        
+        if($itemId && $this->getSubItem('FileCategory')){
+            $subData = $this->getSubItem('FileCategory');
+            $subTable = Api::_()->getDbTable('File\DbTable\FilesCategories');
+            $subItem = $this->getItemClass($subData, array(
+                'category_id' => array('category_id', 'getCategoryId')
+            ), 'File\Model\FileCategory\Item');
+            $subData = $subItem->toArray();
+            $subTable->where(array('category_id' => $itemId))->remove();
+            if($subData['category_id']) {
+                $subTable->where(array('category_id' => $itemId))->create($subData);
+            }
+        }
 
         return $itemId;
     }
@@ -68,14 +94,16 @@ class Category extends AbstractModel
             $item['id'] = $itemId;
             $this->item = $item;
         }
-
+        $subTable = Api::_()->getDbTable('File\DbTable\FilesCategories');
+        $subTable->where(array('category_id' => $itemId))->remove();
+        
         return $itemId;
     }
-    
+
     public function getCategory()
     {
         $params = $this->getItemParams();
-        
+
         if(!$params || !(is_numeric($params) || is_string($params))){
             throw new \Core\Model\Exception\InvalidArgumentException(sprintf(
                 '%s params %s not correct',
@@ -91,7 +119,18 @@ class Category extends AbstractModel
         } else {
             $this->item = $category = $itemTable->where(array('urlName' => $params))->find('one');
         }
-
+        
+        if($category) {
+            $this->item = $category = $this->setItemAttrMap(array(
+                'FileCategory' => array(
+                    'category_id' => null,
+                ),
+                'File' => array(
+                    'category_id' => null,
+                ),
+            ))->getItemArray();
+        }
+        
         return $this->item = $category;
     }
 
@@ -104,15 +143,20 @@ class Category extends AbstractModel
         );
         $params = $this->getItemListParams();
         $params = new \Zend\Stdlib\Parameters(array_merge($defaultParams, $params));
-/*
-        $itemTable = $this->getItemTable();
-
-        $itemTable->selectCategories($params);
-        $categories = $itemTable->find('all');
- */
+        
         $tree = new \Core\Tree\Tree($this->treeConfig['adapter'], $this->treeConfig['direction'], $this->treeConfig['options']);
         $categories = $tree->getTree(); 
+        
+        $res = array();
 
-        return $this->itemList = $categories;
+        if ($categories) {
+            foreach ($categories as $cateArray) {
+                $category = $this->setItemParams($cateArray['id'])->getCategory(); 
+                $category['level'] = $cateArray['level'];
+                $res[] = $category;
+            }    
+        }
+
+        return $this->itemList = $res;
     }
 }

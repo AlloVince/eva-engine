@@ -79,12 +79,16 @@ class CategoryController extends RestfulModuleController
         $categoryData = $request->getPost();
         $form = new Form\CategoryForm();
         
+        $subForms = array(
+            'FileCategory' => array('File\Form\FileCategoryForm'),
+        );
+        $form->setSubforms($subForms)->init();
         $form->setData($categoryData)->enableFilters();
         if ($form->isValid()) {
             $postData = $form->getData();
             $itemModel = Api::_()->getModel('Blog\Model\Category');
             $postData = $form->fieldsMap($postData, true);
-            $itemId = $itemModel->setItem($postData)->createCategory();
+            $itemId = $itemModel->setSubItemMap($subForms)->setItem($postData)->createCategory();
             $this->flashMessenger()->addMessage('category-create-succeed');
             $this->redirect()->toUrl('/admin/blog/category/' . $itemId);
         } else {
@@ -101,16 +105,22 @@ class CategoryController extends RestfulModuleController
     public function restPutCategory()
     {
         $request = $this->getRequest();
-        $categoryData = $request->getPost();
+        $postData = $request->getPost();
         $form = new Form\CategoryEditForm();
-        $form->init();
+        $subForms = array(
+            'FileCategory' => array('File\Form\FileCategoryForm'),
+        );
 
-        $form->setData($categoryData)->enableFilters();
+        $form->setSubforms($subForms)
+             ->init()
+             ->setData($postData)
+             ->enableFilters();
+
         if ($form->isValid()) {
             $postData = $form->getData();
             $itemModel = Api::_()->getModel('Blog\Model\Category');
             $postData = $form->fieldsMap($postData, true);
-            $itemId = $itemModel->setItem($postData)->saveCategory();
+            $itemId = $itemModel->setSubItemMap($subForms)->setItem($postData)->saveCategory();
             $this->flashMessenger()->addMessage('category-edit-succeed');
             $this->redirect()->toUrl('/admin/blog/category/' . $itemId);
         } else {

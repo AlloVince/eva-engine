@@ -35,28 +35,30 @@ class Item extends AbstractItem
         return \Eva\Stdlib\String\Hash::uniqueHash();
     }
 
-    public function getContentHtml($contentHtml)
+    public function getFileCategory()
     {
-        if($contentHtml){
-            return $contentHtml;
-        }
-
+        $subTable = Api::_()->getDbTable('File\DbTable\FilesCategories');
         $item = $this->item;
-        if($item['codeType'] != 'html' && $content){
-            switch($item['codeType']){
-                case 'markdown':
-                return $this->toMarkdown($content);
-                default:
-                return $content;
-            }
+        $res = $subTable->where(array('category_id' => $item['id']))->find("one");
+        if(!$res){
+            return array();
         }
-        return $content;
+        return $res;
     }
 
-    protected function toMarkdown($content)
+    public function getFile()
     {
-        require_once EVA_LIB_PATH . '/Markdown/markdownextra.php';
-        $markdown = new \MarkdownExtra_Parser();
-        return $markdown->transform($content);
+        $subTable = Api::_()->getDbTable('File\DbTable\Files');
+        $item = $this->item;
+        
+        if (!$item['FileCategory']) {
+            return array();
+        }
+
+        $res = $subTable->where(array('id' => $item['FileCategory']['file_id']))->find("one");
+        if(!$res){
+            return array();
+        }
+        return $res;
     }
 }
