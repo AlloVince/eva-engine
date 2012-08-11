@@ -33,12 +33,6 @@ class CategoryController extends RestfulModuleController
         $categories = $categoryModel->setItemListParams($selectQuery)->getCategories();
         $paginator = $categoryModel->getPaginator();
 
-        $tree = new \Core\Tree\Tree('BinaryTreeDb',false,
-            array('dbTable' => 'Blog\DbTable\Categories')
-        );
-
-        $categories = $tree->getTree();
-
         return array(
             'form' => $form,
             'categories' => $categories,
