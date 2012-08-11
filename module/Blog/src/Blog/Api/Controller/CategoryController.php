@@ -10,11 +10,8 @@ class CategoryController extends ActionController
 {
     public function selectAction($params = null)
     {
-        $tree = new \Core\Tree\Tree('BinaryTreeDb',false,
-            array('dbTable' => 'Blog\DbTable\Categories')
-        );
-
-        $items = $tree->getTree();
+        $itemModel = Api::_()->getModel('Blog\Model\Category');
+        $items = $itemModel->getCategories();
         
         $select = array();
 
