@@ -11,10 +11,10 @@
     <?=$this->headMeta()?>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--<link href="http://fonts.googleapis.com/css?family=Oxygen|Marck+Script" rel="stylesheet" type="text/css">-->
     <link href="<?=$this->link('/lib/css/bootstrap/bootstrap.css')?>" media="all" rel="stylesheet" type="text/css" />
     <link href="<?=$this->link('/lib/css/bootstrap/bootstrap-responsive.css')?>" media="all" rel="stylesheet" type="text/css" />
     <link href="<?=$this->link('/lib/css/fontawesome/css/font-awesome.css')?>" media="all" rel="stylesheet" type="text/css" />
+    <link href="<?=$this->link('/lib/css/typo/typo.css')?>" media="all" rel="stylesheet" type="text/css" />
     <link href="<?=$this->link('/src/admin/css/admin.css')?>" media="all" rel="stylesheet" type="text/css" />
     <?=$this->evajs()?>
     <script src="<?=$this->link('/lib/js/labjs/labjs.min.js')?>"></script>
@@ -23,54 +23,10 @@
     <script src="<?=$this->link('/eva/js/ui.js')?>"></script>
     <script src="<?=$this->link('/src/admin/js/init.js')?>"></script>
 
-    <style>
-        html, body {
-            background:#D7D7D7;
-            height:100%;
-        }
-
-        .block {
-          text-align: center;
-          height:100%;
-        }
-         
-        .block:before {
-          content: '';
-          display: inline-block;
-          height: 100%;
-          vertical-align: middle;
-          margin-right: -0.25em; /* Adjusts for spacing */
-         }
-         
-        .centered {
-          display: inline-block;
-          vertical-align: middle;
-         }
-
-        #admin-login {
-            margin:0 auto;
-            text-align:left;
-        }
-    </style>
 </head>
 
-<body class="admin-login">
-
-<div class="block" style="">
-    
-    <div class="centered">
-    <div id="admin-login" class="container">
-        <div class="row">
-            <div class="span6 offset3">
-                <?=$this->content?>
-            </div>
-        </div>
-    </div>
-    </div>
-    
-</div>
-
-
+<body>
+    <?=$this->content?>
     <script>
         eva.init(eva_config);
     </script>

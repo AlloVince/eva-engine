@@ -63,6 +63,7 @@ class CategoryController extends RestfulModuleController
         $categoryinfo = $categoryDb->where(array('id' => $id))->find('one');
         return array(
             'category' => $categoryinfo,
+            'flashMessenger' => $this->flashMessenger()->getMessages(),
         );
     }
 
@@ -86,28 +87,12 @@ class CategoryController extends RestfulModuleController
         
         $form->setData($categoryData)->enableFilters();
         if ($form->isValid()) {
-<<<<<<< HEAD
-            $categoryData = $form->getData();
-            $categoryData = $form->fieldsMap($categoryData, true);
-            $categoryData['createTime'] = isset($categoryData['createTime']) ? $categoryData['createTime'] : \Eva\Date\Date::getNow();
-
-            $tree = new \Core\Tree\Tree('BinaryTreeDb',false,
-                array('dbTable' => 'Blog\DbTable\Categories')
-            );
-
-            $categoryId = $tree->insertNode($categoryData);
-            
-            $this->redirect()->toUrl('/admin/blog/category/' . $categoryId);
-=======
-
             $postData = $form->getData();
             $itemModel = Api::_()->getModel('Blog\Model\Category');
             $postData = $form->fieldsMap($postData, true);
             $itemId = $itemModel->setItem($postData)->createCategory();
             $this->flashMessenger()->addMessage('category-create-succeed');
             $this->redirect()->toUrl('/admin/blog/category/' . $itemId);
->>>>>>> 8e5c63161f8e4146ec415f935d324455f40096c7
-
         } else {
 
             //p($form->getInputFilter()->getInvalidInput());
@@ -141,6 +126,7 @@ class CategoryController extends RestfulModuleController
 
 
             $categoryDb->where(array('id' => $categoryData['id']))->save($categoryData);
+            $this->flashMessenger()->addMessage('category-edit-succeed');
             $this->redirect()->toUrl('/admin/blog/category/' . $categoryData['id']);
 
         } else {

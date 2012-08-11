@@ -10,7 +10,7 @@ class LogoutController extends ActionController
     public function indexAction()
     {
         $model = new ViewModel();
-        $this->layout('layout/adminindex');
+        $this->layout('layout/adminblank');
         $model->setTemplate('core/index');
         $auth = new \Core\Auth();
         $auth->getStorage()->clear();

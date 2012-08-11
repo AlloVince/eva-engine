@@ -17,6 +17,23 @@ $form->init(array(
     'values' => $this->category
 ));
 ?>
+
+<input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
+<div id="category-create-succeed" class="alert alert-success hide">
+    <a href="#" data-dismiss="alert" class="close">x</a>
+    <h4 class="alert-heading"><?=$this->_('New Category Created')?></h4>
+</div>
+
+<div id="category-edit-succeed" class="alert alert-success hide">
+    <a href="#" data-dismiss="alert" class="close">x</a>
+    <h4 class="alert-heading"><?=$this->_('Category Edit Succeed')?></h4>
+</div>
+
+<div id="category-edit-failed" class="alert alert-error hide">
+    <a href="#" data-dismiss="alert" class="close">x</a>
+    <h4 class="alert-heading"><?=$this->_('Category Edit Failed')?></h4>
+</div>
+
 <div class="row">
     <form <?=$this->formAttr($form)?>>
         <?=$form->restful();?>
@@ -41,7 +58,7 @@ $form->init(array(
                             <div class="help-block"><?=$form->helper('categoryName', 'formElementErrors')?></div>
                         </div>
                     </div>
-<<<<<<< HEAD
+
                     <div class="control-group <?=$form->isError('parentId') ? 'error' : '';?>">
                         <?=$form->helper('parentId', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
@@ -51,9 +68,7 @@ $form->init(array(
                             <div class="help-block"><?=$form->helper('parentId', 'formElementErrors')?></div>
                         </div>
                     </div>
-=======
 
->>>>>>> 8e5c63161f8e4146ec415f935d324455f40096c7
                     <div class="control-group <?=$form->isError('urlName') ? 'error' : '';?>">
                         <?=$form->helper('urlName', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
