@@ -435,9 +435,9 @@ class BinaryTreeDb extends AbstractAdapter
             return false;
         }
 
-        $node = $dbTable->where(array('id' => $node['id']))->save($nodeUpdate);
+        $dbTable->where(array('id' => $node['id']))->save($nodeUpdate);
 
-        return true;
+        return $node['id'];
     }
 
     public function insertNode($node)
