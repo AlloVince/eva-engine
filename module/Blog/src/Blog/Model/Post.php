@@ -140,7 +140,7 @@ class Post extends AbstractModel
                 $subTable->where(array('post_id' => $postId))->create($subData);
             }
         }
-
+        
         if($postId && $this->getSubItem('FileConnect')){
             $subData = $this->getSubItem('FileConnect');
             $subTable = Api::_()->getDbTable('File\DbTable\FilesConnections');

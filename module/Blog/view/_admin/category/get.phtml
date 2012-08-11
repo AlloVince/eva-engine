@@ -118,7 +118,7 @@ $form->init(array(
 
 <script>eva.runtime = function(){
         eva.callback.connect = function(item, parentWindow){
-                $("#file-form-filecategoryform-file-id").val(item.attr("data-connect-id"));
+                $("#file-form-fileconnectform-file-id").val(item.attr("data-connect-id"));
                 var data = $.parseJSON(item.attr('data-connect-json'));
                 $("#category-image").attr("src", data.Thumb);
                 $.fn.colorbox.close();

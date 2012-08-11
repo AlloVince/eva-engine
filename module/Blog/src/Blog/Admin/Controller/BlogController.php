@@ -55,7 +55,7 @@ class BlogController extends RestfulModuleController
         $subForms = array(
             'Text' => array('Blog\Form\TextForm'),
             'CategoryPost' => array('Blog\Form\CategoryPostForm'),
-       //     'FileConnect' => array('File\Form\FileConnectForm'),
+            'FileConnect' => array('File\Form\FileConnectForm'),
         );
         $form->setSubforms($subForms)->init();
 
@@ -90,7 +90,7 @@ class BlogController extends RestfulModuleController
             'CategoryPost' => array('Blog\Form\CategoryPostForm'),
             'FileConnect' => array('File\Form\FileConnectForm'),
         );
-
+        
         $form->setSubforms($subForms)
              ->init()
              ->setData($postData)
