@@ -48,14 +48,13 @@ class Item extends AbstractItem
 
     public function getFile()
     {
-        $subTable = Api::_()->getDbTable('File\DbTable\Files');
         $item = $this->item;
-        
-        if (!$item['FileConnect']) {
+
+        if (!isset($item['FileConnect']['file_id']) || !$item['FileConnect']['file_id']) {
             return array();
         }
-
-        $res = $subTable->where(array('id' => $item['FileConnect']['file_id']))->find("one");
+        $subModel = Api::_()->getModel('File\Model\File');
+        $res = $subModel->setItemParams($item['FileConnect']['file_id'])->getFile();
         if(!$res){
             return array();
         }

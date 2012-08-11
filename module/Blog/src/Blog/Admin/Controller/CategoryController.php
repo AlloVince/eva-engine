@@ -70,14 +70,14 @@ class CategoryController extends RestfulModuleController
     public function restPostCategory()
     {
         $request = $this->getRequest();
-        $categoryData = $request->getPost();
+        $postData = $request->getPost();
         $form = new Form\CategoryForm();
         
         $subForms = array(
             'FileConnect' => array('File\Form\FileConnectForm'),
         );
         $form->setSubforms($subForms)->init();
-        $form->setData($categoryData)->enableFilters();
+        $form->setData($postData)->enableFilters();
         if ($form->isValid()) {
             $postData = $form->getData();
             $itemModel = Api::_()->getModel('Blog\Model\Category');

@@ -88,4 +88,30 @@ class Item extends AbstractItem
         $markdown = new \MarkdownExtra_Parser();
         return $markdown->transform($content);
     }
+
+    public function getFileConnect()
+    {
+        $subTable = Api::_()->getDbTable('File\DbTable\FilesConnections');
+        $item = $this->item;
+        $res = $subTable->where(array('connect_id' => $item['id'], 'connectType' => 'post'))->find("one");
+        if(!$res){
+            return array();
+        }
+        return $res;
+    }
+
+    public function getFile()
+    {
+        $item = $this->item;
+
+        if (!isset($item['FileConnect']['file_id']) || !$item['FileConnect']['file_id']) {
+            return array();
+        }
+        $subModel = Api::_()->getModel('File\Model\File');
+        $res = $subModel->setItemParams($item['FileConnect']['file_id'])->getFile();
+        if(!$res){
+            return array();
+        }
+        return $res;
+    }
 }

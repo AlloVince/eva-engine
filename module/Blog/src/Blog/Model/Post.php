@@ -45,12 +45,11 @@ class Post extends AbstractModel
             'createTime' => array('createTime', 'getCreateTime'),
             'updateTime' => array('updateTime', 'getUpdateTime'),
         ))->getItemArray();
-
+        
         $itemTable = $this->getItemTable();
         $itemTable->create($item);
         $postId = $itemTable->getLastInsertValue();
-
-
+        
         if($postId){
             $item['id'] = $postId;
             $this->item = $item;
@@ -79,7 +78,20 @@ class Post extends AbstractModel
             }
         }
         
-
+        if($postId && $this->getSubItem('FileConnect')){
+            $subData = $this->getSubItem('FileConnect');
+            $subTable = Api::_()->getDbTable('File\DbTable\FilesConnections');
+            $subItem = $this->getItemClass($subData, array(
+                'connect_id' => array('connect_id', 'getConnectId'),
+                'connectType' => array('connectType', 'getConnectType')
+            ), 'File\Model\FileConnect\Item');
+            $subData = $subItem->toArray();
+            $subTable->where(array('connect_id' => $postId, 'connectType' => $subData['connectType']))->remove();
+            if($subData['connect_id'] && $subData['file_id']) {
+                $subTable->where(array('connect_id' => $postId, 'connectType' => $subData['connectType']))->create($subData);
+            }
+        } 
+        
         $this->getEvent()->trigger('createPost.post', $this);
 
         return $postId;
@@ -129,6 +141,20 @@ class Post extends AbstractModel
             }
         }
 
+        if($postId && $this->getSubItem('FileConnect')){
+            $subData = $this->getSubItem('FileConnect');
+            $subTable = Api::_()->getDbTable('File\DbTable\FilesConnections');
+            $subItem = $this->getItemClass($subData, array(
+                'connect_id' => array('connect_id', 'getConnectId'),
+                'connectType' => array('connectType', 'getConnectType')
+            ), 'File\Model\FileConnect\Item');
+            $subData = $subItem->toArray();
+            $subTable->where(array('connect_id' => $postId, 'connectType' => $subData['connectType']))->remove();
+            if($subData['connect_id'] && $subData['file_id']) {
+                $subTable->where(array('connect_id' => $postId, 'connectType' => $subData['connectType']))->create($subData);
+            }
+        } 
+
         $this->getEvent()->trigger('savePost.post', $this);
 
         return $postId;
@@ -167,6 +193,12 @@ class Post extends AbstractModel
                 ),
                 'CategoryPost' => array(
                     'category_id' => null,
+                ),
+                'FileConnect' => array(
+                    'connect_id' => null,
+                ),
+                'File' => array(
+                    'connect_id' => null,
                 ),
             ))->getItemArray();
         }

@@ -397,7 +397,10 @@
 				if(eva.ui[func]){
 					eva.ui[func]();
 				}
-			}	
+			}
+			if(eva.ui.runtime !== undefined){
+				eva.ui.runtime();
+			}
 		},
 
 		init : function(){

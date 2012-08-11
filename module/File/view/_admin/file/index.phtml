@@ -129,7 +129,6 @@ function getFileTypeIcon($ext)
                         <td>
                             <input name="id" type="checkbox" class="multiform-item-checkbox"  data-multiform="post" data-multiform-itemid="<?=$file['id'] ?>" value="<?=$file['id'] ?>" />
                         </td>	
-
                         <td>
                             <a href="<?=$this->uri('/admin/file/' . $file['id'])?>" class="title"><?=$file['title'] ?></a>
                             <span class="label <?=$lableMap[$file['status']]?>"><?=$this->_($file['status'])?></span>
@@ -140,7 +139,7 @@ function getFileTypeIcon($ext)
                         </td>
                         <td>
                             <?if($file['isImage']):?>
-                            <img src="<?=$this->link(getFileTypeIcon($file['fileExtension']))?>" alt="<?=$file['fileExtension']?>" />
+                            <img src="<?=$this->thumb($file['Thumb'], array('w_50'))?>" alt="<?=$file['fileExtension']?>" />
                             <?else:?>
                             <img src="<?=$this->link(getFileTypeIcon($file['fileExtension']))?>" alt="<?=$file['fileExtension']?>" />
                             <?endif?>
