@@ -99,14 +99,14 @@ class BinaryTreeDb extends AbstractAdapter
     public function setRootNode()
     {
         $dbTable = $this->dbTable;
-        $dbTable->columns(array('MAX(right)' => 'right'));
+        $dbTable->columns(array('right'))->order('right DESC');
         $node = $dbTable->find('one');
         
         if ($node !== false) {
             $node = (array) $node;
             $rootNode = array(
                 'left' => 1,
-                'right' => $node['MAX(right)'] + 1,
+                'right' => $node['right'] + 1,
             );
         } else {
             $rootNode = array(
@@ -114,7 +114,7 @@ class BinaryTreeDb extends AbstractAdapter
                 'right' => 2,
             );      
         }
-
+        
         $this->rootNode = $rootNode;
         
         return $this;
@@ -228,7 +228,7 @@ class BinaryTreeDb extends AbstractAdapter
         $dbTable->disableLimit(); 
         $nodes = $dbTable->find('all');
         $nodes = $this->getLevel($nodes);
-
+        
         $nodes = $this->sortByOrderNumber($nodes);
 
         return $nodes;
@@ -307,9 +307,9 @@ class BinaryTreeDb extends AbstractAdapter
             }
         }
         
-        if (count($levelNeedle) > 1 && $node['level'] > 1) {
-            unset($levelNeedle[$node['level']]);
-            return $this->findNextNode($levelNeedle[$node['level'] - 1], $nodes, $levelNeedle);
+        if (count($levelNeedle) > 1 && $current['level'] > 1) {
+            unset($levelNeedle[$current['level']]);
+            return $this->findNextNode($levelNeedle[$current['level'] - 1], $nodes, $levelNeedle);
         }
         
         $levelNeedle = array();
@@ -336,10 +336,12 @@ class BinaryTreeDb extends AbstractAdapter
 
         $width = $node['right'] - $node['left'] + 1;
         
-        if ($nodeUpdate['parentId'] && $nodeUpdate['parentId'] != $node['parentId']) {
-            
-            $parentNode = $dbTable->where(array('id' => $nodeUpdate['parentId']))->find('one');
-            
+        if ($nodeUpdate['parentId'] != $node['parentId']) {
+            if ($nodeUpdate['parentId']) {
+                $parentNode = $dbTable->where(array('id' => $nodeUpdate['parentId']))->find('one');
+            } else {
+                $parentNode = $this->rootNode;
+            }
             if ($parentNode['left'] >= $node['left'] && $parentNode['right'] <= $node['right']) {
                 return false;
             }        
@@ -373,12 +375,12 @@ class BinaryTreeDb extends AbstractAdapter
                     'left' => new Expression("`left` + $width")
                 ));
                 
-                $dbTable->where(array('left' => $parentNode['left']));
+                $dbTable->where(array('id' => $parentNode['id']));
                 $dbTable->save(array(
                     'right' => new Expression("`right` + $width")
                 )); 
 
-                $dbTable->where(array('right' => ($node['right'] + 1)));
+                $dbTable->where(array('id' => $node['parentId']));
                 $dbTable->save(array(
                     'left' => new Expression("`left` + $width")
                 ));  
@@ -405,12 +407,12 @@ class BinaryTreeDb extends AbstractAdapter
                     'left' => new Expression("`left` - $width")
                 ));
 
-                $dbTable->where(array('right' => $parentNode['right']));
+                $dbTable->where(array('id' => $parentNode['id']));
                 $dbTable->save(array(
                     'left' => new Expression("`left` - $width")
                 )); 
 
-                $dbTable->where(array('left' => ($node['left'] - 1)));
+                $dbTable->where(array('id' => $node['parentId']));
                 $dbTable->save(array(
                     'right' => new Expression("`right` - $width")
                 ));  
