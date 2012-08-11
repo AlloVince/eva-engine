@@ -60,7 +60,7 @@ class LoginController extends ActionController
 
         $viewVariables = $this->superAdminLogin();
         $model = new ViewModel();
-        $this->layout('layout/adminindex');
+        $this->layout('layout/adminblank');
         $model->setTemplate('core/index');
         $model->setVariables($viewVariables);
         return $model;

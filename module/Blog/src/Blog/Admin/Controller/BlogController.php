@@ -100,8 +100,8 @@ class BlogController extends RestfulModuleController
             $postModel = Api::_()->getModel('Blog\Model\Post');
             $postData = $form->fieldsMap($postData, true);
             $postId = $postModel->setSubItemMap($subForms)->setItem($postData)->savePost();
-            $this->redirect()->toUrl('/admin/blog/' . $postData['id']);
             $this->flashMessenger()->addMessage('post-edit-succeed');
+            $this->redirect()->toUrl('/admin/blog/' . $postData['id']);
         } else {
             //$this->flashMessenger()->addMessage('');
             $flashMesseger = array('post-edit-failed');
