@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2012 年 08 月 06 日 04:56
+-- 生成日期: 2012 年 08 月 11 日 12:23
 -- 服务器版本: 5.5.16
 -- PHP 版本: 5.3.8
 
@@ -75,9 +75,11 @@ CREATE TABLE IF NOT EXISTS `eva_blog_categories` (
   `description` text COLLATE utf8_unicode_ci,
   `parentId` int(10) DEFAULT NULL,
   `rootId` int(10) DEFAULT NULL,
-  `orderNumber` int(10) DEFAULT NULL,
+  `orderNumber` int(10) NOT NULL DEFAULT '0',
   `createTime` datetime NOT NULL,
   `count` int(10) NOT NULL DEFAULT '0',
+  `left` int(20) NOT NULL,
+  `right` int(20) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
@@ -337,6 +339,20 @@ CREATE TABLE IF NOT EXISTS `eva_file_files` (
   `createTime` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `eva_file_files_connections`
+--
+
+DROP TABLE IF EXISTS `eva_file_files_connections`;
+CREATE TABLE IF NOT EXISTS `eva_file_files_connections` (
+  `file_id` int(11) NOT NULL,
+  `connect_id` int(11) NOT NULL,
+  `connectType` enum('category','post') NOT NULL,
+  PRIMARY KEY (`file_id`,`connect_id`,`connectType`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
