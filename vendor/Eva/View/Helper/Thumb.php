@@ -37,7 +37,7 @@ class Thumb extends \Zend\View\Helper\AbstractHelper
         $nameArray = explode('.', $fileName);
         $nameExt = array_pop($nameArray);
         $nameFinal = array_pop($nameArray);
-        $nameFinal .= ',' . implode($args);
+        $nameFinal .= ',' . implode(',', $args);
         array_push($nameArray, $nameFinal, $nameExt);
         $fileName = implode('.', $nameArray);
 
