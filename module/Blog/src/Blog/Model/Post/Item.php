@@ -39,6 +39,21 @@ class Item extends AbstractItem
     {
         return '/blog/post/' . $urlName;
     }
+    
+    public function getPreview($preview)
+    {
+        if($preview){
+            return $preview;
+        }
+        
+        $model = $this->model;
+        $text = $model->getSubItem('Text');
+        $content = isset($text['content']) ? $text['content'] : '';
+        
+        $preview = \Eva\Stdlib\String\Substring::subCNStringWithWrap(strip_tags($content), 80);
+        
+        return $preview;
+    }
 
     public function getText()
     {
