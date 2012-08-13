@@ -42,6 +42,7 @@ class Post extends AbstractModel
 
         $item = $this->setItemAttrMap(array(
             'urlName' => array('urlName', 'getUrlName'),
+            'preview' => array('preview', 'getPreview'),
             'createTime' => array('createTime', 'getCreateTime'),
             'updateTime' => array('updateTime', 'getUpdateTime'),
         ))->getItemArray();
@@ -103,6 +104,7 @@ class Post extends AbstractModel
 
         $item = $this->setItemAttrMap(array(
             'urlName' => array('urlName', 'getUrlName'),
+            'preview' => array('preview', 'getPreview'),
             'updateTime' => array('updateTime', 'getUpdateTime'),
         ))->getItemArray();
 
