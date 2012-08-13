@@ -114,6 +114,9 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 
             $argumentsCount = count($arguments);
             $select = $this->getSelect();
+            call_user_func_array(array($select, $method), $arguments);
+            $this->selectOptions[$method] = $arguments;
+            /*
             switch($argumentsCount){
                 case 1 : 
                     $select->$method($arguments[0]);
@@ -127,6 +130,7 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
                     $select->$method();
                     $this->selectOptions[$method] = true;
             }
+            */
 
             //Where maybe have multi columns
             if($method == 'where'){
