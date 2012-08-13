@@ -1,17 +1,55 @@
 <?php
 return array(
+    'router' => array(
+        'routes' => array(
+            'default' => array(
+                'type'    => 'Eva\Mvc\Router\Http\ModuleRoute',
+                'priority' => 1,
+            ),
+        ),
+        'sorted' => true,
+    ),
+    'db' => array(
+        'driver' => 'Pdo',
+        'dsn'            => 'mysql:dbname=eva;hostname=localhost',
+        'username'       => 'root',
+        'password'       => '123456',
+        'driver_options' => array(
+            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
+        ),
+        'prefix' => 'eva_',
+    ),
+
+    'service_manager' => array(
+        'factories' => array(
+            'Zend\Db\Adapter\Adapter' => 'Zend\Db\Adapter\AdapterServiceFactory',
+        ),
+    ),
+
+    'site' => array(
+        'uri' => array(
+            'callbackName' => 'callback',
+        ),
+        'link' => array(
+            //'host' => 'abc.com',
+            'basePath' => '/static',
+            'versionName' => 'v',
+            'version' => '1.0.0',
+        ),
+    ),
+
     'view_manager' => array(
         'display_not_found_reason' => true,
         'display_exceptions'       => true,
         'not_found_template'       => 'error/404',
         'exception_template'       => 'error/index',
         'template_map' => array(
-            'layout/layout' => __DIR__ . '/../view/layout/layout.phtml',
-            'layout/admin' => __DIR__ . '/../view/layout/admin.phtml',
-            'layout/adminblank' => __DIR__ . '/../view/layout/adminblank.phtml',
-            'index/index'   => __DIR__ . '/../view/index/index.phtml',
-            'error/404'     => __DIR__ . '/../view/error/404.phtml',
-            'error/index'   => __DIR__ . '/../view/error/index.phtml',
+            'layout/layout' => EVA_MODULE_PATH . '/Core/view/layout/layout.phtml',
+            'layout/admin' => EVA_MODULE_PATH . '/Core/view/layout/admin.phtml',
+            'layout/adminblank' => EVA_MODULE_PATH . '/Core/view/layout/adminblank.phtml',
+            'index/index'   => EVA_MODULE_PATH . '/Core/view/index/index.phtml',
+            'error/404'     => EVA_MODULE_PATH . '/Core/view/error/404.phtml',
+            'error/index'   => EVA_MODULE_PATH . '/Core/view/error/index.phtml',
         ),
         'module_namespace_layout_map' => array(
             'Admin' => 'layout/admin'
@@ -33,15 +71,38 @@ return array(
 
 
     'dir' => array(
-        
+
     ),
 
     'session' => array(
-        
+
     ),
 
     'mail' => array(
-        //'transports' => 'file',
+        'transports' => array('sendmail'),
+        'di' => array('instance' => array(
+            'Zend\Mail\Transport\SmtpOptions' => array(
+                'parameters' => array(
+                    'name'              => 'sendgrid',
+                    'host'              => 'smtp.sendgrid.net',
+                    'port' => 25,
+                    'connection_class'  => 'smtp',
+                    'connection_config' => array(
+                        'username' => 'sendgridusername',
+                        'password' => 'sendgridpassword',
+                    ),
+                )
+            ),
+            'Eva\Mail\Message' => array(
+                'parameters' => array(
+                    //'Zend\Mail\Message::addTo:emailOrAddressList' => 'allo.vince@gmail.com',
+                    'Zend\Mail\Message::setFrom' => array(
+                        'emailOrAddressList' => 'allo.vince@gmail.com',
+                        'name' => 'AlloVince'
+                    ),
+                )
+            ),
+        )),
     ),
 
     'translator' => array(
@@ -95,7 +156,7 @@ return array(
     ),
 
     'authentication' => array(
-    
+
     ),
 
     'cache' => array(
@@ -149,3 +210,4 @@ return array(
         ),
     ),
 );
+

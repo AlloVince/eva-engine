@@ -9,6 +9,7 @@ class LoginController extends RestfulModuleController
 {
     public function restPutLogin()
     {
+        $this->layout('layout/adminblank');
         $request = $this->getRequest();
         if ($request->isPost()) {
             $form = Api::_()->getForm('User\Form\AdminLoginForm');
