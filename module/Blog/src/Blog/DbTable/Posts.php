@@ -35,6 +35,26 @@ class Posts extends TableGateway
         if($params->page){
             $this->page($params->page);
         }
+        
+        if ($params->category) {
+            $cateModel = \Eva\Api::_()->getModel('Blog\Model\Category');
+            $categoryinfo = $cateModel->setItemParams($params->category)->getCategory();
+            
+            $categoeyPostDb = \Eva\Api::_()->getDbTable('Blog\DbTable\CategoriesPosts'); 
+            $categoeyPostTableName = $categoeyPostDb->initTableName()->getTable();
+
+            if($categoryinfo) {
+                $this->join(
+                    $categoeyPostTableName,
+                    "id = $categoeyPostTableName.post_id",
+                    array('category_id'),
+                    'inner'
+                ); 
+                $this->where(array("$categoeyPostTableName.category_id" => $categoryinfo['id']));
+            } else {
+				return false;
+			}
+        }
 
         $orders = array(
             'idasc' => 'id ASC',
@@ -50,7 +70,7 @@ class Posts extends TableGateway
                 $this->order($order);
             }
         }
-
+        
         return $this;
     }
 }

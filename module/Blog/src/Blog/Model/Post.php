@@ -228,7 +228,12 @@ class Post extends AbstractModel
 
         $itemTable = $this->getItemTable();
 
-        $itemTable->selectPosts($params);
+        $result = $itemTable->selectPosts($params);
+        
+        if ($result === false) {
+            return array();
+        }
+        
         $posts = $itemTable->find('all');
         //p($itemTable->debug());
 
