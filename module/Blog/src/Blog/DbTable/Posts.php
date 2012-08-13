@@ -32,10 +32,14 @@ class Posts extends TableGateway
             $this->where(array('visibility' => $params->visibility));
         }
 
+        if ($params->rows) {
+            $this->limit((int) $params->rows);
+        }
+
         if($params->page){
             $this->page($params->page);
         }
-        
+ 
         if ($params->category) {
             $cateModel = \Eva\Api::_()->getModel('Blog\Model\Category');
             $categoryinfo = $cateModel->setItemParams($params->category)->getCategory();
