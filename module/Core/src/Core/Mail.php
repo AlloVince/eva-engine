@@ -11,6 +11,7 @@
 namespace Core;
 
 use Eva\Api;
+use Eva\Config\Config;
 use Eva\Mail\Message;
 use Zend\Mail\Transport;
 use Zend\Mail\Exception;
@@ -107,19 +108,61 @@ class Mail
                                 ),
                             ),
                         ),
-                    ),
-                ),
-                'instance' => array(
-                    //Zend View Di Config Start
-                    /*
-                    'Zend\View\Resolver\TemplateMapResolver' => array(
-                        'parameters' => array(
-                            'map'  => array(
-                                Message::VIEW_PATH_NAME => EVA_ROOT_PATH . '/data/mail/abc.phtml',
+                        'Zend\Mail\Message' => array(
+                            'setTo' => array(
+                                'emailOrAddressList' => array(
+                                    'type' => false,
+                                    'required' => true
+                                ),
+                                'name' => array(
+                                    'type' => false,
+                                    'required' => false
+                                ),
+                            ),
+                            'addTo' => array(
+                                'emailOrAddressList' => array(
+                                    'type' => false,
+                                    'required' => true
+                                ),
+                                'name' => array(
+                                    'type' => false,
+                                    'required' => false
+                                ),
+                            ),
+                            'setFrom' => array(
+                                'emailOrAddressList' => array(
+                                    'type' => false,
+                                    'required' => true
+                                ),
+                                'name' => array(
+                                    'type' => false,
+                                    'required' => false
+                                ),
+                            ),
+                            'addFrom' => array(
+                                'emailOrAddressList' => array(
+                                    'type' => false,
+                                    'required' => true
+                                ),
+                                'name' => array(
+                                    'type' => false,
+                                    'required' => false
+                                ),
+                            ),
+                            'setSender' => array(
+                                'emailOrAddressList' => array(
+                                    'type' => false,
+                                    'required' => true
+                                ),
+                                'name' => array(
+                                    'type' => false,
+                                    'required' => false
+                                ),
                             ),
                         ),
                     ),
-                    */
+                ),
+                'instance' => array(
                     'Zend\View\Resolver\TemplatePathStack' => array(
                         'parameters' => array(
                             'paths'  => array(
@@ -129,7 +172,6 @@ class Mail
                     ),
                     'Zend\View\Resolver\AggregateResolver' => array(
                         'injections' => array(
-                            //'Zend\View\Resolver\TemplateMapResolver',
                             'Zend\View\Resolver\TemplatePathStack',
                         ),
                     ),
@@ -138,19 +180,7 @@ class Mail
                             'resolver' => 'Zend\View\Resolver\AggregateResolver',
                         ),
                     ),
-                    'Zend\View\Mode\ViewModel' => array(
-                        'parameters' => array(
-                        ),
-                    
-                    ),
                     //Zend View Di Config End
-
-                    'Zend\Mail\Headers' => array(
-                        'parameters' => array(
-                            //  'Zend\Mail\Message::addTo:emailOrAddressList' => 'me@mwop.net',
-                            //  'Zend\Mail\Message::setSender:emailOrAddressList' => 'me@mwop.net',
-                        )
-                    ),
                     'Eva\Mail\Message' => array(
                         'parameters' => array(
                             'headers' => 'Zend\Mail\Headers',
@@ -168,7 +198,7 @@ class Mail
                             'Zend\Mail\Transport\FileOptions'
                         )
                     ),
-
+                    /*
                     'Zend\Mail\Transport\SmtpOptions' => array(
                         'parameters' => array(
                             'name'              => 'sendgrid',
@@ -181,6 +211,7 @@ class Mail
                             ),
                         )
                     ),
+                    */
                     'Zend\Mail\Transport\Smtp' => array(
                         'injections' => array(
                             'Zend\Mail\Transport\SmtpOptions'
@@ -192,9 +223,11 @@ class Mail
 
         $globalConfig = Api::_()->getConfig();
         if(isset($globalConfig['mail'])){
-            $config = array_merge($defaultConfig, $globalConfig['mail'], $config);
+            $config = Config::mergeArray($defaultConfig, $globalConfig['mail'], $config);
+            //$config = array_merge($defaultConfig, $globalConfig['mail'], $config);
         } else {
-            $config = array_merge($defaultConfig['mail'], $config);
+            $config = Config::mergeArray($defaultConfig['mail'], $config);
+            //$config = array_merge($defaultConfig['mail'], $config);
         } 
 
         $diConfig = array();
