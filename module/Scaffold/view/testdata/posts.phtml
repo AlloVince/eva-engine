@@ -1,0 +1,68 @@
+<?
+$title = $this->_('Posts Test Data Generator');
+$this->headTitle($title, 'SET');
+$this->textDelay('breadcrumbText', $title);
+?>
+
+<div class="row">
+    <div class="span10 listing-buttons">
+        <form action="<?=$this->uri('/admin/blog/multi/')?>" method="post" class="pull-left" data-multiform="post">
+            <input type="hidden" name="id" class="multiform-container-main" value="" />
+            <input type="hidden" name="order" class="multiform-container" value="" />
+            <div class="btn-group">
+                <span class="btn"><input type="checkbox" class="multiform-checker" /></span>
+                <a href="#" class="btn multiform-submiter" data-multiform-action="<?=$this->uri('/scaffold/testdata/posts')?>"><?=$this->_('Make Posts')?></a>
+            </div>
+        </form>
+    </div>
+
+    <div class="span10">
+        <div class="slate">
+            <div class="page-header">
+                <h2><?=$title?></h2>
+            </div>
+
+            <table class="orders-table table">
+                <thead>
+                    <tr>
+                        <th class="span1">
+                        </th>
+                        <th><?=$this->_('Category Name')?></th>
+                        <th class="span3"><?=$this->_('Make Post Number')?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?if($this->categories):?>
+                    <?foreach($this->categories as $key=>$category):?>
+                    <tr class="">
+                        <td>
+                            <input name="id" type="checkbox" class="multiform-item-checkbox"  data-multiform="post" data-multiform-itemid="<?=$category['id'] ?>" value="<?=$category['id'] ?>" />
+                        </td>	
+                        <td>
+                               <?if($category['level'] > 1) {
+			                        echo str_repeat("&nbsp;&nbsp;&nbsp;",$category['level']).'|_';
+			                    }?>
+                            <a href="<?=$this->uri('/admin/blog/category/' . $category['id'])?>" class="title"><?=$category['categoryName'] ?></a>
+                            <p>
+                            <span class="meta"><?=$category['urlName'] ?> <?=$category['createTime'];?></span>
+                            </p>
+                        </td>
+                        <td>
+                            <input name="order" tabindex="<?=$key+1 ?>" type="text" class="span1 multiform-item-input" size="2" maxlength="3"  data-multiform="post" data-multiform-itemid="<?=$category['id'] ?>" value="10" />
+                        </td>
+                    </tr>
+                    <?endforeach;?>
+                    <?endif;?>
+                </tbody>
+            </table>
+        </div>
+    </div><!--span10 end-->
+
+    <div class="span10">
+        <?if($this->paginator):?>
+        <?=$this->paginator->setPath('/scaffold/testdata/posts')->setBaseQuery($this->query);?>
+        <?=$this->widget('Core', 'widgets/paginator', $this->vars())?>
+        <?endif;?>
+    </div>
+
+</div>
