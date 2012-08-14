@@ -26,8 +26,7 @@ class ResetController extends RestfulModuleController
             if ($form->isValid()) {
 
                 $mail = new \Core\Mail();
-                $mail->getMessage()->addFrom("allo.vince@gmail.com", "AlloVince")
-                ->addTo("allo.vince@gmail.com")
+                $mail->getMessage()
                 ->setSubject("Sending an email from Zend\Mail!")
                 ->setData(array(
                     'foo' => 'bar'

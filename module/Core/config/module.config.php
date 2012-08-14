@@ -95,11 +95,12 @@ return array(
             ),
             'Eva\Mail\Message' => array(
                 'parameters' => array(
-                    //'Zend\Mail\Message::addTo:emailOrAddressList' => 'allo.vince@gmail.com',
-                    'Zend\Mail\Message::setFrom' => array(
-                        'emailOrAddressList' => 'allo.vince@gmail.com',
-                        'name' => 'AlloVince'
-                    ),
+                    /*
+                    'Zend\Mail\Message::setTo:emailOrAddressList' => 'info@evaengine.com',
+                    'Zend\Mail\Message::setTo:name' => 'EvaEngine',
+                    'Zend\Mail\Message::setFrom:emailOrAddressList' => 'info@evaengine.com',
+                    'Zend\Mail\Message::setFrom:name' => 'EvaEngine',
+                    */
                 )
             ),
         )),
