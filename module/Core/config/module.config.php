@@ -68,8 +68,7 @@ return array(
         'password' => '123456',
         'email' => 'allo.vince@gmail.com',
     ),
-
-
+    
     'dir' => array(
 
     ),

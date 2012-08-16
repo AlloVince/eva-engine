@@ -11,62 +11,92 @@
 
 namespace Eva\View\Helper;
 
-use Zend\Mvc\Router\RouteStackInterface,
-    Zend\Mvc\Router\RouteMatch,
-    Zend\View\Exception,
-    Eva\Uri\Uri as CoreUri;
+use Zend\View\Helper\AbstractHelper,
+    Zend\ServiceManager\ServiceLocatorAwareInterface,
+    Zend\ServiceManager\ServiceLocatorInterface,
+    Zend\View\Exception;
 
 /**
- * Render View Partial Cross Module
- * 
- * @category   Eva
- * @package    Eva_View
- * @subpackage Helper
- * @copyright  Copyright (c) 2012 AlloVince (http://avnpc.com/)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
- */
-class Widget extends \Zend\View\Helper\AbstractHelper
+* Render View Partial Cross Module
+* 
+* @category   Eva
+* @package    Eva_View
+* @subpackage Helper
+* @copyright  Copyright (c) 2012 AlloVince (http://avnpc.com/)
+* @license    http://framework.zend.com/license/new-bsd     New BSD License
+*/
+class Widget extends AbstractHelper implements ServiceLocatorAwareInterface
 {
     /**
      * Variable to which object will be assigned
      * @var string
      */
-    protected $_objectKey;
+    protected $objectKey;
+
 
     /**
-     * Renders a template fragment within a variable scope distinct from the
-     * calling View object.
+    * @var ServiceLocatorInterface
+    */
+    protected $serviceLocator;
+
+    /**
+    * Set the service locator.
+    *
+    * @param ServiceLocatorInterface $serviceLocator
+    * @return AbstractHelper
+    */
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+        return $this;
+    }
+
+    /**
+     * Get the service locator.
      *
-     * If no arguments are passed, returns the helper instance.
-     *
-     * If the $model is an array, it is passed to the view object's assign()
-     * method.
-     *
-     * If the $model is an object, it first checks to see if the object
-     * implements a 'toArray' method; if so, it passes the result of that
-     * method to to the view object's assign() method. Otherwise, the result of
-     * get_object_vars() is passed.
-     *
-     * @param  string $name Name of view script
-     * @param  array $model Variables to populate in the view
-     * @return string|Partial
-     * @throws Exception\RuntimeException
+     * @return \Zend\ServiceManager\ServiceLocatorInterface
      */
+    public function getServiceLocator()
+    {
+        return $this->serviceLocator;
+    }
+
+
+    /**
+    * Renders a template fragment within a variable scope distinct from the
+    * calling View object.
+    *
+    * If no arguments are passed, returns the helper instance.
+    *
+    * If the $model is an array, it is passed to the view object's assign()
+    * method.
+    *
+    * If the $model is an object, it first checks to see if the object
+    * implements a 'toArray' method; if so, it passes the result of that
+    * method to to the view object's assign() method. Otherwise, the result of
+    * get_object_vars() is passed.
+    *
+    * @param  string $name Name of view script
+    * @param  array $model Variables to populate in the view
+    * @return string|Partial
+    * @throws Exception\RuntimeException
+    */
     public function __invoke($moduleName = null, $name = null, $model = null)
     {
         if (0 == func_num_args()) {
             return $this;
         }
-        
-        //$model = new \Zend\View\Model\ViewModel();
-        //$model->setTemplate('D:\xampp\htdocs\zf2\module\Core\view\widgets\paginator.phtml');
 
         $view = $this->cloneView();
         if (isset($this->partialCounter)) {
             $view->partialCounter = $this->partialCounter;
         }
 
-        $modulePath = EVA_MODULE_PATH . DIRECTORY_SEPARATOR . ucfirst($moduleName) . DIRECTORY_SEPARATOR . 'view';
+        $module = $this->serviceLocator->getServiceLocator()->get('modulemanager')->getModule($moduleName);
+        $object = new \ReflectionObject($module);
+        $modulePath = dirname($object->getFileName());
+
+        $modulePath .= DIRECTORY_SEPARATOR . 'view';
         $resolver = new \Zend\View\Resolver\TemplatePathStack();
         $resolver->addPaths(array($modulePath));
         $view->setResolver($resolver);
@@ -88,10 +118,10 @@ class Widget extends \Zend\View\Helper\AbstractHelper
     }
 
     /**
-     * Clone the current View
-     *
-     * @return \Zend\View\Renderer\RendererInterface
-     */
+    * Clone the current View
+    *
+    * @return \Zend\View\Renderer\RendererInterface
+    */
     public function cloneView()
     {
         $view = clone $this->view;
@@ -108,9 +138,9 @@ class Widget extends \Zend\View\Helper\AbstractHelper
     public function setObjectKey($key)
     {
         if (null === $key) {
-            $this->_objectKey = null;
+            $this->objectKey = null;
         } else {
-            $this->_objectKey = (string) $key;
+            $this->objectKey = (string) $key;
         }
 
         return $this;
@@ -126,6 +156,7 @@ class Widget extends \Zend\View\Helper\AbstractHelper
      */
     public function getObjectKey()
     {
-        return $this->_objectKey;
+        return $this->objectKey;
     }
+
 }

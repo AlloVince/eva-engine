@@ -1,0 +1,45 @@
+<?
+$title = $this->_('Page Components');
+$this->headTitle($title, 'SET');
+$this->textDelay('breadcrumbText', $title);
+
+$posts = $this->posts;
+?>
+<div class="main-area dashboard">
+
+    <div class="row">
+        <div class="span10">
+            <div class="slate">
+                    <h2><?=$title?></h2>
+                </div>
+
+                <table class="orders-table table">
+                    <thead>
+                        <tr>
+                            <th><?=$this->_('Title')?></th>
+                            <th class="actions"><?=$this->_('Actions')?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?if($this->components):?>
+                        <?foreach($this->components as $key => $component):?>
+                        <tr class="">
+                            <td>
+                                <a href="<?=$this->uri('/admin/core/setting/component/' . $key)?>" class="title"><?=$component['name'] ?></a>
+                                <p>
+                                <span class="meta"><?=$component['description'];?></span>
+                                </p>
+                            </td>
+                            <td class="actions">
+                                <a href="<?=$this->uri('/admin/core/setting/component/' . $key)?>" class="btn btn-small"><?=$this->_('Edit')?></a>
+                            </td>
+                        </tr>
+                        <?endforeach;?>
+                        <?endif;?>
+                    </tbody>
+                </table>
+            </div>
+        </div><!--span10 end-->
+    </div>
+
+</div>

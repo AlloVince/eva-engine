@@ -1,0 +1,9 @@
+<? 
+$title = $this->_('Page Component Edit');
+$this->headTitle($title, 'SET');
+?>
+<header class="page-header">
+<h2 class=""><?=$this->title?></h2>
+</header>
+<?=$this->widget($component['module'], $component['path'], $this->vars())?>
+<textarea id="form-code" class="span10 editor-code" rows="20" data-ui='{"mode":"javascript", "lineNumbers":true, "fontsize":"12px"}'><?=$this->widget($component['module'], $component['path'], $this->vars())?></textarea>
