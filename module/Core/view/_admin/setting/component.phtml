@@ -5,5 +5,34 @@ $this->headTitle($title, 'SET');
 <header class="page-header">
 <h2 class=""><?=$this->title?></h2>
 </header>
-<?=$this->widget($component['module'], $component['path'], $this->vars())?>
-<textarea id="form-code" class="span10 editor-code" rows="20" data-ui='{"mode":"javascript", "lineNumbers":true, "fontsize":"12px"}'><?=$this->widget($component['module'], $component['path'], $this->vars())?></textarea>
+
+
+<input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
+<div id="file-edit-succeed" class="alert alert-success hide">
+    <a href="#" data-dismiss="alert" class="close">x</a>
+    <h4 class="alert-heading"><?=$this->_('File Edit Succeed')?></h4>
+</div>
+
+<div id="file-not-exist" class="alert alert-error hide">
+    <a href="#" data-dismiss="alert" class="close">x</a>
+    <h4 class="alert-heading"><?=$this->_('Page component file not exist')?></h4>
+</div>
+
+<div id="file-not-writable" class="alert alert-error hide">
+    <a href="#" data-dismiss="alert" class="close">x</a>
+    <h4 class="alert-heading"><?=$this->_('Page component file not writable')?></h4>
+</div>
+
+
+<form action="<?=$this->uri('/admin/core/setting/component/')?>" method="post">
+<?if($this->component):?>
+<textarea name="content" class="span10 editor-code" rows="20" data-ui='{"mode":"xml", "lineNumbers":true, "fontsize":"12px"}'><?=$this->widget($component['module'], $component['path'], $this->vars())?></textarea>
+<input name="name" type="hidden" value="<?=$component['name']?>" />
+<div class="form-actions">
+    <button class="btn btn-primary" type="submit"><?=$this->_('Save')?></button>
+</div>
+
+<?else:?>
+<p>Page Component Not Found.</p>
+<?endif?>
+</form>

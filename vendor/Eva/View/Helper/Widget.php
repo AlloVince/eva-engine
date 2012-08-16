@@ -93,8 +93,15 @@ class Widget extends AbstractHelper implements ServiceLocatorAwareInterface
         }
 
         $module = $this->serviceLocator->getServiceLocator()->get('modulemanager')->getModule($moduleName);
+        if(!$module){
+            return '';
+        }
+
         $object = new \ReflectionObject($module);
         $modulePath = dirname($object->getFileName());
+        if(!$modulePath){
+            return '';
+        }
 
         $modulePath .= DIRECTORY_SEPARATOR . 'view';
         $resolver = new \Zend\View\Resolver\TemplatePathStack();

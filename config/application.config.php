@@ -8,7 +8,7 @@ return array(
         'Scaffold',
         //'BjyProfiler',
         //'ZendDeveloperTools',
-        'Engine',
+        //'Engine',
     ),
     'service_manager' => array(
         'use_defaults' => true,

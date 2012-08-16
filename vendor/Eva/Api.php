@@ -93,6 +93,21 @@ class Api
     }
 
 
+    public function getModulePath($moduleName)
+    {
+        $module = $this->event->getApplication()->getServiceManager()->get('modulemanager')->getModule($moduleName);
+        if(!$module){
+            return '';
+        }
+
+        $object = new \ReflectionObject($module);
+        $modulePath = dirname($object->getFileName());
+        if(!$modulePath){
+            return '';
+        }
+        return $modulePath;
+    }
+
     public function getModuleConfig($moduleName)
     {
         $configKey = ucfirst($moduleName);
@@ -100,7 +115,11 @@ class Api
             return $this->moduleConfig[$configKey];
         }
 
-        $path = EVA_MODULE_PATH . DIRECTORY_SEPARATOR . $configKey . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR;
+        $modulePath = $this->getModulePath($moduleName);
+        if(!$modulePath){
+            return $this->moduleConfig[$configKey] = array();
+        }
+        $path = $modulePath . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR;
         $globalConfig =  $path . 'module.global.config.php';
         $localConfig = $path . 'module.local.config.php';
         if(false === file_exists($globalConfig)) {
@@ -124,8 +143,7 @@ class Api
             return $this->moduleLoaded;
         }
         
-        $event = $this->getEvent();
-        $modules = $event->getParam('application')->getServiceManager()->get('modulemanager')->getLoadedModules();
+        $modules = $this->event->getApplication()->getServiceManager()->get('modulemanager')->getLoadedModules();
         $moduleLoaded = array_keys($modules);
         return $this->moduleLoaded = $moduleLoaded;
     }
