@@ -63,7 +63,6 @@ Category Name,目录名称
 Category Url,目录URL
 No input will create a random url,无输入则自动生成随机URL
 Create Category,新建目录
-"Category %name% will be deleted, are you sure?",目录%name%将会被删除，确定吗？
 Copy,复制
 Delete Category,删除目录
 Download File,下载文件
@@ -81,3 +80,14 @@ Thumbnail,缩略图
 Thumbnail Url,缩略图链接
 Search Posts,搜索文章
 View Category Posts,查看目录下文章
+﻿"Category %name% and all children categories will be deleted, are you sure?",目录%name%以及其所有子目录将被删除，确定吗？
+"File %title% will be deleted, are you sure?",文件%title%将被删除，确定吗？
+"File Select",选择文件
+"Search File",搜索文件
+"Select Image",选择图片
+"Connect Images",关联图片
+"Connect Image",关联图片
+Connect,关联
+"Insert to editor",插入编辑器
+Manage,管理
+"Category Image",目录图片

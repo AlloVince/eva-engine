@@ -34,9 +34,9 @@ function getFileTypeIcon($ext)
 
     <ul class="nav nav-tabs">
         <li>
-        <a href="<?=$this->uri('/api/file/upload')?>">File Upload</a>
+        <a href="<?=$this->uri('/api/file/upload')?>"><?=$this->_('File Upload')?></a>
         </li>
-        <li class="active"><a href="<?=$this->uri('/api/file')?>">File Select</a></li>
+        <li class="active"><a href="<?=$this->uri('/api/file')?>"><?=$this->_('File Select')?></a></li>
     </ul>
 
     <div class="accordion-group">
@@ -136,7 +136,7 @@ function getFileTypeIcon($ext)
                     </td>	
                     <td class="actions">
                         <a href="<?=$this->uri('/admin/file/' . $file['id'])?>" class="btn btn-small action-connect" data-connect-id="<?=$file['id']?>" data-connect-method="connectFile" data-connect-json="<?=$this->escapeHtmlAttr($this->json($file))?>"><?=$this->_('Connect')?></a>
-                        <a href="<?=$this->uri('/admin/file/' . $file['id'])?>" class="btn btn-small action-insert" data-connect-id="<?=$file['id']?>"><?=$this->_('Insert')?></a>
+                        <a href="<?=$this->uri('/admin/file/' . $file['id'])?>" class="btn btn-small action-insert" data-connect-id="<?=$file['id']?>"><?=$this->_('Insert To Editor')?></a>
                         <a href="<?=$this->uri('/admin/file/' . $file['id'])?>" class="btn btn-small" target="_blank"><?=$this->_('Manage')?></a>
                     </td>
                 </tr>

@@ -29,9 +29,9 @@ $file = array();
 
     <ul class="nav nav-tabs">
         <li class="active">
-        <a href="<?=$this->uri('/api/file/upload')?>">File Upload</a>
+        <a href="<?=$this->uri('/api/file/upload')?>"><?=$this->_('File Upload')?></a>
         </li>
-        <li><a href="<?=$this->uri('/api/file')?>">File Select</a></li>
+        <li><a href="<?=$this->uri('/api/file')?>"><?=$this->_('File Select')?></a></li>
     </ul>
 
     <form id="fileupload" <?=$this->formAttr($form)?> enctype="multipart/form-data" class="fileuploader">
