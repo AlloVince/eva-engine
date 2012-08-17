@@ -25,7 +25,7 @@ $posts = $this->posts;
                         <?foreach($this->components as $key => $component):?>
                         <tr class="">
                             <td>
-                                <a href="<?=$this->uri('/admin/core/setting/component/' . $key)?>" class="title"><?=$component['name'] ?></a>
+                                <a href="<?=$this->uri('/admin/core/setting/component/' . $key)?>" class="title"><?=$component['title'] ?></a>
                                 <p>
                                 <span class="meta"><?=$component['description'];?></span>
                                 </p>
