@@ -270,16 +270,17 @@ abstract class AbstractModel
             $count = (int) $count;
             $diConfig = array(
                 'instance' => array(
-                    'Zend\Paginator\Adapter\DbTableSelect' => array(
+                    'Zend\Paginator\Adapter\DbSelect' => array(
                         'parameters' => array(
                             'rowCount' => $count,
-                            'select' => $itemTable->getSelect()
+                            'select' => $itemTable->getSelect(),
+                            'adapterOrSqlObject' => $itemTable->getSql(),
                         )
                     ),
                     'Eva\Paginator\Paginator' => array(
                         'parameters' => array(
                             'rowCount' => $count,
-                            'adapter' => 'Zend\Paginator\Adapter\DbTableSelect',
+                            'adapter' => 'Zend\Paginator\Adapter\DbSelect',
                         ),
                     ),
                 )
