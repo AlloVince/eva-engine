@@ -292,9 +292,11 @@ class Api
                 ),
                 $modelClassName => array(
                     'parameters' => array(
-                        'mvcEvent' => $this->event,
                         'cacheStorageFactory' => 'Eva\Cache\StorageFactory',
                     ),
+                    'injections' => array(
+                        $this->event,
+                    )
                 ),
             )
         );
@@ -309,7 +311,7 @@ class Api
         $diConfig = $diConfig ? array_merge($defaultConfig, $diConfig) : $defaultConfig;
         $di->configure(new DiConfig($diConfig));
         //\Zend\Di\Display\Console::export($di);
-        return $di->get($modelClassName);
+        return $di->get($modelClassName); 
     }
 
     public function getView()

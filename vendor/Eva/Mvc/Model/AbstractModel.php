@@ -17,6 +17,7 @@ use Eva\Api,
     Eva\Mvc\Model\AbstractItem,
     Eva\Mvc\Model\AbstractItemList,
     Zend\Cache\StorageFactory as CacheStorageFactory,
+    Zend\Mvc\Exception\MissingLocatorException,
     Zend\Mvc\MvcEvent;
 
 /**
@@ -34,7 +35,28 @@ abstract class AbstractModel
     const CACHE_META = 'meta';
     const CACHE_PAGINATOR = 'paginator';
 
-    protected $events;
+    protected $events = array(
+        'getItem.precache',
+        'getItem.pre',
+        'getItem',
+        'getItem.post',
+        'getItem.postcache',
+        'getItemList.precache',
+        'getItemList.pre',
+        'getItemList',
+        'getItemList.post',
+        'getItemList.postcache',
+        'createItem.pre',
+        'createItem',
+        'createItem.post',
+        'saveItem.pre',
+        'saveItem',
+        'saveItem.post',
+        'removeItem.pre',
+        'removeItem',
+        'removeItem.post',
+    );
+
     protected $mvcEvent;
 
     protected $itemTable;
@@ -195,11 +217,10 @@ abstract class AbstractModel
     public function getEvent()
     {
         if($this->mvcEvent && $this->mvcEvent instanceof MvcEvent){
-            return $this->mvcEvent->getApplication()->events();
+            return $this->mvcEvent->getApplication()->getEventManager();
         }
 
-        //TODO: throw exeption when no event set
-        return new \Zend\EventManager\EventManager();
+        throw new MissingLocatorException(printf('Mvc Event not found in class %s', __CLASS__));
     }
 
     public function getMvcEvent()
@@ -210,9 +231,12 @@ abstract class AbstractModel
     public function setMvcEvent(MvcEvent $event)
     {
         $this->mvcEvent = $event;
+
+        /*
         if($this->events){
-            $event->getApplication()->events()->attach($this->events);
+            $event->getApplication()->getEventManager()->attach($this->events);
         }
+        */
     }
 
     public function cache(\Zend\Cache\Storage\Adapter\AdapterOptions $cacheOptions = null)
