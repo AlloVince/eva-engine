@@ -13,20 +13,11 @@ class UserController extends RestfulModuleController
 
     public function restIndexUser()
     {
-        $this->layout('layout/admin'); 
-
-        $postTable = Api::_()->getDbTable('User\DbTable\Users');
-        $posts = $postTable->fetchAll();
-
-        return array(
-            'posts' => $posts->toArray()
-        );
     }
 
     public function restGetUser()
     {
         $id = (int)$this->getEvent()->getRouteMatch()->getParam('id');
-        $this->layout('layout/admin'); 
         $postTable = Api::_()->getDbTable('User\DbTable\Users');
         $postinfo = $postTable->getPost($id);
         return array(
