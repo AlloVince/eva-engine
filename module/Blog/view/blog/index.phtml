@@ -19,4 +19,8 @@ $this->headTitle($title, 'SET');
     <p><?=$this->_('No blog post found')?></p>
 	<?endif;?>
 
+    <?if($this->paginator):?>
+    <?=$this->paginator->setPath('/blog/')->setBaseQuery($this->query);?>
+    <?=$this->widget('Core', 'widgets/paginator', $this->vars())?>
+    <?endif;?>
 </div>

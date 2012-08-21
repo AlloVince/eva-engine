@@ -26,6 +26,7 @@ $posts = $this->posts;
 
     <div class="row">
 
+        <?if($this->posts):?>
         <div class="span5">
             <div class="slate">
                 <div class="page-header">
@@ -33,19 +34,19 @@ $posts = $this->posts;
                 </div>
                 <table class="orders-table table">
                     <tbody>
-                        <?if($posts):?>
                         <?foreach($this->posts as $key=>$post):?>
                         <tr>
                             <td><a href="<?=$this->uri('/admin/blog/' . $post['id'])?>" class="title"><?=$post['title'] ?></a></td>
                             <td class="date"><span class="meta"><?=$post['user_name'] ?> <?=$post['createTime'];?></span></td>
                         </tr>
                         <?endforeach?>
-                        <?endif?>
                     </tbody>
                 </table>
             </div>
         </div><!-- span5 end-->
+        <?endif?>
 
+        <?if($this->files):?>
         <div class="span5">
             <div class="slate">
                 <div class="page-header">
@@ -53,21 +54,17 @@ $posts = $this->posts;
                 </div>
                 <table class="orders-table table">
                     <tbody>
-                        <?if($files):?>
                         <?foreach($this->files as $key=>$file):?>
                         <tr>
                             <td><a href="<?=$this->uri('/admin/file/' . $file['id'])?>" class="title"><?=$file['originalName'] ?></a></td>
                             <td class="date"><span class="meta"><?=$file['user_name'] ?> <?=$file['createTime'];?></span></td>
                         </tr>
                         <?endforeach?>
-                        <?endif?>
-
                     </tbody>
                 </table>
-
             </div>
-
-        </div>
+        </div><!-- span5 end-->
+        <?endif?>
 
     </div>
 

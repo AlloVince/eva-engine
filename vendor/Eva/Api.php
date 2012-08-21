@@ -13,7 +13,7 @@ namespace Eva;
 use Zend\Di\Di,
     Zend\Di\Config as DiConfig,
     Zend\Db\Adapter\Adapter as DbAdapter,
-    Eva\Core\Exception\RuntimeException;
+    Zend\ModuleManager\Exception\RuntimeException;
 
 /**
  * Singleton Pattern Api

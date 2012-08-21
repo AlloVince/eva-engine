@@ -46,7 +46,7 @@ class Translator extends \Zend\I18n\Translator\Translator
             $translator->scaffoldPath = $path = $options['path'];
 
             if(isset($options['level']) && isset($_SERVER["REQUEST_URI"])){
-                $pathArray = explode('/', $_SERVER["REQUEST_URI"]);
+                $pathArray = explode('/', dirname($_SERVER["REQUEST_URI"]));
                 $pathArray = array_splice($pathArray, 1, (int) $options['level']);
                 $translator->scaffoldFile = $file = $translator->scaffoldPath . DIRECTORY_SEPARATOR . implode('_', $pathArray) . '.csv';
             } else {

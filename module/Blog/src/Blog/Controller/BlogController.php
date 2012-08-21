@@ -18,13 +18,13 @@ class BlogController extends RestfulModuleController
         $page = $request->getQuery()->get('page', 1);
 
         $postModel = Api::_()->getModel('Blog\Model\Post');
-        $posts = $postModel->getPosts();
+        $posts = $postModel->setItemListParams(array('page' => $page))->getPosts();
         $postModel->cache();
         $paginator = $postModel->getPaginator();
 
         $this->pagecapture('abc');
         return array(
-            'posts' => $posts->toArray(),
+            'posts' => $posts,
             'paginator' => $paginator,
         );
     }
