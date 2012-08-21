@@ -26,7 +26,7 @@ $this->headTitle($title, 'SET');
 
 <form action="<?=$this->uri('/admin/core/setting/component/')?>" method="post">
 <?if($this->component):?>
-<textarea name="content" class="span10 editor-code" rows="20" data-ui='{"mode":"xml", "lineNumbers":true, "fontsize":"12px"}'><?=$this->widget($component['module'], $component['path'], $this->vars())?></textarea>
+<textarea name="content" class="span10 editor-code" rows="20" data-ui='{"mode":"xml", "lineNumbers":true, "fontsize":"12px", "lineWrapping":true}'><?=$this->widget($component['module'], $component['path'], $this->vars())?></textarea>
 <input name="name" type="hidden" value="<?=$component['name']?>" />
 <div class="form-actions">
     <button class="btn btn-primary" type="submit"><?=$this->_('Save')?></button>

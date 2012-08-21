@@ -25,3 +25,12 @@
 [submodule "vendor/EvaCloudImage"]
 	path = vendor/EvaCloudImage
 	url = git://github.com/AlloVince/EvaCloudImage.git
+[submodule "depends/DoctrineModule"]
+	path = depends/DoctrineModule
+	url = https://github.com/doctrine/DoctrineModule
+[submodule "depends/DoctrineORMModule"]
+	path = depends/DoctrineORMModule
+	url = git://github.com/doctrine/DoctrineORMModule.git
+[submodule "depends/Doctrine"]
+	path = depends/Doctrine
+	url = git@github.com:AlloVince/Doctrine.git
