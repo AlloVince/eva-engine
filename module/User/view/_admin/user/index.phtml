@@ -1,75 +1,133 @@
-<div class="page_header">
-<h2 class="">Blog Posts</h2>
+<?
+$title = $this->_('User List');
+$this->headTitle($title, 'SET');
+$this->textDelay('breadcrumbText', $title);
+if($this->form){
+	$form = $this->form;
+} else {
+    $form = Eva\Api::_()->getForm('\User\Form\UserSearchForm');
+}
+$form->init(array(
+    'action' => $this->uri('/admin/user/'),
+    'method' => 'get',
+    'values' => $this->query
+));
+
+$lableMap = array(
+    'draft' => '',
+    'published' => 'label-success',
+    'pending' => 'label-warning',
+    'deleted' => 'label-inverse',
+);
+
+?>
+<div class="row">
+    <div class="span10">
+        <div class="slate">
+            <form <?=$this->formAttr($form)?> class="form-inline">
+                <?=$form->helper('keyword', array('class' => 'input-large', 'placeholder' => 'Keyword...'))?>
+                <?=$form->helper('status', 'formSelect', array('class' => 'span2'))?>
+                <?=$form->helper('gender', 'formSelect', array('class' => 'span2'))?>
+                <?=$form->helper('onlineStatus', 'formSelect', array('class' => 'span2'))?>
+                <button class="btn" type="submit"><?=$this->_('Filter Users')?></button>
+            </form>
+        </div>
+    </div>
 </div>
 
-	<table class="table">
-	<tbody>
-	<tr>
-		<th class="twidth width_30"><input type="checkbox" id="checkall" /></th>	
-		<th>
-				Title
-		</th>
-		<th>
-				Author
-		</th>
-		<th class="twidth width_30">
-				Status
-		</th>
-		<th class="twidth width_30">
-			Comments
-		</th>
-		<th class="twidth width_30">
-				Order
-		</th>
- 		<th class="twidth width_150 centeralign">
-			 Date
-	 	</th>
-	</tr>
 
-	<?if(!$this->posts):?>
-	<tr>
-		<td colspan="8" class="noresult">
-			No post found. Click here to <a href="<?=$this->Uri('/admin/postnew/'); ?>">add one</a>.
-		</td>
-	</tr>
+<div class="row">
+    <div class="span10 listing-buttons">
+        <div class="btn-group pull-right">
+            <a href="<?=$this->uri('/admin/user/create')?>" class="btn btn-info"><?=$this->_('Add New User')?></a>
+        </div>
+        <form action="<?=$this->uri('/admin/user/multi/')?>" method="post" class="pull-left" data-multiform="post">
+            <input type="hidden" name="id" class="multiform-container-main" value="" />
+            <input type="hidden" name="order" class="multiform-container" value="" />
+            <div class="btn-group">
+                <span class="btn"><input type="checkbox" class="multiform-checker" /></span>
+                <span data-toggle="dropdown" class="btn dropdown-toggle">
+                    <?=$this->_('Status')?>
+                    <span class="caret"></span>
+                </span>
+                <ul class="dropdown-menu">
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/user/multi/status/active')?>"><?=$this->_('Active')?></a></li>
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/user/multi/status/inactive')?>"><?=$this->_('Inactive')?></a></li>
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/user/multi/status/blocked')?>"><?=$this->_('Blocked')?></a></li>
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/user/multi/status/deleted')?>"><?=$this->_('Deleted')?></a></li>
+                </ul>
+            </div>
+        </form>
+    </div>
 
-	<?else:?>
+    <div class="span10">
+        <div class="slate">
+            <div class="page-header">
+                <div class="btn-group pull-right">
+                    <span data-toggle="dropdown" class="btn dropdown-toggle">
+                        <?=$this->_('Order')?> <span class="caret"></span>
+                    </span>
+                    <ul class="dropdown-menu">
+                        <li><a href="<?=$this->uri('/admin/user/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'idasc',),));?>" class=""><i class="icon-arrow-up"></i> <?=$this->_('Id')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/user/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'iddesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Id')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/user/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'titleasc',),));?>" class=""><i class="icon-arrow-up"></i> <?=$this->_('Title')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/user/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'titledesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Title')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/user/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'timeasc',),));?>" class=""><i class="icon-arrow-up"></i> <?=$this->_('Time')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/user/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'timedesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Time')?></a></li>
+                    </ul>
+                </div>
+                <h2><?=$title?></h2>
+            </div>
 
-	<?foreach($this->posts as $key=>$post):?>
-	<tr id="post_<?=$post['id'] ?>">
-		<td><input type="checkbox" class="checkall" name="post_ids[]" value="<?=$post['id'] ?>" /></td>	
-		<td>
-			<a href="<?=$this->Uri('/admin/blog/' . $post['id'])?>" class="title"><?=$post['title'] ?></a>			
+            <table class="orders-table table">
+                <thead>
+                    <tr>
+                        <th class="span1">
+                        </th>
+                        <th><?=$this->_('Post Title')?></th>
+                        <th class="span1"><?=$this->_('Order')?></th>
+                        <th class="actions"><?=$this->_('Actions')?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?if($this->posts):?>
+                    <?foreach($this->posts as $key=>$post):?>
+                    <tr class="">
+                        <td>
+                            <input name="id" type="checkbox" class="multiform-item-checkbox"  data-multiform="post" data-multiform-itemid="<?=$post['id'] ?>" value="<?=$post['id'] ?>" />
+                        </td>	
+                        <td>
+                            <a href="<?=$this->uri('/admin/user/' . $post['id'])?>" class="title"><?=$post['title'] ?></a>
+                            <span class="label <?=$lableMap[$post['status']]?>"><?=$this->_($post['status'])?></span>
+                            <?if($post['visibility'] == 'private'):?>
+                            <span class="label label-important"><?=$this->_('private')?></span>
+                            <?endif?>
+                            <p>
+                            <span class="meta"><?=$post['user_name'] ?> <?=$post['createTime'];?></span>
+                            </p>
+                        </td>
+                        <td>
+                            <input name="order" tabindex="<?=$key+1 ?>" type="text" class="span1 multiform-item-input" size="2" maxlength="3"  data-multiform="post" data-multiform-itemid="<?=$post['id'] ?>" value="<?=$post['orderNumber'] ? $post['orderNumber'] : "0" ?>" />
+                        </td>
+                        <td class="actions">
+                            <a href="<?=$this->uri('/admin/user/remove/' . $post['id'], 'c', array('c' => $this->uri('/admin/user', array('page' => $this->page)))); ?>" class="btn btn-small btn-danger"><?=$this->_('Delete')?></a>
+                            <a href="<?=$this->uri('/user/page/' . $post['urlName'])?>" class="btn btn-small"><?=$this->_('View')?></a>
+                            <a href="<?=$this->uri('/admin/user/' . $post['id'])?>" class="btn btn-small"><?=$this->_('Edit')?></a>
+                        </td>
+                    </tr>
+                    <?endforeach;?>
+                    <?endif;?>
+                </tbody>
+            </table>
+        </div>
+    </div><!--span10 end-->
 
-			<div class="quick_edit">
-				<a href="<?=$this->Uri('/blog/pages/' . $post['urlName']); ?>" class="btn">View</a>
-				<a href="<?=$this->Uri('/admin/blog/' . $post['id']); ?>" class="btn">Edit</a>
-			</div>
+    <div class="span10">
+        <?if($this->paginator):?>
+        <?=$this->paginator->setPath('/admin/user/')->setBaseQuery($this->query);?>
+        <?=$this->widget('Core', 'widgets/paginator', $this->vars())?>
+        <?endif;?>
+    </div>
 
-		</td>
-		<td>
-			<?=$post['user_name'] ?>
-		</td>
-		<td>
-			<?=$post['status'] ?>
-		</td>
-		<?if($post['postUsage'] == 'post'):?>
-		<td>
-			<a href="<?=$this->Uri('/admin/blog/comments/?post_id=' . $post['id']); ?>"><?=$post['commentCount'] ? $post['commentCount'] : 0?></a>
-		</td>
-		<?else:?>
-		<td></td>
-		<?endif;?>
-		<td>
-			<input type="hidden" name="post_id[]" class="reorder_post_id" value="<?=$post['id'] ?>" />
-			<input tabindex="<?=$key+1 ?>" type="text" class="order reorder_ordernum" size="2" maxlength="3" name="orderNumber[]" value="<?=$post['orderNumber'] ? $post['orderNumber'] : "0" ?>" />
-		</td>
-		<td class="centeralign">
-			<?=$post['createTime'];?>
-		</td>
-	</tr>
-	<?endforeach;?>
+</div>
 
-	<?endif;?>
-	</tbody>
-	</table>

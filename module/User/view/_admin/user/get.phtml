@@ -204,20 +204,6 @@ $form->init(array(
                             <div class="help-block"><?=$form->helper(array('Profile', 'site'), 'formElementErrors')?></div>
                         </div>
                     </div>
-                    <div class="control-group <?=$form->isError(array('Profile', 'photoDir')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Profile', 'photoDir'), 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper(array('Profile', 'photoDir'), array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper(array('Profile', 'photoDir'), 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError(array('Profile', 'photoName')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Profile', 'photoName'), 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper(array('Profile', 'photoName'), array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper(array('Profile', 'photoName'), 'formElementErrors')?></div>
-                        </div>
-                    </div>
                     <div class="control-group <?=$form->isError(array('Profile', 'fullName')) ? 'error' : '';?>">
                         <?=$form->helper(array('Profile', 'fullName'), 'label', array('class' => 'control-label'))?>
                         <div class="controls">
@@ -328,20 +314,6 @@ $form->init(array(
                         <div class="controls">
                             <?=$form->helper(array('Profile', 'signature'), array('class' => ''))?>        
                             <div class="help-block"><?=$form->helper(array('Profile', 'signature'), 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError(array('Profile', 'longitude')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Profile', 'longitude'), 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper(array('Profile', 'longitude'), array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper(array('Profile', 'longitude'), 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError(array('Profile', 'latitude')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Profile', 'latitude'), 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper(array('Profile', 'latitude'), array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper(array('Profile', 'latitude'), 'formElementErrors')?></div>
                         </div>
                     </div>
                     <div class="control-group <?=$form->isError(array('Profile', 'location')) ? 'error' : '';?>">

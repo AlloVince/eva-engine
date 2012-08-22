@@ -167,10 +167,12 @@ class UserForm extends \Eva\Form\Form
                         'label' => 'Online',
                         'value' => 'online',
                     ),
+                    /*
                     array (
                         'label' => 'Busy',
                         'value' => 'busy',
                     ),
+                    */
                     array (
                         'label' => 'Offline',
                         'value' => 'offline',
