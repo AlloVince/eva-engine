@@ -38,6 +38,7 @@ class HelperConfig implements ConfigInterface
          'textDelay' => 'Eva\View\Helper\TextDelay',
          'hasModule' => 'Eva\View\Helper\HasModule',
          'thumb' => 'Eva\View\Helper\Thumb',
+         'datetime' => 'Eva\View\Helper\Datetime',
      );
 
     /**

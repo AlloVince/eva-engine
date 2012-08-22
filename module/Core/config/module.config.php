@@ -9,6 +9,7 @@ return array(
         ),
         'sorted' => true,
     ),
+
     'db' => array(
         'driver' => 'Pdo',
         'dsn'            => 'mysql:dbname=eva;hostname=localhost',
@@ -18,6 +19,11 @@ return array(
             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
         ),
         'prefix' => 'eva_',
+    ),
+
+    'datetime' => array(
+        'timezone' => 8,
+        'format' => 'F j, Y, g:i a', //'Y年m月d日 H:i',
     ),
 
     'service_manager' => array(

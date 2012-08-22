@@ -12,6 +12,7 @@ $this->headTitle($title, 'SET');
 	<?foreach($this->posts as $key=>$post):?>
 	<div id="post_<?=$post['id'] ?>" class="table">
         <h3><a href="<?=$this->Uri('/blog/page/' . $post['urlName'])?>" class="title"><?=$post['title'] ?></a></h3>
+        <p><?=$this->datetime($post['createTime'])?></p>
 		<p><?=$post['preview'];?></p>
 	</div>
 	<?endforeach;?>
