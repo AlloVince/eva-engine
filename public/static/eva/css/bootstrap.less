@@ -29,26 +29,21 @@
 /*******************************
 *	   Import Typography
 ********************************/
-@import "src/type/type.less";
-@import "src/type/code.less";
 @import "src/type/tables.less";
 @import "type/thumbnails.less";
+/*
+@import "src/type/type.less";
+@import "src/type/code.less";
 .post {
 	.typography();
 	.codepre();
 }
-.post table, .table{
-	#table > .table();
+*/
+@import "src/type/typo.less";
+.typo {
+	.typography();
 }
-.table-condensed {
-	#table > .table-condensed();
-}
-.table-bordered {
-	#table > .table-bordered();
-}
-.table-striped {
-	#table > .table-striped();
-}
+
 /*******************************
 *	   Import Forms & Buttons
 ********************************/
