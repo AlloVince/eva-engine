@@ -245,6 +245,20 @@ class Api
         return new $formClassName;
     }
 
+    public function getModelService($modelClassName)
+    {
+        if(false === $this->isModuleLoaded($modelClassName)){
+            throw new RuntimeException(sprintf(
+                'Module not loaded by class %s',
+                $modelClassName
+            ));    
+        }
+
+        $serviceManager = $this->event->getApplication()->getServiceManager();
+        $serviceManager->setInvokableClass($modelClassName, $modelClassName);
+        return $serviceManager->get($modelClassName);
+    }
+
     public function getModel($modelClassName, array $diConfig = array())
     {
         if(false === $this->isModuleLoaded($modelClassName)){

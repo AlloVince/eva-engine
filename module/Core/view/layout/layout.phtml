@@ -3,7 +3,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta charset="utf-8" />
-    <?=$this->headTitle('Eva Engine')?>
+    <?=$this->headTitle()?>
     <?$this->link('/src/admin/css/bootstrap.css')?>
 	<!--[if lt IE 9]>
 	<meta http-equiv="PRAGMA" content="NO-CACHE" />
@@ -11,7 +11,6 @@
 	<![endif]-->
     <?=$this->headMeta()?>
     <link href="<?=$this->link('/lib/css/bootstrap/bootstrap.min.css')?>" media="all" rel="stylesheet" type="text/css" />
-    <link href="<?=$this->link('/lib/css/typo/typo.css')?>" media="all" rel="stylesheet" type="text/css" />
 	<style>
 	body, h1, h2, h3, h4, h5, h6  {
 		font-family:Microsoft YaHei,Trebuchet MS, Verdana, Helvetica, Arial, sans-serif;
@@ -21,14 +20,18 @@
 
 <body class="">
 	<div class="navbar"><div class="navbar-inner"><div class="container">
-    <a class="brand" href="/">Eva Engine</a>	
+                <a class="brand" href="/">EvaEngine</a>	
     <ul class="nav">
         <li><a href="/"><?=$this->_('Home')?></a></li>
-        <li><a href="/blog/"><?=$this->translate('Blog')?></a></li>
-        <li><a href="/user/"><?=$this->translate('User')?></a></li>
+        <?if($this->hasModule('Blog')):?>
+        <li><a href="/blog/"><?=$this->_('Blog')?></a></li>
+        <?endif?>
+        <?if($this->hasModule('User')):?>
+        <li><a href="/user/"><?=$this->_('User')?></a></li>
+        <?endif?>
 	</ul>
     <ul class="nav pull-right">
-        <li><a href="/admin/"><?=$this->translate('Admin')?></a></li>
+        <li><a href="/admin/"><?=$this->_('Admin')?></a></li>
     </ul>
     </div></div></div>
 

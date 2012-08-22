@@ -62,6 +62,15 @@
                         </ul>
                         </li>
                         <?endif?>
+                        <?if($this->hasmodule('User')):?>
+                        <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="collapse" data-target="#user-dropdown" href="#"><i class="icon-file"></i> <?=$this->_('User')?> <b class="caret"></b></a>
+                        <ul id="user-dropdown" class="collapse">
+                            <li data-highlight-url="/admin/user/(\d+)*$"><a href="<?=$this->uri('/admin/user/')?>"><?=$this->_('User Management')?></a></li>
+                            <li data-highlight-url="/admin/user/create"><a href="<?=$this->uri('/admin/user/create')?>"><?=$this->_('Create User')?></a></li>
+                        </ul>
+                        </li>
+                        <?endif?>
                         <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="collapse" data-target="#setting-dropdown" href="#"><i class="icon-file"></i> <?=$this->_('Setting')?> <b class="caret"></b></a>
                         <ul id="setting-dropdown" class="collapse">

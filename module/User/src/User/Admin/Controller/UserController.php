@@ -23,15 +23,17 @@ class UserController extends RestfulModuleController
         $form = Api::_()->getForm('User\Form\UserSearchForm');
         $selectQuery = $form->fieldsMap($query, true);
 
-        $itemModel = Api::_()->getModel('User\Model\User');
-        $items = $itemModel->setItemListParams($selectQuery)->getUsers();
-        $paginator = $itemModel->getPaginator();
+        $itemModel = Api::_()->getModelService('User\Model\User');
+        $itemModel->getCache();
+        //p($itemModel);
+        $items = $itemModel->getUsers();
+        //$paginator = $itemModel->getPaginator();
 
         return array(
             'form' => $form,
             'posts' => $items,
             'query' => $query,
-            'paginator' => $paginator,
+            //'paginator' => $paginator,
         );
     }
 

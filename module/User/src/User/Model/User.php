@@ -3,9 +3,9 @@
 namespace User\Model;
 
 use Eva\Api,
-    Eva\Mvc\Model\AbstractModel;
+    Eva\Mvc\Model\AbstractModelService;
 
-class User extends AbstractModel
+class User extends AbstractModelService
 {
     protected $itemTableName = 'User\DbTable\Users';
 

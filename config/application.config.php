@@ -2,7 +2,7 @@
 return array(
     'modules' => array(
         'Core',
-        //'User',
+        'User',
         'Blog',
         'File',
         'Scaffold',
