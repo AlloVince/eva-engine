@@ -47,10 +47,10 @@ class Evajs extends \Zend\Form\View\Helper\AbstractHelper
         $routerMatch = Api::_()->getRouterMatch();
         $params = $routerMatch->getParams();
         $jsParams = array(
-            'module' => $params['module'],
-            'moduleNs' => $params['moduleNamespace'],
-            'controller' => $params['controllerName'],
-            'action' => $params['action'],
+            'module' => isset($params['module']) ? $params['module'] : null,
+            'moduleNs' => isset($params['moduleNamespace']) ? $params['moduleNamespace'] : null,
+            'controller' => isset($params['controllerName']) ? $params['controllerName'] : null,
+            'action' => isset($params['action']) ? $params['action'] : null,
         );
 
         $config = Api::_()->getConfig();
