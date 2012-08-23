@@ -274,7 +274,6 @@ a.thumbnail:hover{border-color:#0088cc;-webkit-box-shadow:0 1px 4px rgba(0, 105,
 .typo abbr{cursor:help;}
 .typo del{text-decoration:line-through;}
 .typo address,.typo caption,.typo cite,.typo code,.typo den,.typo em,.typo th,.typo var{font-style:normal;font-weight:500;}
-.typo ul{list-style:none;}
 .typo caption,.typo th{text-align:left;}
 .typo q:before,.typo q:after{content:'';}
 .typo sub,.typo sup{font-size:75%;line-height:0;position:relative;vertical-align:text-top;}
