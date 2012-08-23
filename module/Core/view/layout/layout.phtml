@@ -13,11 +13,11 @@
     <link href="<?=$this->link('/src/engine/css/ee.css')?>" media="all" rel="stylesheet" type="text/css" />
 </head>
 
-<body class="typo">
+<body class="">
 	<div class="navbar"><div class="navbar-inner"><div class="container">
                 <a class="brand" href="/">EvaEngine</a>	
     <ul class="nav">
-        <li><a href="/"><?=$this->_('Home')?></a></li>
+        <li class="active"><a href="/"><?=$this->_('Home')?></a></li>
         <?if($this->hasModule('Blog')):?>
         <li><a href="/blog/"><?=$this->_('Blog')?></a></li>
         <?endif?>

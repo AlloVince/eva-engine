@@ -1,0 +1,1862 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>基础CSS · Twitter Bootstrap中文版/中文翻译</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="../bootstrap.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="assets/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
+  </head>
+
+  <body data-spy="scroll" data-target=".subnav" data-offset="50" class="tb">
+
+
+  <!-- Navbar
+    ================================================== -->
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="./index.html">Bootstrap</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="">
+                <a href="./index.html">概述</a>
+              </li>
+              <li class="">
+                <a href="./scaffolding.html">框架</a>
+              </li>
+              <li class="active">
+                <a href="./base-css.html">基础CSS</a>
+              </li>
+              <li class="">
+                <a href="./components.html">组件</a>
+              </li>
+              <li class="">
+                <a href="./javascript.html">Javascript插件</a>
+              </li>
+              <li class="">
+                <a href="./less.html">使用LESS</a>
+              </li>
+              <li class="divider-vertical"></li>
+              <li class="">
+                <a href="./download.html">定制</a>
+              </li>
+              <li class="">
+                <a href="./examples.html">例子</a>
+              </li>
+	      <li class="">
+                <a href="./wrongway.html">译者言</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+<!-- Masthead
+================================================== -->
+<header class="jumbotron subhead" id="overview">
+  <h1>基础CSS</h1>
+  <p class="lead">
+    在框架的基础上，对HTML基础元素进行样式定义，并利用可扩展的class增强其展示效果，从而提供形式新颖，风格一致的外观和体验。
+  </p>
+  <div class="subnav">
+    <ul class="nav nav-pills">
+      <li><a href="#typography">排版</a></li>
+      <li><a href="#code">代码</a></li>
+      <li><a href="#tables">表格</a></li>
+      <li><a href="#forms">表单</a></li>
+      <li><a href="#buttons">按钮</a></li>
+      <li><a href="#icons">图标</a></li>
+    </ul>
+  </div>
+</header>
+
+
+<!-- Typography
+================================================== -->
+<section id="typography">
+  <div class="page-header">
+    <h1>排版 <small>标题，段落，列表，以及其他行级元素</small></h1>
+  </div>
+
+  <h2>标题 &amp; body copy</h2>
+
+  <!-- Headings & Paragraph Copy -->
+  <div class="row">
+    <div class="span4">
+      <h3>排版尺度</h3>
+      <p>
+	整个排版系统的单位尺度都取决于variables.less文件中的两个Less变量：<code>@baseFontSize</code> 和 <code>@baseLineHeight</code>。
+	前者决定全局的默认字体大小font-size，后者决定默认的行高line-height。
+      </p>
+      <p>
+	我们利用这些变量，配合一些数学运算，就可以得到定义样式时所需的margins, paddings, line-heights等等。
+      </p>
+    </div>
+    <div class="span4">
+      <h3>body text例子</h3>
+      <p>
+	许小年：政府掌握了越来越多的资源，制订了日益烦琐的管理方法，为了获得企业发展所需要的资源，或者是仅仅为了生活下去，企业不得不按照潜规则与企业打交道。我非常赞同绿公司提出的要“守本分”，但是要想企业守本分，首先政府要守本分，“逼良为娼”还不是最可怕的，回过头来的“扫黄”才是致命的一击！
+      </p>
+      <p>
+	余华：在涉及敏感话题时，我以前总是希望别人说出我想说的话。别人有风险，自已很安全。后来意识到如果人人都和我一样，那么我们可能长久生活在风险里。要想抵达安全，风险是必经之路。所以我开始自已说了，越来越多的人已经在自己说了……荷马史诗里描述黑压压的兵勇前进时的情景：他们将大地踩得轰然作响。
+      </p>
+    </div>
+    <div class="span4">
+      <div class="well">
+        <h1>h1. 中国共产党万岁</h1>
+        <h2>h2. 千年王八万年龟</h2>
+        <h3>h3. 我们在下一盘很大的棋</h3>
+        <h4>h4. 官人，你这麻将打成相公了</h4>
+        <h5>h5. 发言人：谁说中国互联网不自由了？</h5>
+        <h6>h6. 404 error　网址找不到</h6>
+      </div>
+    </div>
+  </div>
+
+  <!-- Misc Elements -->
+  <h2>强调，地址，缩写</h2>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>元素</th>
+        <th>用法</th>
+        <th>选项</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>&lt;strong&gt;</code>
+        </td>
+        <td>
+	  <strong>加粗强调</strong>一组文字
+        </td>
+        <td>
+          <span class="muted">无</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>&lt;em&gt;</code>
+        </td>
+        <td>
+	  <em>倾斜强调</em>一组文字
+        </td>
+        <td>
+          <span class="muted">无</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>&lt;abbr&gt;</code>
+        </td>
+        <td>
+	  包装缩写词，当鼠标经过时显示缩写词完整含义。比如<abbr title="中国共产党少年先锋敢死队">少先队</abbr>
+        </td>
+        <td>
+          <p>可使用 <code>title</code> 属性存放完整字词信息</p>
+          使用 <code>.initialism</code> 类可以将缩略词大写。
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>&lt;address&gt;</code>
+        </td>
+        <td>
+	  用于包装联系信息的最外层元素或整个信息。
+        </td>
+        <td>
+	  使用 <code>&lt;br&gt;</code> 换行以保持格式不变
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="row">
+    <div class="span4">
+      <h3>强调文字的例子</h3>
+      <p><a href="#">李宗苗</a>：车辆年检，<strong>195元/辆</strong>，<em>全深圳300万辆</em>，年收5.85亿元。</p>
+      <p><a href="#">杨佩昌</a>：在德国，汽车、公司都<strong>无需年检</strong>。我问德国人：汽车不年检，<em>坏了怎么办？</em>答：自己修车。问：企业不年检，公司倒闭如潮怎么办？德国人答：你看德国是这样的吗？我问：德国政府为何不强制年检？德国人反问：<strong>谁给了政府这个权力？如果政府对年检感兴趣，说明这种事对它有好处。</strong></p>
+      <p>
+	<strong>注意：</strong> 在HTML5仍可以使用 <code>&lt;b&gt;</code> 和 <code>&lt;i&gt;</code> 标签，但是它们的用途已经发生了改变。
+	<code>&lt;b&gt;</code> 仅仅用来加粗单词或短语，没有任何语义上的含义。而 <code>&lt;i&gt;</code> 主要用在语音和技术等方面。
+      </p>
+    </div>
+    <div class="span4">
+      <h3>地址的例子</h3>
+      <p>这有两个使用 <code>&lt;address&gt;</code> 标签的例子：</p>
+      <address>
+        <strong>TVlike文化有限公司</strong><br>
+        哪个省哪个市无名大道404号<br>
+        佚名大厦89层64号<br>
+        <abbr title="Phone">P:</abbr> (123) 456-7890
+      </address>
+      <address>
+        <strong>有关负责人</strong><br>
+        <a href="mailto:#">giveme.money@chinagov.com</a>
+      </address>
+    </div>
+    <div class="span4">
+      <h3>缩写的例子</h3>
+      <p>
+	使用 <code>title</code> 属性的缩写词会带有点状(dotted)底边线，鼠标经过时会显示带问号的箭头，并提示完整的字词信息。
+      </p>
+      <p>
+	对缩写词元素应用 <code>.initialism</code> 会减小一号字体大小，以协调排版效果。
+      </p>
+      <p>例子：<abbr title="HyperText Markup Language 超文本标记语言" class="initialism">Html</abbr> 是自切片面包问世以来最棒的发明。</p>
+      <p>例子：<abbr title="中国共产党铁血忠义青年团">共青团</abbr>是一个光荣而伟大的组织哟~</p>
+    </div>
+  </div>
+
+
+  <!-- Blockquotes -->
+  <h2>引用</h2>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>元素</th>
+        <th>用法</th>
+        <th>选项</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>&lt;blockquote&gt;</code>
+        </td>
+        <td>
+	  用于引用外部内容的块级元素
+        </td>
+        <td>
+          <p> <code>cite</code> 属性存放来源URL</p>
+          <code>.pull-left</code> 和 <code>.pull-right</code> 决定是内容居左还是居右
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>&lt;small&gt;</code>
+        </td>
+        <td>
+          可选元素，用于添加针对用户的引用，通常用于引言的作者。
+        </td>
+        <td>
+          可以将引言或出处置于 <code>&lt;cite&gt;</code> 标签内。
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="row">
+    <div class="span4">
+      <p>
+	用 <code>&lt;blockquote&gt;</code> 嵌套 <abbr title="HyperText Markup Language">HTML</abbr> 即可实现引用。
+	对于连续的引用内容，建议使用 <code>&lt;p&gt;</code> 标签。
+      </p>
+      <p>
+	还可以添加一个可选的 <code>&lt;small&gt;</code> 元素来表示引用的出处，该元素会利用样式在内容前加入宽度为一个字长的破折号 <code>&amp;mdash;</code> 。
+      </p>
+    </div>
+    <div class="span8">
+<pre class="prettyprint linenums">
+&lt;blockquote&gt;
+  &lt;p&gt;一天吃六个胶囊，一天三次、一次两个，没有吃掉多少铬。&lt;/p&gt;
+  &lt;small&gt;卫生部合理用药专家孙忠实&lt;/small&gt;
+&lt;/blockquote&gt;
+</pre>
+    </div>
+  </div><!--/row-->
+
+  <h3>引用的例子</h3>
+  <div class="row">
+    <div class="span6">
+      <p>默认引用样式如下:</p>
+      <blockquote>
+        <p>
+	  一天吃六个胶囊，一天三次、一次两个，没有吃掉多少铬。
+	</p>
+        <small>
+	  卫生部合理用药专家孙忠实 于<cite title="">人民网强国论坛</cite>
+	</small>
+      </blockquote>
+    </div>
+    <div class="span6">
+      <p>用 <code>class="pull-right"</code> 将引用内容居右:</p>
+      <blockquote class="pull-right">
+        <p>我曾沾的光使我终身受益，因家庭牵连，我被关进监狱。五年的监狱生活，使我经受了磨难，锻炼了意志，学会了思考，懂得了公平，民主，法制对一个社会是多么重要；温饱，自由，尊严对一个人是多么重要！</p>
+        <small>薄熙来 于<cite title="">1993年3月于大连经贸会</cite></small>
+      </blockquote>
+    </div>
+  </div>
+
+
+  <!-- Lists -->
+  <h2>列表</h2>
+  <div class="row">
+    <div class="span4">
+      <h3>无序号</h3>
+      <p><code>&lt;ul&gt;</code></p>
+      <ul>
+        <li>Django是个好框架</li>
+        <li>Pyramid是个好框架</li>
+        <li>Tornado是个好框架</li>
+        <li>Flask是个好框架</li>
+        <li>Uliweb是个好框架
+          <ul>
+	    <li>MVT模型</li>
+	    <li>组织结构</li>
+	    <li>资源共享的处理方式</li>
+	    <li>URL映射</li>
+	    <li>View和Template</li>
+	    <li>ORM</li>
+	    <li>I18N</li>
+	    <li>功能扩展</li>
+	    <li>命令行工具</li>
+	    <li>运行环境支持</li>
+	    <li>其它特点</li>
+          </ul>
+        </li>
+        <li>Bottle是个好框架</li>
+        <li>Rails是个好框架</li>
+        <li>Yii是个好框架</li>
+      </ul>
+    </div>
+    <div class="span4">
+      <h3>无样式</h3>
+      <p><code>&lt;ul class="unstyled"&gt;</code></p>
+      <ul class="unstyled">
+	<li>以动手实践为荣 , 以只看不练为耻;</li>
+	<li>以打印日志为荣 , 以单步跟踪为耻;</li>
+	<li>以空格缩进为荣 , 以制表缩进为耻;</li>
+	<li>以单元测试为荣 , 以人工测试为耻;
+	  <ul>
+            <li>UnitTest很不错</li>
+            <li>Nose也很好用</li>
+            <li>配合Profile很爽</li>
+	    <li>配合pdb也不错</li>
+          </ul>
+	</li>
+	<li>以模块复用为荣 , 以复制粘贴为耻;</li>
+	<li>以多态应用为荣 , 以分支判断为耻;</li>
+	<li>以Pythonic为荣 , 以冗余拖沓为耻;</li>
+	<li>以总结分享为荣 , 以跪求其解为耻;</li>
+      </ul>
+    </div>
+    <div class="span4">
+      <h3>有序号</h3>
+      <p><code>&lt;ol&gt;</code></p>
+      <ol>
+        <li>以热爱祖国为荣，以危害祖国为耻吗？</li>
+        <li>以服务人民为荣，以背离人民为耻吗？</li>
+        <li>以崇尚科学为荣，以愚昧无知为耻吗？</li>
+        <li>以辛勤劳动为荣，以好逸恶劳为耻吗？</li>
+        <li>以团结互助为荣，以损人利己为耻吗？</li>
+        <li>以诚实守信为荣，以见利忘义为耻吗？</li>
+        <li>以遵纪守法为荣，以违法乱纪为耻吗？</li>
+        <li>以艰苦奋斗为荣，以骄奢淫逸为耻吗？</li>
+      </ol>
+    </div>
+  </div><!-- /row -->
+  <br>
+  <div class="row">
+    <div class="span4">
+      <h3>描述</h3>
+      <p><code>&lt;dl&gt;</code></p>
+      <dl>
+        <dt>描述列表</dt>
+        <dd>适用于术语的定义/解释</dd>
+        <dt>Django</dt>
+        <dd>Django 是一种高级的基于python的web开发框架；</dd>
+	<dd>Django推崇一种快速,整洁而且实用主义哲学的设计及开发方式</dd>
+        <dt>Tornado</dt>
+        <dd>Tornado 是 FriendFeed 使用的可扩展的非阻塞式 web 服务器及其相关工具的开源版本。</dd>
+      </dl>
+    </div>
+    <div class="span8">
+      <h3>水平状态的描述</h3>
+      <p><code>&lt;dl class="dl-horizontal"&gt;</code></p>
+      <dl class="dl-horizontal">
+        <dt>描述列表</dt>
+        <dd>适用于术语的定义/解释</dd>
+	<dt>Django</dt>
+        <dd>Django 是一种高级的基于python的web开发框架；</dd>
+	<dd>Django推崇一种快速,整洁而且实用主义哲学的设计及开发方式</dd>
+        <dt>Tornado</dt>
+        <dd>Tornado 是 FriendFeed 使用的可扩展的非阻塞式 web 服务器及其相关工具的开源版本。</dd>
+      </dl>
+    </div>
+  </div><!-- /row -->
+</section>
+
+
+
+<!-- Code
+================================================== -->
+<section id="code">
+  <div class="page-header">
+    <h1>代码 <small>行级/块状代码片段</small></h1>
+  </div>
+  <div class="row">
+    <div class="span4">
+      <h2>行级代码片段</h2>
+      <p>使用 <code>&lt;code&gt;</code> 包装行级代码片段</p>
+<pre class="prettyprint linenums">
+例如，&lt;code&gt;section&lt;/code&gt; 应该被做为行级代码包装。
+</pre>
+    </div><!--/span-->
+    <div class="span4">
+      <h2>基本块状内容</h2>
+      <p>
+	使用<code>&lt;pre&gt;</code> 对多行代码进行包装。 切记一定要对代码中的每个&lt;&gt;进行转义，这样方能得到正常的渲染结果。
+      </p>
+<pre>
+&lt;p&gt;示范文本...&lt;/p&gt;
+</pre>
+<pre class="prettyprint linenums" style="margin-bottom: 9px;">
+&lt;pre&gt;
+  &amp;lt;p&amp;gt;示范文本...&amp;lt;/p&amp;gt;
+&lt;/pre&gt;
+</pre>
+      <p><strong>注意：</strong> 尽可能地让 <code>&lt;pre&gt;</code> 左对齐；因为会渲染所有空格和tab（就是你键盘左边的那个tab键）。</p>
+      <p>
+	还可以使用 <code>.pre-scrollable</code> 给代码区域设置350px的最大高度并设置一个纵向滚动条。</p>
+    </div><!--/span-->
+    <div class="span4">
+      <h2>Google Prettify 美化代码</h2>
+      <p>在 <code>&lt;pre&gt;</code> 元素上应用 <code>.prettyprint</code> 和 <code>.linenums</code> 增强代码渲染效果。 <code>.linenums</code> 用于显示行号。</p>
+<pre class="prettyprint linenums" style="margin-bottom: 9px;">
+&lt;p&gt;示范文本...&lt;/p&gt;
+</pre>
+<pre class="prettyprint linenums" style="margin-bottom: 9px;">
+&lt;pre class="prettyprint
+     linenums"&gt;
+  &amp;lt;p&amp;gt;示范文本...&amp;lt;/p&amp;gt;
+&lt;/pre&gt;
+</pre>
+      <p><a href="http://code.google.com/p/google-code-prettify/">下载 google-code-prettify</a> 并查看 <a href="http://google-code-prettify.googlecode.com/svn/trunk/README.html">使用指南</a>.</p>
+    </div><!--/span-->
+  </div><!--/row-->
+</section>
+
+
+
+<!-- Tables
+================================================== -->
+<section id="tables">
+  <div class="page-header">
+    <h1>表格 <small>适用于展示扁平化的列表数据</small></h1>
+  </div>
+
+  <h2>表格标记</h2>
+  <div class="row">
+    <div class="span8">
+      <table class="table table-bordered table-striped">
+        <colgroup>
+          <col class="span1">
+          <col class="span7">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>标签</th>
+            <th>描述</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <code>&lt;table&gt;</code>
+            </td>
+            <td>
+	      用以包装表格化的数据
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <code>&lt;thead&gt;</code>
+            </td>
+            <td>
+	      容纳表格标题行 (<code>&lt;tr&gt;</code>)以标识表格列，
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <code>&lt;tbody&gt;</code>
+            </td>
+            <td>
+	      容纳表格行 (<code>&lt;tr&gt;</code>)
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <code>&lt;tr&gt;</code>
+            </td>
+            <td>
+	      容纳行内的一组单元格 (<code>&lt;td&gt;</code> or <code>&lt;th&gt;</code>)
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <code>&lt;td&gt;</code>
+            </td>
+            <td>
+	      默认的表格单元格
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <code>&lt;th&gt;</code>
+            </td>
+            <td>
+	      用于列头(或是行，取决于标签所在位置和区域)的特殊标签<br />
+              必须置于 <code>&lt;thead&gt;</code> 标签内。
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <code>&lt;caption&gt;</code>
+            </td>
+            <td>
+	      表格用途的描述或摘要，对屏幕阅读器（视障人士读屏软件）非常有用
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="span4">
+<pre class="prettyprint linenums">
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;…&lt;/th&gt;
+      &lt;th&gt;…&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;…&lt;/td&gt;
+      &lt;td&gt;…&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+</pre>
+    </div>
+  </div>
+
+  <h2>表格选项</h2>
+  <table class="table table-bordered table-striped">
+  <thead>
+      <tr>
+        <th>名称</th>
+        <th>类</th>
+        <th>描述</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>默认</td>
+        <td class="muted">None</td>
+        <td>无样式，仅仅有列和行</td>
+      </tr>
+      <tr>
+        <td>基本</td>
+        <td>
+          <code>.table</code>
+        </td>
+        <td>行与行之间以水平线相隔</td>
+      </tr>
+      <tr>
+        <td>有边线</td>
+        <td>
+          <code>.table-bordered</code>
+        </td>
+        <td>表格外围均有外边框</td>
+      </tr>
+      <tr>
+        <td>间隔背景</td>
+        <td>
+          <code>.table-striped</code>
+        </td>
+        <td>奇数行背景设为浅灰色</td>
+      </tr>
+      <tr>
+        <td>紧凑</td>
+        <td>
+          <code>.table-condensed</code>
+        </td>
+        <td>竖直方向padding缩减一半，从8px变为4px，所有的 <code>td</code> 和 <code>th</code> 元素都受影响</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <h2>表格的例子</h2>
+
+  <h3>1. 默认表格样式</h3>
+  <div class="row">
+    <div class="span4">
+      <p>
+	仅使用一组边线对表格进行格式化，以保证可读性并维持表格结构不变。
+	从 2.0 版本开始, 该效果不再做为默认，必须使用 <code>.table</code> 。
+      </p>
+<pre class="prettyprint linenums">
+&lt;table class="table"&gt;
+  …
+&lt;/table&gt;</pre>
+    </div>
+    <div class="span8">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>电视剧</th>
+            <th>类型</th>
+            <th>年代</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>爱情公寓</td>
+            <td>都市爱情喜剧</td>
+            <td>2010</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>邪恶力量</td>
+            <td>悬疑魔幻</td>
+            <td>2005</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>神探伽俐略</td>
+            <td>推理探案</td>
+            <td>2008</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <h3>2. 背景交替的表格</h3>
+  <div class="row">
+    <div class="span4">
+      <p>
+	添加 <code>.table-striped</code> 让表格变得生动一点。
+      </p>
+      <p class="muted"><strong>注意：</strong>
+	该效果要用到 <code>:nth-child</code> CSS 选择器，IE7-IE8不支持该特性，因而也无法呈现效果。
+      </p>
+<pre class="prettyprint linenums" style="margin-bottom: 18px;">
+&lt;table class="table table-striped"&gt;
+  …
+&lt;/table&gt;</pre>
+    </div>
+    <div class="span8">
+      <table class="table table-striped">
+	        <thead>
+          <tr>
+            <th>#</th>
+            <th>电视剧</th>
+            <th>类型</th>
+            <th>年代</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>爱情公寓</td>
+            <td>都市爱情喜剧</td>
+            <td>2010</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>邪恶力量</td>
+            <td>悬疑魔幻</td>
+            <td>2005</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>神探伽俐略</td>
+            <td>推理探案</td>
+            <td>2008</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <h3>3. 有边线的表格</h3>
+  <div class="row">
+    <div class="span4">
+      <p>
+	为整个表格添加边线，出于美观考虑，每个边角都呈现圆角。
+      </p>
+<pre class="prettyprint linenums">
+&lt;table class="table table-bordered"&gt;
+  …
+&lt;/table&gt;</pre>
+    </div>
+    <div class="span8">
+      <table class="table table-bordered">
+	        <thead>
+          <tr>
+            <th>#</th>
+            <th>电视剧</th>
+            <th>类型</th>
+            <th>年代</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>爱情公寓</td>
+            <td>都市爱情喜剧</td>
+            <td>2010</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>邪恶力量</td>
+            <td>悬疑魔幻</td>
+            <td>2005</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>神探伽俐略</td>
+            <td>推理探案</td>
+            <td>2008</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <h3>4. 紧凑表格</h3>
+  <div class="row">
+    <div class="span4">
+      <p>
+	添加 <code>.table-condensed</code> 让表格更加紧凑，所有表格单元的padding都会减半(从8px到4px)
+      </p>
+<pre class="prettyprint linenums" style="margin-bottom: 18px;">
+&lt;table class="table table-condensed"&gt;
+  …
+&lt;/table&gt;</pre>
+    </div>
+    <div class="span8">
+      <table class="table table-condensed">
+	        <thead>
+          <tr>
+            <th>#</th>
+            <th>电视剧</th>
+            <th>类型</th>
+            <th>年代</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>爱情公寓</td>
+            <td>都市爱情喜剧</td>
+            <td>2010</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>邪恶力量</td>
+            <td>悬疑魔幻</td>
+            <td>2005</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>神探伽俐略</td>
+            <td>推理探案</td>
+            <td>2008</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+
+  <h3>5. 组合使用</h3>
+  <div class="row">
+    <div class="span4">
+      <p>
+	自由组合搭配表格类以实现不同的外观。
+      </p>
+<pre class="prettyprint linenums" style="margin-bottom: 18px;">
+&lt;table class="table table-striped table-bordered table-condensed"&gt;
+  ...
+&lt;/table&gt;</pre>
+    </div>
+    <div class="span8">
+      <table class="table table-striped table-bordered table-condensed">
+	        <thead>
+          <tr>
+            <th>#</th>
+            <th>电视剧</th>
+            <th>类型</th>
+            <th>年代</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>爱情公寓</td>
+            <td>都市爱情喜剧</td>
+            <td>2010</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>邪恶力量</td>
+            <td>悬疑魔幻</td>
+            <td>2005</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>神探伽俐略</td>
+            <td>推理探案</td>
+            <td>2008</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Forms
+================================================== -->
+<section id="forms">
+  <div class="page-header">
+    <h1>表单</h1>
+  </div>
+  <div class="row">
+    <div class="span4">
+      <h2>灵活的HTML和CSS</h2>
+      <p>
+	Bootstrap的优异之处在于：不管我们在应用中怎样使用表单输入元素和控件，其展示效果都特别棒！
+	无需使用过多的HTML，况且我们已经还内置了几种常用模式。
+      </p>
+      <p>
+	更复杂的布局可以用简单而可扩展的类实现，更利于样式化和事件绑定。
+      </p>
+    </div>
+    <div class="span4">
+      <h2>包含四种布局</h2>
+      <p>
+	Bootstrap提供了下列四种表单布局:
+      </p>
+      <ul>
+        <li>垂直式布局 (默认)</li>
+        <li>搜索式布局</li>
+        <li>行式布局</li>
+        <li>水平式布局</li>
+      </ul>
+      <p>
+	四种布局虽然在标记上有不些许同，但都使用同样的表单控件，在表单行为上也是一致的。
+      </p>
+    </div>
+    <div class="span4">
+      <h2>控件状态以及其他</h2>
+      <p>
+	Bootstrap对于所有的基本表单控件（如input,textarea,select等等）都进行了样式定义。
+	同时也提供了一组自定义组件，比如前置/后置输入框和复合选框列表。
+      </p>
+      <p>
+	每种表单控件都有 error, warning, success 等不同状态，Bootstrap还包括了控件禁用时的样式。
+      </p>
+    </div>
+  </div>
+
+  <h2>四种表单</h2>
+  <p>
+    Bootstrap为四种常用表单提供了简单的标记和样式
+  </p>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>名称</th>
+        <th>类</th>
+        <th>描述</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th>垂直式 (默认)</th>
+        <td><code>.form-vertical</code> <span class="muted">(非必填，默认)</span></td>
+        <td>堆叠式的，所有控件的标签文字都左对齐</td>
+      </tr>
+      <tr>
+        <th>行式</th>
+        <td><code>.form-inline</code></td>
+        <td>标签文字左对齐，控件以inline-block紧凑形式存在</td>
+      </tr>
+      <tr>
+        <th>搜索式</th>
+        <td><code>.form-search</code></td>
+        <td>
+	  经典的搜索美化方案，对文本框进行圆化
+	</td>
+      </tr>
+      <tr>
+        <th>水平式</th>
+        <td><code>.form-horizontal</code></td>
+        <td>左浮动，标签与其对应的控件居于同一行，标签文字右对齐</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <h2>表单单例 <small>仅仅使用表单控件，无须额外标记</small></h2>
+  <div class="row">
+    <div class="span3">
+      <h3>基本表单</h3>
+      <p>2.0版本开始使用更为简洁灵活的表单默认样式，只使用表单控件，无须额外标记。</p>
+    </div>
+    <div class="span9">
+      <form class="well form-search">
+        <label>标签名称</label>
+        <input type="text" class="span3" placeholder="请输入文字..."> <span class="help-inline">相关提示信息</span>
+        <p class="help-block">块状帮助文字...</p>
+        <label class="checkbox">
+          <input type="checkbox"> 选我选我
+        </label>
+        <button type="submit" class="btn">提交</button>
+      </form>
+<pre class="prettyprint linenums">
+&lt;form class="well"&gt;
+  &lt;label&gt;标签名称&lt;/label&gt;
+  &lt;input type="text" class="span3" placeholder="请输入文字..."&gt;
+  &lt;span class="help-inline"&gt;相关提示信息&lt;/span&gt;
+  &lt;p class="help-block"&gt;块状帮助文字...&lt;/p&gt;
+  &lt;label class="checkbox"&gt;
+    &lt;input type="checkbox"&gt; 选我选我
+  &lt;/label&gt;
+  &lt;button type="submit" class="btn"&gt;Submit&lt;/button&gt;
+&lt;/form&gt;
+</pre>
+    </div>
+  </div> <!-- /row -->
+  <div class="row">
+    <div class="span3">
+      <h3>表单表单</h3>
+      <p>
+	借鉴了Webkit的默认样式，使用 <code>.form-search</code> 圆化搜索文本框
+      </p>
+    </div>
+    <div class="span9">
+      <form class="well form-search">
+        <input type="text" class="input-medium search-query">
+        <button type="submit" class="btn">搜索</button>
+      </form>
+<pre class="prettyprint linenums">
+&lt;form class="well form-search"&gt;
+  &lt;input type="text" class="input-medium search-query"&gt;
+  &lt;button type="submit" class="btn"&gt;搜索&lt;/button&gt;
+&lt;/form&gt;
+</pre>
+    </div>
+  </div> <!-- /row -->
+  <div class="row">
+    <div class="span3">
+      <h3>行级表单</h3>
+      <p>使用 <code>.form-inline</code> 和 <code>.form-horizontal</code> 将原始的块状文本框样式变成 inline-block。</p>
+    </div>
+    <div class="span9">
+      <form class="well form-inline">
+        <input type="text" class="input-small" placeholder="邮件">
+        <input type="password" class="input-small" placeholder="密码">
+        <label class="checkbox">
+          <input type="checkbox"> 记住我
+        </label>
+        <button type="submit" class="btn">登录</button>
+      </form>
+<pre class="prettyprint linenums">
+&lt;form class="well form-inline"&gt;
+  &lt;input type="text" class="input-small" placeholder="邮件"&gt;
+  &lt;input type="password" class="input-small" placeholder="密码"&gt;
+  &lt;label class="checkbox"&gt;
+    &lt;input type="checkbox"&gt; 记住我
+  &lt;/label&gt;
+  &lt;button type="submit" class="btn"&gt;登录&lt;/button&gt;
+&lt;/form&gt;
+</pre>
+    </div>
+  </div><!-- /row -->
+
+  <br>
+
+  <h2>水平布局表单</h2>
+  <div class="row">
+    <div class="span8">
+      <form class="form-horizontal">
+        <fieldset>
+          <legend>Bootstrap支持的控件</legend>
+          <div class="control-group">
+            <label class="control-label" for="input01">文本输入框</label>
+            <div class="controls">
+              <input type="text" class="input-xlarge" id="input01">
+              <p class="help-block">
+		除了文本域之外，任何HTML5输入框都是该样式
+	      </p>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="optionsCheckbox">复选框</label>
+            <div class="controls">
+              <label class="checkbox">
+                <input type="checkbox" id="optionsCheckbox" value="option1">
+		选择异或不许&mdash;使用时最好给出选择的理由
+              </label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="select01">选择框</label>
+            <div class="controls">
+              <select id="select01">
+                <option>请选择</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="multiSelect">复选框</label>
+            <div class="controls">
+              <select multiple="multiple" id="multiSelect">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="fileInput">上传框</label>
+            <div class="controls">
+              <input class="input-file" id="fileInput" type="file">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="textarea">文本域</label>
+            <div class="controls">
+              <textarea class="input-xlarge" id="textarea" rows="3"></textarea>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">保存更改</button>
+            <button class="btn">取消</button>
+          </div>
+        </fieldset>
+      </form>
+      <h3>标记的例子</h3>
+      <p>
+	根据上面的例子，这里将展示如何标记一个控件组。
+	需要用到 <code>.control-group</code>, <code>.control-label</code>, 和 <code>.controls</code> 类。
+      </p>
+<pre class="prettyprint linenums">
+&lt;form class="form-horizontal"&gt;
+  &lt;fieldset&gt;
+    &lt;legend&gt;完善资料&lt;/legend&gt;
+    &lt;div class="control-group"&gt;
+      &lt;label class="control-label" for="input01"&gt;您的尊姓大名&lt;/label&gt;
+      &lt;div class="controls"&gt;
+        &lt;input type="text" class="input-xlarge" id="input01"&gt;
+        &lt;p class="help-block"&gt;字母，数字，汉字皆可&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="control-group"&gt;
+      &lt;label class="control-label" for="input01"&gt;您的twitter网址&lt;/label&gt;
+      &lt;div class="controls"&gt;
+        &lt;input type="text" class="input-xlarge" id="input01"&gt;
+        &lt;p class="help-block"&gt;请输入您的twitter网址，以便我们收录&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/fieldset&gt;
+&lt;/form&gt;
+</pre>
+
+    <form class="form-horizontal">
+      <fieldset>
+	<legend>完善资料</legend>
+	<div class="control-group">
+	  <label class="control-label" for="input01">您的尊姓大名</label>
+	  <div class="controls">
+	    <input type="text" class="input-xlarge" id="input01">
+	    <p class="help-block">字母，数字，汉字皆可</p>
+	  </div>
+	</div>
+
+	<div class="control-group">
+	  <label class="control-label" for="input01">您的twitter网址</label>
+	  <div class="controls">
+	    <input type="text" class="input-xlarge" id="input01">
+	    <p class="help-block">请输入您的twitter网址，以便我们收录</p>
+	  </div>
+	</div>
+      </fieldset>
+    </form>
+
+    </div>
+    <div class="span4">
+      <h3>包含哪些控件</h3>
+      <p>左侧即是bootstrap支持的所有默认表单控件:</p>
+      <ul>
+        <li>文本输入框 (文本，密码，邮件等等)</li>
+        <li>复选框</li>
+        <li>单选框</li>
+        <li>下拉框</li>
+        <li>多选框</li>
+        <li>上传框</li>
+        <li>文本域</li>
+      </ul>
+      <hr>
+      <h3>2.0版对表单默认布局的改变</h3>
+      <p>
+	1.4版之前，Bootstrap使用水平布局做为默认表单样式。从2.0版开始，我们不再默认水平布局，而采用更灵活更易扩展的垂直式布局做为默认布局。
+      </p>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="row">
+    <div class="span8">
+      <form class="form-horizontal">
+        <fieldset>
+          <legend>表单控件状态</legend>
+          <div class="control-group">
+            <label class="control-label" for="focusedInput">已获得焦点的输入框</label>
+            <div class="controls">
+              <input class="input-xlarge focused" id="focusedInput" type="text" value="已获得焦点">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">不可编辑的输入框</label>
+            <div class="controls">
+              <span class="input-xlarge uneditable-input">不可编辑，只读</span>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="disabledInput">被禁用的输入框</label>
+            <div class="controls">
+              <input class="input-xlarge disabled" id="disabledInput" type="text" placeholder="输入框被禁用" disabled>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="optionsCheckbox2">被禁用的复选框</label>
+            <div class="controls">
+              <label class="checkbox">
+                <input type="checkbox" id="optionsCheckbox2" value="option1" disabled>
+                被禁用
+              </label>
+            </div>
+          </div>
+          <div class="control-group warning">
+            <label class="control-label" for="inputWarning">Warning状态的输入框</label>
+            <div class="controls">
+              <input type="text" id="inputWarning">
+              <span class="help-inline">警告信息</span>
+            </div>
+          </div>
+          <div class="control-group error">
+            <label class="control-label" for="inputError">Error状态的输入框</label>
+            <div class="controls">
+              <input type="text" id="inputError">
+              <span class="help-inline">错误信息</span>
+            </div>
+          </div>
+          <div class="control-group success">
+            <label class="control-label" for="inputSuccess">Success状态的输入框</label>
+            <div class="controls">
+              <input type="text" id="inputSuccess">
+              <span class="help-inline">耶！</span>
+            </div>
+          </div>
+          <div class="control-group success">
+            <label class="control-label" for="selectError">Success状态的下拉框</label>
+            <div class="controls">
+              <select id="selectError">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+              <span class="help-inline">耶！</span>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">保存更改</button>
+            <button class="btn">取消</button>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+    <div class="span4">
+      <h3>重新设计的浏览器状态</h3>
+      <p>
+	Bootstrap重新设计了浏览器本身所定义的 <code>focused</code> 和 <code>disabled</code> 状态。
+	我们去除了Webkit默认的 <code>outline</code> 并对 <code>:focus</code> 状态应用了 <code>box-shadow</code> 。
+      </p>
+      <hr>
+      <h3>表单验证</h3>
+      <p>
+	Bootstrap还包含error,warning,success的验证样式。使用时将error类添加到控件外层的 <code>.control-group</code> 元素上即可。
+      </p>
+<pre class="prettyprint linenums">
+&lt;fieldset
+  class="control-group error"&gt;
+  …
+&lt;/fieldset&gt;
+</pre>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="row">
+    <div class="span8">
+      <form class="form-horizontal">
+        <fieldset>
+          <legend>扩展表单控件</legend>
+          <div class="control-group">
+            <label class="control-label">栅格指定尺寸</label>
+            <div class="controls docs-input-sizes">
+              <input class="span1" type="text" placeholder=".span1">
+              <input class="span2" type="text" placeholder=".span2">
+              <input class="span3" type="text" placeholder=".span3">
+              <select class="span1">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+              <select class="span2">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+              <select class="span3">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+              <p class="help-block">
+		同样是使用 <code>.span*</code> 类来指定输入框大小
+	      </p>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label">别名指定尺寸</label>
+            <div class="controls docs-input-sizes">
+              <input class="input-mini" type="text" placeholder=".input-mini">
+              <input class="input-small" type="text" placeholder=".input-small">
+              <input class="input-medium" type="text" placeholder=".input-medium">
+	      <input class="input-big" type="text" placeholder=".input-big">
+              <p class="help-block">
+		静态类指定的尺寸与栅格系统的尺寸并不匹配，且自适应响应式样式，只对几种控件有效(比如 <code>input</code> 和 <code>select</code>).
+	      </p>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="prependedInput">前置文本</label>
+            <div class="controls">
+              <div class="input-prepend">
+                <span class="add-on">@</span><input class="span2" id="prependedInput" size="16" type="text">
+              </div>
+              <p class="help-block">这里显示帮助信息</p>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="appendedInput">后置文本</label>
+            <div class="controls">
+              <div class="input-append">
+                <input class="span2" id="appendedInput" size="16" type="text"><span class="add-on">.00</span>
+              </div>
+              <span class="help-inline">这里显示帮助信息</span>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="appendedPrependedInput">前置+后置文本</label>
+            <div class="controls">
+              <div class="input-prepend input-append">
+                <span class="add-on">$</span><input class="span2" id="appendedPrependedInput" size="16" type="text"><span class="add-on">.00</span>
+              </div>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="appendedPrependedInput">后置按钮</label>
+            <div class="controls">
+              <div class="input-append">
+                <input class="span2" id="appendedPrependedInput" size="16" type="text"><button class="btn" type="button">执行</button>
+              </div>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="inlineCheckboxes">行级复选框</label>
+            <div class="controls">
+              <label class="checkbox inline">
+                <input type="checkbox" id="inlineCheckbox1" value="option1"> 1
+              </label>
+              <label class="checkbox inline">
+                <input type="checkbox" id="inlineCheckbox2" value="option2"> 2
+              </label>
+              <label class="checkbox inline">
+                <input type="checkbox" id="inlineCheckbox3" value="option3"> 3
+              </label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="optionsCheckboxList">多复选框</label>
+            <div class="controls">
+              <label class="checkbox">
+                <input type="checkbox" name="optionsCheckboxList1" value="option1">
+		第一个选项，最好给出将其做为首选的理由
+              </label>
+              <label class="checkbox">
+                <input type="checkbox" name="optionsCheckboxList2" value="option2">
+		第二个选项，同样可选并包含在表单结果中
+              </label>
+              <label class="checkbox">
+                <input type="checkbox" name="optionsCheckboxList3" value="option3">
+		第三个选项，同样可选并包含在表单结果中
+              </label>
+              <p class="help-block"><strong>注意</strong>
+		建议使用label标签将option选项包裹起来，这样可以提供更大的点击区域，提升表单可用性。
+	      </p>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">单选钮</label>
+            <div class="controls">
+              <label class="radio">
+                <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+		第一个选项，最好给出将其做为首选的理由
+              </label>
+              <label class="radio">
+                <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+		第二个选项，如果选译该选项就会取消第一个选项。
+              </label>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">提交更改</button>
+            <button class="btn">取消</button>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+    <div class="span4">
+      <h3>前置 &amp; 后置输入框</h3>
+      <p>
+	带前置/后置文本的输入组更有助于我们为输入框提供更多内容。在左侧的例子中，我们用@表示Twiiter某人，用$表示货币。
+      </p>
+      <hr>
+      <h3>单选框和复选框</h3>
+      <p>
+	在1.4版本之前，Bootstrap罗列单选框和复选框时，要将它嵌套到到其他标记内。
+	从2.0版开始，只须用 <code>&lt;label class="checkbox"&gt;</code> 包含 <code>&lt;input type="checkbox"&gt;</code> 即可。
+      </p>
+      <p>
+	Bootstrap也支持行级单选框和复选框。只要对 <code>.checkbox</code> 或 <code>.radio</code> 应用 <code>.inline</code> 即可。
+      </p>
+      <hr>
+      <h4>行级表单的前置/后置文本</h4>
+      <p>
+	在行级表单中使用前置/后置文本的输入框时，一定要确认 <code>.add-on</code> 和 <code>input</code> 在同一行，之间不得有空行和间隔。
+      </p>
+      <hr>
+      <h4>表单帮助/提示文本</h4>
+      <p>
+	对表单中的输入框添加帮助/提示文本时，添加 <code>&lt;span class="help-inline"&gt;</code> 就是使用行级帮助文本；
+	在输入框后添加 <code>&lt;p class="help-block"&gt;</code>  就是使用块状帮助文本。
+      </p>
+    </div>
+  </div><!-- /row -->
+</section>
+
+
+
+<!-- Buttons
+================================================== -->
+<section id="buttons">
+  <div class="page-header">
+    <h1>按钮</h1>
+  </div>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>按钮</th>
+        <th>类class=""</th>
+        <th>描述</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><button class="btn" href="#">默认</button></td>
+        <td><code>btn</code></td>
+        <td>带渐变的标准灰色按钮</td>
+      </tr>
+      <tr>
+        <td><button class="btn btn-primary" href="#">首要</button></td>
+        <td><code>btn btn-primary</code></td>
+        <td>
+	  视觉吸引力强，用于标识一组按钮中最主要的那个动作
+	</td>
+      </tr>
+      <tr>
+        <td><button class="btn btn-info" href="#">信息</button></td>
+        <td><code>btn btn-info</code></td>
+        <td>
+	  可用于替换默认样式
+	</td>
+      </tr>
+      <tr>
+        <td><button class="btn btn-success" href="#">成功</button></td>
+        <td><code>btn btn-success</code></td>
+        <td>
+	  表示操作成功或动作正确
+	</td>
+      </tr>
+      <tr>
+        <td><button class="btn btn-warning" href="#">警告</button></td>
+        <td><code>btn btn-warning</code></td>
+        <td>
+	  表示该动作应谨慎
+	</td>
+      </tr>
+      <tr>
+        <td><button class="btn btn-danger" href="#">危险</button></td>
+        <td><code>btn btn-danger</code></td>
+        <td>
+	  表示危险或有潜在威胁的动作。
+	</td>
+      </tr>
+      <tr>
+        <td><button class="btn btn-inverse" href="#">相反</button></td>
+        <td><code>btn btn-inverse</code></td>
+        <td>
+	  做为补充的深灰色按钮，与具体行为或动作无关。
+	</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="row">
+    <div class="span4">
+      <h3>用于动作的按钮</h3>
+      <p>
+	一般习惯下，按钮只用于动作，而超链接则用于对象。
+	比如，“下载”应该是一个按钮，而“最近的活动” 则应该是一个链接
+      </p>
+      <p>
+	使用 <code>.btn</code> 可以将按钮样式应到任何元素。不过一般来说，我们只对 <code>&lt;a&gt;</code> 和 <code>&lt;button&gt;</code> 元素使用按钮样式
+      </p>
+      <h3>跨浏览器兼容</h3>
+      <p>
+	IE9不支持渐变背景色的圆角裁剪，我们只好去掉了这个特性。此外，IE9 还搞砸了 <code>button</code> 元素的禁用样式，
+	居然在渲染时使用一个丑陋的文本阴影修饰按钮的灰色文字，对此我们实在无能为力。
+      </p>
+    </div>
+    <div class="span4">
+      <h3>多种尺寸</h3>
+      <p>
+	使用 <code>.btn-large</code>, <code>.btn-small</code>, 或 <code>.btn-mini</code> 可以得到三种不同尺寸的按钮。
+      </p>
+      <p>
+        <button class="btn btn-large btn-primary">首要动作</button>
+        <button class="btn btn-large">动作</button>
+      </p>
+      <p>
+        <button class="btn btn-small btn-primary">首要动作</button>
+        <button class="btn btn-small">动作</button>
+      </p>
+      <p>
+        <button class="btn btn-mini btn-primary">首要动作</button>
+        <button class="btn btn-mini">动作</button>
+      </p>
+      <br>
+      <h3>禁用状态</h3>
+      <p>
+	对超链接按钮添加 <code>.disabled</code> 类，或是在  <code>&lt;button&gt;</code> 元素中设置 <code>disabled</code> 属性，却可将其变成禁用状态。
+      </p>
+      <p>
+        <a href="#" class="btn btn-large btn-primary disabled">首要链接</a>
+        <a href="#" class="btn btn-large disabled">链接</a>
+      </p>
+      <p style="margin-bottom: 18px;">
+        <button class="btn btn-large btn-primary disabled" disabled="disabled">首要按钮</button>
+        <button class="btn btn-large" disabled>按钮</button>
+      </p>
+      <p>
+        <span class="label label-info">注意!</span>
+	我们把 <code>.disabled</code> 做为工具类来用，就象使用 <code>.active</code> 一样，因而无须添加.btn前缀。
+      </p>
+    </div>
+    <div class="span4">
+      <h3>按钮类可用于多种标签</h3>
+      <p>
+	可以在<code>&lt;a&gt;</code>, <code>&lt;button&gt;</code>, <code>&lt;input&gt;</code> 等元素上使用 <code>.btn</code> 类。
+      </p>
+<form>
+<a class="btn" href="">超链接按钮</a>
+<button class="btn" type="submit">button按钮</button>
+<input class="btn" type="button" value="input-button按钮">
+<input class="btn" type="submit" value="input-submit按钮">
+</form>
+<pre class="prettyprint linenums">
+&lt;a class="btn" href=""&gt;超链接按钮&lt;/a&gt;
+&lt;button class="btn" type="submit"&gt;
+  button按钮
+&lt;/button&gt;
+&lt;input class="btn" type="button"
+         value="input-button按钮"&gt;
+&lt;input class="btn" type="submit"
+         value="input-submit按钮"&gt;
+</pre>
+      <p>
+	做为最佳实践，出于跨浏览器兼容的考虑，建议您根据内容为按钮选择最合适的元素。比如你正在使用 <code>input</code> ,就可以将按钮设计为
+	 <code>&lt;input type="submit"&gt;</code> 。
+      </p>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Icons
+================================================== -->
+<section id="icons">
+  <div class="page-header">
+    <h1>图标 <small>由 <a href="http://glyphicons.com" target="_blank">Glyphicons</a> 友情提供</small></h1>
+  </div>
+  <div class="row">
+    <div class="span3">
+      <ul class="the-icons">
+        <li><i class="icon-glass"></i> icon-glass</li>
+        <li><i class="icon-music"></i> icon-music</li>
+        <li><i class="icon-search"></i> icon-search</li>
+        <li><i class="icon-envelope"></i> icon-envelope</li>
+        <li><i class="icon-heart"></i> icon-heart</li>
+        <li><i class="icon-star"></i> icon-star</li>
+        <li><i class="icon-star-empty"></i> icon-star-empty</li>
+        <li><i class="icon-user"></i> icon-user</li>
+        <li><i class="icon-film"></i> icon-film</li>
+        <li><i class="icon-th-large"></i> icon-th-large</li>
+        <li><i class="icon-th"></i> icon-th</li>
+        <li><i class="icon-th-list"></i> icon-th-list</li>
+        <li><i class="icon-ok"></i> icon-ok</li>
+        <li><i class="icon-remove"></i> icon-remove</li>
+        <li><i class="icon-zoom-in"></i> icon-zoom-in</li>
+        <li><i class="icon-zoom-out"></i> icon-zoom-out</li>
+        <li><i class="icon-off"></i> icon-off</li>
+        <li><i class="icon-signal"></i> icon-signal</li>
+        <li><i class="icon-cog"></i> icon-cog</li>
+        <li><i class="icon-trash"></i> icon-trash</li>
+        <li><i class="icon-home"></i> icon-home</li>
+        <li><i class="icon-file"></i> icon-file</li>
+        <li><i class="icon-time"></i> icon-time</li>
+        <li><i class="icon-road"></i> icon-road</li>
+        <li><i class="icon-download-alt"></i> icon-download-alt</li>
+        <li><i class="icon-download"></i> icon-download</li>
+        <li><i class="icon-upload"></i> icon-upload</li>
+        <li><i class="icon-inbox"></i> icon-inbox</li>
+        <li><i class="icon-play-circle"></i> icon-play-circle</li>
+        <li><i class="icon-repeat"></i> icon-repeat</li>
+      </ul>
+    </div>
+    <div class="span3">
+      <ul class="the-icons">
+        <li><i class="icon-refresh"></i> icon-refresh</li>
+        <li><i class="icon-list-alt"></i> icon-list-alt</li>
+        <li><i class="icon-lock"></i> icon-lock</li>
+        <li><i class="icon-flag"></i> icon-flag</li>
+        <li><i class="icon-headphones"></i> icon-headphones</li>
+        <li><i class="icon-volume-off"></i> icon-volume-off</li>
+        <li><i class="icon-volume-down"></i> icon-volume-down</li>
+        <li><i class="icon-volume-up"></i> icon-volume-up</li>
+        <li><i class="icon-qrcode"></i> icon-qrcode</li>
+        <li><i class="icon-barcode"></i> icon-barcode</li>
+        <li><i class="icon-tag"></i> icon-tag</li>
+        <li><i class="icon-tags"></i> icon-tags</li>
+        <li><i class="icon-book"></i> icon-book</li>
+        <li><i class="icon-bookmark"></i> icon-bookmark</li>
+        <li><i class="icon-print"></i> icon-print</li>
+        <li><i class="icon-camera"></i> icon-camera</li>
+        <li><i class="icon-font"></i> icon-font</li>
+        <li><i class="icon-bold"></i> icon-bold</li>
+        <li><i class="icon-italic"></i> icon-italic</li>
+        <li><i class="icon-text-height"></i> icon-text-height</li>
+        <li><i class="icon-text-width"></i> icon-text-width</li>
+        <li><i class="icon-align-left"></i> icon-align-left</li>
+        <li><i class="icon-align-center"></i> icon-align-center</li>
+        <li><i class="icon-align-right"></i> icon-align-right</li>
+        <li><i class="icon-align-justify"></i> icon-align-justify</li>
+        <li><i class="icon-list"></i> icon-list</li>
+        <li><i class="icon-indent-left"></i> icon-indent-left</li>
+        <li><i class="icon-indent-right"></i> icon-indent-right</li>
+        <li><i class="icon-facetime-video"></i> icon-facetime-video</li>
+        <li><i class="icon-picture"></i> icon-picture</li>
+      </ul>
+    </div>
+    <div class="span3">
+      <ul class="the-icons">
+        <li><i class="icon-pencil"></i> icon-pencil</li>
+        <li><i class="icon-map-marker"></i> icon-map-marker</li>
+        <li><i class="icon-adjust"></i> icon-adjust</li>
+        <li><i class="icon-tint"></i> icon-tint</li>
+        <li><i class="icon-edit"></i> icon-edit</li>
+        <li><i class="icon-share"></i> icon-share</li>
+        <li><i class="icon-check"></i> icon-check</li>
+        <li><i class="icon-move"></i> icon-move</li>
+        <li><i class="icon-step-backward"></i> icon-step-backward</li>
+        <li><i class="icon-fast-backward"></i> icon-fast-backward</li>
+        <li><i class="icon-backward"></i> icon-backward</li>
+        <li><i class="icon-play"></i> icon-play</li>
+        <li><i class="icon-pause"></i> icon-pause</li>
+        <li><i class="icon-stop"></i> icon-stop</li>
+        <li><i class="icon-forward"></i> icon-forward</li>
+        <li><i class="icon-fast-forward"></i> icon-fast-forward</li>
+        <li><i class="icon-step-forward"></i> icon-step-forward</li>
+        <li><i class="icon-eject"></i> icon-eject</li>
+        <li><i class="icon-chevron-left"></i> icon-chevron-left</li>
+        <li><i class="icon-chevron-right"></i> icon-chevron-right</li>
+        <li><i class="icon-plus-sign"></i> icon-plus-sign</li>
+        <li><i class="icon-minus-sign"></i> icon-minus-sign</li>
+        <li><i class="icon-remove-sign"></i> icon-remove-sign</li>
+        <li><i class="icon-ok-sign"></i> icon-ok-sign</li>
+        <li><i class="icon-question-sign"></i> icon-question-sign</li>
+        <li><i class="icon-info-sign"></i> icon-info-sign</li>
+        <li><i class="icon-screenshot"></i> icon-screenshot</li>
+        <li><i class="icon-remove-circle"></i> icon-remove-circle</li>
+        <li><i class="icon-ok-circle"></i> icon-ok-circle</li>
+        <li><i class="icon-ban-circle"></i> icon-ban-circle</li>
+      </ul>
+    </div>
+    <div class="span3">
+      <ul class="the-icons">
+        <li><i class="icon-arrow-left"></i> icon-arrow-left</li>
+        <li><i class="icon-arrow-right"></i> icon-arrow-right</li>
+        <li><i class="icon-arrow-up"></i> icon-arrow-up</li>
+        <li><i class="icon-arrow-down"></i> icon-arrow-down</li>
+        <li><i class="icon-share-alt"></i> icon-share-alt</li>
+        <li><i class="icon-resize-full"></i> icon-resize-full</li>
+        <li><i class="icon-resize-small"></i> icon-resize-small</li>
+        <li><i class="icon-plus"></i> icon-plus</li>
+        <li><i class="icon-minus"></i> icon-minus</li>
+        <li><i class="icon-asterisk"></i> icon-asterisk</li>
+        <li><i class="icon-exclamation-sign"></i> icon-exclamation-sign</li>
+        <li><i class="icon-gift"></i> icon-gift</li>
+        <li><i class="icon-leaf"></i> icon-leaf</li>
+        <li><i class="icon-fire"></i> icon-fire</li>
+        <li><i class="icon-eye-open"></i> icon-eye-open</li>
+        <li><i class="icon-eye-close"></i> icon-eye-close</li>
+        <li><i class="icon-warning-sign"></i> icon-warning-sign</li>
+        <li><i class="icon-plane"></i> icon-plane</li>
+        <li><i class="icon-calendar"></i> icon-calendar</li>
+        <li><i class="icon-random"></i> icon-random</li>
+        <li><i class="icon-comment"></i> icon-comment</li>
+        <li><i class="icon-magnet"></i> icon-magnet</li>
+        <li><i class="icon-chevron-up"></i> icon-chevron-up</li>
+        <li><i class="icon-chevron-down"></i> icon-chevron-down</li>
+        <li><i class="icon-retweet"></i> icon-retweet</li>
+        <li><i class="icon-shopping-cart"></i> icon-shopping-cart</li>
+        <li><i class="icon-folder-close"></i> icon-folder-close</li>
+        <li><i class="icon-folder-open"></i> icon-folder-open</li>
+        <li><i class="icon-resize-vertical"></i> icon-resize-vertical</li>
+        <li><i class="icon-resize-horizontal"></i> icon-resize-horizontal</li>
+      </ul>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="row">
+    <div class="span4">
+      <h3>使用css sprite</h3>
+      <p>
+	我们将所有图标放入一个文件中，这样就避免了每次使用不同图标时都发起额外的请求。
+	借助 <code>background-position</code> 修改背景位置，一整张图片可以显示出多个小图标。我们在twitter.com就是这么用的，效果不错。
+      </p>
+      <p>
+	和其他组件一样，出于命名和识别的方便，所有图标类都有一个 <code>.icon-</code> 前缀。
+	这样会避免与其他组件相冲突。
+      </p>
+      <p>
+	<a href="http://glyphicons.com" target="_blank">Glyphicons</a>
+	允许我们在开源工具箱中使用他们设计的小型图标，前提是我们要在文档中提供链接和声明。
+	如果您的项目也使用了这组图标，不妨也这么做。
+      </p>
+    </div>
+    <div class="span4">
+      <h3>如何使用</h3>
+      <p>
+	Bootstrap用 <code>&lt;i&gt;</code> 标签显示图标。图标类只有一个共同的前缀，没有基准类。
+	用法如下：
+      </p>
+<pre class="prettyprint linenums">
+&lt;i class="icon-search"&gt;&lt;/i&gt;
+</pre>
+      <p>
+	用 <code>.icon-white</code> 类显示反白图标：
+      </p>
+<pre class="prettyprint linenums">
+&lt;i class="icon-search icon-white"&gt;&lt;/i&gt;
+</pre>
+      <p>
+	有120种图标可供显示，只须对 <code>&lt;i&gt;</code> 标签使用相应的图标类即可，完整图标列表在 <strong>sprites.less</strong> 文件中。
+      </p>
+      <p>
+        <span class="label label-info">强调!</span>
+	在图标毗邻文本时，比如buttons或导航链接，要保证在 <code>&lt;i&gt;</code> 与文本之间有空格。
+      </p>
+    </div>
+    <div class="span4">
+      <h3>使用场景</h3>
+      <p>
+	图标是个好东西，不过用在什么场合却是个值得商榷的问题。下面是一些适用场景：
+      </p>
+      <ul>
+        <li>用于增强侧边导航栏的视觉效果</li>
+        <li>用于制作纯图标的导航栏</li>
+        <li>帮助用户理解按钮的作用</li>
+        <li>帮助用户间通过链接分享内容</li>
+      </ul>
+      <p>一般来说，任何可以使用 <code>&lt;i&gt;</code> 标签的地方，都可以将其变成图标</p>
+    </div>
+  </div>
+
+  <h3>例子</h3>
+  <p>
+    可用在按钮，按钮组的工具条，导航栏或是输入框的前缀中。
+  </p>
+  <div class="row">
+    <div class="span4">
+      <div class="btn-toolbar" style="margin-bottom: 9px">
+        <div class="btn-group">
+          <a class="btn" href="#"><i class="icon-align-left"></i></a>
+          <a class="btn" href="#"><i class="icon-align-center"></i></a>
+          <a class="btn" href="#"><i class="icon-align-right"></i></a>
+          <a class="btn" href="#"><i class="icon-align-justify"></i></a>
+        </div>
+        <div class="btn-group">
+          <a class="btn btn-primary" href="#"><i class="icon-user icon-white"></i> 用户</a>
+          <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#"><i class="icon-pencil"></i> 修改</a></li>
+            <li><a href="#"><i class="icon-trash"></i> 删除</a></li>
+            <li><a href="#"><i class="icon-ban-circle"></i> 禁止</a></li>
+            <li class="divider"></li>
+            <li><a href="#"><i class="i"></i> 设为管理员</a></li>
+          </ul>
+        </div>
+      </div>
+      <p>
+        <a class="btn" href="#"><i class="icon-refresh"></i> 刷新</a>
+        <a class="btn btn-success" href="#"><i class="icon-shopping-cart icon-white"></i> 签出</a>
+        <a class="btn btn-danger" href="#"><i class="icon-trash icon-white"></i> 删除</a>
+      </p>
+      <p>
+        <a class="btn btn-large" href="#"><i class="icon-comment"></i> 评论</a>
+        <a class="btn btn-small" href="#"><i class="icon-cog"></i> 设置</a>
+        <a class="btn btn-small btn-info" href="#"><i class="icon-info-sign icon-white"></i> 更多信息</a>
+      </p>
+    </div>
+    <div class="span4">
+      <div class="well" style="padding: 8px 0;">
+        <ul class="nav nav-list">
+          <li class="active"><a href="#"><i class="icon-home icon-white"></i> 首页</a></li>
+          <li><a href="#"><i class="icon-book"></i> 类库</a></li>
+          <li><a href="#"><i class="icon-pencil"></i> 应用</a></li>
+          <li><a href="#"><i class="i"></i> 音乐</a></li>
+        </ul>
+      </div> <!-- /well -->
+    </div>
+    <div class="span4">
+      <form>
+        <div class="control-group">
+          <label class="control-label" for="inputIcon">邮件地址</label>
+          <div class="controls">
+            <div class="input-prepend">
+              <span class="add-on"><i class="icon-envelope"></i></span><input class="span2" id="inputIcon" type="text" style="margin:0;">
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+     <!-- Footer
+      ================================================== -->
+      <footer class="footer">
+	<p class="pull-right"><a href="#">回到顶端</a></p>
+        <p>我们倾注世间之爱于设计与创作 <a href="http://twitter.com/twitter" target="_blank">@twitter</a> by <a href="http://twitter.com/mdo" target="_blank">@mdo</a> and <a href="http://twitter.com/fat" target="_blank">@fat</a>，由<a href="http://weibo.com/tvlikedev">Tvlike.me/TV来客开发者</a>翻译</p>
+        <p>开源依照 <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License v2.0</a> 发布。 文档依照 <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a> 发布。</p>
+        <p>Icons取自 <a href="http://glyphicons.com">Glyphicons Free</a>，授权依照 <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>。</p>
+      </footer>
+
+    </div><!-- /container -->
+
+
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster
+    <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script> --> 
+    <script src="assets/js/jquery.js"></script>
+    <script src="assets/js/google-code-prettify/prettify.js"></script>
+    <script src="assets/js/bootstrap-transition.js"></script>
+    <script src="assets/js/bootstrap-alert.js"></script>
+    <script src="assets/js/bootstrap-modal.js"></script>
+    <script src="assets/js/bootstrap-dropdown.js"></script>
+    <script src="assets/js/bootstrap-scrollspy.js"></script>
+    <script src="assets/js/bootstrap-tab.js"></script>
+    <script src="assets/js/bootstrap-tooltip.js"></script>
+    <script src="assets/js/bootstrap-popover.js"></script>
+    <script src="assets/js/bootstrap-button.js"></script>
+    <script src="assets/js/bootstrap-collapse.js"></script>
+    <script src="assets/js/bootstrap-carousel.js"></script>
+    <script src="assets/js/bootstrap-typeahead.js"></script>
+    <script src="assets/js/application.js"></script>
+
+
+  </body>
+</html>
