@@ -27,8 +27,9 @@ use Zend\Mvc\MvcEvent;
  */
 class PageCapture extends AbstractPlugin
 {
-    public function __invoke($pageId, $pageExtension = null, array $options = array())
+    public function __invoke($pageId = null, $pageExtension = null, array $options = array())
     {
+
         $config = $this->getConfig();
         if(!isset($config['cache']['page_capture'])){
             return false;
@@ -52,7 +53,18 @@ class PageCapture extends AbstractPlugin
 
         $capture = \Zend\Cache\PatternFactory::factory('capture', $options);
 
-        $pageId .= '.' . $pageExtension;
+        if($pageId) {
+            $pageId .= '.' . $pageExtension;
+        } else {
+            $request = $this->getController()->getEvent()->getRequest();
+            $baseUrl = $request->getBaseUrl();
+            $path = $request->getUri()->getPath();
+            if($baseUrl){
+                $path = substr($path, strlen($baseUrl));
+            }
+            $pageId = $path . '.' . $pageExtension;
+        }
+
         $capture->start($pageId);
     }
 

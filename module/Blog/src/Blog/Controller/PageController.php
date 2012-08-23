@@ -14,6 +14,7 @@ class PageController extends RestfulModuleController
 
         $postModel = Api::_()->getModel('Blog\Model\Post');
         $postinfo = $postModel->setItemParams($id)->getPost();
+        $this->pagecapture();
         return array(
             //'form' => $form,
             'post' => $postinfo,

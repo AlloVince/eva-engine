@@ -1,0 +1,36 @@
+<?
+$title = $this->_('Cache Cleaner');
+$this->headTitle($title, 'SET');
+$this->textDelay('breadcrumbText', $title);
+?>
+<div class="main-area dashboard">
+
+    <div class="row">
+        <div class="span10">
+            <div class="slate">
+                    <h2><?=$title?></h2>
+                </div>
+
+                <table class="orders-table table">
+                    <thead>
+                        <tr>
+                            <th><?=$this->_('Title')?></th>
+                            <th class="actions"><?=$this->_('Actions')?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="">
+                            <td>
+                                <a href="<?=$this->uri('/admin/core/cache/static')?>" class="title">Static Cache Clean</a>
+                            </td>
+                            <td class="actions">
+                                <a href="<?=$this->uri('/admin/core/cache/static')?>" class="btn btn-small"><?=$this->_('Run')?></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div><!--span10 end-->
+    </div>
+
+</div>
