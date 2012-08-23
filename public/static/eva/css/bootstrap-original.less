@@ -11,47 +11,27 @@
 /*******************************
 *	   Import Basic Variables & Classes
 ********************************/
+@import "basic/reset.less";
 @import "basic/variables.less";
 @import "basic/mixins.less";
-@import "basic/utilities.less";
-
-@import "src/basic/reset.less";
-@import "src/basic/variables.less";
-@import "src/basic/sprites.less";
-@import "src/basic/utilities.less";
 /*******************************
 *	   Import Layout & Grid
 ********************************/
 @import "layout/grid.less";
 @import "layout/layouts.less";
-@import "src/layout/grid.less";
-@import "src/layout/gridpercent.less";
 /*******************************
 *	   Import Typography
 ********************************/
-@import "src/type/tables.less";
+@import "type/type.less";
+@import "type/code.less";
+@import "type/tables.less";
 @import "type/thumbnails.less";
-@import "src/type/type.less";
-@import "src/type/code.less";
-.tb {
-	.typography();
-	.codepre();
-}
-@import "src/type/typo.less";
-.typo {
-	.cntypography();
-	.codepre();
-}
-
 /*******************************
 *	   Import Forms & Buttons
 ********************************/
-@import "src/form/forms.less";
+@import "form/forms.less";
 @import "form/button-groups.less";
 @import "form/buttons.less";
-.form{
-	.forms();
-}
 /*******************************
 *	   Import Components
 ********************************/
@@ -62,7 +42,6 @@
 @import "components/labels.less";
 @import "components/labels-badges.less";
 @import "components/dropdowns.less";
-
 @import "components/accordion.less";
 @import "components/breadcrumbs.less";
 @import "components/carousel.less";
@@ -76,10 +55,6 @@
 @import "components/wells.less";
 @import "components/hero-unit.less";
 /*******************************
-*	   Icon
-********************************/
-@import "src/icon/icon.less";
-/*******************************
 *	   Responsive
 ********************************/
 @import "responsive/responsive.less";
@@ -88,3 +63,8 @@
 @import "responsive/responsive-1200px-min.less";
 @import "responsive/responsive-navbar.less";
 @import "responsive/responsive-utilities.less";
+/*******************************
+*	  Utility
+********************************/
+@import "basic/utilities.less";
+
