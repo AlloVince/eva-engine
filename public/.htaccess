@@ -1,6 +1,13 @@
 SetEnv APPLICATION_ENV development
 
 RewriteEngine On
+
+#static cache start
+#RewriteCond %{REQUEST_METHOD} GET
+#RewriteCond %{DOCUMENT_ROOT}/static/cache/%{REQUEST_URI}\.html -f
+#RewriteRule .* static/cache/%{REQUEST_URI}\.html [L]
+#static cache end
+
 RewriteCond %{REQUEST_FILENAME} -s [OR]
 RewriteCond %{REQUEST_FILENAME} -l [OR]
 RewriteCond %{REQUEST_FILENAME} -d

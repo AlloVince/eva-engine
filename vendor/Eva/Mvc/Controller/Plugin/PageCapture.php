@@ -14,6 +14,7 @@ namespace Eva\Mvc\Controller\Plugin;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Zend\Mvc\Exception;
 use Zend\Mvc\MvcEvent;
+use Zend\Cache\PatternFactory;
 
 
 /**
@@ -51,23 +52,35 @@ class PageCapture extends AbstractPlugin
                 );
         }
 
-        $capture = \Zend\Cache\PatternFactory::factory('capture', $options);
-
-        if($pageId) {
-            $pageId .= '.' . $pageExtension;
+        if(isset($config['adapter']) && $config['adapter'] == 'memcached'){
+            //Note: get global MvcEvent must use getApplication
+            $this->getController()->getEvent()->getApplication()->getEventManager()->attach(MvcEvent::EVENT_FINISH, array($this, 'onFinish'));
         } else {
-            $request = $this->getController()->getEvent()->getRequest();
-            $baseUrl = $request->getBaseUrl();
-            $path = $request->getUri()->getPath();
-            if($baseUrl){
-                $path = substr($path, strlen($baseUrl));
+            $capture = PatternFactory::factory('capture', $options);
+
+            if($pageId) {
+                $pageId .= '.' . $pageExtension;
+            } else {
+                $request = $this->getController()->getEvent()->getRequest();
+                $baseUrl = $request->getBaseUrl();
+                $path = $request->getUri()->getPath();
+                if($baseUrl){
+                    $path = substr($path, strlen($baseUrl));
+                }
+                $pageId = $path . '.' . $pageExtension;
             }
-            $pageId = $path . '.' . $pageExtension;
+
+            $capture->start($pageId);
         }
 
-        $capture->start($pageId);
     }
 
+    public function onFinish($event)
+    {
+        $response = $event->getApplication()->getResponse();
+        //Save this to memcached;
+        $response->getContent();
+    }
 
     protected function getConfig()
     {

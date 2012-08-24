@@ -210,6 +210,7 @@ return array(
         'page_capture' => array(
             'enable' => 0,
             'page_extension' => 'html',
+            'adapter' => 'filesystem', //Could be memcached
             'options' => array(
                 'public_dir' => EVA_PUBLIC_PATH . '/static/cache',
             ),
