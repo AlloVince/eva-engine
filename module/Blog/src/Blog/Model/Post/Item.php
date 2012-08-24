@@ -68,10 +68,6 @@ class Item extends AbstractItem
 
     public function getContentHtml($contentHtml)
     {
-        if($contentHtml){
-            return $contentHtml;
-        }
-
         $item = $this->item;
         $text = $item['Text'];
         $content = isset($text['content']) ? $text['content'] : '';
@@ -82,6 +78,8 @@ class Item extends AbstractItem
                 default:
                 return $content;
             }
+        } else {
+            return $contentHtml;
         }
         return $content;
     }
