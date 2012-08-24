@@ -42,6 +42,10 @@ return array(
             'versionName' => 'v',
             'version' => '1.0.0',
         ),
+        'google_analytics' => array(
+            'code' => '',
+            'domain' => '',
+        ),
     ),
 
     'view_manager' => array(

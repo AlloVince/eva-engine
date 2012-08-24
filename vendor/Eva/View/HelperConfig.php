@@ -39,6 +39,7 @@ class HelperConfig implements ConfigInterface
          'hasModule' => 'Eva\View\Helper\HasModule',
          'thumb' => 'Eva\View\Helper\Thumb',
          'datetime' => 'Eva\View\Helper\Datetime',
+         'googleAnalytics' => 'Eva\View\Helper\GoogleAnalytics',
      );
 
     /**
