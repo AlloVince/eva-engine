@@ -211,7 +211,7 @@ return array(
             'enable' => 0,
             'page_extension' => 'html',
             'options' => array(
-                'public_dir' => EVA_PUBLIC_PATH . '/static/cache/',
+                'public_dir' => EVA_PUBLIC_PATH . '/static/cache',
             ),
         ),
     ),

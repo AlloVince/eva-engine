@@ -1,0 +1,24 @@
+<?
+$title = $this->_('Static Cache Cleaner');
+$this->headTitle($title, 'SET');
+$this->textDelay('breadcrumbText', $title);
+?>
+<div class="main-area dashboard">
+
+    <div class="row">
+        <div class="span10">
+            <div class="slate">
+                <h2><?=$this->_('Clean Logs')?></h2>
+                <?if($this->files):?>
+                <pre><?foreach($this->files as $file):?><?=$file . "\n"?><?endforeach?></pre>
+                <?else:?>
+                <div id="no-cache-found" class="alert alert-info">
+                    <a href="#" data-dismiss="alert" class="close">x</a>
+                    <h4 class="alert-heading"><?=$this->_('No Cache Found')?></h4>
+                </div>
+                <?endif?>
+            </div>
+        </div><!--span10 end-->
+    </div>
+
+</div>
