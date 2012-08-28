@@ -5,7 +5,6 @@
  * @link      https://github.com/AlloVince/eva-engine
  * @copyright Copyright (c) 2012 AlloVince (http://avnpc.com/)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Eva_Api.php
  * @author    AlloVince
  */
 
@@ -15,9 +14,11 @@ namespace Eva\Mvc\Model;
 use Zend\Di\Di,
     Zend\Di\Config as DiConfig,
     Eva\Config\Config,
+    Eva\Mvc\Item\AbstractItem,
     Zend\Mvc\Exception\MissingLocatorException,
     Zend\ServiceManager\ServiceLocatorAwareInterface,
-    Zend\ServiceManager\ServiceLocatorInterface;
+    Zend\ServiceManager\ServiceLocatorInterface,
+    Zend\Stdlib\Hydrator\ClassMethods;
 
 /**
  * Mvc Abstract Model for item / itemlist / paginator
@@ -56,6 +57,7 @@ abstract class AbstractModelService implements ServiceLocatorAwareInterface
     protected $itemClass;
     protected $item;
     protected $itemList;
+    protected $dataSource;
 
     protected $cacheStorageFactory;
     protected $paginator;
@@ -86,6 +88,37 @@ abstract class AbstractModelService implements ServiceLocatorAwareInterface
     public function getServiceLocator()
     {
         return $this->serviceLocator;
+    }
+
+    public function setItem($item)
+    {
+        if($item instanceof AbstractItem){
+            $this->item = $item;
+        }
+
+        $this->dataSource = $item;
+        return $this;
+    }
+
+    public function getItem()
+    {
+        if($this->item){
+            return $this->item;
+        }
+
+        $itemClass = $this->getItemClass();
+        $model = &$this;
+        $this->serviceLocator->setFactory($itemClass, function(ServiceLocatorInterface $serviceLocator) use ($itemClass, $model){
+            $item = new $itemClass();
+            $item->setModel($model);
+            return $item;
+        });
+        return $this->item = $this->serviceLocator->get($itemClass);
+    }
+
+    public function getDataSource()
+    {
+        return $this->dataSource;
     }
 
     public function getEvent()
@@ -153,15 +186,14 @@ abstract class AbstractModelService implements ServiceLocatorAwareInterface
         }
 
         $className = get_class($this);
-        return $this->itemClass = $className . '\Item';
+        return $this->itemClass = str_replace('\Model\\', '\Item\\', $className);
     }
 
     public function init()
     {
-        $this->serviceLocator->setInvokableClass('ModelCache', 'Eva\Cache\Service\ModelCache');
-        $itemClass = $this->getItemClass(); 
-        $this->serviceLocator->setInvokableClass($itemClass, $itemClass);
-
+        //$this->serviceLocator->setInvokableClass('ModelCache', 'Eva\Cache\Service\ModelCache');
+        //$itemClass = $this->getItemClass(); 
+        //$this->serviceLocator->setInvokableClass($itemClass, $itemClass);
     }
 
 }

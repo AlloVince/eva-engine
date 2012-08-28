@@ -13,6 +13,7 @@ namespace Eva;
 use Zend\Di\Di,
     Zend\Di\Config as DiConfig,
     Zend\Db\Adapter\Adapter as DbAdapter,
+    Zend\ServiceManager\ServiceLocatorInterface,
     Zend\ModuleManager\Exception\RuntimeException;
 
 /**
@@ -190,20 +191,6 @@ class Api
 
         $dbAdapter = $this->event->getApplication()->getServiceManager()->get('Zend\Db\Adapter\Adapter');
         return $this->dbAdapter = $dbAdapter;
-        /*
-        $dbAdapter = array();
-        if(true === is_array($configKeyOrArray)){
-            $dbAdapter = new DbAdapter($configKeyOrArray);
-        } else {
-            $configKey = $configKeyOrArray;
-            $config = $this->getConfig();
-            if(isset($config[$configKey]) && $config[$configKey]){
-                $dbAdapter = new DbAdapter($config[$configKey]);
-            }
-        }
-
-        return $this->dbAdapter = $dbAdapter;
-        */
     }
 
     public function getDbTable($tableClassName)
@@ -215,8 +202,16 @@ class Api
             ));    
         }
 
-        //TODO :: Use Di here
-        return new $tableClassName($this->getDbAdapter());
+        $serviceManager = $this->event->getApplication()->getServiceManager();
+        if($serviceManager->has($tableClassName)){
+            return $serviceManager->get($tableClassName);
+        }
+
+        $serviceManager->setFactory($tableClassName, function(ServiceLocatorInterface $serviceLocator) use ($tableClassName){
+            return new $tableClassName($serviceLocator->get('Zend\Db\Adapter\Adapter'));
+        });
+
+        return $serviceManager->get($tableClassName);
     }
 
     public function setRestfulResource()

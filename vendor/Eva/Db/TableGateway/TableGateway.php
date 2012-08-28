@@ -1,12 +1,28 @@
 <?php
+/**
+ * EvaEngine
+ *
+ * @link      https://github.com/AlloVince/eva-engine
+ * @copyright Copyright (c) 2012 AlloVince (http://avnpc.com/)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @author    AlloVince
+ */
 namespace Eva\Db\TableGateway;
-use Eva\Api,
-    Zend\Db\Adapter\Adapter,
+use Zend\Db\Adapter\Adapter,
     Zend\Db\Sql\Select,
     Zend\Db\Sql\Expression,
+    Zend\Db\TableGateway\AbstractTableGateway,
     Eva\Db\ResultSet\ResultSet,
+    Zend\ServiceManager\ServiceLocatorAwareInterface,
+    Zend\ServiceManager\ServiceLocatorInterface,
     Eva\Db\Exception;
-class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
+
+/**
+ *
+ * @category   Eva
+ * @package    Eva_Db
+ */
+class TableGateway extends AbstractTableGateway  implements ServiceLocatorAwareInterface
 {
     const ROW_COUNT_COLUMN = 'eva_row_count';
 
@@ -26,6 +42,34 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
 
     protected $paginatorOptions = array();
 
+    /**
+    * @var ServiceLocatorInterface
+    */
+    protected $serviceLocator;
+
+
+    /**
+    * Set the service locator.
+    *
+    * @param ServiceLocatorInterface $serviceLocator
+    * @return AbstractHelper
+    */
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+        return $this;
+    }
+
+    /**
+     * Get the service locator.
+     *
+     * @return \Zend\ServiceManager\ServiceLocatorInterface
+     */
+    public function getServiceLocator()
+    {
+        return $this->serviceLocator;
+    }
+
     public function getSelect()
     {
         return $this->select ? $this->select : $this->sql->select();
@@ -42,7 +86,8 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
             return $this->tablePrefix;
         }
 
-        $config = Api::_()->getConfig();
+
+        $config = $this->getServiceLocator()->get('Configuration');
         if(isset($config['db']['prefix']) && $config['db']['prefix']){
             return $this->tablePrefix = $config['db']['prefix'];
         }
@@ -426,7 +471,7 @@ class TableGateway extends \Zend\Db\TableGateway\AbstractTableGateway
         }
 
         if(!$this->adapter) {
-            $this->adapter = Api::_()->getDbAdapte();
+            $this->adapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
         }
 
         $this->initTableName();
