@@ -125,7 +125,7 @@ return array(
         'enable_text_domains' => array(
             'admin',
         ),
-        'translation_patterns' => array(
+        'translation_file_patterns' => array(
             'main' => array(
                 'type' => 'csv',
                 'base_dir' => EVA_ROOT_PATH . '/data/languages',

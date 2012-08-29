@@ -77,7 +77,7 @@ class PostForm extends Form
         'codeType' => array (
             'name' => 'codeType',
             'attributes' => array (
-                'type' => 'select',
+                'type' => 'multiCheckbox',
                 'label' => 'Code Type',
                 'options' => array (
                     array (

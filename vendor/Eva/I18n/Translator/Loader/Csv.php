@@ -10,7 +10,7 @@
 
 namespace Eva\I18n\Translator\Loader;
 
-use Zend\I18n\Translator\Loader\LoaderInterface;
+use Zend\I18n\Translator\Loader\FileLoaderInterface;
 use Zend\I18n\Exception;
 use Zend\I18n\Translator\Plural\Rule as PluralRule;
 use Zend\I18n\Translator\TextDomain;
@@ -22,7 +22,7 @@ use Zend\I18n\Translator\TextDomain;
  * @package    Zend_I18n
  * @subpackage Translator
  */
- class Csv implements LoaderInterface
+ class Csv implements FileLoaderInterface
 {
     /**
      * load(): defined by LoaderInterface.

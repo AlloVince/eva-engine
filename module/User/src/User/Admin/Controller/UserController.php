@@ -40,8 +40,8 @@ class UserController extends RestfulModuleController
     public function restGetUser()
     {
         $id = (int)$this->getEvent()->getRouteMatch()->getParam('id');
-        $itemModel = Api::_()->getModel('User\Model\User');
-        $item = $itemModel->setItemParams($id)->getUser();
+        $itemModel = Api::_()->getModelService('User\Model\User');
+        $item = $itemModel->getUser($id);
         return array(
             'user' => $item,
             'flashMessenger' => $this->flashMessenger()->getMessages(),
@@ -65,14 +65,11 @@ class UserController extends RestfulModuleController
 
             $postData = $form->getData();
             $itemModel = Api::_()->getModelService('User\Model\User');
-            //$itemData = $form->fieldsMap($postData, true);
             $itemId = $itemModel->setItem($postData)->createUser();
-            //$this->flashMessenger()->addMessage('item-create-succeed');
-            //$this->redirect()->toUrl('/admin/user/' . $itemId);
+            $this->flashMessenger()->addMessage('item-create-succeed');
+            $this->redirect()->toUrl('/admin/user/' . $itemId);
 
         } else {
-            
-            //p($form->getInputFilter()->getInvalidInput());
         }
 
         return array(

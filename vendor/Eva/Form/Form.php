@@ -133,6 +133,7 @@ class Form extends \Zend\Form\Form
         $factory = $this->getFormFactory();
         foreach($subElements as $subElementKey => $subElement){
             $subElement['attributes']['data-subform-name'] = $formName;
+            $subElement = $this->initElement($subElement);
             $subElement = $this->autoElementId($subElement, $subFormClass);
             $fieldset->add($factory->create($subElement));
         }
@@ -210,7 +211,7 @@ class Form extends \Zend\Form\Form
 
             foreach($elements as $name => $element){
                 $element = $this->autoElementId($element);
-                $element = $this->uniformMultiInputInterface($element);
+                $element = $this->initElement($element);
                 $this->add($element);
             }
             $this->elementInited = true;
@@ -227,6 +228,24 @@ class Form extends \Zend\Form\Form
         }
 
         return $this;
+    }
+
+    protected function initElement(array $element)
+    {
+        $element = $this->uniformMultiInputInterface($element);
+        //Element must have a certain type in new zf2 changes
+        if(!isset($element['type']) && isset($element['attributes']['type'])){
+            //TODO: maybe here will have custom
+            $element['type'] = 'Zend\Form\Element\\' . ucfirst($element['attributes']['type']);
+        }
+
+        //TODO: just for following zf2 changes, will be removed
+        if(!isset($element['options']['value_options']) && isset($element['attributes']['options'])){
+            $element['options']['value_options'] = $element['attributes']['options'];
+            unset($element['attributes']['options']);
+        }
+
+        return $element;
     }
 
     public function enableFileTransfer()
@@ -491,6 +510,10 @@ class Form extends \Zend\Form\Form
         //Merge options with element attributes
         if(false === $setting['replace']){
             $options = $this->merge($element->getAttributes(), $options);
+        }
+
+        if(method_exists($element, 'getValueOptions') && isset($options['value_options'])){
+            $element->setValueOptions($this->merge($element->getValueOptions(), $options['value_options']));
         }
 
         return $view->input($element, $options); 

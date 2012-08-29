@@ -57,6 +57,10 @@ class Input extends \Zend\Form\View\Helper\AbstractHelper
                 }
                 $attributes['options'] = $translatedOptions;
             }
+
+            if(isset($attributes['placeholder'])){
+                $attributes['placeholder'] = $this->translator->translate($attributes['placeholder']);
+            }
         }
         if($messages = $element->getMessages()){
             foreach($messages as $key => $message){
@@ -82,6 +86,7 @@ class Input extends \Zend\Form\View\Helper\AbstractHelper
         $defaultOptions = array(
             'type' => 'formInput',
             'args' => array(),
+            'i18n' => true,
         );
 
         $options = array_merge($defaultOptions, $options);
@@ -118,7 +123,9 @@ class Input extends \Zend\Form\View\Helper\AbstractHelper
             foreach($options as $key => $value){
                 $element->setAttribute($key, $value);
             }
-            $element = $this->translateElement($element);
+            if(true === $options['i18n']){
+                $element = $this->translateElement($element);
+            }
         }
 
         //put element clone into view helper
@@ -129,6 +136,5 @@ class Input extends \Zend\Form\View\Helper\AbstractHelper
             &$view,
             $elementType,
         ), $args);
-        //return $view->$elementType($element);
     }
 }

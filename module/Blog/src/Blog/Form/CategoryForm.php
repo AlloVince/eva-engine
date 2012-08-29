@@ -39,7 +39,7 @@ class CategoryForm extends Form
         'parentId' => array (
             'name' => 'parentId',
             'attributes' => array (
-                'type' => 'text',
+                'type' => 'select',
                 'label' => 'Parent Category',
                 'options' => array(
                     array(

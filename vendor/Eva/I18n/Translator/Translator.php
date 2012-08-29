@@ -58,7 +58,6 @@ class Translator extends \Zend\I18n\Translator\Translator
             }
             $translator->scaffold = true;
         }
-
         return $translator;
     }
 

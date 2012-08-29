@@ -26,13 +26,7 @@ class TranslatorServiceFactory implements FactoryInterface
 {
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        // Configure the translator
-        //$config = $serviceLocator->get('Configuration');
-        //if(!isset($config['translator']) || !is_array($config['translator'])){
-        //    $config['translator'] = array();
-        //}
-
-        //Use ModuleManager here to get changed config
+        //site locale could be overwrite by user, so here use ModuleManager to get changed config
         $mm = $serviceLocator->get('ModuleManager');
         $config = $mm->getEvent()->getParam('configListener')->getMergedConfig()->toArray();
         $translator = Translator::factory($config['translator']);

@@ -30,7 +30,7 @@ $lableMap = array(
                 <?=$form->helper('visibility', 'formSelect', array('class' => 'span2'))?>
                 <?=$form->helper('category', 'formSelect', array(
                     'class' => 'span2',
-                    'options' => $this->action('Blog\Api\Controller\CategoryController', 'selectAction'),
+                    'value_options' => $this->action('Blog\Api\Controller\CategoryController', 'selectAction'),
                 ), array('replace' => false, 'i18n' => false))?>
                 <button class="btn" type="submit"><?=$this->_('Filter Posts')?></button>
             </form>

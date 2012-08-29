@@ -16,6 +16,7 @@ use Zend\Di\Di,
     Eva\Config\Config,
     Eva\Mvc\Item\AbstractItem,
     Zend\Mvc\Exception\MissingLocatorException,
+    Eva\Mvc\Exception\InvalidEventException,
     Zend\ServiceManager\ServiceLocatorAwareInterface,
     Zend\ServiceManager\ServiceLocatorInterface,
     Zend\Stdlib\Hydrator\ClassMethods;
@@ -32,25 +33,25 @@ use Zend\Di\Di,
 abstract class AbstractModelService implements ServiceLocatorAwareInterface
 {
     protected $events = array(
-        'getItem.precache',
-        'getItem.pre',
-        'getItem',
-        'getItem.post',
-        'getItem.postcache',
-        'getItemList.precache',
-        'getItemList.pre',
-        'getItemList',
-        'getItemList.post',
-        'getItemList.postcache',
-        'createItem.pre',
-        'createItem',
-        'createItem.post',
-        'saveItem.pre',
-        'saveItem',
-        'saveItem.post',
-        'removeItem.pre',
-        'removeItem',
-        'removeItem.post',
+        'get.precache',
+        'get.pre',
+        'get',
+        'get.post',
+        'get.postcache',
+        'getList.precache',
+        'getList.pre',
+        'getList',
+        'getList.post',
+        'getList.postcache',
+        'create.pre',
+        'create',
+        'create.post',
+        'save.pre',
+        'save',
+        'save.post',
+        'remove.pre',
+        'remove',
+        'remove.post',
     );
 
 
@@ -100,13 +101,12 @@ abstract class AbstractModelService implements ServiceLocatorAwareInterface
         return $this;
     }
 
-    public function getItem()
+    public function getItem($itemClass = null)
     {
-        if($this->item){
-            return $this->item;
+        if(!$itemClass){
+            $itemClass = $this->getItemClass();
         }
 
-        $itemClass = $this->getItemClass();
         if($this->serviceLocator->has($itemClass)){
             return $this->serviceLocator->get($itemClass);
         }
@@ -117,7 +117,11 @@ abstract class AbstractModelService implements ServiceLocatorAwareInterface
             $item->setModel($model);
             return $item;
         });
-        return $this->item = $this->serviceLocator->get($itemClass);
+
+        if($itemClass == $this->getItemClass()){
+            return $this->item = $this->serviceLocator->get($itemClass);
+        }
+        return $this->serviceLocator->get($itemClass);
     }
 
     public function getDataSource()
@@ -127,7 +131,18 @@ abstract class AbstractModelService implements ServiceLocatorAwareInterface
 
     public function getEvent()
     {
-    
+        return $this->getServiceLocator()->get('EventManager'); 
+    }
+
+    public function trigger($event, $target = null, $argv = array(), $callback = null)
+    {
+        if(false === in_array($event, $this->events)){
+            throw new InvalidEventException(printf('Invalid event %s not allow to trigger', $event));
+        }
+
+        $className = get_class($this);
+        $event = str_replace('\\', '.', strtolower($className)) . '.' . $event;
+        return $this->getEvent()->trigger($event, $target, $argv, $callback);
     }
 
 

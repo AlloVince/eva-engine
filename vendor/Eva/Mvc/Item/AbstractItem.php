@@ -13,7 +13,7 @@ namespace Eva\Mvc\Item;
 
 
 use Eva\Mvc\Model\AbstractModelService,
-    Zend\Mvc\Exception\MissingLocatorException,
+    Zend\Mvc\Exception,
     Zend\ServiceManager\ServiceLocatorAwareInterface,
     Zend\ServiceManager\ServiceLocatorInterface,
     Zend\Stdlib\Hydrator\ClassMethods;
@@ -34,7 +34,7 @@ use IteratorAggregate;
  * @copyright  Copyright (c) 2012 AlloVince (http://avnpc.com/)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class AbstractItem implements Iterator, ServiceLocatorAwareInterface
+abstract class AbstractItem extends ArrayIterator implements Iterator, ServiceLocatorAwareInterface
 {
 
     /**
@@ -166,10 +166,11 @@ abstract class AbstractItem implements Iterator, ServiceLocatorAwareInterface
     public function setModel($model)
     {
         if(!$model instanceof AbstractModelService){
-            throw new MissingLocatorException(printf('Model Service Locator not set by class %s',
+            throw new Exception\MissingLocatorException(printf('Model Service Locator not set by class %s',
             get_class($this)));
         }
         $this->model = $model;
+        $this->initialize();
         return $this;
     }
 
@@ -212,28 +213,93 @@ abstract class AbstractItem implements Iterator, ServiceLocatorAwareInterface
         return $this->dataSource;
     }
 
+
+    public function setDataSource($dataSource)
+    {
+        if (is_array($dataSource)) {
+            // its safe to get numbers from an array
+            $first = current($dataSource);
+            reset($dataSource);
+            $this->count = count($dataSource);
+            $this->dataSource = new ArrayIterator($dataSource);
+        } elseif ($dataSource instanceof IteratorAggregate) {
+            $this->dataSource = $dataSource->getIterator();
+        } elseif ($dataSource instanceof Iterator) {
+            $this->dataSource = $dataSource;
+        } else {
+            throw new Exception\InvalidArgumentException('DataSource provided is not an array, nor does it implement Iterator or IteratorAggregate');
+        }
+        return $this;
+    }
+
     public function hasRelationships()
     {
-        return 1;
+        $hasRelationships = false;
+        foreach($this->relationships as $key => $relationship){
+            if(isset($relationship['dataSource']) && $relationship['dataSource']){
+                $hasRelationships = true;
+                break;
+            }
+        }
+        return $hasRelationships;
     }
 
     public function getRelationships()
     {
-        return $this->relationships;
+        $relationships = new ArrayObject();
+
+        $model = $this->getModel();
+        foreach($this->relationships as $key => $relationship){
+            if(isset($relationship['dataSource']) && $relationship['dataSource'] && $relationship['targetEntity']){
+                $relItem = $model->getItem($relationship['targetEntity']); 
+                $relItem->setDataSource($relationship['dataSource']);
+                $relationships[$key] = $relItem;
+            }
+        }
+        return $relationships;
+    }
+
+    public function selfList()
+    {
+    }
+
+    public function self()
+    {
+        $dataClass = $this->getDataClass();
+        $where = $this->toArray();
+        if(!$where){
+            throw new Exception\InvalidArgumentException(printf('No item select where condition set in class %'), get_class($this));
+        }
+        $dataSource = $dataClass->where($where)->find('one');
+        if(!$dataSource){
+            $this->setDataSource(array());
+        } else {
+            $this->setDataSource($dataSource);
+        }
+        return $this;
+    }
+
+    public function relationship()
+    {
+    
+    }
+
+    public function proxy()
+    {
+    
     }
 
     public function create()
     {
-        $this->initialize();
         $dataClass = $this->getDataClass();
         $data = $this->toArray(
-            $this->map['create']
+            isset($this->map['create']) ? $this->map['create'] : array()
         );
+        $primaryKey = $dataClass->getPrimaryKey();
         if($dataClass->create($data)){
-            $this->id = $dataClass->getLastInsertValue();
+            $this->$primaryKey = $dataClass->getLastInsertValue();
         }
-        p($this->dataSource);
-        
+        return $this->$primaryKey;
     }
 
     public function save()
@@ -275,25 +341,15 @@ abstract class AbstractItem implements Iterator, ServiceLocatorAwareInterface
         if($dataSource){
             foreach($dataSource as $key => $data){
                 if(is_array($data)){
-                    $this->relationships[$key]['data'] = $data;
+                    $this->relationships[$key]['dataSource'] = $data;
                     unset($dataSource[$key]);
                 }
             }
         }
 
-        if (is_array($dataSource)) {
-            // its safe to get numbers from an array
-            $first = current($dataSource);
-            reset($dataSource);
-            $this->count = count($dataSource);
-            $this->dataSource = new ArrayIterator($dataSource);
-        } elseif ($dataSource instanceof IteratorAggregate) {
-            $this->dataSource = $dataSource->getIterator();
-        } elseif ($dataSource instanceof Iterator) {
-            $this->dataSource = $dataSource;
-        } else {
-            throw new Exception\InvalidArgumentException('DataSource provided is not an array, nor does it implement Iterator or IteratorAggregate');
-        }
+        $this->setDataSource($dataSource);
+
+
 
         //$hydrator = new Hydrator($dataSource);
         //$hydrator->hydrate($dataSource, &$this);

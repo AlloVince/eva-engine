@@ -216,7 +216,7 @@ $form->init(array(
                         <?=$form->helper(array('CategoryPost', 'category_id'), 'label', array('class' => 'control-label'))?>
                         <div class="controls">
                             <?=$form->helper(array('CategoryPost', 'category_id'), 'formSelect', array(
-                                'options' => $this->action('Blog\Api\Controller\CategoryController', 'selectAction'),
+                                'value_options' => $this->action('Blog\Api\Controller\CategoryController', 'selectAction'),
                             ), array('replace' => false, 'i18n' => false))?>
                             <?=$form->helper(array('CategoryPost', 'post_id'), 'formHidden', array(
                                 'value' => $post['id']
