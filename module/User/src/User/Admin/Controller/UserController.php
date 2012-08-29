@@ -26,7 +26,7 @@ class UserController extends RestfulModuleController
         $itemModel = Api::_()->getModelService('User\Model\User');
         $itemModel->getCache();
         //p($itemModel);
-        $items = $itemModel->getUsers();
+        //$items = $itemModel->getUsers();
         //$paginator = $itemModel->getPaginator();
 
         return array(
@@ -40,10 +40,10 @@ class UserController extends RestfulModuleController
     public function restGetUser()
     {
         $id = (int)$this->getEvent()->getRouteMatch()->getParam('id');
-        $postModel = Api::_()->getModel('User\Model\Post');
-        $postinfo = $postModel->setItemParams($id)->getPost();
+        $itemModel = Api::_()->getModel('User\Model\User');
+        $item = $itemModel->setItemParams($id)->getUser();
         return array(
-            'post' => $postinfo,
+            'user' => $item,
             'flashMessenger' => $this->flashMessenger()->getMessages(),
         );
     }
@@ -64,11 +64,11 @@ class UserController extends RestfulModuleController
         if ($form->isValid()) {
 
             $postData = $form->getData();
-            $itemModel = Api::_()->getModel('User\Model\User');
-            $itemData = $form->fieldsMap($postData, true);
-            $itemId = $itemModel->setSubItemMap($subForms)->setItem($postData)->createPost();
-            $this->flashMessenger()->addMessage('item-create-succeed');
-            $this->redirect()->toUrl('/admin/user/' . $itemId);
+            $itemModel = Api::_()->getModelService('User\Model\User');
+            //$itemData = $form->fieldsMap($postData, true);
+            $itemId = $itemModel->setItem($postData)->createUser();
+            //$this->flashMessenger()->addMessage('item-create-succeed');
+            //$this->redirect()->toUrl('/admin/user/' . $itemId);
 
         } else {
             

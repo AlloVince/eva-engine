@@ -7,38 +7,96 @@ if($this->form){
 } else {
     $form = Eva\Api::_()->getForm('User\Form\AdminLoginForm');
 }
+
+$url = $this->uri('/admin/user/login/');
 $form->init(array(
-	'action' => $this->uri('/admin/user/login/'),
-	'method' => 'put',
-	'values' => $this->user
+    'action' => $url,
+    'method' => 'put',
+    'values' => $this->user
 ));
 ?>
 
-<div class="slate">
-    <form class="form-horizontal" <?=$this->formAttr($form)?> >
-        <?=$form->restful();?>
-        <header class="page-header">
-        <h3>Admin Login</h3>
-        </header>
-        <fieldset>
-            <div class="control-group <?=$form->isError('userName') ? 'error' : '';?>">
-                <?=$form->helper('userName', 'label', array('class' => 'control-label'))?>
-                <div class="controls">
-                    <?=$form->helper('userName', array('class' => 'input-xlarge'))?>
-                    <div class="help-block"><?=$form->helper('userName', 'formElementErrors')?></div>
+<style>
+    html, body {
+            background:#D7D7D7;
+            height:100%;
+    }
+
+    .block {
+            text-align: center;
+            height:100%;
+    }
+
+    .block:before {
+            content: '';
+            display: inline-block;
+            height: 100%;
+            vertical-align: middle;
+            margin-right: -0.25em; /* Adjusts for spacing */
+    }
+
+    .centered {
+            display: inline-block;
+            vertical-align: middle;
+    }
+
+    #admin-login{
+        text-align:left;    
+    }
+
+</style>
+
+<div class="block" style="">
+    <div class="centered">
+        <div id="admin-login" class="container">
+            <div class="row">
+                <div class="span6 offset3">
+
+                    <input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
+                    <div id="user-name-failed" class="alert alert-error hide">
+                        <a href="#" data-dismiss="alert" class="close">x</a>
+                        <h4 class="alert-heading">Input user not exist</h4>
+                    </div>
+                    <div id="password-failed" class="alert alert-error hide">
+                        <a href="#" data-dismiss="alert" class="close">x</a>
+                        <h4 class="alert-heading">Password not match</h4>
+                    </div>
+
+
+                    <div class="slate">
+                        <form class="form-horizontal" <?=$this->formAttr($form)?> >
+                            <?=$form->restful();?>
+                            <header class="page-header">
+                            <h3><?=$this->_('Admin Login')?></h3>
+                            </header>
+                            <fieldset>
+                                <div class="control-group <?=$form->isError('userName') ? 'error' : '';?>">
+                                    <?=$form->helper('userName', 'label', array('class' => 'control-label'))?>
+                                    <div class="controls">
+                                        <?=$form->helper('userName', array('class' => 'input-xlarge'))?>
+                                        <div class="help-block"><?=$form->helper('userName', 'formElementErrors')?></div>
+                                    </div>
+                                </div>
+                                <div class="control-group <?=$form->isError('password') ? 'error' : '';?>">
+                                    <?=$form->helper('password', 'label', array('class' => 'control-label'))?>
+                                    <div class="controls">
+                                        <?=$form->helper('password', array('class' => 'input-xlarge'))?>
+                                        <div class="help-block"><?=$form->helper('password', 'formElementErrors')?></div>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <input name="callback" type="hidden" value="<?=$this->callback?>" />
+                                    <button class="btn btn-primary" type="submit"><?=$this->_('Login')?></button>
+                                    <a href="<?=$this->uri('/admin/user/reset/')?>"><?=$this->_('Forgot Passsword')?></a>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div><!--slate end-->
+
                 </div>
-            </div>
-            <div class="control-group <?=$form->isError('password') ? 'error' : '';?>">
-                <?=$form->helper('password', 'label', array('class' => 'control-label'))?>
-                <div class="controls">
-                    <?=$form->helper('password', array('class' => 'input-xlarge'))?>
-                    <div class="help-block"><?=$form->helper('password', 'formElementErrors')?></div>
-                </div>
-            </div>
-            <div class="form-actions">
-                <button class="btn btn-primary" type="submit">Login</button>
-                <a href="<?=$this->uri('/admin/user/reset/')?>">Forget Passsword</a>
-            </div>
-        </fieldset>
-    </form>
+            </div><!-- row end-->
+        </div>
+    </div>
+
 </div>
+

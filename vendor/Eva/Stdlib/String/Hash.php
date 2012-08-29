@@ -66,13 +66,13 @@
      }
 
 
-     public static function uniqueHash()
+     public static function uniqueHash($returnArray = false)
      {
          $guid = self::guid();
          $guid = str_replace('-', '', $guid);
 
          $hashArray = self::shortHashArray($guid);
-         return $hashArray[rand(0, 3)];
+         return false === $returnArray ? $hashArray[rand(0, 3)] : $hashArray;
      }
 
      /**

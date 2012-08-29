@@ -12,10 +12,7 @@
 namespace Eva\Mvc\Item;
 
 
-use Zend\Di\Di,
-    Zend\Di\Config as DiConfig,
-    Eva\Config\Config,
-    Eva\Mvc\Model\AbstractModelService,
+use Eva\Mvc\Model\AbstractModelService,
     Zend\Mvc\Exception\MissingLocatorException,
     Zend\ServiceManager\ServiceLocatorAwareInterface,
     Zend\ServiceManager\ServiceLocatorInterface,
@@ -37,8 +34,14 @@ use IteratorAggregate;
  * @copyright  Copyright (c) 2012 AlloVince (http://avnpc.com/)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class AbstractItem implements ServiceLocatorAwareInterface
+abstract class AbstractItem implements Iterator, ServiceLocatorAwareInterface
 {
+
+    /**
+     * @var null|int
+     */
+    protected $count = null;
+
 
     /**
      * @var Eva\Mvc\Model\AbstractModelService
@@ -59,6 +62,8 @@ abstract class AbstractItem implements ServiceLocatorAwareInterface
 
     protected $relationships = array();
 
+    protected $initialized = false;
+
     /**
      * @var HydratorInterface
      */
@@ -73,8 +78,6 @@ abstract class AbstractItem implements ServiceLocatorAwareInterface
     * @var ServiceLocatorInterface
     */
     protected $serviceLocator;
-
-
 
     /**
     * Set the service locator.
@@ -144,13 +147,20 @@ abstract class AbstractItem implements ServiceLocatorAwareInterface
      * @return array
      * @throws Exception\RuntimeException if any row is not castable to an array
      */
-    public function toArray()
+    public function toArray($map = null)
     {
-        $return = array();
-        foreach ($this as $row) {
-            $return[] = $this->getHydrator()->extract($row);
+        if($map){
+            foreach($map as $key => $method){
+                $this->$method();
+            }
         }
+        $return = (array) $this->dataSource;
         return $return;
+    }
+
+    public function getModel()
+    {
+        return $this->model;
     }
 
     public function setModel($model)
@@ -161,6 +171,35 @@ abstract class AbstractItem implements ServiceLocatorAwareInterface
         }
         $this->model = $model;
         return $this;
+    }
+
+    public function getDbTable()
+    {
+        $tableClassName = $this->dataSourceClass;
+        $serviceManager = $this->getServiceLocator();
+        if($serviceManager->has($tableClassName)){
+            return $serviceManager->get($tableClassName);
+        }
+
+        $serviceManager->setFactory($tableClassName, function(ServiceLocatorInterface $serviceLocator) use ($tableClassName){
+            return new $tableClassName($serviceLocator->get('Zend\Db\Adapter\Adapter'));
+        });
+
+        return $serviceManager->get($tableClassName);
+    }
+
+    public function getWebService()
+    {
+    
+    }
+
+    public function getDataClass()
+    {
+        if($this->dataSourceType == 'WebService'){
+            return $this->getWebService();
+        }
+
+        return $this->getDbTable();
     }
 
     /**
@@ -185,7 +224,16 @@ abstract class AbstractItem implements ServiceLocatorAwareInterface
 
     public function create()
     {
-    
+        $this->initialize();
+        $dataClass = $this->getDataClass();
+        $data = $this->toArray(
+            $this->map['create']
+        );
+        if($dataClass->create($data)){
+            $this->id = $dataClass->getLastInsertValue();
+        }
+        p($this->dataSource);
+        
     }
 
     public function save()
@@ -198,8 +246,28 @@ abstract class AbstractItem implements ServiceLocatorAwareInterface
     
     }
 
+    public function __get($name) 
+    {
+        if(isset($this->dataSource[$name])){
+            return $this->dataSource[$name];
+        }
+        return null;
+    }
+
+    public function __set($name, $value)
+    {
+        $this->dataSource[$name] = $value;
+        return $this;
+    }
+
+
     public function initialize()
     {
+        if(true === $this->initialized){
+            return $this;
+        }
+
+        $dataSource = $this->dataSource;
         if(!$dataSource && $this->model){
             $dataSource = $this->model->getDataSource();
         }
@@ -207,10 +275,97 @@ abstract class AbstractItem implements ServiceLocatorAwareInterface
         if($dataSource){
             foreach($dataSource as $key => $data){
                 if(is_array($data)){
-                    $this->connections[$key] = $data;
+                    $this->relationships[$key]['data'] = $data;
+                    unset($dataSource[$key]);
                 }
             }
         }
+
+        if (is_array($dataSource)) {
+            // its safe to get numbers from an array
+            $first = current($dataSource);
+            reset($dataSource);
+            $this->count = count($dataSource);
+            $this->dataSource = new ArrayIterator($dataSource);
+        } elseif ($dataSource instanceof IteratorAggregate) {
+            $this->dataSource = $dataSource->getIterator();
+        } elseif ($dataSource instanceof Iterator) {
+            $this->dataSource = $dataSource;
+        } else {
+            throw new Exception\InvalidArgumentException('DataSource provided is not an array, nor does it implement Iterator or IteratorAggregate');
+        }
+
+        //$hydrator = new Hydrator($dataSource);
+        //$hydrator->hydrate($dataSource, &$this);
+        //$this->setHydrator($hydrator);
+
+        $this->initialized = true;
+        return $this;
+    }
+
+    /**
+     * Iterator: move pointer to next item
+     *
+     * @return void
+     */
+    public function next()
+    {
+        $this->dataSource->next();
+    }
+
+    /**
+     * Iterator: retrieve current key
+     *
+     * @return mixed
+     */
+    public function key()
+    {
+        return $this->dataSource->key();
+    }
+
+    /**
+     * Iterator: get current item
+     *
+     * @return array
+     */
+    public function current()
+    {
+        return $this->dataSource->current();
+    }
+
+    /**
+     * Iterator: is pointer valid?
+     *
+     * @return bool
+     */
+    public function valid()
+    {
+        return $this->dataSource->valid();
+    }
+
+    /**
+     * Iterator: rewind
+     *
+     * @return void
+     */
+    public function rewind()
+    {
+        $this->dataSource->rewind();
+        // return void
+    }
+
+    /**
+     * Countable: return count of rows
+     *
+     * @return int
+     */
+    public function count()
+    {
+        if ($this->count !== null) {
+            return $this->count;
+        }
+        $this->count = count($this->dataSource);
+        return $this->count;
     }
 
 }

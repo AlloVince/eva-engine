@@ -6,58 +6,70 @@ use Zend\Form\Element;
 
 class AdminLoginForm extends Form
 {
-    protected $baseElements = array(
-        'userName' =>     array(
+    /**
+     * Form basic elements
+     *
+     * @var array
+     */
+    protected $baseElements = array (
+        'userName' => array (
             'name' => 'userName',
-            'attributes' => array(
+            'attributes' => array (
                 'type' => 'text',
                 'label' => 'User Name',
+                'value' => '',
             ),
         ),
-        'password' => array(
+        'password' => array (
             'name' => 'password',
-            'attributes' => array(
+            'attributes' => array (
                 'type' => 'password',
                 'label' => 'Password',
+                'value' => '',
             ),
         ),
     );
 
-    protected $baseFilters = array(
-        'userName' =>     array(
+    /**
+     * Form basic Validators
+     *
+     * @var array
+     */
+    protected $baseFilters = array (
+        'userName' => array (
             'name' => 'userName',
-            'filters' => array(
-                array('name' => 'StripTags'),
-                array('name' => 'StringTrim'),
-            ),
-            'validators' => array(
-                array(
-                    'name' => 'NotEmpty',
+            'required' => true,
+            'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
                 ),
-                array(
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+                'notEmpty' => array (
+                    'name' => 'NotEmpty',
+                    'options' => array (
+                    ),
+                ),
+                'stringLength' => array (
                     'name' => 'StringLength',
-                    'options' => array(
-                        'encoding' => 'UTF-8',
-                        'min' => 4,
-                        'max' => 100,
+                    'options' => array (
+                        'max' => '128',
                     ),
                 ),
             ),
         ),
-        'password' => array(
+        'password' => array (
             'name' => 'password',
-            'validators' => array(
-                array(
+            'required' => true,
+            'filters' => array (
+            ),
+            'validators' => array (
+                'notEmpty' => array (
                     'name' => 'NotEmpty',
-                    'options' => array(
-                    ),
-                ),
-                array(
-                    'name' => 'StringLength',
-                    'options' => array(
-                        'encoding' => 'UTF-8',
-                        'min' => 6,
-                        'max' => 32,
+                    'options' => array (
                     ),
                 ),
             ),

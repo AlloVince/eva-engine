@@ -7,9 +7,34 @@ use Eva\Api,
 
 class User extends AbstractModelService
 {
-    protected $itemTableName = 'User\DbTable\Users';
+    public function createUser()
+    {
+        $item = $this->getItem();
+        $itemId = $item->create();
 
-    public function getUsers()
+        if($item->hasRelationships()){
+            foreach($item->getRelationships() as $key => $connectItem){
+                //$connectItem->create();
+            }
+        }
+
+    
+    }
+
+    public function saveUser()
+    {
+    }
+
+    public function removeUser()
+    {
+    
+    }
+
+    public function getUser()
+    {
+    }
+
+    public function getUserList()
     {
     }
 }

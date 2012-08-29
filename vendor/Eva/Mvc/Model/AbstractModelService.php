@@ -107,6 +107,10 @@ abstract class AbstractModelService implements ServiceLocatorAwareInterface
         }
 
         $itemClass = $this->getItemClass();
+        if($this->serviceLocator->has($itemClass)){
+            return $this->serviceLocator->get($itemClass);
+        }
+
         $model = &$this;
         $this->serviceLocator->setFactory($itemClass, function(ServiceLocatorInterface $serviceLocator) use ($itemClass, $model){
             $item = new $itemClass();

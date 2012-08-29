@@ -170,7 +170,6 @@ $form->init(array(
                     <h3><?=$this->_('Credits Setting')?></h3>
                 </div>
                 <fieldset class="form-horizontal">
-                    <?=$form->helper(array('Account', 'user_id'), array('class' => ''))?>
                     <div class="control-group <?=$form->isError(array('Account', 'credits')) ? 'error' : '';?>">
                         <?=$form->helper(array('Account', 'credits'), 'label', array('class' => 'control-label'))?>
                         <div class="controls">

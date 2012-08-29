@@ -15,6 +15,9 @@ class LoginController extends RestfulModuleController
             $form = Api::_()->getForm('User\Form\AdminLoginForm');
             $form->init()->setData($request->getPost())->enableFilters();
             if ($form->isValid()) {
+                $callback = $this->params()->fromPost('callback');
+                $callback = $callback ? $callback : '/admin/core/dashboard';
+                $this->redirect()->toUrl($callback);
             } else {
             }
         }
