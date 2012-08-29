@@ -9,7 +9,7 @@ use User\Form,
 class UserController extends RestfulModuleController
 {
     protected $renders = array(
-        'restPutUser' => 'blog/get',    
+        'restPutUser' => 'user/get',    
         'restPostUser' => 'user/get',    
         'restDeleteUser' => 'remove/get',    
     );
@@ -41,7 +41,16 @@ class UserController extends RestfulModuleController
     {
         $id = (int)$this->getEvent()->getRouteMatch()->getParam('id');
         $itemModel = Api::_()->getModelService('User\Model\User');
-        $item = $itemModel->getUser($id);
+        $item = $itemModel->getUser($id, array(
+            'self' => array(
+            
+            ),
+            'relationships' => array(
+                'Profile' => array(),
+                'Account' => array(),
+            )
+        ));
+
         return array(
             'user' => $item,
             'flashMessenger' => $this->flashMessenger()->getMessages(),
@@ -53,14 +62,15 @@ class UserController extends RestfulModuleController
         $request = $this->getRequest();
         $postData = $request->getPost();
         $form = new Form\UserForm();
-
         $subForms = array(
             'Profile' => array('User\Form\ProfileForm'),
             'Account' => array('User\Form\AccountForm'),
         );
-        $form->setSubforms($subForms)->init();
+        $form->setSubforms($subForms)
+             ->init()
+             ->setData($postData)
+             ->enableFilters();
 
-        $form->setData($postData)->enableFilters();
         if ($form->isValid()) {
 
             $postData = $form->getData();
@@ -82,35 +92,34 @@ class UserController extends RestfulModuleController
     {
         $request = $this->getRequest();
         $postData = $request->getPost();
-        $form = new Form\PostEditForm();
+
+        $form = new Form\UserEditForm();
         $subForms = array(
-            'Text' => array('User\Form\TextForm'),
-            'CategoryPost' => array('User\Form\CategoryPostForm'),
-            'FileConnect' => array('File\Form\FileConnectForm'),
+            'Profile' => array('User\Form\ProfileForm'),
+            'Account' => array('User\Form\AccountForm'),
         );
-        
         $form->setSubforms($subForms)
              ->init()
              ->setData($postData)
              ->enableFilters();
 
-        $flashMesseger = array();
         if ($form->isValid()) {
             $postData = $form->getData();
-            $postModel = Api::_()->getModel('User\Model\Post');
-            $postData = $form->fieldsMap($postData, true);
-            $postId = $postModel->setSubItemMap($subForms)->setItem($postData)->savePost();
-            $this->flashMessenger()->addMessage('post-edit-succeed');
-            $this->redirect()->toUrl('/admin/blog/' . $postData['id']);
+            $itemModel = Api::_()->getModelService('User\Model\User');
+
+            $itemId = $itemModel->setItem($postData)->saveUser();
+
+            //$this->flashMessenger()->addMessage('item-edit-succeed');
+            //$this->redirect()->toUrl('/admin/user/' . $postData['id']);
         } else {
             //$this->flashMessenger()->addMessage('');
-            $flashMesseger = array('post-edit-failed');
+            //$flashMesseger = array('post-edit-failed');
         }
 
         return array(
             'form' => $form,
-            'post' => $postData,
-            'flashMessenger' => $flashMesseger
+            'user' => $postData,
+            //'flashMessenger' => $flashMesseger
         );
     }
 

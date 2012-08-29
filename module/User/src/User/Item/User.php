@@ -12,12 +12,38 @@ class User extends AbstractItem
         'Profile' => array(
             'targetEntity' => 'User\Item\Profile',
             'relationship' => 'OneToOne',
-            //'inversedBy' => 'User\Item\Profile',
+            'mappedBy' => 'UserProfile',
         ),
         'Account' => array(
             'targetEntity' => 'User\Item\Account',
             'relationship' => 'OneToOne',
-        )
+        ),
+        'FriendsWithMe' => array(
+            'targetEntity' => 'User\Item\User',
+            'relationship' => 'ManyToMany',
+            'inversedBy' => 'User\Item\Friend',
+            'joinColumns' => array(
+                'joinColumn' => 'to_user_id',
+                'referencedColumn' => 'id',
+            ),
+            'inverseJoinColumns' => array(
+                'joinColumn' => 'from_user_id',
+                'referencedColumn' => 'id',
+            ),
+        ),
+        'MyFriend' => array(
+            'targetEntity' => 'User\Item\User',
+            'relationship' => 'ManyToMany',
+            'inversedBy' => 'User\Item\Friend',
+            'joinColumns' => array(
+                'joinColumn' => 'from_user_id',
+                'referencedColumn' => 'id',
+            ),
+            'inverseJoinColumns' => array(
+                'joinColumn' => 'to_user_id',
+                'referencedColumn' => 'id',
+            ),
+        ),
     );
 
     protected $map = array(

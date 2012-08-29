@@ -53,9 +53,8 @@ $form->init(array(
                 <div class="page-header">
                     <?if($user):?>
                     <div class="btn-group pull-right">
-                        <a href="<?=$this->uri('/blog/page/' . $post['urlName'])?>" class="btn"><?=$this->_('View')?></a>
-                        <a href="<?=$this->uri('/admin/blog/create')?>" class="btn"><?=$this->_('Clear Cache')?></a>
-                        <a href="<?=$this->uri('/admin/blog/remove/' . $post['id'], 'c', array('c' => $this->uri('/admin/blog/' . $post['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
+                        <a href="<?=$this->uri('/admin/user/create')?>" class="btn"><?=$this->_('Clear Cache')?></a>
+                        <a href="<?=$this->uri('/admin/user/remove/' . $user['id'], 'c', array('c' => $this->uri('/admin/user/' . $user['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
                     </div>
                     <?endif?>
                     <h2><?=$title?></h2>

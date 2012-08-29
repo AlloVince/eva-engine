@@ -21,9 +21,8 @@ use ArrayObject;
 use Zend\Stdlib\Hydrator\ArraySerializable;
 use Zend\Stdlib\Hydrator\HydratorInterface;
 use ArrayIterator;
-use Countable;
+use ArrayAccess;
 use Iterator;
-use IteratorAggregate;
 
 /**
  * Mvc Abstract Model for item / itemlist / paginator
@@ -34,7 +33,7 @@ use IteratorAggregate;
  * @copyright  Copyright (c) 2012 AlloVince (http://avnpc.com/)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class AbstractItem extends ArrayIterator implements Iterator, ServiceLocatorAwareInterface
+abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwareInterface
 {
 
     /**
@@ -158,6 +157,10 @@ abstract class AbstractItem extends ArrayIterator implements Iterator, ServiceLo
         return $return;
     }
 
+    public function dump()
+    {
+    }
+
     public function getModel()
     {
         return $this->model;
@@ -259,6 +262,16 @@ abstract class AbstractItem extends ArrayIterator implements Iterator, ServiceLo
         return $relationships;
     }
 
+    public function addRelationship($key, array $relationship)
+    {
+    
+    }
+
+    public function removeRelationship($key)
+    {
+    
+    }
+
     public function selfList()
     {
     }
@@ -274,19 +287,25 @@ abstract class AbstractItem extends ArrayIterator implements Iterator, ServiceLo
         if(!$dataSource){
             $this->setDataSource(array());
         } else {
-            $this->setDataSource($dataSource);
+            $this->setDataSource((array) $dataSource);
         }
         return $this;
     }
 
-    public function relationship()
-    {
-    
+    public function join($key)
+    { 
+        $model = $this->getModel();
+        if(isset($this->relationships[$key])){
+            $relationship = $this->relationships[$key];
+            $relItem = $model->getItem($relationship['targetEntity']); 
+            return $relItem;
+        }
+        return new ArrayAccess();
     }
 
     public function proxy()
     {
-    
+        //call proxyRelationship;
     }
 
     public function create()
@@ -304,7 +323,14 @@ abstract class AbstractItem extends ArrayIterator implements Iterator, ServiceLo
 
     public function save()
     {
-    
+        $dataClass = $this->getDataClass();
+        $data = $this->toArray(
+            isset($this->map['save']) ? $this->map['save'] : array()
+        );
+        $primaryKey = $dataClass->getPrimaryKey();
+        $where = array($primaryKey => $data[$primaryKey]);
+        $dataClass->where($where)->save($data);
+        return $data[$primaryKey];
     }
 
     public function remove()
@@ -423,5 +449,32 @@ abstract class AbstractItem extends ArrayIterator implements Iterator, ServiceLo
         $this->count = count($this->dataSource);
         return $this->count;
     }
+
+    public function offsetExists($index) {
+        return isset($this->dataSource[$index]);
+    }
+ 
+    public function offsetGet($index) {
+        if($this->offsetExists($index)) {
+            return $this->dataSource[$index];
+        }
+        return false;
+    }
+ 
+    public function offsetSet($index, $value) {
+        if($index) {
+            $this->dataSource[$index] = $value;
+        } else {
+            $this->dataSource[] = $value;
+        }
+        return true;
+ 
+    }
+ 
+    public function offsetUnset($index) {
+        unset($this->dataSource[$index]);
+        return true;
+    }
+
 
 }

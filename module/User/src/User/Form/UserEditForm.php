@@ -18,7 +18,7 @@ namespace User\Form;
  * @category   Eva
  * @package    Eva_Form
  */
-class UserEditForm extends \Eva\Form\Form
+class UserEditForm extends UserForm
 {
     protected $mergeFilters = array (
         'id' => array (

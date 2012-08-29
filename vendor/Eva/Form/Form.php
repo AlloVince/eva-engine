@@ -222,8 +222,12 @@ class Form extends \Zend\Form\Form
         if($values){
             if($values instanceof \ArrayObject){
                 $this->bind($values);
-            } else {
+            } elseif(is_array($values)) {
                 $this->bind(new \ArrayObject((array) $values));
+            } elseif(is_object($values) && method_exists($values, 'toArray')) {
+                $this->bind(new \ArrayObject($values->toArray()));
+            } else {
+                $this->bind($values);
             }
         }
 

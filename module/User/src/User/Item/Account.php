@@ -12,6 +12,8 @@ class Account extends AbstractItem
         'User' => array(
             'targetEntity' => 'User\Item\User',
             'relationship' => 'OneToOne',
+            'joinColumn' => 'user_id',
+            'referencedColumnName' => 'id',
         ),
     );
 

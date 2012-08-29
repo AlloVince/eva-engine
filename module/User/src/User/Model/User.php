@@ -7,8 +7,24 @@ use Eva\Api,
 
 class User extends AbstractModelService
 {
-    public function createUser()
+    protected $map = array(
+        'small' => array(
+        
+        ),
+        'medium' => array(
+        
+        ),
+        'large' => array(
+        
+        )
+    );
+
+    public function createUser(array $data = array())
     {
+        if(!$data) {
+            $this->setItem($data);
+        }
+
         $item = $this->getItem();
         
         $this->trigger('create.pre');
@@ -29,8 +45,31 @@ class User extends AbstractModelService
         return $itemId;
     }
 
-    public function saveUser()
+    public function saveUser(array $data = array())
     {
+        if($data) {
+            $this->setItem($data);
+        }
+
+        $item = $this->getItem();
+        
+        $this->trigger('save.pre');
+
+        $itemId = $item->save();
+
+        if($item->hasRelationships()){
+            foreach($item->getRelationships() as $key => $relItem){
+                $relItem->save();
+            }
+        }
+        $this->trigger('save');
+
+    
+        $this->trigger('save.post');
+
+
+        return $itemId;
+
     }
 
     public function removeUser()
