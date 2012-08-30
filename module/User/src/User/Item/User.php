@@ -13,10 +13,14 @@ class User extends AbstractItem
             'targetEntity' => 'User\Item\Profile',
             'relationship' => 'OneToOne',
             'mappedBy' => 'UserProfile',
+            'joinColumn' => 'user_id',
+            'referencedColumn' => 'id',
         ),
         'Account' => array(
             'targetEntity' => 'User\Item\Account',
             'relationship' => 'OneToOne',
+            'joinColumn' => 'user_id',
+            'referencedColumn' => 'id',
         ),
         'FriendsWithMe' => array(
             'targetEntity' => 'User\Item\User',
@@ -31,7 +35,7 @@ class User extends AbstractItem
                 'referencedColumn' => 'id',
             ),
         ),
-        'MyFriend' => array(
+        'MyFriends' => array(
             'targetEntity' => 'User\Item\User',
             'relationship' => 'ManyToMany',
             'inversedBy' => 'User\Item\Friend',
@@ -48,8 +52,8 @@ class User extends AbstractItem
 
     protected $map = array(
         'create' => array(
-            'getSalt',
-            'getPassword',
+            'getSalt()',
+            'getPassword()',
         ),
     );
 
@@ -58,6 +62,11 @@ class User extends AbstractItem
         if(!$this->registerTime){
             return \Eva\Date\Date::getNow();
         }
+    }
+
+    public function getRegisterIp()
+    {
+        return $this->registerIp = $_SERVER["REMOTE_ADDR"];
     }
 
     public function getSalt()

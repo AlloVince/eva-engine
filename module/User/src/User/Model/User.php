@@ -21,7 +21,7 @@ class User extends AbstractModelService
 
     public function createUser(array $data = array())
     {
-        if(!$data) {
+        if($data) {
             $this->setItem($data);
         }
 
@@ -93,8 +93,7 @@ class User extends AbstractModelService
 
         $this->trigger('get.pre');
 
-        $item = $this->getItem()->self();
-
+        $item = $this->getItem();
         if($map){
             $item = $item->toArray($map);
         }

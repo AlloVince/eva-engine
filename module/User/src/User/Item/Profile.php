@@ -15,9 +15,10 @@ class Profile extends AbstractItem
         ),
     );
 
+    /*
     protected $map = array(
         'create' => array(
-            'getUserId'
+            'getUserId()'
         ),
     );
 
@@ -27,4 +28,5 @@ class Profile extends AbstractItem
             return $this->user_id = $this->model->getItem()->id;
         }
     }
+    */
 }

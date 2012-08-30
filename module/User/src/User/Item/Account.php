@@ -18,15 +18,14 @@ class Account extends AbstractItem
     );
 
     protected $map = array(
-        'create' => array(
-            'getUserId'
-        ),
     );
 
+    /*
     public function getUserId()
     {
         if(!$this->user_id){
             return $this->user_id = $this->model->getItem()->id;
         }
     }
+    */
 }

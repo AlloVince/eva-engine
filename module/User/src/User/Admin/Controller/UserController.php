@@ -41,15 +41,56 @@ class UserController extends RestfulModuleController
     {
         $id = (int)$this->getEvent()->getRouteMatch()->getParam('id');
         $itemModel = Api::_()->getModelService('User\Model\User');
-        $item = $itemModel->getUser($id, array(
+        $item = $itemModel->getUser($id);
+        
+        $credits = $item->join('Account')->credits;
+        p($credits);
+
+        $item = $item->toArray(array(
             'self' => array(
-            
+                '*',
+                'userName',
+                'getRegisterIp()',
+                'getFullName()',
             ),
-            'relationships' => array(
-                'Profile' => array(),
-                'Account' => array(),
-            )
+            'join' => array(
+                'Profile' => array(
+                    'site',
+                    'birthday',
+                    'phoneMobile',
+                ),
+                'Account' => array('*'),
+                'MyFriends' => array(
+                    'self' => array(
+                        'userName',
+                    ),
+                    'join' => array(
+                        'Profile' => array()
+                    )
+                ),
+            ),
+            'proxy' => array(
+                'Blog\Item\Post::UserPosts' => array(
+                    'self' => array('*'),
+                    'join' => array(
+                        'Text' => array('*'),
+                        'Comments' => array(
+                            'self' => array(
+                                '*'
+                            ),
+                            'proxy' => array(
+                                'User\Item\User::CommentUser' => array(
+                                    'self' => array(
+                                        'userName'
+                                    )
+                                )
+                            ),
+                        )
+                    ),
+                ),
+            ) 
         ));
+        //p($item);
 
         return array(
             'user' => $item,

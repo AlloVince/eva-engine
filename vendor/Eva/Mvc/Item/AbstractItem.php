@@ -140,27 +140,6 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         return $this->hydrator;
     }
 
-    /**
-     * Cast result set to array of arrays
-     *
-     * @return array
-     * @throws Exception\RuntimeException if any row is not castable to an array
-     */
-    public function toArray($map = null)
-    {
-        if($map){
-            foreach($map as $key => $method){
-                $this->$method();
-            }
-        }
-        $return = (array) $this->dataSource;
-        return $return;
-    }
-
-    public function dump()
-    {
-    }
-
     public function getModel()
     {
         return $this->model;
@@ -216,6 +195,16 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         return $this->dataSource;
     }
 
+    public function mergeDataSource(array $dataSource)
+    {
+        foreach($dataSource as $key => $value){
+            if($value !== null){
+                $this->dataSource[$key] = $value;
+            }
+        }
+
+        return $this;
+    }
 
     public function setDataSource($dataSource)
     {
@@ -254,9 +243,15 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         $model = $this->getModel();
         foreach($this->relationships as $key => $relationship){
             if(isset($relationship['dataSource']) && $relationship['dataSource'] && $relationship['targetEntity']){
+                $relItem = $this->join($key);
+                $relItem->mergeDataSource($relationship['dataSource']);
+                $relationships[$key] = $relItem;
+
+                /*
                 $relItem = $model->getItem($relationship['targetEntity']); 
                 $relItem->setDataSource($relationship['dataSource']);
                 $relationships[$key] = $relItem;
+                */
             }
         }
         return $relationships;
@@ -276,14 +271,70 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     {
     }
 
-    public function self()
+    protected function getWhereByPrimaryKey()
+    {
+    
+    }
+
+    public function self(array $map = array())
     {
         $dataClass = $this->getDataClass();
-        $where = $this->toArray();
+        $primaryKey = $dataClass->getPrimaryKey();
+        $where = array($primaryKey => $this->$primaryKey);
         if(!$where){
-            throw new Exception\InvalidArgumentException(printf('No item select where condition set in class %'), get_class($this));
+            throw new Exception\InvalidArgumentException(sprintf('No item select where condition set in class %'), get_class($this));
         }
-        $dataSource = $dataClass->where($where)->find('one');
+
+        $columns = array();
+        $functions = array();
+        $selectAll = false;
+
+        if(!$map){
+            return $this;
+        }
+
+        if($map && in_array('*', $map)){
+            $selectAll = true;
+            if($map) {
+                unset($map[array_search('*', $map)]);
+            }
+        }
+
+        foreach($map as $key => $value){
+            if(false === strrpos($value, '()')){
+                $columns[] = $value;
+            } else {
+                $functions[] = str_replace('()', '', $value);
+            }
+        } 
+
+        $dataSource = array();
+        if(true === $selectAll || $columns){
+            if(false === $selectAll){
+                $dataClass->columns($columns);
+            }
+            $dataSource = $dataClass->where($where)->find('one');
+        }
+
+        if($functions){
+            foreach($functions as $key => $function){
+                if(true === method_exists($this, $function)){
+                    $this->$function();
+                }
+            }
+        }
+
+        //Merge to original DataSource
+        $originalDataSource = $this->getDataSource();
+        if($dataSource){
+            foreach($dataSource as $key => $value){
+                if($value !== null){
+                    $originalDataSource[$key] = $value;            
+                }
+            }
+        }
+        $dataSource = $originalDataSource;
+
         if(!$dataSource){
             $this->setDataSource(array());
         } else {
@@ -292,15 +343,96 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         return $this;
     }
 
+
+    /**
+    * Cast result set to array of arrays
+    *
+    * @return array
+    * @throws Exception\RuntimeException if any row is not castable to an array
+    */
+    public function toArray(array $map = array())
+    {
+        if($map){
+            if(is_array(current($map))){
+                $self = isset($map['self']) ? $map['self'] : array();
+                $join = isset($map['join']) ? $map['join'] : array();
+                $proxy = isset($map['proxy']) ? $map['proxy'] : array();
+                $return = $this->dump($self, $join, $proxy);
+            } else {
+                $this->self($map);
+            }
+        }
+
+        $return = (array) $this->dataSource;
+        return $return;
+    }
+
+    protected function dump(array $self, array $join, array $proxy)
+    {
+        $self = $this->self($self);
+
+        foreach($join as $key => $map){
+            if(isset($this->relationships[$key])){
+                $self->$key = $this->join($key)->toArray($map);
+            }
+        }
+
+        return $self;
+    }
+
+
     public function join($key)
     { 
         $model = $this->getModel();
-        if(isset($this->relationships[$key])){
-            $relationship = $this->relationships[$key];
-            $relItem = $model->getItem($relationship['targetEntity']); 
-            return $relItem;
+        if(!isset($this->relationships[$key]) || !$this->relationships[$key]){
+            return new ArrayAccess();
         }
-        return new ArrayAccess();
+
+        $relationship = $this->relationships[$key];
+
+        //Important : here must use clone to create many entities
+        $relItem = clone $model->getItem($relationship['targetEntity']); 
+
+        $joinFuncName = 'join' . ucfirst($key);
+        if(method_exists($this, $joinFuncName)){
+            $this->$joinFuncName();
+        } else {
+            $joinFuncName = 'join' . $relationship['relationship'];
+
+            if(!method_exists($this, $joinFuncName)){
+                throw new Exception\InvalidArgumentException(printf(
+                    'Undefined relationship when join %s in class %s',
+                    $key,
+                    get_class($this)
+                ));
+            }
+            $this->$joinFuncName($key, $relItem, $relationship);
+        }
+        return $relItem;
+    }
+
+    protected function joinOneToOne($key, $relItem, $relationship)
+    {
+        $joinColumn = $relationship['joinColumn'];
+        $referencedColumn = $relationship['referencedColumn'];
+        $relItem->$joinColumn = $this->$referencedColumn;
+        p(sprintf('joinOneToOne Joined Class %s : joinColumn %s => %s joined %s => %s', get_class($relItem), $joinColumn, $relItem->$joinColumn , $referencedColumn, $this->$referencedColumn));
+        return $this;
+    }
+
+    protected function joinOneToMany($key, $relItem, $relationship)
+    {
+        p(sprintf('joinOneToMany Joined Class %s : joinColumn %s => %s joined %s => %s', get_class($relItem), $joinColumn, $relItem->$joinColumn , $referencedColumn, $this->$referencedColumn));
+    }
+
+    protected function joinManyToOne($key, $relItem, $relationship)
+    {
+        p(sprintf('joinManyToOne Joined Class %s : joinColumn %s => %s joined %s => %s', get_class($relItem), $joinColumn, $relItem->$joinColumn , $referencedColumn, $this->$referencedColumn));
+    }
+
+    protected function joinManyToMany($key, $relItem, $relationship)
+    {
+        p(@sprintf('joinManyToMany Joined Class %s : joinColumn %s => %s joined %s => %s', get_class($relItem), $joinColumn, $relItem->$joinColumn , $referencedColumn, $this->$referencedColumn));
     }
 
     public function proxy()
@@ -360,7 +492,9 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         }
 
         $dataSource = $this->dataSource;
-        if(!$dataSource && $this->model){
+
+        //Auto set datasource from model if they are connected
+        if(!$dataSource && $this->model && $this->model->getItemClass() == get_class($this)){
             $dataSource = $this->model->getDataSource();
         }
 
@@ -371,6 +505,10 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
                     unset($dataSource[$key]);
                 }
             }
+        }
+
+        if(!$dataSource){
+            $dataSource = array();
         }
 
         $this->setDataSource($dataSource);
@@ -475,6 +613,4 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         unset($this->dataSource[$index]);
         return true;
     }
-
-
 }
