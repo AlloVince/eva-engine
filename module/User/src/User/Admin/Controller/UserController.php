@@ -24,9 +24,7 @@ class UserController extends RestfulModuleController
         $selectQuery = $form->fieldsMap($query, true);
 
         $itemModel = Api::_()->getModelService('User\Model\User');
-        $itemModel->getCache();
-        //p($itemModel);
-        //$items = $itemModel->getUsers();
+        $items = $itemModel->getUserList();
         //$paginator = $itemModel->getPaginator();
 
         return array(
@@ -42,9 +40,13 @@ class UserController extends RestfulModuleController
         $id = (int)$this->getEvent()->getRouteMatch()->getParam('id');
         $itemModel = Api::_()->getModelService('User\Model\User');
         $item = $itemModel->getUser($id);
+        //p($item->self(array('*'))->toArray());
+
+        //$item = $itemModel->getUser(1);
+        //p($item->self(array('*'))->userName);
         
-        $credits = $item->join('Account')->credits;
-        p($credits);
+        //$credits = $item->join('Account')->self(array('*'))->credits;
+        //p($credits);
 
         $item = $item->toArray(array(
             'self' => array(
@@ -55,6 +57,7 @@ class UserController extends RestfulModuleController
             ),
             'join' => array(
                 'Profile' => array(
+                    '*',
                     'site',
                     'birthday',
                     'phoneMobile',
@@ -150,8 +153,8 @@ class UserController extends RestfulModuleController
 
             $itemId = $itemModel->setItem($postData)->saveUser();
 
-            //$this->flashMessenger()->addMessage('item-edit-succeed');
-            //$this->redirect()->toUrl('/admin/user/' . $postData['id']);
+            $this->flashMessenger()->addMessage('item-edit-succeed');
+            $this->redirect()->toUrl('/admin/user/' . $postData['id']);
         } else {
             //$this->flashMessenger()->addMessage('');
             //$flashMesseger = array('post-edit-failed');

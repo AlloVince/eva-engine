@@ -161,7 +161,6 @@ class UserForm extends \Eva\Form\Form
                 'value' => 'zh_CN',
             ),
         ),
-        /*
         'onlineStatus' => array (
             'name' => 'onlineStatus',
             'attributes' => array (
@@ -180,7 +179,6 @@ class UserForm extends \Eva\Form\Form
                 'value' => 'offline',
             ),
         ),
-        */
     );
 
     /**
@@ -442,7 +440,6 @@ class UserForm extends \Eva\Form\Form
                 ),
             ),
         ),
-        /*
         'onlineStatus' => array (
             'name' => 'onlineStatus',
             'required' => false,
@@ -461,6 +458,5 @@ class UserForm extends \Eva\Form\Form
                 ),
             ),
         ),
-        */
     );
 }

@@ -97,7 +97,12 @@ abstract class AbstractModelService implements ServiceLocatorAwareInterface
             $this->item = $item;
         }
 
-        $this->dataSource = $item;
+        //Clear last item and get new one
+        if($this->item){
+            $this->item->setDataSource($item);
+        } else {
+            $this->dataSource = $item;
+        }
         return $this;
     }
 

@@ -31,5 +31,5 @@ namespace Eva\Form\Exception;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class UnexpectedElementException extends \UnexpectedValueException implements 
-    \Zend\Form\ExceptionInterface
+    \Zend\Form\Exception\ExceptionInterface
 {}

@@ -416,23 +416,23 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         $joinColumn = $relationship['joinColumn'];
         $referencedColumn = $relationship['referencedColumn'];
         $relItem->$joinColumn = $this->$referencedColumn;
-        p(sprintf('joinOneToOne Joined Class %s : joinColumn %s => %s joined %s => %s', get_class($relItem), $joinColumn, $relItem->$joinColumn , $referencedColumn, $this->$referencedColumn));
+        //p(sprintf('joinOneToOne Joined Class %s : joinColumn %s => %s joined %s => %s', get_class($relItem), $joinColumn, $relItem->$joinColumn , $referencedColumn, $this->$referencedColumn));
         return $this;
     }
 
     protected function joinOneToMany($key, $relItem, $relationship)
     {
-        p(sprintf('joinOneToMany Joined Class %s : joinColumn %s => %s joined %s => %s', get_class($relItem), $joinColumn, $relItem->$joinColumn , $referencedColumn, $this->$referencedColumn));
+        //p(sprintf('joinOneToMany Joined Class %s : joinColumn %s => %s joined %s => %s', get_class($relItem), $joinColumn, $relItem->$joinColumn , $referencedColumn, $this->$referencedColumn));
     }
 
     protected function joinManyToOne($key, $relItem, $relationship)
     {
-        p(sprintf('joinManyToOne Joined Class %s : joinColumn %s => %s joined %s => %s', get_class($relItem), $joinColumn, $relItem->$joinColumn , $referencedColumn, $this->$referencedColumn));
+        //p(sprintf('joinManyToOne Joined Class %s : joinColumn %s => %s joined %s => %s', get_class($relItem), $joinColumn, $relItem->$joinColumn , $referencedColumn, $this->$referencedColumn));
     }
 
     protected function joinManyToMany($key, $relItem, $relationship)
     {
-        p(@sprintf('joinManyToMany Joined Class %s : joinColumn %s => %s joined %s => %s', get_class($relItem), $joinColumn, $relItem->$joinColumn , $referencedColumn, $this->$referencedColumn));
+        //p(@sprintf('joinManyToMany Joined Class %s : joinColumn %s => %s joined %s => %s', get_class($relItem), $joinColumn, $relItem->$joinColumn , $referencedColumn, $this->$referencedColumn));
     }
 
     public function proxy()

@@ -37,7 +37,7 @@ class AccountForm extends \Eva\Form\Form
         'credits' => array (
             'name' => 'credits',
             'attributes' => array (
-                'type' => 'number',
+                'type' => 'text',
                 'label' => 'Credits',
                 'value' => '0.00',
             ),
@@ -45,7 +45,7 @@ class AccountForm extends \Eva\Form\Form
         'points' => array (
             'name' => 'points',
             'attributes' => array (
-                'type' => 'number',
+                'type' => 'text',
                 'label' => 'Points',
                 'value' => '0.00',
             ),

@@ -55,7 +55,7 @@ class User extends AbstractModelService
         
         $this->trigger('save.pre');
 
-        $itemId = $item->save();
+        $item->save();
 
         if($item->hasRelationships()){
             foreach($item->getRelationships() as $key => $relItem){
@@ -68,7 +68,7 @@ class User extends AbstractModelService
         $this->trigger('save.post');
 
 
-        return $itemId;
+        return $item->id;
 
     }
 

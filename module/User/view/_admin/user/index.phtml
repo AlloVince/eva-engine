@@ -5,7 +5,7 @@ $this->textDelay('breadcrumbText', $title);
 if($this->form){
 	$form = $this->form;
 } else {
-    $form = Eva\Api::_()->getForm('\User\Form\UserSearchForm');
+    $form = Eva\Api::_()->getForm('User\Form\UserSearchForm');
 }
 $form->init(array(
     'action' => $this->uri('/admin/user/'),
