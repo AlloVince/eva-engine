@@ -41,7 +41,6 @@ class User extends AbstractModelService
     
         $this->trigger('create.post');
 
-
         return $itemId;
     }
 
@@ -72,9 +71,25 @@ class User extends AbstractModelService
 
     }
 
-    public function removeUser()
+    public function removeUser(array $map = array())
     {
+        $this->trigger('remove.pre');
+
+        $item = $this->getItem();
+        $item->remove();
+
+        /*
+        if($item->hasRelationships()){
+            foreach($item->getRelationships() as $key => $relItem){
+                $relItem->save();
+            }
+        }
+        */
+        $this->trigger('remove');
     
+        $this->trigger('remove.post');
+
+        return true;
     }
 
     public function getUser($userIdOrName = null, array $map = array())
@@ -90,12 +105,13 @@ class User extends AbstractModelService
                 'userName' => $userIdOrName,
             ));
         }
-
         $this->trigger('get.pre');
 
         $item = $this->getItem();
         if($map){
             $item = $item->toArray($map);
+        } else {
+            $item = $item->self(array('*'));
         }
 
         $this->trigger('get');

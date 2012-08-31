@@ -25,6 +25,7 @@ class UserController extends RestfulModuleController
 
         $itemModel = Api::_()->getModelService('User\Model\User');
         $items = $itemModel->setItemList($selectQuery)->getUserList();
+        //p($items[0]->join('Profile')->self(array('*'))->site);
         $items = $items->toArray(array(
             'self' => array(
                 '*',
@@ -42,6 +43,7 @@ class UserController extends RestfulModuleController
         ));
         //$paginator = $itemModel->getPaginator();
 
+
         return array(
             'form' => $form,
             'users' => $items,
@@ -55,6 +57,7 @@ class UserController extends RestfulModuleController
         $id = (int)$this->getEvent()->getRouteMatch()->getParam('id');
         $itemModel = Api::_()->getModelService('User\Model\User');
         $item = $itemModel->getUser($id);
+
         //p($item->self(array('*'))->toArray());
 
         //$item = $itemModel->getUser(1);
@@ -70,6 +73,7 @@ class UserController extends RestfulModuleController
                 'getRegisterIp()',
                 'getFullName()',
             ),
+            /*
             'join' => array(
                 'Profile' => array(
                     '*',
@@ -107,7 +111,12 @@ class UserController extends RestfulModuleController
                     ),
                 ),
             ) 
+            */
         ));
+
+        if(!$item){
+            //Add redirect
+        }
         //p($item);
 
         return array(
@@ -187,15 +196,17 @@ class UserController extends RestfulModuleController
         $request = $this->getRequest();
         $postData = $request->getPost();
         $callback = $request->getPost()->get('callback');
+        p($postData);
 
-        $form = new Form\PostDeleteForm();
+        $form = new Form\UserDeleteForm();
         $form->enableFilters()->setData($postData);
         if ($form->isValid()) {
 
             $postData = $form->getData();
-            $postTable = Api::_()->getDbTable('User\DbTable\Posts');
-
-            $postTable->where("id = {$postData['id']}")->remove();
+            $itemModel = Api::_()->getModelService('User\Model\User');
+            $itemModel->setItem(array(
+                'id' => $postData['id']
+            ))->removeUser();
 
             if($callback){
                 $this->redirect()->toUrl($callback);
@@ -203,7 +214,7 @@ class UserController extends RestfulModuleController
 
         } else {
             return array(
-                'post' => $postData,
+                'item' => $postData,
             );
         }
     }

@@ -1,8 +1,8 @@
 <?
 $user = $this->user;
-$title = $user['id'] ? 'Edit User' : 'Create User';
+$title = $user ? 'Edit User' : 'Create User';
 $title = $this->_($title);
-$method = $user['id'] ? 'put' : 'post';
+$method = $user ? 'put' : 'post';
 $this->headTitle($title, 'SET');
 $this->textDelay('breadcrumbText', $title);
 

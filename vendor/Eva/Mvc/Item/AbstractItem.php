@@ -268,92 +268,6 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     }
 
 
-    protected function getWhereByPrimaryKey()
-    {
-    
-    }
-
-    public function collections(array $params)
-    {
-        $dataClass = $this->getDataClass();
-        $items = $dataClass->find('all');
-        foreach($items as $key => $dataSource){
-            $item = clone $this;
-            $item->setDataSource((array) $dataSource);
-            $this->dataSource[] = $item;
-        }
-        return $this;
-    }
-
-
-    public function self(array $map = array())
-    {
-        $dataClass = $this->getDataClass();
-        $primaryKey = $dataClass->getPrimaryKey();
-        $where = array($primaryKey => $this->$primaryKey);
-        if(!$where){
-            throw new Exception\InvalidArgumentException(sprintf('No item select where condition set in class %'), get_class($this));
-        }
-
-        $columns = array();
-        $functions = array();
-        $selectAll = false;
-
-        if(!$map){
-            return $this;
-        }
-
-        if($map && in_array('*', $map)){
-            $selectAll = true;
-            if($map) {
-                unset($map[array_search('*', $map)]);
-            }
-        }
-
-        foreach($map as $key => $value){
-            if(false === strrpos($value, '()')){
-                $columns[] = $value;
-            } else {
-                $functions[] = str_replace('()', '', $value);
-            }
-        } 
-
-        $dataSource = array();
-        if(true === $selectAll || $columns){
-            if(false === $selectAll){
-                $dataClass->columns($columns);
-            }
-            $dataSource = $dataClass->where($where)->find('one');
-        }
-
-        if($functions){
-            foreach($functions as $key => $function){
-                if(true === method_exists($this, $function)){
-                    $this->$function();
-                }
-            }
-        }
-
-        //Merge to original DataSource
-        $originalDataSource = $this->getDataSource();
-        if($dataSource){
-            foreach($dataSource as $key => $value){
-                if($value !== null){
-                    $originalDataSource[$key] = $value;            
-                }
-            }
-        }
-        $dataSource = $originalDataSource;
-
-        if(!$dataSource){
-            $this->setDataSource(array());
-        } else {
-            $this->setDataSource((array) $dataSource);
-        }
-        return $this;
-    }
-
-
     /**
     * Cast result set to array of arrays
     *
@@ -362,6 +276,10 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     */
     public function toArray(array $map = array())
     {
+        if(0 === count($this->dataSource)){
+            return array();
+        }
+
         if(isset($this->dataSource[0])){
             foreach($this->dataSource as $key => $subDataSource){
                 if(method_exists($subDataSource, 'toArray')){
@@ -395,6 +313,11 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     {
         $self = $this->self($self);
 
+        //If item complete empty will not join
+        if(0 === count($self->dataSource)){
+            return $self;
+        }
+
         foreach($join as $key => $map){
             if(isset($this->relationships[$key])){
                 $self->$key = $this->join($key)->toArray($map);
@@ -403,6 +326,90 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
 
         return $self;
     }
+
+
+    public function collections(array $params)
+    {
+        $dataClass = $this->getDataClass();
+        $items = $dataClass->find('all');
+        foreach($items as $key => $dataSource){
+            $item = clone $this;
+            $item->setDataSource((array) $dataSource);
+            $this->dataSource[] = $item;
+        }
+        return $this;
+    }
+
+
+    public function self(array $map = array())
+    {
+        $columns = array();
+        $functions = array();
+        $selectAll = false;
+
+        if(!$map){
+            return $this;
+        }
+
+        if($map && in_array('*', $map)){
+            $selectAll = true;
+            if($map) {
+                unset($map[array_search('*', $map)]);
+            }
+        }
+
+        foreach($map as $key => $value){
+            if(false === strrpos($value, '()')){
+                $columns[] = $value;
+            } else {
+                $functions[] = str_replace('()', '', $value);
+            }
+        } 
+
+        $dataSource = array();
+        if(true === $selectAll || $columns){
+            if(false === $selectAll){
+                $dataClass->columns($columns);
+            }
+            $dataClass = $this->getDataClass();
+            $where = $this->getPrimaryArray();
+            $dataSource = $dataClass->where($where)->find('one');
+
+            //Not find in DB
+            if(!$dataSource){
+                $this->setDataSource(array());
+                return $this;
+            }
+        }
+
+        //Auto complete
+        if($functions){
+            foreach($functions as $key => $function){
+                if(true === method_exists($this, $function)){
+                    $this->$function();
+                }
+            }
+        }
+
+        //Merge to original DataSource
+        $originalDataSource = $this->getDataSource();
+        if($dataSource){
+            foreach($dataSource as $key => $value){
+                if($value !== null){
+                    $originalDataSource[$key] = $value;            
+                }
+            }
+        }
+        $dataSource = $originalDataSource;
+
+        if(!$dataSource){
+            $this->setDataSource(array());
+        } else {
+            $this->setDataSource((array) $dataSource);
+        }
+        return $this;
+    }
+
 
 
     public function join($key)
@@ -483,15 +490,40 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         $data = $this->toArray(
             isset($this->map['save']) ? $this->map['save'] : array()
         );
-        $primaryKey = $dataClass->getPrimaryKey();
-        $where = array($primaryKey => $data[$primaryKey]);
+        $where = $this->getPrimaryArray();
         $dataClass->where($where)->save($data);
-        return $data[$primaryKey];
+        return true;
     }
 
     public function remove()
     {
-    
+        $dataClass = $this->getDataClass();
+        $where = $this->getPrimaryArray();
+        $dataClass->where($where)->remove();
+        return true;
+    }
+
+    protected function getPrimaryArray()
+    {
+        $dataClass = $this->getDataClass();
+        $primaryKey = $dataClass->getPrimaryKey();
+        if(is_string($primaryKey)){
+            if(!$this->$primaryKey){
+                throw new Exception\InvalidArgumentException(sprintf('Primary Key not set in item %s', get_class($this)));
+            }
+            $where = array($primaryKey => $this->$primaryKey);
+        } elseif(is_array($primaryKey)) {
+            $where = array();
+            foreach($primaryKey as $key){
+                if(!$this->$key){
+                    throw new Exception\InvalidArgumentException(sprintf('Primary Key not set in item %s', get_class($this)));
+                }
+                $where[$key] = $this->$key;
+            }
+        } else {
+            throw new Exception\InvalidArgumentException(sprintf('Primary Key not found or not correct in class %s', get_class($dataClass)));
+        }
+        return $where;
     }
 
     public function __get($name) 
