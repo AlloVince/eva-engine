@@ -267,14 +267,24 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     
     }
 
-    public function selfList()
-    {
-    }
 
     protected function getWhereByPrimaryKey()
     {
     
     }
+
+    public function collections(array $params)
+    {
+        $dataClass = $this->getDataClass();
+        $items = $dataClass->find('all');
+        foreach($items as $key => $dataSource){
+            $item = clone $this;
+            $item->setDataSource((array) $dataSource);
+            $this->dataSource[] = $item;
+        }
+        return $this;
+    }
+
 
     public function self(array $map = array())
     {
@@ -352,6 +362,20 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     */
     public function toArray(array $map = array())
     {
+        if(isset($this->dataSource[0])){
+            foreach($this->dataSource as $key => $subDataSource){
+                if(method_exists($subDataSource, 'toArray')){
+                    $this->dataSource[$key] = $subDataSource->toArray($map);
+                }
+            }
+            return $this->singleToArray(array());
+        } else {
+            return $this->singleToArray($map);
+        }
+    }
+
+    protected function singleToArray($map)
+    {
         if($map){
             if(is_array(current($map))){
                 $self = isset($map['self']) ? $map['self'] : array();
@@ -395,7 +419,7 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
 
         $joinFuncName = 'join' . ucfirst($key);
         if(method_exists($this, $joinFuncName)){
-            $this->$joinFuncName();
+            $this->$joinFuncName($relItem);
         } else {
             $joinFuncName = 'join' . $relationship['relationship'];
 

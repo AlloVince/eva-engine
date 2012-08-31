@@ -106,7 +106,23 @@ class User extends AbstractModelService
         return $item;
     }
 
-    public function getUserList()
+    public function getUserList($map = null)
     {
+        $this->trigger('list.precache');
+
+
+        $this->trigger('list.pre');
+
+        $item = $this->getItemList();
+        if($map){
+            $item = $item->toArray($map);
+        }
+
+        $this->trigger('get');
+
+        $this->trigger('list.post');
+        $this->trigger('list.postcache');
+
+        return $item;
     }
 }

@@ -38,11 +38,11 @@ abstract class AbstractModelService implements ServiceLocatorAwareInterface
         'get',
         'get.post',
         'get.postcache',
-        'getList.precache',
-        'getList.pre',
-        'getList',
-        'getList.post',
-        'getList.postcache',
+        'list.precache',
+        'list.pre',
+        'list',
+        'list.post',
+        'list.postcache',
         'create.pre',
         'create',
         'create.post',
@@ -57,8 +57,10 @@ abstract class AbstractModelService implements ServiceLocatorAwareInterface
 
     protected $itemClass;
     protected $item;
-    protected $itemList;
     protected $dataSource;
+
+    protected $itemList;
+    protected $itemListParameters;
 
     protected $cacheStorageFactory;
     protected $paginator;
@@ -95,6 +97,7 @@ abstract class AbstractModelService implements ServiceLocatorAwareInterface
     {
         if($item instanceof AbstractItem){
             $this->item = $item;
+            return $this;
         }
 
         //Clear last item and get new one
@@ -127,6 +130,23 @@ abstract class AbstractModelService implements ServiceLocatorAwareInterface
             return $this->item = $this->serviceLocator->get($itemClass);
         }
         return $this->serviceLocator->get($itemClass);
+    }
+
+    public function setItemList($itemList)
+    {
+        if($itemList instanceof AbstractItem){
+            $this->itemList = $itemList;
+            return $this;
+        }
+
+        $this->itemListParameters = $itemList;
+        return $this;
+    }
+
+    public function getItemList($itemClass = null)
+    {
+        $item = $this->getItem($itemClass);
+        return $item->collections($this->itemListParameters);
     }
 
     public function getDataSource()

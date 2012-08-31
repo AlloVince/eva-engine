@@ -14,12 +14,10 @@ $form->init(array(
 ));
 
 $lableMap = array(
-    'draft' => '',
-    'published' => 'label-success',
-    'pending' => 'label-warning',
+    'active' => 'label-success',
+    'inactive' => 'label-warning',
     'deleted' => 'label-inverse',
 );
-
 ?>
 <div class="row">
     <div class="span10">
@@ -34,8 +32,6 @@ $lableMap = array(
         </div>
     </div>
 </div>
-
-
 <div class="row">
     <div class="span10 listing-buttons">
         <div class="btn-group pull-right">
@@ -84,35 +80,30 @@ $lableMap = array(
                     <tr>
                         <th class="span1">
                         </th>
-                        <th><?=$this->_('Post Title')?></th>
+                        <th><?=$this->_('User Name')?></th>
                         <th class="span1"><?=$this->_('Order')?></th>
                         <th class="actions"><?=$this->_('Actions')?></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?if($this->posts):?>
-                    <?foreach($this->posts as $key=>$post):?>
+                    <?if($this->users):?>
+                    <?foreach($this->users as $key=>$user):?>
                     <tr class="">
                         <td>
-                            <input name="id" type="checkbox" class="multiform-item-checkbox"  data-multiform="post" data-multiform-itemid="<?=$post['id'] ?>" value="<?=$post['id'] ?>" />
+                            <input name="id" type="checkbox" class="multiform-item-checkbox"  data-multiform="post" data-multiform-itemid="<?=$user['id'] ?>" value="<?=$user['id'] ?>" />
                         </td>	
                         <td>
-                            <a href="<?=$this->uri('/admin/user/' . $post['id'])?>" class="title"><?=$post['title'] ?></a>
-                            <span class="label <?=$lableMap[$post['status']]?>"><?=$this->_($post['status'])?></span>
-                            <?if($post['visibility'] == 'private'):?>
-                            <span class="label label-important"><?=$this->_('private')?></span>
-                            <?endif?>
+                            <a href="<?=$this->uri('/admin/user/' . $user['id'])?>" class="title"><?=$user['userName'] ?></a>
+                            <span class="label <?=$lableMap[$user['status']]?>"><?=$this->_($user['status'])?></span>
                             <p>
-                            <span class="meta"><?=$post['user_name'] ?> <?=$post['createTime'];?></span>
+                            <span class="meta"> <?=$user['registerTime'];?></span>
                             </p>
                         </td>
                         <td>
-                            <input name="order" tabindex="<?=$key+1 ?>" type="text" class="span1 multiform-item-input" size="2" maxlength="3"  data-multiform="post" data-multiform-itemid="<?=$post['id'] ?>" value="<?=$post['orderNumber'] ? $post['orderNumber'] : "0" ?>" />
                         </td>
                         <td class="actions">
-                            <a href="<?=$this->uri('/admin/user/remove/' . $post['id'], 'c', array('c' => $this->uri('/admin/user', array('page' => $this->page)))); ?>" class="btn btn-small btn-danger"><?=$this->_('Delete')?></a>
-                            <a href="<?=$this->uri('/user/page/' . $post['urlName'])?>" class="btn btn-small"><?=$this->_('View')?></a>
-                            <a href="<?=$this->uri('/admin/user/' . $post['id'])?>" class="btn btn-small"><?=$this->_('Edit')?></a>
+                            <a href="<?=$this->uri('/admin/user/remove/' . $user['id'], 'c', array('c' => $this->uri('/admin/user', array('page' => $this->page)))); ?>" class="btn btn-small btn-danger"><?=$this->_('Delete')?></a>
+                            <a href="<?=$this->uri('/admin/user/' . $user['id'])?>" class="btn btn-small"><?=$this->_('Edit')?></a>
                         </td>
                     </tr>
                     <?endforeach;?>
