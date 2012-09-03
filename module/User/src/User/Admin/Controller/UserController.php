@@ -69,11 +69,9 @@ class UserController extends RestfulModuleController
         $item = $item->toArray(array(
             'self' => array(
                 '*',
-                'userName',
                 'getRegisterIp()',
                 'getFullName()',
             ),
-            /*
             'join' => array(
                 'Profile' => array(
                     '*',
@@ -89,6 +87,9 @@ class UserController extends RestfulModuleController
                     'join' => array(
                         'Profile' => array()
                     )
+                ),
+                'Oauth' => array(
+                    '*'
                 ),
             ),
             'proxy' => array(
@@ -111,7 +112,6 @@ class UserController extends RestfulModuleController
                     ),
                 ),
             ) 
-            */
         ));
 
         if(!$item){
@@ -196,7 +196,6 @@ class UserController extends RestfulModuleController
         $request = $this->getRequest();
         $postData = $request->getPost();
         $callback = $request->getPost()->get('callback');
-        p($postData);
 
         $form = new Form\UserDeleteForm();
         $form->enableFilters()->setData($postData);

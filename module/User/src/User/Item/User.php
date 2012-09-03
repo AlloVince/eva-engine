@@ -22,6 +22,12 @@ class User extends AbstractItem
             'joinColumn' => 'user_id',
             'referencedColumn' => 'id',
         ),
+        'Oauth' => array(
+            'targetEntity' => 'User\Item\Oauth',
+            'relationship' => 'OneToMany',
+            'joinColumn' => 'user_id',
+            'referencedColumn' => 'id',
+        ),
         'FriendsWithMe' => array(
             'targetEntity' => 'User\Item\User',
             'relationship' => 'ManyToMany',

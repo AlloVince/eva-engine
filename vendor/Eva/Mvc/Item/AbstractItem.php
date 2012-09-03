@@ -156,7 +156,7 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         return $this;
     }
 
-    public function getDbTable()
+    public function dbTable()
     {
         $tableClassName = $this->dataSourceClass;
         $serviceManager = $this->getServiceLocator();
@@ -171,7 +171,7 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         return $serviceManager->get($tableClassName);
     }
 
-    public function getWebService()
+    public function webService()
     {
     
     }
@@ -182,7 +182,7 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
             return $this->getWebService();
         }
 
-        return $this->getDbTable();
+        return $this->dbTable();
     }
 
     /**
@@ -331,6 +331,10 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     public function collections(array $params)
     {
         $dataClass = $this->getDataClass();
+        if($params && method_exists($dataClass, 'setParameters')){
+            $params = new \Zend\Stdlib\Parameters($params);
+            $dataClass->setParameters($params);
+        }
         $items = $dataClass->find('all');
         foreach($items as $key => $dataSource){
             $item = clone $this;
@@ -368,10 +372,10 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
 
         $dataSource = array();
         if(true === $selectAll || $columns){
+            $dataClass = $this->getDataClass();
             if(false === $selectAll){
                 $dataClass->columns($columns);
             }
-            $dataClass = $this->getDataClass();
             $where = $this->getPrimaryArray();
             $dataSource = $dataClass->where($where)->find('one');
 
@@ -423,6 +427,8 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
 
         //Important : here must use clone to create many entities
         $relItem = clone $model->getItem($relationship['targetEntity']); 
+        //Important : Joined item should have no dataSource
+        $relItem->setDataSource(array());
 
         $joinFuncName = 'join' . ucfirst($key);
         if(method_exists($this, $joinFuncName)){
@@ -453,7 +459,12 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
 
     protected function joinOneToMany($key, $relItem, $relationship)
     {
+        $joinColumn = $relationship['joinColumn'];
+        $referencedColumn = $relationship['referencedColumn'];
         //p(sprintf('joinOneToMany Joined Class %s : joinColumn %s => %s joined %s => %s', get_class($relItem), $joinColumn, $relItem->$joinColumn , $referencedColumn, $this->$referencedColumn));
+        return $relItem->collections(array(
+            $joinColumn => $this->$referencedColumn
+        ));
     }
 
     protected function joinManyToOne($key, $relItem, $relationship)
