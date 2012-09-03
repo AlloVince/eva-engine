@@ -19,9 +19,6 @@
 [submodule "depends/BjyProfiler"]
 	path = depends/BjyProfiler
 	url = git://github.com/bjyoungblood/BjyProfiler.git
-[submodule "vendor/PHPThumb"]
-	path = vendor/PHPThumb
-	url = git://github.com/masterexploder/PHPThumb.git
 [submodule "vendor/EvaCloudImage"]
 	path = vendor/EvaCloudImage
 	url = git://github.com/AlloVince/EvaCloudImage.git

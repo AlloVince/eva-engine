@@ -41,14 +41,13 @@ class UserController extends RestfulModuleController
                 'Account' => array('*'),
             ),
         ));
-        //$paginator = $itemModel->getPaginator();
-
+        $paginator = $itemModel->getPaginator();
 
         return array(
             'form' => $form,
             'users' => $items,
             'query' => $query,
-            //'paginator' => $paginator,
+            'paginator' => $paginator,
         );
     }
 

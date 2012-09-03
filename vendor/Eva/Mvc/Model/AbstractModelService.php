@@ -79,7 +79,6 @@ abstract class AbstractModelService implements ServiceLocatorAwareInterface
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
-        $this->init();
         return $this;
     }
 
@@ -233,11 +232,8 @@ abstract class AbstractModelService implements ServiceLocatorAwareInterface
         return $this->itemClass = str_replace('\Model\\', '\Item\\', $className);
     }
 
-    public function init()
+    public function getPaginator(array $paginatorOptions = array())
     {
-        //$this->serviceLocator->setInvokableClass('ModelCache', 'Eva\Cache\Service\ModelCache');
-        //$itemClass = $this->getItemClass(); 
-        //$this->serviceLocator->setInvokableClass($itemClass, $itemClass);
+        return $this->getItem()->getPaginator($paginatorOptions);
     }
-
 }

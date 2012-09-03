@@ -13,6 +13,7 @@ namespace Eva\Mvc\Item;
 
 
 use Eva\Mvc\Model\AbstractModelService,
+    Eva\Paginator\Paginator,
     Zend\Mvc\Exception,
     Zend\ServiceManager\ServiceLocatorAwareInterface,
     Zend\ServiceManager\ServiceLocatorInterface,
@@ -77,6 +78,8 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     * @var ServiceLocatorInterface
     */
     protected $serviceLocator;
+
+    protected $paginator;
 
     /**
     * Set the service locator.
@@ -331,7 +334,7 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     public function collections(array $params)
     {
         $dataClass = $this->getDataClass();
-        if($params && method_exists($dataClass, 'setParameters')){
+        if(method_exists($dataClass, 'setParameters')){
             $params = new \Zend\Stdlib\Parameters($params);
             $dataClass->setParameters($params);
         }
@@ -580,61 +583,112 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
 
         $this->setDataSource($dataSource);
 
-
-
-        //$hydrator = new Hydrator($dataSource);
-        //$hydrator->hydrate($dataSource, &$this);
-        //$this->setHydrator($hydrator);
-
         $this->initialized = true;
         return $this;
     }
 
+
+    public function setPaginator($paginator)
+    {
+        $this->paginator = $paginator;
+    }
+
+    public function getPaginator(array $paginatorOptions = array())
+    {
+        $defaultPaginatorOptions = array(
+            'itemCountPerPage' => 10,
+            'pageRange' => 5,
+            'pageNumber' => 1,
+        );
+
+        $dataClass = $this->getDataClass();
+        $count = $dataClass->getCount();
+        if(!$count) {
+            return $this->paginator = null;
+        }
+
+        $dbPaginatorOptions = $dataClass->getPaginatorOptions();
+        $paginatorOptions = array_merge($defaultPaginatorOptions, $dbPaginatorOptions, $paginatorOptions);
+
+        $count = (int) $count;
+        $diConfig = array(
+            'instance' => array(
+                'Zend\Paginator\Adapter\DbSelect' => array(
+                    'parameters' => array(
+                        'rowCount' => $count,
+                        'select' => $dataClass->getSelect(),
+                        'adapterOrSqlObject' => $dataClass->getSql(),
+                    )
+                ),
+                'Eva\Paginator\Paginator' => array(
+                    'parameters' => array(
+                        'rowCount' => $count,
+                        'adapter' => 'Zend\Paginator\Adapter\DbSelect',
+                    ),
+                ),
+            )
+        );
+
+
+        foreach ($paginatorOptions as $key => $value) {
+            if(false === in_array($key, array('itemCountPerPage', 'pageNumber', 'pageRange'))){
+                continue;
+            }
+            $diConfig['instance']['Eva\Paginator\Paginator']['parameters'][$key] = $paginatorOptions[$key];
+        }
+
+        $di = new \Zend\Di\Di();
+        $di->configure(new \Zend\Di\Config($diConfig));
+        $paginator = $di->get('Eva\Paginator\Paginator');
+        return $this->paginator = $paginator;
+    }
+
+
     /**
-     * Iterator: move pointer to next item
-     *
-     * @return void
-     */
+    * Iterator: move pointer to next item
+    *
+    * @return void
+    */
     public function next()
     {
         $this->dataSource->next();
     }
 
     /**
-     * Iterator: retrieve current key
-     *
-     * @return mixed
-     */
+    * Iterator: retrieve current key
+    *
+    * @return mixed
+    */
     public function key()
     {
         return $this->dataSource->key();
     }
 
     /**
-     * Iterator: get current item
-     *
-     * @return array
-     */
+    * Iterator: get current item
+    *
+    * @return array
+    */
     public function current()
     {
         return $this->dataSource->current();
     }
 
     /**
-     * Iterator: is pointer valid?
-     *
-     * @return bool
-     */
+    * Iterator: is pointer valid?
+    *
+    * @return bool
+    */
     public function valid()
     {
         return $this->dataSource->valid();
     }
 
     /**
-     * Iterator: rewind
-     *
-     * @return void
-     */
+    * Iterator: rewind
+    *
+    * @return void
+    */
     public function rewind()
     {
         $this->dataSource->rewind();
