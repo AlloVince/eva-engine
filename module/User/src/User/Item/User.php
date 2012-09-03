@@ -11,8 +11,7 @@ class User extends AbstractItem
     protected $relationships = array(
         'Profile' => array(
             'targetEntity' => 'User\Item\Profile',
-            'relationship' => 'OneToOne',
-            'mappedBy' => 'UserProfile',
+            'relationship' => 'ManyToOne',
             'joinColumn' => 'user_id',
             'referencedColumn' => 'id',
         ),
@@ -27,6 +26,10 @@ class User extends AbstractItem
             'relationship' => 'OneToMany',
             'joinColumn' => 'user_id',
             'referencedColumn' => 'id',
+            'joinParameters' => array(
+                'columns' => array('user_id', 'appType', 'token', 'tokenSecret'),
+                'limit' => false,
+            ),
         ),
         'FriendsWithMe' => array(
             'targetEntity' => 'User\Item\User',
@@ -44,11 +47,13 @@ class User extends AbstractItem
         'MyFriends' => array(
             'targetEntity' => 'User\Item\User',
             'relationship' => 'ManyToMany',
-            'inversedBy' => 'User\Item\Friend',
+            'mappedBy' => 'Friends',
             'joinColumns' => array(
                 'joinColumn' => 'from_user_id',
                 'referencedColumn' => 'id',
             ),
+            'inversedBy' => 'User\Item\Friend',
+            'inversedMappedBy' => 'Friends',
             'inverseJoinColumns' => array(
                 'joinColumn' => 'to_user_id',
                 'referencedColumn' => 'id',

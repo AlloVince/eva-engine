@@ -73,7 +73,7 @@ class UserController extends RestfulModuleController
             ),
             'join' => array(
                 'Profile' => array(
-                    '*',
+                    //'*',
                     'site',
                     'birthday',
                     'phoneMobile',
@@ -88,7 +88,7 @@ class UserController extends RestfulModuleController
                     )
                 ),
                 'Oauth' => array(
-                    '*'
+                    'appExt'
                 ),
             ),
             'proxy' => array(

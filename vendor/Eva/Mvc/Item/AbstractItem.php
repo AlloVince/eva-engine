@@ -323,7 +323,12 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
 
         foreach($join as $key => $map){
             if(isset($this->relationships[$key])){
-                $self->$key = $this->join($key)->toArray($map);
+                if(isset($this->relationships[$key]['mappedBy'])){
+                    $mapKey = $this->relationships[$key]['mappedBy'];
+                    $self->$mapKey = $this->join($key)->toArray($map);
+                } else {
+                    $self->$key = $this->join($key)->toArray($map);
+                }
             }
         }
 
@@ -334,7 +339,7 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     public function collections(array $params)
     {
         $dataClass = $this->getDataClass();
-        if(method_exists($dataClass, 'setParameters')){
+        if($params && method_exists($dataClass, 'setParameters')){
             $params = new \Zend\Stdlib\Parameters($params);
             $dataClass->setParameters($params);
         }
@@ -464,15 +469,24 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     {
         $joinColumn = $relationship['joinColumn'];
         $referencedColumn = $relationship['referencedColumn'];
+        $params = array(
+            $joinColumn => $this->$referencedColumn,
+        );
+
+        if(isset($relationship['joinParameters']) && is_array($relationship['joinParameters'])){
+            $params = array_merge($params, $relationship['joinParameters']);
+        }
         //p(sprintf('joinOneToMany Joined Class %s : joinColumn %s => %s joined %s => %s', get_class($relItem), $joinColumn, $relItem->$joinColumn , $referencedColumn, $this->$referencedColumn));
-        return $relItem->collections(array(
-            $joinColumn => $this->$referencedColumn
-        ));
+        return $relItem->collections($params);
     }
 
     protected function joinManyToOne($key, $relItem, $relationship)
     {
+        $joinColumn = $relationship['joinColumn'];
+        $referencedColumn = $relationship['referencedColumn'];
+        $relItem->$joinColumn = $this->$referencedColumn;
         //p(sprintf('joinManyToOne Joined Class %s : joinColumn %s => %s joined %s => %s', get_class($relItem), $joinColumn, $relItem->$joinColumn , $referencedColumn, $this->$referencedColumn));
+        return $this;
     }
 
     protected function joinManyToMany($key, $relItem, $relationship)
