@@ -24,6 +24,11 @@ class UserController extends RestfulModuleController
         $selectQuery = $form->fieldsMap($query, true);
 
         $itemModel = Api::_()->getModelService('User\Model\User');
+        if(!$selectQuery){
+            $selectQuery = array(
+                'page' => 1
+            );
+        }
         $items = $itemModel->setItemList($selectQuery)->getUserList();
         //p($items[0]->join('Profile')->self(array('*'))->site);
         $items = $items->toArray(array(
@@ -33,7 +38,7 @@ class UserController extends RestfulModuleController
             ),
             'join' => array(
                 'Profile' => array(
-                    '*',
+                    //'*',
                     'site',
                     'birthday',
                     'phoneMobile',
@@ -88,7 +93,7 @@ class UserController extends RestfulModuleController
                     )
                 ),
                 'Oauth' => array(
-                    'appExt'
+                    //'appExt'
                 ),
             ),
             'proxy' => array(

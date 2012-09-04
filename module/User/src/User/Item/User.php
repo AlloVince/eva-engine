@@ -53,7 +53,7 @@ class User extends AbstractItem
                 'referencedColumn' => 'id',
             ),
             'inversedBy' => 'User\Item\Friend',
-            'inversedMappedBy' => 'Friends',
+            'inversedMappedBy' => 'Relation',
             'inverseJoinColumns' => array(
                 'joinColumn' => 'to_user_id',
                 'referencedColumn' => 'id',

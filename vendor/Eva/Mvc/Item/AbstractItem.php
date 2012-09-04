@@ -19,8 +19,6 @@ use Eva\Mvc\Model\AbstractModelService,
     Zend\ServiceManager\ServiceLocatorInterface,
     Zend\Stdlib\Hydrator\ClassMethods;
 use ArrayObject;
-use Zend\Stdlib\Hydrator\ArraySerializable;
-use Zend\Stdlib\Hydrator\HydratorInterface;
 use ArrayIterator;
 use ArrayAccess;
 use Iterator;
@@ -42,7 +40,6 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
      */
     protected $count = null;
 
-
     /**
      * @var Eva\Mvc\Model\AbstractModelService
      */
@@ -63,11 +60,6 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     protected $relationships = array();
 
     protected $initialized = false;
-
-    /**
-     * @var HydratorInterface
-     */
-    protected $hydrator = null;
 
     /**
      * @var null
@@ -121,28 +113,6 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         return $this;
     }
 
-    /**
-     * Set the hydrator to use for each row object
-     *
-     * @param HydratorInterface $hydrator
-     * @return HydratingResultSet
-     */
-    public function setHydrator(HydratorInterface $hydrator)
-    {
-        $this->hydrator = $hydrator;
-        return $this;
-    }
-
-    /**
-     * Get the hydrator to use for each row object
-     *
-     * @return HydratorInterface
-     */
-    public function getHydrator()
-    {
-        return $this->hydrator;
-    }
-
     public function getModel()
     {
         return $this->model;
@@ -157,6 +127,62 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         $this->model = $model;
         $this->initialize();
         return $this;
+    }
+
+
+    public function setPaginator($paginator)
+    {
+        $this->paginator = $paginator;
+    }
+
+    public function getPaginator(array $paginatorOptions = array())
+    {
+        $defaultPaginatorOptions = array(
+            'itemCountPerPage' => 10,
+            'pageRange' => 5,
+            'pageNumber' => 1,
+        );
+
+        $dataClass = $this->getDataClass();
+        $count = $dataClass->getCount();
+        if(!$count) {
+            return $this->paginator = null;
+        }
+
+        $dbPaginatorOptions = $dataClass->getPaginatorOptions();
+        $paginatorOptions = array_merge($defaultPaginatorOptions, $dbPaginatorOptions, $paginatorOptions);
+
+        $count = (int) $count;
+        $diConfig = array(
+            'instance' => array(
+                'Zend\Paginator\Adapter\DbSelect' => array(
+                    'parameters' => array(
+                        'rowCount' => $count,
+                        'select' => $dataClass->getSelect(),
+                        'adapterOrSqlObject' => $dataClass->getSql(),
+                    )
+                ),
+                'Eva\Paginator\Paginator' => array(
+                    'parameters' => array(
+                        'rowCount' => $count,
+                        'adapter' => 'Zend\Paginator\Adapter\DbSelect',
+                    ),
+                ),
+            )
+        );
+
+
+        foreach ($paginatorOptions as $key => $value) {
+            if(false === in_array($key, array('itemCountPerPage', 'pageNumber', 'pageRange'))){
+                continue;
+            }
+            $diConfig['instance']['Eva\Paginator\Paginator']['parameters'][$key] = $paginatorOptions[$key];
+        }
+
+        $di = new \Zend\Di\Di();
+        $di->configure(new \Zend\Di\Config($diConfig));
+        $paginator = $di->get('Eva\Paginator\Paginator');
+        return $this->paginator = $paginator;
     }
 
     public function dbTable()
@@ -249,12 +275,6 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
                 $relItem = $this->join($key);
                 $relItem->mergeDataSource($relationship['dataSource']);
                 $relationships[$key] = $relItem;
-
-                /*
-                $relItem = $model->getItem($relationship['targetEntity']); 
-                $relItem->setDataSource($relationship['dataSource']);
-                $relationships[$key] = $relItem;
-                */
             }
         }
         return $relationships;
@@ -308,8 +328,20 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
             }
         }
 
-        $return = (array) $this->dataSource;
+        $return = $this->arrayAccessToArray($this->dataSource);
         return $return;
+    }
+
+    protected function arrayAccessToArray($arr)
+    {
+        $arr = (array) $arr;
+        foreach($arr as $key => $value){
+            if(is_object($value)){
+                $value = (array) $value;
+            } 
+            $arr[$key] = $value;
+        }
+        return $arr;
     }
 
     protected function dump(array $self, array $join, array $proxy)
@@ -491,7 +523,32 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
 
     protected function joinManyToMany($key, $relItem, $relationship)
     {
+        $joinLeftColumn = $relationship['joinColumns']['joinColumn'];
+        $referencedLeftColumn = $relationship['joinColumns']['referencedColumn'];
+
+        $middleItem = clone $relItem->model->getItem($relationship['inversedBy']); 
+        $middleItem->setDataSource(array());
+        $params = array(
+            $joinLeftColumn => $middleItem->$referencedLeftColumn
+        );
+        if(isset($relationship['joinColumns']['joinParameters']) && is_array($relationship['joinColumns']['joinParameters'])){
+            $params = array_merge($params, $relationship['joinColumns']['joinParameters']);
+        }
+        $middleItems = $middleItem->collections($params);
+
+        $joinRightColumn = $relationship['inverseJoinColumns']['joinColumn'];
+        $referencedRightColumn = $relationship['inverseJoinColumns']['referencedColumn'];
+
+        foreach($middleItems as $middleItem){
+            $rightItem = clone $relItem;
+            $rightItem->setDataSource(array());
+            $rightItem->$referencedRightColumn = $middleItem->$joinRightColumn;
+            $rightItem->$relationship['inversedMappedBy'] = $middleItem;
+            $relItem[] = $rightItem;
+        }
+
         //p(@sprintf('joinManyToMany Joined Class %s : joinColumn %s => %s joined %s => %s', get_class($relItem), $joinColumn, $relItem->$joinColumn , $referencedColumn, $this->$referencedColumn));
+        return $relItem;
     }
 
     public function proxy()
@@ -554,20 +611,6 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         return $where;
     }
 
-    public function __get($name) 
-    {
-        if(isset($this->dataSource[$name])){
-            return $this->dataSource[$name];
-        }
-        return null;
-    }
-
-    public function __set($name, $value)
-    {
-        $this->dataSource[$name] = $value;
-        return $this;
-    }
-
 
     public function initialize()
     {
@@ -602,61 +645,19 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     }
 
 
-    public function setPaginator($paginator)
+    public function __get($name) 
     {
-        $this->paginator = $paginator;
+        if(isset($this->dataSource[$name])){
+            return $this->dataSource[$name];
+        }
+        return null;
     }
 
-    public function getPaginator(array $paginatorOptions = array())
+    public function __set($name, $value)
     {
-        $defaultPaginatorOptions = array(
-            'itemCountPerPage' => 10,
-            'pageRange' => 5,
-            'pageNumber' => 1,
-        );
-
-        $dataClass = $this->getDataClass();
-        $count = $dataClass->getCount();
-        if(!$count) {
-            return $this->paginator = null;
-        }
-
-        $dbPaginatorOptions = $dataClass->getPaginatorOptions();
-        $paginatorOptions = array_merge($defaultPaginatorOptions, $dbPaginatorOptions, $paginatorOptions);
-
-        $count = (int) $count;
-        $diConfig = array(
-            'instance' => array(
-                'Zend\Paginator\Adapter\DbSelect' => array(
-                    'parameters' => array(
-                        'rowCount' => $count,
-                        'select' => $dataClass->getSelect(),
-                        'adapterOrSqlObject' => $dataClass->getSql(),
-                    )
-                ),
-                'Eva\Paginator\Paginator' => array(
-                    'parameters' => array(
-                        'rowCount' => $count,
-                        'adapter' => 'Zend\Paginator\Adapter\DbSelect',
-                    ),
-                ),
-            )
-        );
-
-
-        foreach ($paginatorOptions as $key => $value) {
-            if(false === in_array($key, array('itemCountPerPage', 'pageNumber', 'pageRange'))){
-                continue;
-            }
-            $diConfig['instance']['Eva\Paginator\Paginator']['parameters'][$key] = $paginatorOptions[$key];
-        }
-
-        $di = new \Zend\Di\Di();
-        $di->configure(new \Zend\Di\Config($diConfig));
-        $paginator = $di->get('Eva\Paginator\Paginator');
-        return $this->paginator = $paginator;
+        $this->dataSource[$name] = $value;
+        return $this;
     }
-
 
     /**
     * Iterator: move pointer to next item
