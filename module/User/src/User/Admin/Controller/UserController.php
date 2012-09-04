@@ -70,6 +70,11 @@ class UserController extends RestfulModuleController
         //$credits = $item->join('Account')->self(array('*'))->credits;
         //p($credits);
 
+        //$avatars = $item->proxy('File\Item\File::UserAvatar');
+        //$avatar = $avatars[0];
+        //p($avatar->self(array('*'))->toArray());
+
+        /*
         $item = $item->toArray(array(
             'self' => array(
                 '*',
@@ -97,31 +102,16 @@ class UserController extends RestfulModuleController
                 ),
             ),
             'proxy' => array(
-                'Blog\Item\Post::UserPosts' => array(
+                'File\Item\File::UserAvatar' => array(
                     'self' => array('*'),
-                    'join' => array(
-                        'Text' => array('*'),
-                        'Comments' => array(
-                            'self' => array(
-                                '*'
-                            ),
-                            'proxy' => array(
-                                'User\Item\User::CommentUser' => array(
-                                    'self' => array(
-                                        'userName'
-                                    )
-                                )
-                            ),
-                        )
-                    ),
                 ),
             ) 
         ));
 
         if(!$item){
-            //Add redirect
         }
-        //p($item);
+        p($item);
+        */
 
         return array(
             'user' => $item,

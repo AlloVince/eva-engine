@@ -31,8 +31,8 @@ class User extends AbstractModelService
 
         $itemId = $item->create();
 
-        if($item->hasRelationships()){
-            foreach($item->getRelationships() as $key => $relItem){
+        if($item->hasLoadedRelationships()){
+            foreach($item->getLoadedRelationships() as $key => $relItem){
                 $relItem->create();
             }
         }
@@ -56,8 +56,8 @@ class User extends AbstractModelService
 
         $item->save();
 
-        if($item->hasRelationships()){
-            foreach($item->getRelationships() as $key => $relItem){
+        if($item->hasLoadedRelationships()){
+            foreach($item->getLoadedRelationships() as $key => $relItem){
                 $relItem->save();
             }
         }
@@ -78,13 +78,6 @@ class User extends AbstractModelService
         $item = $this->getItem();
         $item->remove();
 
-        /*
-        if($item->hasRelationships()){
-            foreach($item->getRelationships() as $key => $relItem){
-                $relItem->save();
-            }
-        }
-        */
         $this->trigger('remove');
     
         $this->trigger('remove.post');

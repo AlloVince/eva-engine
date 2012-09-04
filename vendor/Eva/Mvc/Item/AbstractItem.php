@@ -253,7 +253,7 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         return $this;
     }
 
-    public function hasRelationships()
+    public function hasLoadedRelationships()
     {
         $hasRelationships = false;
         foreach($this->relationships as $key => $relationship){
@@ -265,7 +265,28 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         return $hasRelationships;
     }
 
+    public function hasRelationship($key)
+    {
+        if(isset($this->relationships[$key]) && is_array($this->relationships[$key])){
+            return true;
+        }
+        return false;
+    }
+
+    public function getRelationship($key)
+    {
+        if(isset($this->relationships[$key]) && is_array($this->relationships[$key]) && $this->relationships[$key]){
+            return $this->relationships[$key];
+        }
+        return array(); 
+    }
+
     public function getRelationships()
+    {
+        return $this->relationships;
+    }
+
+    public function getLoadedRelationships()
     {
         $relationships = new ArrayObject();
 
@@ -282,12 +303,20 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
 
     public function addRelationship($key, array $relationship)
     {
-    
+        if(isset($this->relationships[$key])){
+            throw new Exception\InvalidArgumentException(sprintf('Relationship %s already exists in %, failed to add same one.', $key, get_class($this)));
+        }
+
+        $this->relationships[$key] = $relationship;
+        return $this;
     }
 
     public function removeRelationship($key)
     {
-    
+        if(isset($this->relationships[$key])){
+            unset($this->relationships[$key]);
+        }
+        return $this;
     }
 
 
@@ -460,7 +489,7 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     { 
         $model = $this->getModel();
         if(!isset($this->relationships[$key]) || !$this->relationships[$key]){
-            return new ArrayAccess();
+            return new ArrayObject();
         }
 
         $relationship = $this->relationships[$key];
@@ -543,7 +572,13 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
             $rightItem = clone $relItem;
             $rightItem->setDataSource(array());
             $rightItem->$referencedRightColumn = $middleItem->$joinRightColumn;
-            $rightItem->$relationship['inversedMappedBy'] = $middleItem;
+            if(isset($relationship['inversedMappedBy'])){
+                $rightItem->$relationship['inversedMappedBy'] = $middleItem; 
+            } else {
+                $middleKey = get_class($middleItem);
+                $rightItem->$middleKey = $middleItem; 
+            }
+            
             $relItem[] = $rightItem;
         }
 
@@ -551,9 +586,21 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         return $relItem;
     }
 
-    public function proxy()
+    public function proxy($key)
     {
-        //call proxyRelationship;
+        list($moduleItemClass, $relationshipKey) = explode('::', $key);
+        $modulesLoaded = $this->serviceLocator->get('modulemanager')->getLoadedModules();
+        $module = array_shift(explode('\\', $moduleItemClass));
+        if(!isset($modulesLoaded[$module])){
+            return new ArrayObject();
+        }
+
+        $proxyItem = $this->model->getItem($moduleItemClass);
+        if($proxyItem->hasRelationship($relationshipKey)){
+            $this->addRelationship($relationshipKey, $proxyItem->getRelationship($relationshipKey));
+        }
+
+        return $this->join($relationshipKey);
     }
 
     public function create()
