@@ -1,0 +1,164 @@
+<?
+$item = $this->item;
+$title = $item ? 'Edit Field' : 'Create Field';
+$title = $this->_($title);
+$method = $item ? 'put' : 'post';
+$this->headTitle($title, 'SET');
+$this->textDelay('breadcrumbText', $title);
+
+if($this->form){
+	$form = $this->form;
+} else {
+    if($item) {
+        $form = Eva\Api::_()->getForm('User\Form\FieldEditForm');
+    } else {
+        $form = Eva\Api::_()->getForm('User\Form\FieldForm');
+    }
+}
+/*
+$form->setSubForms(array(
+    'Profile' => array('Field\Form\ProfileForm'),
+    'Account' => array('Field\Form\AccountForm'),
+));
+*/
+$form->init(array(
+    'action' => $this->uri('/admin/user/field/'),
+    'method' => $method,
+    'values' => $item
+));
+?>
+
+<input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
+<div id="user-create-succeed" class="alert alert-success hide">
+    <a href="#" data-dismiss="alert" class="close">x</a>
+    <h4 class="alert-heading"><?=$this->_('New Field Created')?></h4>
+</div>
+
+<div id="user-edit-succeed" class="alert alert-success hide">
+    <a href="#" data-dismiss="alert" class="close">x</a>
+    <h4 class="alert-heading"><?=$this->_('Field Edit Succeed')?></h4>
+</div>
+
+<div id="user-edit-failed" class="alert alert-error hide">
+    <a href="#" data-dismiss="alert" class="close">x</a>
+    <h4 class="alert-heading"><?=$this->_('Field Edit Failed')?></h4>
+</div>
+
+
+
+<div class="row">
+    <form <?=$this->formAttr($form)?>>
+        <?=$form->restful();?>
+        <?=$form->helper('id');?>
+        <div class="span10">
+            <div class="slate">
+                <div class="page-header">
+                    <?if($item):?>
+                    <div class="btn-group pull-right">
+                        <a href="<?=$this->uri('/admin/user/field/create')?>" class="btn"><?=$this->_('Clear Cache')?></a>
+                        <a href="<?=$this->uri('/admin/user/field/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/user/field/' . $item['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
+                    </div>
+                    <?endif?>
+                    <h2><?=$title?></h2>
+                </div>
+                <fieldset class="">
+                </fieldset>
+            </div>
+        </div><!--span10 end-->
+
+        <div class="span5">
+            <div class="slate">
+                <div class="page-header">
+                    <h3><?=$this->_('Field Basic Info')?></h3>
+                </div>
+
+                <fieldset class="form-horizontal">
+                    <div class="control-group <?=$form->isError('fieldKey') ? 'error' : '';?>">
+                        <?=$form->helper('fieldKey', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('fieldKey', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('fieldKey', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError('label') ? 'error' : '';?>">
+                        <?=$form->helper('label', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('label', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('label', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError('description') ? 'error' : '';?>">
+                        <?=$form->helper('description', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('description', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('description', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError('applyToAll') ? 'error' : '';?>">
+                        <?=$form->helper('applyToAll', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('applyToAll', 'formSelect', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('applyToAll', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError('required') ? 'error' : '';?>">
+                        <?=$form->helper('required', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('required', 'formSelect', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('required', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError('defaultValue') ? 'error' : '';?>">
+                        <?=$form->helper('defaultValue', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('defaultValue', 'formTextarea', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('defaultValue', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+
+
+                </fieldset>
+            </div>
+        </div><!--span5 end-->
+
+        <div class="span5">
+            <div class="slate">
+                <div class="page-header">
+                    <h3><?=$this->_('Security Setting')?></h3>
+                </div>
+                <fieldset class="form-horizontal">
+
+                </fieldset>
+            </div>
+        </div><!--span5 end-->
+
+        <div class="span5">
+            <div class="slate">
+                <div class="page-header">
+                    <h3><?=$this->_('Credits Setting')?></h3>
+                </div>
+                <fieldset class="form-horizontal">
+
+
+                </fieldset>
+            </div>
+        </div><!--span5 end-->
+
+
+        <div class="span10">
+            <div class="slate">
+                <div class="page-header">
+                    <h2><?=$this->_('Field Profile')?></h2>
+                </div>
+                <fieldset class="form-horizontal">
+
+                </fieldset>
+            </div>
+        </div><!--span10 end-->
+
+
+        <div class="span10 listing-buttons">
+            <button id="save-publish" class="btn btn-success btn-large"><?=$this->_('Save')?></button>
+        </div>
+    </form>
+</div>

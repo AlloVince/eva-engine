@@ -65,6 +65,7 @@
                         <ul id="user-dropdown" class="collapse">
                             <li data-highlight-url="/admin/user/(\d+)*$"><a href="<?=$this->uri('/admin/user/')?>"><?=$this->_('User Management')?></a></li>
                             <li data-highlight-url="/admin/user/create"><a href="<?=$this->uri('/admin/user/create')?>"><?=$this->_('Create User')?></a></li>
+                            <li data-highlight-url="/admin/user/(field.*)$"><a href="<?=$this->uri('/admin/user/field')?>"><?=$this->_('User Fields')?></a></li>
                         </ul>
                         </li>
                         <?endif?>
