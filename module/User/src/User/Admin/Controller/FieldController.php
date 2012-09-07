@@ -66,26 +66,11 @@ class FieldController extends RestfulModuleController
                 '*',
             ),
             'join' => array(
-                'Profile' => array(
-                    'site',
-                    'birthday',
-                    'phoneMobile',
-                ),
-                'Account' => array('*'),
-                'MyFriends' => array(
-                    'self' => array(
-                        'fieldName',
-                    ),
-                    'join' => array(
-                        'Profile' => array()
-                    )
-                ),
-                'Oauth' => array(
-                    //'appExt'
+                'Fieldoption' => array(
+                    '*',
                 ),
             ),
         ));
-
         return array(
             'item' => $item,
             'flashMessenger' => $this->flashMessenger()->getMessages(),
@@ -98,12 +83,9 @@ class FieldController extends RestfulModuleController
         $postData = $request->getPost();
         $form = new Form\FieldForm();
         $subForms = array();
-        /*
         $subForms = array(
-            'Profile' => array('Field\Form\ProfileForm'),
-            'Account' => array('Field\Form\AccountForm'),
+            'Fieldoption' => array('User\Form\FieldoptionForm'),
         );
-        */
         $form->setSubforms($subForms)
              ->init()
              ->setData($postData)
@@ -112,6 +94,7 @@ class FieldController extends RestfulModuleController
         if ($form->isValid()) {
 
             $postData = $form->getData();
+
             $itemModel = Api::_()->getModelService('User\Model\Field');
             $itemId = $itemModel->setItem($postData)->createField();
             $this->flashMessenger()->addMessage('item-create-succeed');

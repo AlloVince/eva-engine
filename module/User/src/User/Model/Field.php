@@ -19,6 +19,8 @@ class Field extends AbstractModelService
         
         $this->trigger('create.pre');
 
+            p($item->getLoadedRelationships());
+            exit;
         $itemId = $item->create();
 
         if($item->hasLoadedRelationships()){

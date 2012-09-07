@@ -15,12 +15,10 @@ if($this->form){
         $form = Eva\Api::_()->getForm('User\Form\FieldForm');
     }
 }
-/*
 $form->setSubForms(array(
-    'Profile' => array('Field\Form\ProfileForm'),
-    'Account' => array('Field\Form\AccountForm'),
+    'Fieldoption' => array('User\Form\FieldoptionForm'),
+    //'Account' => array('Field\Form\AccountForm'),
 ));
-*/
 $form->init(array(
     'action' => $this->uri('/admin/user/field/'),
     'method' => $method,
@@ -124,21 +122,9 @@ $form->init(array(
         <div class="span5">
             <div class="slate">
                 <div class="page-header">
-                    <h3><?=$this->_('Security Setting')?></h3>
+                    <h3><?=$this->_('Apply to')?></h3>
                 </div>
                 <fieldset class="form-horizontal">
-
-                </fieldset>
-            </div>
-        </div><!--span5 end-->
-
-        <div class="span5">
-            <div class="slate">
-                <div class="page-header">
-                    <h3><?=$this->_('Credits Setting')?></h3>
-                </div>
-                <fieldset class="form-horizontal">
-
 
                 </fieldset>
             </div>
@@ -148,9 +134,45 @@ $form->init(array(
         <div class="span10">
             <div class="slate">
                 <div class="page-header">
-                    <h2><?=$this->_('Field Profile')?></h2>
+                    <h2><?=$this->_('Field Options')?></h2>
                 </div>
-                <fieldset class="form-horizontal">
+                <fieldset class="fieldoptions">
+                    <div class="control-group span3 <?=$form->isError(array('Fieldoption', 'label')) ? 'error' : '';?>">
+                        <?=$form->helper(array('Fieldoption', 'label'), 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper(array('Fieldoption', 'label'), array(
+                                'name' => 'Fieldoption[label][]',
+                                'class' => ''
+                            ))?>        
+                            <div class="help-block"><?=$form->helper(array('Fieldoption', 'label'), 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group span3<?=$form->isError(array('Fieldoption', 'option')) ? 'error' : '';?>">
+                        <?=$form->helper(array('Fieldoption', 'option'), 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper(array('Fieldoption', 'option'), array(
+                                'name' => 'Fieldoption[option][]',
+                                'class' => ''
+                            ))?>        
+                            <div class="help-block"><?=$form->helper(array('Fieldoption', 'option'), 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group span1<?=$form->isError(array('Fieldoption', 'order')) ? 'error' : '';?>">
+                        <?=$form->helper(array('Fieldoption', 'order'), 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper(array('Fieldoption', 'order'), array(
+                                'name' => 'Fieldoption[order][]',
+                                'class' => 'input-mini'
+                            ))?>        
+                            <div class="help-block"><?=$form->helper(array('Fieldoption', 'order'), 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group span2 btn-group">
+                        <label>　</label>
+                        <a href="javascript:;" class="btn addopt"><?=$this->_('Add')?></a>
+                        <a href="javascript:;" class="btn removeopt"><?=$this->_('Remove')?></a>
+                    </div>
+
 
                 </fieldset>
             </div>
@@ -162,3 +184,22 @@ $form->init(array(
         </div>
     </form>
 </div>
+
+
+<script>
+eva.runtime = function(){
+    $(".btn.addopt").live("click", function(){
+            var fieldset = $(this).parentsUntil('fieldset').parent();
+            fieldset.after(fieldset.clone());
+            return false;
+    });
+
+    $(".btn.removeopt").live("click", function(){
+            var fieldset = $(this).parentsUntil('fieldset').parent();
+            if($('.fieldoptions').length > 1){
+                fieldset.remove();
+            }
+            return false;
+    });
+}
+</script>
