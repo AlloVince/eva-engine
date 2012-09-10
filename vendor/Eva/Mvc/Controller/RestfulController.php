@@ -107,9 +107,10 @@ abstract class RestfulController extends \Zend\Mvc\Controller\AbstractRestfulCon
         }
 
         $variables = $this->$function();
-        if($variables instanceof \Zend\View\Model\ModelInterface){
+        if($variables instanceof \Zend\View\Model\ModelInterface || $variables instanceof \Zend\Http\PhpEnvironment\Response){
             return $variables;
         }
+
         $model = new ViewModel();
         if($variables) {
             $model->setVariables($variables);
