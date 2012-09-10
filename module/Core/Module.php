@@ -2,6 +2,7 @@
 namespace Core;
 
 use Eva\Api;
+use Eva\Locale\Locale;
 use Zend\Mvc\MvcEvent;
 
 class Module
@@ -40,14 +41,43 @@ class Module
     {
         $controller = $e->getTarget();
         $language = $controller->cookie()->read('lang');
+        $config = $e->getApplication()->getConfig();
         if(!$language){
+            if(isset($config['translator']['auto_switch']) && $config['translator']['auto_switch']){
+                return $this->autoLanguage($e);
+            }
             return $this;
         }
-        $config = $e->getApplication()->getConfig();
         $config['translator']['locale'] = $language;
         $mm = $e->getApplication()->getServiceManager()->get('ModuleManager');
         $mm->getEvent()->getParam('configListener')->setMergedConfig($config);
 
+        return $this;
+    }
+
+    protected function autoLanguage($e)
+    {
+        $config = $e->getApplication()->getConfig();
+        $lang = Locale::getBrowser();
+        if(!$lang){
+            return $this;
+        }
+        $lang = array_shift(array_keys($lang));
+        $subLang = explode('_', $lang);
+        if(isset($subLang[1]) 
+            && isset($config['translator']['sub_languages'])
+            && is_array($config['translator']['sub_languages'])
+            && in_array($subLang[1], $config['translator']['sub_languages']))
+        {
+            $lang = $lang;    
+        } else {
+            //if sub_languages not defined, use default main-language. e.g. : zh_CN => zh
+            $lang = $subLang[0];
+        }
+
+        $config['translator']['locale'] = $lang;
+        $mm = $e->getApplication()->getServiceManager()->get('ModuleManager');
+        $mm->getEvent()->getParam('configListener')->setMergedConfig($config);
         return $this;
     }
 

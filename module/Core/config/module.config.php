@@ -116,12 +116,16 @@ return array(
     ),
 
     'translator' => array(
-        'locale' => 'zh_CN',
+        'locale' => 'en',
         'force_locale' => '',  //force_locale will cover locale
         'languages' => array(
-            'en', 'zh_CN'
+            'en', 'zh'
         ),
-        'auto_switch' => 0,
+        'sub_languages' => array(
+            //'zh_CN',
+            //'en_UK',
+        ),
+        'auto_switch' => 1,
         'enable_text_domains' => array(
             'admin',
         ),

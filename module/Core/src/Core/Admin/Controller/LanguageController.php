@@ -14,7 +14,7 @@ class LanguageController extends ActionController
         $defaultLanguage = isset($config['translator']['locale']) ? $config['translator']['locale'] : 'en';
         $language = $this->params()->fromRoute('id', $defaultLanguage);
         $language = str_replace('-', '_', $language);
-        $languages = array('en', 'zh_CN');
+        $languages = $config['translator']['languages'];
         if(false === in_array($language, $languages)){
             $language = $defaultLanguage;
         }
