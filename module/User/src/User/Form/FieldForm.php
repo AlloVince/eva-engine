@@ -18,7 +18,7 @@ namespace User\Form;
  * @category   Eva
  * @package    Eva_Form
  */
-class FieldForm extends \Eva\Form\Form
+class FieldForm extends \Eva\Form\RestfulForm
 {
     /**
      * Form basic elements
@@ -28,42 +28,50 @@ class FieldForm extends \Eva\Form\Form
     protected $baseElements = array (
         'id' => array (
             'name' => 'id',
-            'attributes' => array (
-                'type' => 'hidden',
+            'type' => 'hidden',
+            'options' => array (
                 'label' => 'Id',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'fieldKey' => array (
             'name' => 'fieldKey',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Field Key',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'label' => array (
             'name' => 'label',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Label',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'description' => array (
             'name' => 'description',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'textarea',
+            'options' => array (
                 'label' => 'Description',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'applyToAll' => array (
             'name' => 'applyToAll',
-            'attributes' => array (
-                'type' => 'select',
+            'type' => 'select',
+            'options' => array (
                 'label' => 'Apply To All User',
-                'options' => array (
+                'value_options' => array(
                     array (
                         'label' => 'Yes',
                         'value' => '1',
@@ -73,15 +81,17 @@ class FieldForm extends \Eva\Form\Form
                         'value' => '0',
                     ),
                 ),
+            ),
+            'attributes' => array (
                 'value' => '1',
             ),
         ),
         'required' => array (
+            'type' => 'select',
             'name' => 'required',
-            'attributes' => array (
-                'type' => 'select',
+            'options' => array (
                 'label' => 'Required',
-                'options' => array (
+                'value_options' => array(
                     array (
                         'label' => 'Yes',
                         'value' => '1',
@@ -91,24 +101,28 @@ class FieldForm extends \Eva\Form\Form
                         'value' => '0',
                     ),
                 ),
+            ),
+            'attributes' => array (
                 'value' => '0',
             ),
         ),
         'defaultValue' => array (
             'name' => 'defaultValue',
-            'attributes' => array (
-                'type' => 'textarea',
+            'type' => 'textarea',
+            'options' => array (
                 'label' => 'Default Value',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
     );
 
     /**
-     * Form basic Validators
-     *
-     * @var array
-     */
+    * Form basic Validators
+    *
+    * @var array
+    */
     protected $baseFilters = array (
         'id' => array (
             'name' => 'id',

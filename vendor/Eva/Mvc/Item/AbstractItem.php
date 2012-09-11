@@ -344,6 +344,11 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         }
     }
 
+    public function getArrayCopy()
+    {
+        return $this->toArray();
+    }
+
     protected function singleToArray($map)
     {
         if($map){
