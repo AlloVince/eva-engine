@@ -27,6 +27,7 @@ use Zend\Form\ElementInterface;
 class Input extends \Zend\Form\View\Helper\AbstractHelper
 {
 
+    /*
     protected function translateElement(ElementInterface $element)
     {
         if(!$this->translator){
@@ -72,6 +73,11 @@ class Input extends \Zend\Form\View\Helper\AbstractHelper
 
         return $element;
     }
+    */
+
+    protected $map = array(
+        ''
+    );
 
     /**
     * Invoke helper as functor
@@ -93,18 +99,9 @@ class Input extends \Zend\Form\View\Helper\AbstractHelper
         $elementType = $options['type'];
         unset($options['type']);
 
-        //Support Subform
-        if($subFormName = $element->getAttribute('data-subform-name')){
-            $name = $element->getName();
-            if($name){
-                $element->setName($subFormName . '[' . $name . ']');
-                $attributes = $element->getAttributes();
-                //Reset attributes to make sure re-name just once;
-                unset($attributes['data-subform-name']);
-                $element->clearAttributes();
-                $element->setAttributes($attributes);
-            }
-        }
+
+        $i18n = $options['i18n'];
+        unset($options['i18n']);
 
         $args = array();
         if(isset($option['args'])){
@@ -117,18 +114,19 @@ class Input extends \Zend\Form\View\Helper\AbstractHelper
         }
 
 
+        //NOTE: clone element not effect to form original element
+        $element = clone $element;
+
         if($options){
-            //NOTE: clone element not effect to form original element
-            $element = clone $element;
             foreach($options as $key => $value){
                 $element->setAttribute($key, $value);
             }
-            if(true === $options['i18n']){
-                $element = $this->translateElement($element);
+            if(true === $i18n){
+                //$element = $this->translateElement($element);
             }
         }
 
-        //put element clone into view helper
+        //form helper first argment is alway element self
         array_unshift($args, $element);
 
         $view = $this->getView();

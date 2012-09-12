@@ -12,6 +12,8 @@
 namespace Eva\Form;
 
 use Zend\Form\Form;
+use Zend\Form\Fieldset;
+use Zend\Form\FormInterface;
 use Zend\Config\Config;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\Factory as FilterFactory;
@@ -76,8 +78,7 @@ class RestfulForm extends Form
     */
     protected $idPrefix;
 
-    protected $fieldsMap = array();
-
+    //protected $fieldsMap = array();
 
     /**
     * Sub Forms
@@ -107,6 +108,42 @@ class RestfulForm extends Form
     */
     protected $fileTransferOptions = array();
 
+    /**
+    * Sub Form Groups
+    *
+    * @var array
+    */
+    protected $subFormGroups = array();
+
+    /**
+    * Parent Form
+    *
+    * @var Eva\Form\RestfulForm
+    */
+    protected $parent;
+
+    public function setParent($parent)
+    {
+        $this->parent = $parent;
+        return $this;
+    }
+
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    public function add($elementOrFieldset, array $flags = array())
+    {
+        parent::add($elementOrFieldset, $flags);
+        if(is_array($elementOrFieldset) && isset($elementOrFieldset['name'])){
+            $elementOrFieldset = $this->get($elementOrFieldset['name']);
+        }
+        if ($elementOrFieldset instanceof RestfulForm) {
+            $this->setParent($this);
+        }
+        return $this;
+    }
 
     /**
     * Mvc View
@@ -201,11 +238,24 @@ class RestfulForm extends Form
         return $this->merge($this->baseFilters, $this->mergeFilters);
     }
 
+    public function useSubFormGroup($groupName = 'default')
+    {
+        if(!isset($this->subFormGroups[$groupName])){
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Sub Form Group %s not defined in Form %s', $groupName, get_class($this)
+            ));
+        }
+        $subForms = $this->subFormGroups[$groupName];
+        $this->setSubForms($subForms);
+        return $this;
+    }
+
     public function setSubForms(array $subForms = array())
     {
         foreach($subForms as $formName => $formConfig){
             $this->addSubForm($formName, $formConfig);
         }
+        //$this->prepare();
         return $this;
     }
 
@@ -214,15 +264,27 @@ class RestfulForm extends Form
         return $this->get($subFormName);
     }
 
-    protected function addSubForm($formName, array $formConfig = array()) 
+    public function addSubForm($formName, $formConfig = array())
     {
-        if(isset($formConfig[0])){
-            $subFormClass = $formConfig[0];
-        } elseif(isset($formConfig['formClass'])) {
-            $subFormClass = $formConfig['formClass'];
+        if(is_array($formConfig)) {
+
+            if(isset($formConfig[0])){
+                $subFormClass = $formConfig[0];
+            } elseif(isset($formConfig['formClass'])) {
+                $subFormClass = $formConfig['formClass'];
+            } else {
+                throw new Exception\InvalidArgumentException(sprintf(
+                    'Subform %s not find defined class', $formName
+                ));
+            }
+
+        } elseif(is_string($formConfig)){
+
+            $subFormClass = $formConfig;
+
         } else {
             throw new Exception\InvalidArgumentException(sprintf(
-                'Subform %s not find defined class', $formName
+                'Subform %s config not correct, require string or object', $formName
             ));
         }
 
@@ -230,43 +292,34 @@ class RestfulForm extends Form
             return $this;
         }
 
+        $subForm = new $subFormClass($formName);
+        $subForm->setParent($this);
+        if(is_array($formConfig) && isset($formConfig['collection']) && $formConfig['collection']) {
+            $object = isset($formConfig['object']) ? $formConfig['object'] : array();
+            if(is_object($object) && method_exists($object, 'toArray')) {
+                $values = $object->toArray();
+            } else {
+                $values = (array) $object;
+            }
 
-        if(isset($formConfig['collection']) && $formConfig['collection']) {
-            $subForm = new $subFormClass();
-            $object = $formConfig['object'];
-            $subForm->setView($this->view);
+            $options = array(
+                'allow_add' => true,
+                'target_element' => $subForm,
+            );
+            $options = array_merge($options, $formConfig);
+            if($values) {
+                $options['count'] = count($values);
+            }
+
             $this->add(array(
                 'type' => 'Zend\Form\Element\Collection',
                 'name' => $formName,
-                'options' => array(
-//                    'count' => count($values),
-                    'count' => 2,
-                    'should_create_template' => false,
-                    'allow_add' => true,
-                    'target_element' => $subForm,
-                )
+                'options' => $options,
             ));
-            $this->get($formName)->setObject($object);//->extract();
+            $this->get($formName)->populateValues($object);
         } else {
-            /*
-            $subForm = new $subFormClass();
-            $subElements = $subForm->getMergedElements();
-            $subFilters = $subForm->getMergedFilters();
-
-            $fieldset = new \Zend\Form\Fieldset($formName);
-            $factory = $this->getFormFactory();
-            foreach($subElements as $subElementKey => $subElement){
-                $subElement['attributes']['data-subform-name'] = $formName;
-                $subElement = $this->initElement($subElement);
-                $subElement = $this->autoElementId($subElement, $subFormClass);
-                $fieldset->add($factory->create($subElement));
-            }
-            $this->add($fieldset);
-            */
+            $this->add($subForm);
         }
-
-
-
         return $this; 
     }
 
@@ -281,6 +334,7 @@ class RestfulForm extends Form
 
     protected function initElement(array $element)
     {
+        $element = $this->autoElementId($element);
         if(isset($element['type']) && false === strpos($element['type'], '\\')){
             $element['type'] = 'Zend\Form\Element\\' . ucfirst($element['type']);
         }
@@ -331,6 +385,12 @@ class RestfulForm extends Form
         return $this;
     }
 
+    public function setAction($action)
+    {
+        $this->setAttribute('action', $action);
+        return $this;
+    }
+
     public function restful($inputName = '_method')
     {
         return sprintf('<input type="hidden" name="' . $inputName . '" value="%s">', $this->restfulMethod);
@@ -352,8 +412,19 @@ class RestfulForm extends Form
         return $result;
     }
 
-    public function isInvalid()
+    public function bind($valuesOrObject, $flags = FormInterface::VALUES_NORMALIZED)
     {
+        if(!$valuesOrObject){
+            return $this;
+        }
+
+        if(is_array($valuesOrObject) || $valuesOrObject instanceof \Zend\Stdlib\Parameters){
+            $this->setData((array) $valuesOrObject);
+            $this->bindValues();
+        } else {
+            parent::bind($valuesOrObject);
+        }
+        return $this;
     }
 
     public function isError($elementName)
@@ -363,33 +434,13 @@ class RestfulForm extends Form
     }
 
 
-
-    /*
-    public function getElement($elementNameOrArray)
-    {
-        if(true === is_string($elementNameOrArray)){
-            return $this->get($elementNameOrArray);
-        }
-
-        if(true === is_array($elementNameOrArray) && isset($elementNameOrArray[0]) && isset($elementNameOrArray[1])){
-            $fieldset = $this->get($elementNameOrArray[0]);
-            return $fieldset->get($elementNameOrArray[1]);
-        }
-
-        throw new Exception\UnexpectedElementException(sprintf(
-            '%s Request element %s not correct',
-            __METHOD__,
-            $elementNameOrArray
-        ));
-    }
-    */
-
     protected function autoElementId(array $element, $idPrefix = null)
     {
         if(!$this->autoElementId){
             return $element;
         }
 
+        //TODO:form collection fix
         $idPrefix = $idPrefix ? $idPrefix : $this->getIdPrefix();
         $elementId = isset($element['attributes']['id']) ? $element['attributes']['id'] : $element['name'];
         $elementId = $idPrefix . '-' . $elementId;
@@ -409,6 +460,9 @@ class RestfulForm extends Form
         $setting = array_merge($defaultSetting, $setting);
 
         $view = $this->getView();
+        if(!$view && $this->parent){
+            $view = $this->parent->getView();
+        }
         if(!$view){
             throw new Exception\InvalidArgumentException(sprintf('Form view not found'));
         }
@@ -450,7 +504,7 @@ class RestfulForm extends Form
         return $global->toArray();
     }
 
-    public function __construct($name = null)
+    public function __construct($name = null, $subFormGroup = null)
     {
         parent::__construct($name);
         $this->init();
