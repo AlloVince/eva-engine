@@ -125,17 +125,11 @@ $form->init(array(
                     <div class="control-group <?=$form->isError('description') ? 'error' : '';?>">
                         <?=$form->helper('description', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper('description', array('class' => ''))?>        
+                            <?=$form->helper('description', 'formTextarea', array('class' => ''))?>        
                             <div class="help-block"><?=$form->helper('description', 'formElementErrors')?></div>
                         </div>
                     </div>
-                    <div class="control-group <?=$form->isError('applyToAll') ? 'error' : '';?>">
-                        <?=$form->helper('applyToAll', 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper('applyToAll', 'formSelect', array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper('applyToAll', 'formElementErrors')?></div>
-                        </div>
-                    </div>
+
                     <div class="control-group <?=$form->isError('required') ? 'error' : '';?>">
                         <?=$form->helper('required', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
@@ -146,7 +140,7 @@ $form->init(array(
                     <div class="control-group <?=$form->isError('defaultValue') ? 'error' : '';?>">
                         <?=$form->helper('defaultValue', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper('defaultValue', 'formTextarea', array('class' => ''))?>        
+                            <?=$form->helper('defaultValue', array('class' => ''))?>        
                             <div class="help-block"><?=$form->helper('defaultValue', 'formElementErrors')?></div>
                         </div>
                     </div>
@@ -162,15 +156,13 @@ $form->init(array(
                     <h3><?=$this->_('Apply to')?></h3>
                 </div>
                 <fieldset class="form-horizontal">
-                    <?$subForm = $form->get('Fieldvalue')?>
-                    <div class="control-group <?=$subForm->isError('value') ? 'error' : '';?> span3">
-                        <?=$subForm->helper('value', 'label', array('class' => 'control-label'))?>
+                    <div class="control-group <?=$form->isError('applyToAll') ? 'error' : '';?>">
+                        <?=$form->helper('applyToAll', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$subForm->helper('value', array('class' => ''))?>        
-                            <div class="help-block"><?=$subForm->helper('value', 'formElementErrors')?></div>
+                            <?=$form->helper('applyToAll', 'formSelect', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('applyToAll', 'formElementErrors')?></div>
                         </div>
                     </div>
-
                 </fieldset>
             </div>
         </div><!--span5 end-->
