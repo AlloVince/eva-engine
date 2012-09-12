@@ -13,6 +13,9 @@ class Fieldoptions extends TableGateway
 
     public function setParameters(Parameters $params)
     {
+        if($params->field_id){
+            $this->where(array('field_id' => $params->field_id));
+        }
         return $this;
     }
 }

@@ -57,6 +57,50 @@ class FieldForm extends \Eva\Form\RestfulForm
                 'value' => '',
             ),
         ),
+        'fieldType' => array (
+            'name' => 'fieldType',
+            'type' => 'select',
+            'options' => array (
+                'label' => 'Field Type',
+                'value_options' => array (
+                    array (
+                        'label' => 'Text',
+                        'value' => 'text',
+                    ),
+                    array (
+                        'label' => 'Radio',
+                        'value' => 'radio',
+                    ),
+                    array (
+                        'label' => 'Select',
+                        'value' => 'select',
+                    ),
+                    array (
+                        'label' => 'Multi Checkbox',
+                        'value' => 'multiCheckbox',
+                    ),
+                    array (
+                        'label' => 'Number',
+                        'value' => 'number',
+                    ),
+                    array (
+                        'label' => 'Email',
+                        'value' => 'email',
+                    ),
+                    array (
+                        'label' => 'Textarea',
+                        'value' => 'textarea',
+                    ),
+                    array (
+                        'label' => 'Url',
+                        'value' => 'url',
+                    ),
+                ),
+            ),
+            'attributes' => array (
+                'value' => 'text',
+            ),
+        ),
         'label' => array (
             'name' => 'label',
             'type' => 'text',
@@ -169,6 +213,29 @@ class FieldForm extends \Eva\Form\RestfulForm
                     'name' => 'StringLength',
                     'options' => array (
                         'max' => '24',
+                    ),
+                ),
+            ),
+        ),
+        'fieldType' => array (
+            'name' => 'fieldType',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+                'inArray' => array (
+                    'name' => 'InArray',
+                    'options' => array (
+                        'haystack' => array (
+                            'text',
+                            'radio',
+                            'select',
+                            'multiCheckbox',
+                            'number',
+                            'email',
+                            'textarea',
+                            'url',
+                        ),
                     ),
                 ),
             ),

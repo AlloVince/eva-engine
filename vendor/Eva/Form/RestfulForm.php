@@ -343,17 +343,18 @@ class RestfulForm extends Form implements InputFilterProviderInterface
         return $this->add($element);
     }
 
-    /*
-    protected function initFilter()
+    protected function initFilters()
     {
         $filters = $this->mergeFilters();
+        $formFactory  = $this->getFormFactory();
+        $inputFactory = $formFactory->getInputFilterFactory();
         $inputFilter = $this->getInputFilter();
-        foreach($filters as $key => $filter){
-            $inputFilter->add($filter, $key);
+        foreach($filters as $name => $filter){
+            $input = $inputFactory->createInput($filter);
+            $inputFilter->add($input, $name);
         }
         return $this;
     }
-    */
 
     public function getInputFilterSpecification()
     {
@@ -413,10 +414,11 @@ class RestfulForm extends Form implements InputFilterProviderInterface
 
     public function isValid()
     {
+        //NOTE : add form merged filters when start valid
+        $this->initFilters();
         if(!$this->fileTransfer){
             return parent::isValid();
         }
-
         $elementValid = parent::isValid();
         $fileValid = $this->fileTransfer->isValid();
         $result = $elementValid && $fileValid;

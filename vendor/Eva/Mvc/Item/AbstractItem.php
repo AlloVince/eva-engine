@@ -614,7 +614,6 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         $data = $this->toArray(
             isset($this->map['create']) ? $this->map['create'] : array()
         );
-        p($data);
         $primaryKey = $dataClass->getPrimaryKey();
         if($dataClass->create($data)){
             $this->$primaryKey = $dataClass->getLastInsertValue();

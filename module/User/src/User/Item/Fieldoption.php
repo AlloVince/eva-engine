@@ -20,18 +20,20 @@ class Fieldoption extends AbstractItem
 
     public function create()
     {
-        $dataClass = $this->getDataClass();
-        $fieldId = $this->model->getDataSource();
-        $data = $this->toArray(
-            isset($this->map['create']) ? $this->map['create'] : array()
-        );
-        p($data);
-        exit;
-        $primaryKey = $dataClass->getPrimaryKey();
-        if($dataClass->create($data)){
-            $this->$primaryKey = $dataClass->getLastInsertValue();
+        $data = $this->toArray();
+        $fieldItem = $this->getModel()->getItem('User\Item\Field');
+        $fieldId = $fieldItem->id;
+
+        if(!$fieldId) {
+            return;
         }
-        return $this->$primaryKey;
-        exit;
+
+        $dataClass = $this->getDataClass();
+        if(isset($data[0])) {
+            foreach($data as $key => $fieldOption){
+                $fieldOption['field_id'] = $fieldId;
+                $dataClass->create($fieldOption);
+            }
+        }
     }
 }

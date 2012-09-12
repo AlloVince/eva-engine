@@ -101,8 +101,7 @@ class FormController extends RestfulModuleController
         $mainForm = $postData->form;
 
         $form = Api::_()->getForm($mainForm);
-        $form->init()->enableFilters();
-        $elements = $form->getMergedElements();
+        $elements = $form->mergeElements();
 
         $subFormString = $postData->subform;
 
@@ -112,8 +111,7 @@ class FormController extends RestfulModuleController
             $subForms = explode(',', $subFormString);
             foreach ($subForms as $subForm) {
                 $form = Api::_()->getForm($subForm);
-                $form->init();
-                $subFormElements[$subForm] = $form->getMergedElements();
+                $subFormElements[$subForm] = $form->mergeElements();
             }
         }
         

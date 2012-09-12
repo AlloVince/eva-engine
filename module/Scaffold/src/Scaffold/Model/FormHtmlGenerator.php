@@ -96,7 +96,7 @@ class FormHtmlGenerator
                 $elementsArray[$key] = $this->getSingleTypeElementHtml($element);
             }
         
-            if ($element['attributes']['type'] !== 'hidden') {
+            if ($element['type'] !== 'hidden') {
                 $elementsArray[$key]['label'] = true;
             }
         }
@@ -126,7 +126,7 @@ class FormHtmlGenerator
             return $element;
         }   
         
-        if ($element['attributes']['type'] == 'textarea') {
+        if ($element['type'] == 'textarea') {
             return $this->getMultiTypeElementHtml($element);
         }
         
@@ -140,7 +140,7 @@ class FormHtmlGenerator
 
     protected function isMultiOptionElement($element)
     {
-        switch($element['attributes']['type']){
+        switch($element['type']){
             case 'select':
             case 'radio':
             case 'multiCheckbox':
@@ -152,7 +152,7 @@ class FormHtmlGenerator
 
     protected function isMultiValueElement($element)
     {
-        switch($element['attributes']['type']){
+        switch($element['type']){
             case 'multiCheckbox':
             return true;
             default :
@@ -167,7 +167,7 @@ class FormHtmlGenerator
 
     protected function getElementHtmlType($element)
     {
-        return "'form" . ucfirst($element['attributes']['type']) . "'";
+        return "'form" . ucfirst($element['type']) . "'";
     }
     
     protected function getElementHtmlClass($element)

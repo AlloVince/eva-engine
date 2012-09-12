@@ -47,7 +47,8 @@ class FieldController extends RestfulModuleController
 
     public function restGetFieldCreate()
     {
-        return array();
+        return array(
+        );
     }
 
     public function restGetFieldRemove()
@@ -81,26 +82,23 @@ class FieldController extends RestfulModuleController
     {
         $request = $this->getRequest();
         $postData = $request->getPost();
+        
         $form = new Form\FieldForm();
-        $subForms = array();
-        $subForms = array(
-            'Fieldoption' => array('User\Form\FieldoptionForm'),
-        );
-        $form->setSubforms($subForms)
-             ->init()
-             ->setData($postData)
-             ->enableFilters();
+        $form->useSubFormGroup()
+        ->bind($postData);
 
+        //p($postData);
         if ($form->isValid()) {
 
             $postData = $form->getData();
-
             $itemModel = Api::_()->getModelService('User\Model\Field');
             $itemId = $itemModel->setItem($postData)->createField();
-            $this->flashMessenger()->addMessage('item-create-succeed');
-            $this->redirect()->toUrl('/admin/user/field/' . $itemId);
+            //$this->flashMessenger()->addMessage('item-create-succeed');
+            //$this->redirect()->toUrl('/admin/user/field/' . $itemId);
 
         } else {
+            //p($form->getMessages());
+            //p($form->getData());
         }
 
         return array(

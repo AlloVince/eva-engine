@@ -1,6 +1,6 @@
 <?
 $item = $this->item;
-$title = $item ? 'Edit Field' : 'Create Field';
+$title = $item ? 'Edit User Field' : 'Create User Field';
 $title = $this->_($title);
 $method = $item ? 'put' : 'post';
 $this->headTitle($title, 'SET');
@@ -10,20 +10,50 @@ if($this->form){
 	$form = $this->form;
 } else {
     if($item) {
+        $form = new User\Form\FieldEditForm();
+        $form->useSubFormGroup();
+        $form->setMethod('put');
+    } else {
+        $form = new User\Form\FieldForm();
+        $form->useSubFormGroup();
+        $form->setMethod('post');
+    }
+}
+
+$form->setView($this)
+     ->setAction($this->uri('/admin/user/field/'))
+     ->bind($item)
+     ->prepare();
+
+
+/*
+if($this->form){
+	$form = $this->form;
+} else {
+    if($item) {
         $form = Eva\Api::_()->getForm('User\Form\FieldEditForm');
     } else {
         $form = Eva\Api::_()->getForm('User\Form\FieldForm');
     }
 }
+
 $form->setSubForms(array(
-    'Fieldoption' => array('User\Form\FieldoptionForm'),
-    //'Account' => array('Field\Form\AccountForm'),
+    'Fieldoption' => array(
+        'formClass' => 'User\Form\FieldoptionForm',
+        'collection' => true,
+        'skipEmpty' => true,
+        'values' => $item['Fieldoption'],
+        //'object' => $item->join('Fieldoption'),
+    ),
 ));
 $form->init(array(
     'action' => $this->uri('/admin/user/field/'),
     'method' => $method,
-    'values' => $item
+    'values' => $item,
+    //'object' => $item->self(array('*')),
 ));
+*/
+
 ?>
 
 <input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
@@ -47,7 +77,7 @@ $form->init(array(
 <div class="row">
     <form <?=$this->formAttr($form)?>>
         <?=$form->restful();?>
-        <?=$form->helper('id');?>
+        <?//=$form->helper('id');?>
         <div class="span10">
             <div class="slate">
                 <div class="page-header">
@@ -83,6 +113,13 @@ $form->init(array(
                         <div class="controls">
                             <?=$form->helper('label', array('class' => ''))?>        
                             <div class="help-block"><?=$form->helper('label', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError('fieldType') ? 'error' : '';?>">
+                        <?=$form->helper('fieldType', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('fieldType', 'formSelect', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('fieldType', 'formElementErrors')?></div>
                         </div>
                     </div>
                     <div class="control-group <?=$form->isError('description') ? 'error' : '';?>">
@@ -125,6 +162,14 @@ $form->init(array(
                     <h3><?=$this->_('Apply to')?></h3>
                 </div>
                 <fieldset class="form-horizontal">
+                    <?$subForm = $form->get('Fieldvalue')?>
+                    <div class="control-group <?=$subForm->isError('value') ? 'error' : '';?> span3">
+                        <?=$subForm->helper('value', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$subForm->helper('value', array('class' => ''))?>        
+                            <div class="help-block"><?=$subForm->helper('value', 'formElementErrors')?></div>
+                        </div>
+                    </div>
 
                 </fieldset>
             </div>
@@ -136,45 +181,37 @@ $form->init(array(
                 <div class="page-header">
                     <h2><?=$this->_('Field Options')?></h2>
                 </div>
+                <?foreach($form->get('Fieldoption') as $subForm):?>
                 <fieldset class="fieldoptions">
-                    <div class="control-group span3 <?=$form->isError(array('Fieldoption', 'label')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Fieldoption', 'label'), 'label', array('class' => 'control-label'))?>
+                    <div class="control-group <?=$subForm->isError('label') ? 'error' : '';?> span3">
+                        <?=$subForm->helper('label', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper(array('Fieldoption', 'label'), array(
-                                'name' => 'Fieldoption[label][]',
-                                'class' => ''
-                            ))?>        
-                            <div class="help-block"><?=$form->helper(array('Fieldoption', 'label'), 'formElementErrors')?></div>
+                            <?=$subForm->helper('label', array('class' => ''))?>        
+                            <div class="help-block"><?=$subForm->helper('label', 'formElementErrors')?></div>
                         </div>
                     </div>
-                    <div class="control-group span3<?=$form->isError(array('Fieldoption', 'option')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Fieldoption', 'option'), 'label', array('class' => 'control-label'))?>
+                    <div class="control-group <?=$subForm->isError('option') ? 'error' : '';?> span3">
+                        <?=$subForm->helper('option', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper(array('Fieldoption', 'option'), array(
-                                'name' => 'Fieldoption[option][]',
-                                'class' => ''
-                            ))?>        
-                            <div class="help-block"><?=$form->helper(array('Fieldoption', 'option'), 'formElementErrors')?></div>
+                            <?=$subForm->helper('option', array('class' => ''))?>        
+                            <div class="help-block"><?=$subForm->helper('option', 'formElementErrors')?></div>
                         </div>
                     </div>
-                    <div class="control-group span1<?=$form->isError(array('Fieldoption', 'order')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Fieldoption', 'order'), 'label', array('class' => 'control-label'))?>
+                    <div class="control-group <?=$subForm->isError('order') ? 'error' : '';?> span1">
+                        <?=$subForm->helper('order', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper(array('Fieldoption', 'order'), array(
-                                'name' => 'Fieldoption[order][]',
-                                'class' => 'input-mini'
-                            ))?>        
-                            <div class="help-block"><?=$form->helper(array('Fieldoption', 'order'), 'formElementErrors')?></div>
+                            <?=$subForm->helper('order', array('class' => 'input-mini'))?>        
+                            <div class="help-block"><?=$subForm->helper('order', 'formElementErrors')?></div>
                         </div>
                     </div>
+
                     <div class="control-group span2 btn-group">
                         <label>　</label>
                         <a href="javascript:;" class="btn addopt"><?=$this->_('Add')?></a>
                         <a href="javascript:;" class="btn removeopt"><?=$this->_('Remove')?></a>
                     </div>
-
-
                 </fieldset>
+                <?endforeach?>
             </div>
         </div><!--span10 end-->
 
@@ -188,9 +225,22 @@ $form->init(array(
 
 <script>
 eva.runtime = function(){
+
+    var count = 0;
     $(".btn.addopt").live("click", function(){
             var fieldset = $(this).parentsUntil('fieldset').parent();
-            fieldset.after(fieldset.clone());
+            var fieldsetClone = fieldset.clone();
+            var num = $(".fieldoptions").length;
+            fieldsetClone.find("input[id]").each(function(){
+                $(this).attr("name", $(this).attr('name').replace(/\d+/, num));
+                $(this).attr("id", $(this).attr('id') + '_' + count);
+                $(this).val('');
+            });
+            fieldsetClone.find("label[for]").each(function(){
+                $(this).attr("for", $(this).attr('for') + '_' + count);
+            });
+            fieldset.after(fieldsetClone);
+            count++;
             return false;
     });
 
