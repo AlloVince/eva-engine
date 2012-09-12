@@ -292,7 +292,7 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
 
         $model = $this->getModel();
         foreach($this->relationships as $key => $relationship){
-            if(isset($relationship['dataSource']) && $relationship['dataSource'] && $relationship['targetEntity']){
+            if(isset($relationship['dataSource']) && $relationship['dataSource'] && isset($relationship['targetEntity']) && $relationship['targetEntity']){
                 $relItem = $this->join($key);
                 $relItem->mergeDataSource($relationship['dataSource']);
                 $relationships[$key] = $relItem;
@@ -614,6 +614,7 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         $data = $this->toArray(
             isset($this->map['create']) ? $this->map['create'] : array()
         );
+        p($data);
         $primaryKey = $dataClass->getPrimaryKey();
         if($dataClass->create($data)){
             $this->$primaryKey = $dataClass->getLastInsertValue();

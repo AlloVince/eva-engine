@@ -18,6 +18,14 @@ class Field extends AbstractItem
                 'limit' => false,
             ),
         ),
+        'Fieldvalue' => array(
+            'targetEntity' => 'User\Item\Fieldvalue',
+            'relationship' => 'OneToOne',
+            'joinColumn' => 'field_id',
+            'referencedColumn' => 'id',
+            'joinParameters' => array(
+            ),
+        ),
     );
 
     protected $map = array(

@@ -16,6 +16,7 @@ use Zend\Form\Fieldset;
 use Zend\Form\FormInterface;
 use Zend\Config\Config;
 use Zend\InputFilter\InputFilter;
+use Zend\InputFilter\InputFilterProviderInterface;
 use Zend\InputFilter\Factory as FilterFactory;
 use Eva\File\Transfer\TransferFactory;
 
@@ -26,7 +27,7 @@ use Eva\File\Transfer\TransferFactory;
  * @category   Eva
  * @package    Eva_Form
  */
-class RestfulForm extends Form
+class RestfulForm extends Form implements InputFilterProviderInterface
 {
 
     /**
@@ -162,6 +163,7 @@ class RestfulForm extends Form
         $this->view = $view;
         return $this;
     }
+
 
     public function setFileTransferOptions($fileTransferOptions)
     {
@@ -329,7 +331,7 @@ class RestfulForm extends Form
         foreach($elements as $element){
             $this->initElement($element);
         }
-        //p($this->elements);
+        return $this;
     }
 
     protected function initElement(array $element)
@@ -341,8 +343,21 @@ class RestfulForm extends Form
         return $this->add($element);
     }
 
+    /*
     protected function initFilter()
     {
+        $filters = $this->mergeFilters();
+        $inputFilter = $this->getInputFilter();
+        foreach($filters as $key => $filter){
+            $inputFilter->add($filter, $key);
+        }
+        return $this;
+    }
+    */
+
+    public function getInputFilterSpecification()
+    {
+        return $this->mergeFilters();
     }
 
     public function setMethod($method = '')
@@ -420,7 +435,6 @@ class RestfulForm extends Form
 
         if(is_array($valuesOrObject) || $valuesOrObject instanceof \Zend\Stdlib\Parameters){
             $this->setData((array) $valuesOrObject);
-            $this->bindValues();
         } else {
             parent::bind($valuesOrObject);
         }

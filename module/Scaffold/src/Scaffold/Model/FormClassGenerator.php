@@ -149,10 +149,12 @@ class FormClassGenerator
         }
         $elementArray = array(
             'name' => $element['name'],
-            'attributes' => array(
-                'type' => $element['type'],
+            'type' => $element['type'],
+            'options' => array(
                 'label' => $this->getLabel($element['name']),
-                'options' => $options,
+                'value_options' => $options,
+            ),
+            'attributes' => array(
             ),
         );
         if($value){
@@ -166,9 +168,11 @@ class FormClassGenerator
 
         $elementArray = array(
             'name' => $element['name'],
-            'attributes' => array(
-                'type' => $element['type'],
+            'type' => $element['type'],
+            'options' => array(
                 'label' => $this->getLabel($element['name']),
+            ),
+            'attributes' => array(
                 'value' => $element['default'],
             ),
         );

@@ -8,7 +8,6 @@ use Eva\Api,
 class Field extends AbstractModelService
 {
 
-
     public function createField(array $data = array())
     {
         if($data) {
@@ -19,8 +18,6 @@ class Field extends AbstractModelService
         
         $this->trigger('create.pre');
 
-            p($item->getLoadedRelationships());
-            exit;
         $itemId = $item->create();
 
         if($item->hasLoadedRelationships()){
