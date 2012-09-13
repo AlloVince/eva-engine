@@ -141,7 +141,7 @@ $form->setView($this)
                         <div class="controls">
                             <?=$form->helper(array('FieldRole', 'role_id'), 'formMultiCheckbox', array(
                                 'class' => '',
-                                'value_options' => $this->action('User\Api\Controller\RoleController', 'multicheckboxAction'),
+                                //'value_options' => $this->action('User\Api\Controller\RoleController', 'multicheckboxAction'),
                                 'value' => $roleValues,
                             ))?>
                             <div class="help-block"><?=$form->helper(array('FieldRole', 'role_id'), 'formElementErrors')?></div>

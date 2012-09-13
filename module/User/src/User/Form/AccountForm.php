@@ -18,7 +18,7 @@ namespace User\Form;
  * @category   Eva
  * @package    Eva_Form
  */
-class AccountForm extends \Eva\Form\Form
+class AccountForm extends \Eva\Form\RestfulForm
 {
     /**
      * Form basic elements
@@ -28,25 +28,41 @@ class AccountForm extends \Eva\Form\Form
     protected $baseElements = array (
         'user_id' => array (
             'name' => 'user_id',
-            'attributes' => array (
-                'type' => 'hidden',
+            'type' => 'hidden',
+            'options' => array (
                 'label' => 'User_id',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'credits' => array (
             'name' => 'credits',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Credits',
+            ),
+            'attributes' => array (
                 'value' => '0.00',
             ),
         ),
         'points' => array (
             'name' => 'points',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Points',
+            ),
+            'attributes' => array (
+                'value' => '0.00',
+            ),
+        ),
+        'discount' => array (
+            'name' => 'discount',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Discount',
+            ),
+            'attributes' => array (
                 'value' => '0.00',
             ),
         ),
@@ -64,27 +80,66 @@ class AccountForm extends \Eva\Form\Form
             'filters' => array (
             ),
             'validators' => array (
-                'notEmpty' => array (
-                    'name' => 'NotEmpty',
-                    'options' => array (
-                    ),
-                ),
             ),
         ),
         'credits' => array (
             'name' => 'credits',
             'required' => false,
             'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
             ),
             'validators' => array (
+                'stringLength' => array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => NULL,
+                    ),
+                ),
             ),
         ),
         'points' => array (
             'name' => 'points',
             'required' => false,
             'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
             ),
             'validators' => array (
+                'stringLength' => array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => NULL,
+                    ),
+                ),
+            ),
+        ),
+        'discount' => array (
+            'name' => 'discount',
+            'required' => false,
+            'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+                'stringLength' => array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => NULL,
+                    ),
+                ),
             ),
         ),
     );

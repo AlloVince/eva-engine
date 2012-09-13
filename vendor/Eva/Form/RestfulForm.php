@@ -341,6 +341,12 @@ class RestfulForm extends Form implements InputFilterProviderInterface
         if(isset($element['type']) && false === strpos($element['type'], '\\')){
             $element['type'] = 'Zend\Form\Element\\' . ucfirst($element['type']);
         }
+        if(isset($element['callback']) && $element['callback']){
+            $callback = (string) $element['callback'];
+            if(method_exists($this, $callback)){
+                $element = $this->$callback($element);
+            }
+        }
         return $this->add($element);
     }
 

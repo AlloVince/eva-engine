@@ -18,7 +18,7 @@ namespace User\Form;
  * @category   Eva
  * @package    Eva_Form
  */
-class ProfileForm extends \Eva\Form\Form
+class ProfileForm extends \Eva\Form\RestfulForm
 {
     /**
      * Form basic elements
@@ -28,217 +28,291 @@ class ProfileForm extends \Eva\Form\Form
     protected $baseElements = array (
         'user_id' => array (
             'name' => 'user_id',
-            'attributes' => array (
-                'type' => 'hidden',
+            'type' => 'hidden',
+            'options' => array (
                 'label' => 'User_id',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'site' => array (
             'name' => 'site',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Site',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'photoDir' => array (
             'name' => 'photoDir',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Photo Dir',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'photoName' => array (
             'name' => 'photoName',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Photo Name',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'fullName' => array (
             'name' => 'fullName',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Full Name',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'birthday' => array (
             'name' => 'birthday',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Birthday',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'height' => array (
             'name' => 'height',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Height',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'weight' => array (
             'name' => 'weight',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Weight',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'country' => array (
             'name' => 'country',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Country',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'address' => array (
             'name' => 'address',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Address',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'addressMore' => array (
             'name' => 'addressMore',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Address More',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'city' => array (
             'name' => 'city',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'City',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'province' => array (
             'name' => 'province',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Province',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'state' => array (
             'name' => 'state',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'State',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'zipcode' => array (
             'name' => 'zipcode',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Zipcode',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
+        'degree' => array (
+            'name' => 'degree',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Degree',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
+        'industry' => array (
+            'name' => 'industry',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Industry',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'phoneBusiness' => array (
             'name' => 'phoneBusiness',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Phone Business',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'phoneMobile' => array (
             'name' => 'phoneMobile',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Phone Mobile',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'phoneHome' => array (
             'name' => 'phoneHome',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Phone Home',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'fax' => array (
             'name' => 'fax',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Fax',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'signature' => array (
             'name' => 'signature',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Signature',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'longitude' => array (
             'name' => 'longitude',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Longitude',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'latitude' => array (
             'name' => 'latitude',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Latitude',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'location' => array (
             'name' => 'location',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Location',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'bio' => array (
             'name' => 'bio',
-            'attributes' => array (
-                'type' => 'textarea',
+            'type' => 'textarea',
+            'options' => array (
                 'label' => 'Bio',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'localIm' => array (
             'name' => 'localIm',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Local Im',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'internalIm' => array (
             'name' => 'internalIm',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Internal Im',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'otherIm' => array (
             'name' => 'otherIm',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Other Im',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
@@ -543,6 +617,46 @@ class ProfileForm extends \Eva\Form\Form
                 ),
             ),
         ),
+        'degree' => array (
+            'name' => 'degree',
+            'required' => false,
+            'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+                'stringLength' => array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => '255',
+                    ),
+                ),
+            ),
+        ),
+        'industry' => array (
+            'name' => 'industry',
+            'required' => false,
+            'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+                'stringLength' => array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => '255',
+                    ),
+                ),
+            ),
+        ),
         'phoneBusiness' => array (
             'name' => 'phoneBusiness',
             'required' => false,
@@ -773,4 +887,3 @@ class ProfileForm extends \Eva\Form\Form
         ),
     );
 }
-

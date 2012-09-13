@@ -18,8 +18,15 @@ namespace User\Form;
  * @category   Eva
  * @package    Eva_Form
  */
-class UserForm extends \Eva\Form\Form
+class UserForm extends \Eva\Form\RestfulForm
 {
+    protected $subFormGroups = array(
+        'default' => array(
+            'Profile' => 'User\Form\ProfileForm',
+            'Account' => 'User\Form\AccountForm',
+        )
+    );
+
     /**
      * Form basic elements
      *
@@ -28,34 +35,40 @@ class UserForm extends \Eva\Form\Form
     protected $baseElements = array (
         'id' => array (
             'name' => 'id',
-            'attributes' => array (
-                'type' => 'hidden',
+            'type' => 'hidden',
+            'options' => array (
                 'label' => 'Id',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'userName' => array (
             'name' => 'userName',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'User Name',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'email' => array (
             'name' => 'email',
-            'attributes' => array (
-                'type' => 'email',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Email',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'status' => array (
             'name' => 'status',
-            'attributes' => array (
-                'type' => 'select',
+            'type' => 'select',
+            'options' => array (
                 'label' => 'Status',
-                'options' => array (
+                'value_options' => array (
                     array (
                         'label' => 'Active',
                         'value' => 'active',
@@ -69,59 +82,77 @@ class UserForm extends \Eva\Form\Form
                         'value' => 'inactive',
                     ),
                 ),
-                'value' => 'inactive',
+            ),
+            'attributes' => array (
+                'value' => 'active',
             ),
         ),
         'screenName' => array (
             'name' => 'screenName',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Screen Name',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
+        'salt' => array (
+            'name' => 'salt',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Salt',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'firstName' => array (
             'name' => 'firstName',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'First Name',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'lastName' => array (
             'name' => 'lastName',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Last Name',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'password' => array (
             'name' => 'password',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Password',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'oldPassword' => array (
             'name' => 'oldPassword',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Old Password',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'gender' => array (
             'name' => 'gender',
-            'attributes' => array (
-                'type' => 'select',
+            'type' => 'select',
+            'options' => array (
                 'label' => 'Gender',
-                'options' => array (
-                    array (
-                        'label' => 'Select Gender',
-                        'value' => '',
-                    ),
+                'value_options' => array (
                     array (
                         'label' => 'Male',
                         'value' => 'male',
@@ -136,47 +167,37 @@ class UserForm extends \Eva\Form\Form
                     ),
                 ),
             ),
+            'attributes' => array (
+            ),
         ),
         'avatar' => array (
             'name' => 'avatar',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Avatar',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'timezone' => array (
             'name' => 'timezone',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Timezone',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'language' => array (
             'name' => 'language',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Language',
-                'value' => 'zh_CN',
             ),
-        ),
-        'onlineStatus' => array (
-            'name' => 'onlineStatus',
             'attributes' => array (
-                'type' => 'select',
-                'label' => 'Online Status',
-                'options' => array (
-                    array (
-                        'label' => 'Online',
-                        'value' => 'online',
-                    ),
-                    array (
-                        'label' => 'Offline',
-                        'value' => 'offline',
-                    ),
-                ),
-                'value' => 'offline',
+                'value' => 'zh_CN',
             ),
         ),
     );
@@ -202,7 +223,7 @@ class UserForm extends \Eva\Form\Form
         ),
         'userName' => array (
             'name' => 'userName',
-            'required' => true,
+            'required' => false,
             'filters' => array (
                 'stripTags' => array (
                     'name' => 'StripTags',
@@ -237,9 +258,10 @@ class UserForm extends \Eva\Form\Form
                 ),
             ),
             'validators' => array (
-                'emailAddress' => array (
-                    'name' => 'EmailAddress',
+                'stringLength' => array (
+                    'name' => 'StringLength',
                     'options' => array (
+                        'max' => '320',
                     ),
                 ),
             ),
@@ -282,6 +304,31 @@ class UserForm extends \Eva\Form\Form
                 ),
             ),
         ),
+        'salt' => array (
+            'name' => 'salt',
+            'required' => false,
+            'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+                'notEmpty' => array (
+                    'name' => 'NotEmpty',
+                    'options' => array (
+                    ),
+                ),
+                'stringLength' => array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => '32',
+                    ),
+                ),
+            ),
+        ),
         'firstName' => array (
             'name' => 'firstName',
             'required' => false,
@@ -337,7 +384,7 @@ class UserForm extends \Eva\Form\Form
                 'stringLength' => array (
                     'name' => 'StringLength',
                     'options' => array (
-                        'max' => '32',
+                        'max' => '128',
                     ),
                 ),
             ),
@@ -357,7 +404,7 @@ class UserForm extends \Eva\Form\Form
                 'stringLength' => array (
                     'name' => 'StringLength',
                     'options' => array (
-                        'max' => '32',
+                        'max' => '128',
                     ),
                 ),
             ),
@@ -436,24 +483,6 @@ class UserForm extends \Eva\Form\Form
                     'name' => 'StringLength',
                     'options' => array (
                         'max' => '10',
-                    ),
-                ),
-            ),
-        ),
-        'onlineStatus' => array (
-            'name' => 'onlineStatus',
-            'required' => false,
-            'filters' => array (
-            ),
-            'validators' => array (
-                'inArray' => array (
-                    'name' => 'InArray',
-                    'options' => array (
-                        'haystack' => array (
-                            'online',
-                            'busy',
-                            'offline',
-                        ),
                     ),
                 ),
             ),

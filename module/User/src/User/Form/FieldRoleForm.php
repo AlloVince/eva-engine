@@ -38,10 +38,10 @@ class FieldRoleForm extends \Eva\Form\RestfulForm
         ),
         'role_id' => array (
             'name' => 'role_id',
-            //'type' => 'User\Element\RolesMultiCheckbox',
             'type' => 'multiCheckbox',
+            'callback' => 'getUserRoles',
             'options' => array (
-                'label' => 'User Role',
+                'label' => 'User Roles',
             ),
             'attributes' => array (
                 'value' => '',
@@ -72,4 +72,20 @@ class FieldRoleForm extends \Eva\Form\RestfulForm
             ),
         ),
     );
+
+
+    public function getUserRoles($element)
+    {
+        $model = \Eva\Api::_()->getModelService('User\Model\Role');
+        $items = $model->getRoleList();
+        $valueOptions = array();
+        foreach($items as $item){
+            $valueOptions[] = array(
+                'label' => $item['roleName'],
+                'value' => $item['id'],
+            );
+        }
+        $element['options']['value_options'] = $valueOptions;
+        return $element;
+    }
 }
