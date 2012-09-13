@@ -1,0 +1,113 @@
+<?
+$item = $this->item;
+$title = $item ? 'Edit User Role' : 'Create User Role';
+$title = $this->_($title);
+$method = $item ? 'put' : 'post';
+$this->headTitle($title, 'SET');
+$this->textDelay('breadcrumbText', $title);
+
+if($this->form){
+	$form = $this->form;
+} else {
+    if($item) {
+        $form = new User\Form\RoleEditForm();
+        $form->setMethod('put');
+    } else {
+        $form = new User\Form\RoleForm();
+        $form->setMethod('post');
+    }
+}
+
+$form->setView($this)
+     ->setAction($this->uri('/admin/user/role/'))
+     ->bind($item)
+     ->prepare();
+?>
+
+<input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
+<div id="user-create-succeed" class="alert alert-success hide">
+    <a href="#" data-dismiss="alert" class="close">x</a>
+    <h4 class="alert-heading"><?=$this->_('New Role Created')?></h4>
+</div>
+
+<div id="user-edit-succeed" class="alert alert-success hide">
+    <a href="#" data-dismiss="alert" class="close">x</a>
+    <h4 class="alert-heading"><?=$this->_('Role Edit Succeed')?></h4>
+</div>
+
+<div id="user-edit-failed" class="alert alert-error hide">
+    <a href="#" data-dismiss="alert" class="close">x</a>
+    <h4 class="alert-heading"><?=$this->_('Role Edit Failed')?></h4>
+</div>
+
+
+
+<div class="row">
+    <form <?=$this->formAttr($form)?>>
+        <?=$form->restful();?>
+        <?=$form->helper('id');?>
+        <div class="span10">
+            <div class="slate">
+                <div class="page-header">
+                    <?if($item):?>
+                    <div class="btn-group pull-right">
+                        <a href="<?=$this->uri('/admin/user/role/create')?>" class="btn"><?=$this->_('Clear Cache')?></a>
+                        <a href="<?=$this->uri('/admin/user/role/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/user/role/' . $item['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
+                    </div>
+                    <?endif?>
+                    <h2><?=$title?></h2>
+                </div>
+                <fieldset class="">
+                </fieldset>
+            </div>
+        </div><!--span10 end-->
+
+        <div class="span10">
+            <div class="slate">
+                <div class="page-header">
+                    <h3><?=$this->_('Role Basic Info')?></h3>
+                </div>
+
+                <fieldset class="form-horizontal">
+                    <?=$form->helper('id', array('class' => ''))?>
+                    <div class="control-group <?=$form->isError('roleName') ? 'error' : '';?>">
+                        <?=$form->helper('roleName', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('roleName', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('roleName', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError('description') ? 'error' : '';?>">
+                        <?=$form->helper('description', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('description', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('description', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+
+                </fieldset>
+            </div>
+        </div><!--span5 end-->
+
+
+        <div class="span10">
+            <div class="slate">
+                <div class="page-header">
+                    <h2><?=$this->_('Permissions')?></h2>
+                </div>
+
+            </div>
+        </div><!--span10 end-->
+
+
+        <div class="span10 listing-buttons">
+            <button id="save-publish" class="btn btn-success btn-large"><?=$this->_('Save')?></button>
+        </div>
+    </form>
+</div>
+
+
+<script>
+eva.runtime = function(){
+}
+</script>

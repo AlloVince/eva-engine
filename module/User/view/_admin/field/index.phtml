@@ -2,16 +2,6 @@
 $title = $this->_('User Field List');
 $this->headTitle($title, 'SET');
 $this->textDelay('breadcrumbText', $title);
-if($this->form){
-	$form = $this->form;
-} else {
-    $form = Eva\Api::_()->getForm('User\Form\UserSearchForm');
-}
-$form->init(array(
-    'action' => $this->uri('/admin/user/field/'),
-    'method' => 'get',
-    'values' => $this->query
-));
 
 $lableMap = array(
     'active' => 'label-success',
@@ -19,24 +9,13 @@ $lableMap = array(
     'deleted' => 'label-inverse',
 );
 ?>
-<div class="row">
-    <div class="span10">
-        <div class="slate">
-            <form <?=$this->formAttr($form)?> class="form-inline">
-                <?=$form->helper('keyword', array('class' => 'input-large', 'placeholder' => 'Keyword...'))?>
-                <?=$form->helper('status', 'formSelect', array('class' => 'span2'))?>
-                <?=$form->helper('gender', 'formSelect', array('class' => 'span2'))?>
-                <?=$form->helper('onlineStatus', 'formSelect', array('class' => 'span2'))?>
-                <button class="btn" type="submit"><?=$this->_('Filter Users')?></button>
-            </form>
-        </div>
-    </div>
-</div>
+
 <div class="row">
     <div class="span10 listing-buttons">
         <div class="btn-group pull-right">
             <a href="<?=$this->uri('/admin/user/field/create')?>" class="btn btn-info"><?=$this->_('Add New Field')?></a>
         </div>
+        <!--
         <form action="<?=$this->uri('/admin/user/field/')?>" method="post" class="pull-left" data-multiform="post">
             <input type="hidden" name="id" class="multiform-container-main" value="" />
             <input type="hidden" name="order" class="multiform-container" value="" />
@@ -54,11 +33,13 @@ $lableMap = array(
                 </ul>
             </div>
         </form>
+        -->
     </div>
 
     <div class="span10">
         <div class="slate">
             <div class="page-header">
+                <!--
                 <div class="btn-group pull-right">
                     <span data-toggle="dropdown" class="btn dropdown-toggle">
                         <?=$this->_('Order')?> <span class="caret"></span>
@@ -72,6 +53,7 @@ $lableMap = array(
                         <li><a href="<?=$this->uri('/admin/user/field/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'timedesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Time')?></a></li>
                     </ul>
                 </div>
+                -->
                 <h2><?=$title?></h2>
             </div>
 

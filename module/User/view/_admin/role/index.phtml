@@ -1,0 +1,71 @@
+<?
+$title = $this->_('User Role List');
+$this->headTitle($title, 'SET');
+$this->textDelay('breadcrumbText', $title);
+
+$lableMap = array(
+    'active' => 'label-success',
+    'inactive' => 'label-warning',
+    'deleted' => 'label-inverse',
+);
+?>
+
+<div class="row">
+    <div class="span10 listing-buttons">
+        <div class="btn-group pull-right">
+            <a href="<?=$this->uri('/admin/user/role/create')?>" class="btn btn-info"><?=$this->_('Add New Role')?></a>
+        </div>
+    </div>
+
+    <div class="span10">
+        <div class="slate">
+            <div class="page-header">
+                <h2><?=$title?></h2>
+            </div>
+
+            <table class="orders-table table">
+                <thead>
+                    <tr>
+                        <th class="span1">
+                        </th>
+                        <th><?=$this->_('Role Name')?></th>
+                        <th class="span1"><?=$this->_('Permissions')?></th>
+                        <th class="actions"><?=$this->_('Actions')?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?if($this->items):?>
+                    <?foreach($this->items as $key=>$item):?>
+                    <tr class="">
+                        <td>
+                            <input name="id" type="checkbox" class="multiform-item-checkbox"  data-multiform="post" data-multiform-itemid="<?=$item['id'] ?>" value="<?=$item['id'] ?>" />
+                        </td>	
+                        <td>
+                            <a href="<?=$this->uri('/admin/user/role/' . $item['id'])?>" class="title"><?=$item['roleName'] ?></a>
+                            <p>
+                            <span class="meta"> <?=$item['description']?></span>
+                            </p>
+                        </td>
+                        <td>
+                        </td>
+                        <td class="actions">
+                            <a href="<?=$this->uri('/admin/user/role/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/user/role', array('page' => $this->page)))); ?>" class="btn btn-small btn-danger"><?=$this->_('Delete')?></a>
+                            <a href="<?=$this->uri('/admin/user/role/' . $item['id'])?>" class="btn btn-small"><?=$this->_('Edit')?></a>
+                        </td>
+                    </tr>
+                    <?endforeach;?>
+                    <?endif;?>
+                </tbody>
+            </table>
+        </div>
+    </div><!--span10 end-->
+
+    <div class="span10">
+        <?if($this->paginator):?>
+        <?=$this->paginator->setPath('/admin/user/role/')->setBaseQuery($this->query);?>
+        <?=$this->widget('Core', 'widgets/paginator', $this->vars())?>
+        <?endif;?>
+    </div>
+
+</div>
+
