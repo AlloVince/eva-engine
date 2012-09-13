@@ -243,6 +243,10 @@ class Form extends \Zend\Form\Form
             $element['type'] = 'Zend\Form\Element\\' . ucfirst($element['attributes']['type']);
         }
 
+        if(!isset($element['options']['label']) && isset($element['attributes']['label'])){
+            $element['options']['label'] = $element['attributes']['label'];
+        }
+
         //TODO: just for following zf2 changes, will be removed
         if(!isset($element['options']['value_options']) && isset($element['attributes']['options'])){
             $element['options']['value_options'] = $element['attributes']['options'];

@@ -24,36 +24,6 @@ $form->setView($this)
      ->setAction($this->uri('/admin/user/field/'))
      ->bind($item)
      ->prepare();
-
-
-/*
-if($this->form){
-	$form = $this->form;
-} else {
-    if($item) {
-        $form = Eva\Api::_()->getForm('User\Form\FieldEditForm');
-    } else {
-        $form = Eva\Api::_()->getForm('User\Form\FieldForm');
-    }
-}
-
-$form->setSubForms(array(
-    'Fieldoption' => array(
-        'formClass' => 'User\Form\FieldoptionForm',
-        'collection' => true,
-        'skipEmpty' => true,
-        'values' => $item['Fieldoption'],
-        //'object' => $item->join('Fieldoption'),
-    ),
-));
-$form->init(array(
-    'action' => $this->uri('/admin/user/field/'),
-    'method' => $method,
-    'values' => $item,
-    //'object' => $item->self(array('*')),
-));
-*/
-
 ?>
 
 <input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
@@ -77,7 +47,7 @@ $form->init(array(
 <div class="row">
     <form <?=$this->formAttr($form)?>>
         <?=$form->restful();?>
-        <?//=$form->helper('id');?>
+        <?=$form->helper('id');?>
         <div class="span10">
             <div class="slate">
                 <div class="page-header">
@@ -144,8 +114,6 @@ $form->init(array(
                             <div class="help-block"><?=$form->helper('defaultValue', 'formElementErrors')?></div>
                         </div>
                     </div>
-
-
                 </fieldset>
             </div>
         </div><!--span5 end-->
@@ -176,6 +144,7 @@ $form->init(array(
                 <?foreach($form->get('Fieldoption') as $subForm):?>
                 <fieldset class="fieldoptions">
                     <div class="control-group <?=$subForm->isError('label') ? 'error' : '';?> span3">
+                        <?=$subForm->helper('id');?>
                         <?=$subForm->helper('label', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
                             <?=$subForm->helper('label', array('class' => ''))?>        
@@ -218,6 +187,16 @@ $form->init(array(
 <script>
 eva.runtime = function(){
 
+     var resetNum = function(){
+        var num = 0;
+        $(".fieldoptions").each(function(){
+            $(this).find("input[name]").each(function(){
+                $(this).attr("name", $(this).attr('name').replace(/\d+/, num));
+            });
+            num++;
+        });
+    }
+
     var count = 0;
     $(".btn.addopt").live("click", function(){
             var fieldset = $(this).parentsUntil('fieldset').parent();
@@ -233,6 +212,8 @@ eva.runtime = function(){
             });
             fieldset.after(fieldsetClone);
             count++;
+
+            resetNum();
             return false;
     });
 
@@ -241,6 +222,7 @@ eva.runtime = function(){
             if($('.fieldoptions').length > 1){
                 fieldset.remove();
             }
+            resetNum();
             return false;
     });
 }

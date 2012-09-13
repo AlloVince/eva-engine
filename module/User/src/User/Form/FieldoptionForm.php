@@ -109,7 +109,7 @@ class FieldoptionForm extends \Eva\Form\RestfulForm
         ),
         'option' => array (
             'name' => 'option',
-            'required' => true,
+            'required' => false,
             'filters' => array (
                 'stripTags' => array (
                     'name' => 'StripTags',

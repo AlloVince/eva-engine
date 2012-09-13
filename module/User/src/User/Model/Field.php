@@ -65,6 +65,10 @@ class Field extends AbstractModelService
         $this->trigger('remove.pre');
 
         $item = $this->getItem();
+
+        $subItem = $item->join('Fieldoption');
+        $subItem->remove();
+
         $item->remove();
 
         $this->trigger('remove');

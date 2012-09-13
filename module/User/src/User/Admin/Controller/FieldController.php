@@ -17,7 +17,7 @@ class FieldController extends RestfulModuleController
         'restGetFieldCreate' => 'field/get',
         'restPutField' => 'field/get',
         'restPostField' => 'field/get',
-        'restDeleteField' => 'remove/get',
+        'restDeleteField' => 'field/remove',
     );
 
     public function restIndexField()
@@ -47,13 +47,19 @@ class FieldController extends RestfulModuleController
 
     public function restGetFieldCreate()
     {
-        return array(
-        );
+
     }
 
     public function restGetFieldRemove()
     {
-        return array();
+        $id = (int)$this->params('id');
+        
+        $itemModel = Api::_()->getModelService('User\Model\Field');
+        $item = $itemModel->getField($id);
+        return array(
+            'callback' => $this->getRequest()->getQuery()->get('callback'),
+            'item' => $item,
+        );
     }
 
     public function restGetField()
@@ -87,14 +93,13 @@ class FieldController extends RestfulModuleController
         $form->useSubFormGroup()
         ->bind($postData);
 
-        //p($postData);
         if ($form->isValid()) {
 
             $postData = $form->getData();
             $itemModel = Api::_()->getModelService('User\Model\Field');
             $itemId = $itemModel->setItem($postData)->createField();
-            //$this->flashMessenger()->addMessage('item-create-succeed');
-            //$this->redirect()->toUrl('/admin/user/field/' . $itemId);
+            $this->flashMessenger()->addMessage('item-create-succeed');
+            $this->redirect()->toUrl('/admin/user/field/' . $itemId);
 
         } else {
             //p($form->getMessages());
@@ -111,19 +116,10 @@ class FieldController extends RestfulModuleController
     {
         $request = $this->getRequest();
         $postData = $request->getPost();
-
+        
         $form = new Form\FieldEditForm();
-        $subForms = array();
-        /*
-        $subForms = array(
-            'Profile' => array('Field\Form\ProfileForm'),
-            'Account' => array('Field\Form\AccountForm'),
-        );
-        */
-        $form->setSubforms($subForms)
-             ->init()
-             ->setData($postData)
-             ->enableFilters();
+        $form->useSubFormGroup()
+        ->bind($postData);
 
         if ($form->isValid()) {
             $postData = $form->getData();
@@ -150,13 +146,14 @@ class FieldController extends RestfulModuleController
         $request = $this->getRequest();
         $postData = $request->getPost();
         $callback = $request->getPost()->get('callback');
-
+        
         $form = new Form\FieldDeleteForm();
-        $form->enableFilters()->setData($postData);
+        $form->bind($postData);
+
         if ($form->isValid()) {
 
             $postData = $form->getData();
-            $itemModel = Api::_()->getModelService('Field\Model\Field');
+            $itemModel = Api::_()->getModelService('User\Model\Field');
             $itemModel->setItem(array(
                 'id' => $postData['id']
             ))->removeField();

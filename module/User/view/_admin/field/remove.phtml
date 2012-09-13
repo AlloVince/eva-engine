@@ -1,20 +1,20 @@
 <?
-$user = $this->item;
-$title = $this->_('Delete User');
+$item = $this->item;
+$title = $this->_('Delete User Field');
 $this->headTitle($title, 'SET');
-$form = Eva\Api::_()->getForm('User\Form\UserDeleteForm');
 
-$form->init(array(
-	'action' => $this->uri('/admin/user/'),
-	'method' => 'delete',
-	'values' => $user
-));
+$form = new User\Form\FieldDeleteForm();
+$form->setView($this)
+->setMethod('delete')
+->setAction($this->uri('/admin/user/field/'))
+->bind($item)
+->prepare();
 ?>
 
-<?if($user):?>
+<?if($item):?>
 <div class="alert alert-block">
    <h2 class="alert-heading"><?=$title?></h2>
-   <p><?=$this->_(array('User %username% will be deleted, are you sure?', $user['userName']))?></p>
+   <p><?=$this->_(array('User field "%label%" will be deleted, are you sure?', $item['label']))?></p>
    <p>
 		<form class="form-horizontal" <?=$this->formAttr($form)?>>
 			<?=$form->restful();?>
@@ -27,6 +27,6 @@ $form->init(array(
 </div>
 <?else:?>
 <div class="alert alert-success container">
-    <h2 class="alert-heading"><?=$this->_('User has been deleted')?></h2>
+    <h2 class="alert-heading"><?=$this->_('User filed has been deleted')?></h2>
 </div>
 <?endif?>
