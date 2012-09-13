@@ -114,7 +114,9 @@ class RestfulForm extends Form implements InputFilterProviderInterface
     *
     * @var array
     */
-    protected $subFormGroups = array();
+    protected $subFormGroups = array(
+        'default' => array()
+    );
 
     /**
     * Parent Form
@@ -257,7 +259,6 @@ class RestfulForm extends Form implements InputFilterProviderInterface
         foreach($subForms as $formName => $formConfig){
             $this->addSubForm($formName, $formConfig);
         }
-        //$this->prepare();
         return $this;
     }
 
@@ -443,9 +444,9 @@ class RestfulForm extends Form implements InputFilterProviderInterface
         return $this;
     }
 
-    public function isError($elementName)
+    public function isError($elementNameOrArray)
     {
-        $element = $this->get($elementName);
+        $element = $this->getElement($elementNameOrArray);
         return $element->getMessages() ? true : false;
     }
 
@@ -466,7 +467,36 @@ class RestfulForm extends Form implements InputFilterProviderInterface
         return $element;
     }
 
-    public function helper($elementName, $optionOrInputType = null, array $options = array(), array $setting = array())
+    public function getElement($elementNameOrArray)
+    {
+        if(true === is_string($elementNameOrArray)){
+            return $this->get($elementNameOrArray);
+        }
+
+        if(true === is_array($elementNameOrArray) && isset($elementNameOrArray[0]) && isset($elementNameOrArray[1])){
+            $fieldsetName = $elementNameOrArray[0];
+            $elementName = $elementNameOrArray[1];
+        } elseif(is_string($elementNameOrArray)) {
+            $fieldsetName = '';
+            $elementName = $elementNameOrArray;
+        } else {
+            throw new Exception\InvalidArgumentException(sprintf('Element Name require string or array'));
+        }
+
+        if($fieldsetName) {
+            $element = $this->get($fieldsetName)->get($elementName);
+        } else {
+            $element = $this->get($elementName);
+        }
+
+        if(!$element){
+            throw new Exception\InvalidArgumentException(sprintf('Request Element %s not found', $elementName));
+        }
+
+        return $element;
+    }
+
+    public function helper($elementNameOrArray, $optionOrInputType = null, array $options = array(), array $setting = array())
     {
         $defaultSetting = array(
             'i18n' => true,
@@ -483,10 +513,7 @@ class RestfulForm extends Form implements InputFilterProviderInterface
             throw new Exception\InvalidArgumentException(sprintf('Form view not found'));
         }
 
-        $element = $this->get($elementName);
-        if(!$element){
-            throw new Exception\InvalidArgumentException(sprintf('Request Element %s not found', $elementName));
-        }
+        $element = $this->getElement($elementNameOrArray);
 
         if($optionOrInputType){
             if(is_string($optionOrInputType)){

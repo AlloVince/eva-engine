@@ -76,6 +76,9 @@ class FieldController extends RestfulModuleController
                 'Fieldoption' => array(
                     '*',
                 ),
+                'Roles' => array(
+                    '*',
+                )
             ),
         ));
         return array(

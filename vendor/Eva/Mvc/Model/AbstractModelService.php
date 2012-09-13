@@ -60,7 +60,7 @@ abstract class AbstractModelService implements ServiceLocatorAwareInterface
     protected $dataSource;
 
     protected $itemList;
-    protected $itemListParameters;
+    protected $itemListParameters = array();
 
     protected $cacheStorageFactory;
     protected $paginator;

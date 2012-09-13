@@ -26,6 +26,21 @@ class Field extends AbstractItem
             'joinParameters' => array(
             ),
         ),
+        'Roles' => array(
+            'targetEntity' => 'User\Item\Role',
+            'relationship' => 'ManyToMany',
+            'mappedBy' => 'Roles',
+            'joinColumns' => array(
+                'joinColumn' => 'field_id',
+                'referencedColumn' => 'id',
+            ),
+            'inversedBy' => 'User\Item\FieldRole',
+            'inversedMappedBy' => 'FieldRole',
+            'inverseJoinColumns' => array(
+                'joinColumn' => 'role_id',
+                'referencedColumn' => 'id',
+            ),
+        ),
     );
 
     protected $map = array(

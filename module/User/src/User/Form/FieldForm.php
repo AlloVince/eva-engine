@@ -22,6 +22,7 @@ class FieldForm extends \Eva\Form\RestfulForm
 {
     protected $subFormGroups = array(
         'default' => array(
+            'FieldRole' => 'User\Form\FieldRoleForm',
             'Fieldoption' => array(
                 'formClass' => 'User\Form\FieldoptionForm',
                 'collection' => true,

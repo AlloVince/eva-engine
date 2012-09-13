@@ -59,8 +59,6 @@ $form->setView($this)
                     <?endif?>
                     <h2><?=$title?></h2>
                 </div>
-                <fieldset class="">
-                </fieldset>
             </div>
         </div><!--span10 end-->
 
@@ -129,6 +127,16 @@ $form->setView($this)
                         <div class="controls">
                             <?=$form->helper('applyToAll', 'formSelect', array('class' => ''))?>        
                             <div class="help-block"><?=$form->helper('applyToAll', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError(array('FieldRole', 'role_id')) ? 'error' : '';?>">
+                        <?=$form->helper(array('FieldRole', 'role_id'), 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper(array('FieldRole', 'role_id'), 'formMultiCheckbox', array(
+                                'class' => '',
+                                'value_options' => $this->action('User\Api\Controller\RoleController', 'multicheckboxAction'),
+                            ))?>
+                            <div class="help-block"><?=$form->helper(array('FieldRole', 'role_id'), 'formElementErrors')?></div>
                         </div>
                     </div>
                 </fieldset>
