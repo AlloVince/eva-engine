@@ -20,6 +20,13 @@ if($this->form){
     }
 }
 
+$roleValues = array();
+if(isset($item['FieldRole'])){
+    foreach($item['FieldRole'] as $fieldRole){
+        $roleValues[] = $fieldRole['role_id'];
+    }
+}
+
 $form->setView($this)
      ->setAction($this->uri('/admin/user/field/'))
      ->bind($item)
@@ -135,6 +142,7 @@ $form->setView($this)
                             <?=$form->helper(array('FieldRole', 'role_id'), 'formMultiCheckbox', array(
                                 'class' => '',
                                 'value_options' => $this->action('User\Api\Controller\RoleController', 'multicheckboxAction'),
+                                'value' => $roleValues,
                             ))?>
                             <div class="help-block"><?=$form->helper(array('FieldRole', 'role_id'), 'formElementErrors')?></div>
                         </div>

@@ -194,7 +194,7 @@ class FieldForm extends \Eva\Form\RestfulForm
         ),
         'fieldKey' => array (
             'name' => 'fieldKey',
-            'required' => false,
+            'required' => true,
             'filters' => array (
                 'stripTags' => array (
                     'name' => 'StripTags',

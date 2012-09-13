@@ -12,6 +12,17 @@ class FieldsRoles extends TableGateway
 
     public function setParameters(Parameters $params)
     {
+        if($params->field_id){
+            $this->where(array(
+                'field_id' => $params->field_id,
+            ));
+        }
+
+        if($params->role_id){
+            $this->where(array(
+                'role_id' => $params->role_id,
+            ));
+        }
         return $this;
     }
 }
