@@ -12,6 +12,13 @@ if($this->form){
     $form->useSubFormGroup();
 }
 
+$roleValues = array();
+if(isset($item['RoleUser'])){
+    foreach($item['RoleUser'] as $fieldRole){
+        $roleValues[] = $fieldRole['role_id'];
+    }
+}
+
 $form->setMethod($item ? 'put' : 'post');
 $form->setView($this)
      ->setAction($this->uri('/admin/user/'))
@@ -159,6 +166,26 @@ $form->setView($this)
         <div class="span5">
             <div class="slate">
                 <div class="page-header">
+                    <h3><?=$this->_('Roles & Permissions')?></h3>
+                </div>
+                <fieldset class="form-horizontal">
+                    <div class="control-group <?=$form->isError(array('RoleUser', 'role_id')) ? 'error' : '';?>">
+                        <?=$form->helper(array('RoleUser', 'role_id'), 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper(array('RoleUser', 'role_id'), 'formMultiCheckbox', array(
+                                'class' => '',
+                                'value' => $roleValues,
+                            ))?>
+                            <div class="help-block"><?=$form->helper(array('RoleUser', 'role_id'), 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div><!--span5 end-->
+
+        <div class="span5">
+            <div class="slate">
+                <div class="page-header">
                     <h3><?=$this->_('Credits Setting')?></h3>
                 </div>
                 <fieldset class="form-horizontal">
@@ -180,6 +207,7 @@ $form->setView($this)
                 </fieldset>
             </div>
         </div><!--span5 end-->
+
 
 
         <div class="span10">

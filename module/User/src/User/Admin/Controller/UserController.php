@@ -35,16 +35,13 @@ class UserController extends RestfulModuleController
         $items = $items->toArray(array(
             'self' => array(
                 '*',
-                'userName',
             ),
             'join' => array(
                 'Profile' => array(
-                    //'*',
                     'site',
                     'birthday',
                     'phoneMobile',
                 ),
-                'Account' => array('*'),
             ),
         ));
         $paginator = $itemModel->getPaginator();

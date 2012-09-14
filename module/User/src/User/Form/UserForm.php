@@ -24,6 +24,7 @@ class UserForm extends \Eva\Form\RestfulForm
         'default' => array(
             'Profile' => 'User\Form\ProfileForm',
             'Account' => 'User\Form\AccountForm',
+            'RoleUser' => 'User\Form\RoleUserForm',
         )
     );
 
@@ -144,6 +145,10 @@ class UserForm extends \Eva\Form\RestfulForm
                 'label' => 'Gender',
                 'value_options' => array (
                     array (
+                        'label' => 'Select Gender',
+                        'value' => 'other',
+                    ),
+                    array (
                         'label' => 'Male',
                         'value' => 'male',
                     ),
@@ -152,12 +157,13 @@ class UserForm extends \Eva\Form\RestfulForm
                         'value' => 'female',
                     ),
                     array (
-                        'label' => 'Other',
+                        'label' => 'Secret',
                         'value' => 'other',
                     ),
                 ),
             ),
             'attributes' => array (
+                'value' => '',
             ),
         ),
         'avatar' => array (
