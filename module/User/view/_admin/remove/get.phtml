@@ -2,13 +2,13 @@
 $user = $this->item;
 $title = $this->_('Delete User');
 $this->headTitle($title, 'SET');
-$form = Eva\Api::_()->getForm('User\Form\UserDeleteForm');
+$form = new User\Form\UserDeleteForm();
 
-$form->init(array(
-	'action' => $this->uri('/admin/user/'),
-	'method' => 'delete',
-	'values' => $user
-));
+$form->setMethod('delete')
+     ->setView($this)
+     ->setAction($this->uri('/admin/user/'))
+     ->bind($item)
+     ->prepare();
 ?>
 
 <?if($user):?>

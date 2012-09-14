@@ -6,6 +6,8 @@ use Zend\Form\Element;
 
 class UserDeleteForm extends UserForm
 {
+    protected $validationGroup = array('id');
+
     protected $baseFilters = array(
         'id' => array(
             'name' => 'id',

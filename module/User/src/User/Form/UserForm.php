@@ -97,16 +97,6 @@ class UserForm extends \Eva\Form\RestfulForm
                 'value' => '',
             ),
         ),
-        'salt' => array (
-            'name' => 'salt',
-            'type' => 'text',
-            'options' => array (
-                'label' => 'Salt',
-            ),
-            'attributes' => array (
-                'value' => '',
-            ),
-        ),
         'firstName' => array (
             'name' => 'firstName',
             'type' => 'text',
@@ -182,7 +172,8 @@ class UserForm extends \Eva\Form\RestfulForm
         ),
         'timezone' => array (
             'name' => 'timezone',
-            'type' => 'text',
+            'type' => 'select',
+            'callback' => 'getTimezones',
             'options' => array (
                 'label' => 'Timezone',
             ),
@@ -192,7 +183,8 @@ class UserForm extends \Eva\Form\RestfulForm
         ),
         'language' => array (
             'name' => 'language',
-            'type' => 'text',
+            'type' => 'select',
+            'callback' => 'getLanguages',
             'options' => array (
                 'label' => 'Language',
             ),
@@ -296,20 +288,10 @@ class UserForm extends \Eva\Form\RestfulForm
         ),
         'status' => array (
             'name' => 'status',
-            'required' => false,
+            'required' => true,
             'filters' => array (
             ),
             'validators' => array (
-                'inArray' => array (
-                    'name' => 'InArray',
-                    'options' => array (
-                        'haystack' => array (
-                            'active',
-                            'deleted',
-                            'inactive',
-                        ),
-                    ),
-                ),
             ),
         ),
         'screenName' => array (
@@ -328,31 +310,6 @@ class UserForm extends \Eva\Form\RestfulForm
                     'name' => 'StringLength',
                     'options' => array (
                         'max' => '128',
-                    ),
-                ),
-            ),
-        ),
-        'salt' => array (
-            'name' => 'salt',
-            'required' => false,
-            'filters' => array (
-                'stripTags' => array (
-                    'name' => 'StripTags',
-                ),
-                'stringTrim' => array (
-                    'name' => 'StringTrim',
-                ),
-            ),
-            'validators' => array (
-                'notEmpty' => array (
-                    'name' => 'NotEmpty',
-                    'options' => array (
-                    ),
-                ),
-                'stringLength' => array (
-                    'name' => 'StringLength',
-                    'options' => array (
-                        'max' => '32',
                     ),
                 ),
             ),
@@ -478,6 +435,7 @@ class UserForm extends \Eva\Form\RestfulForm
         'timezone' => array (
             'name' => 'timezone',
             'required' => false,
+            'callback' => 'getTimezones',
             'filters' => array (
                 'stripTags' => array (
                     'name' => 'StripTags',
@@ -535,4 +493,22 @@ class UserForm extends \Eva\Form\RestfulForm
             ),
         ),
     );
+
+    public function getLanguages($element)
+    {
+        $translator = \Eva\Api::_()->getServiceManager()->get('translator');
+        $locale = $translator->getLocale();
+        $languages = \Eva\Locale\Data::getList($locale, 'language');
+        $element['options']['value_options'] = $languages;
+        return $element;
+    }
+
+    public function getTimezones($element)
+    {
+        $translator = \Eva\Api::_()->getServiceManager()->get('translator');
+        $locale = $translator->getLocale();
+        $languages = \Eva\Locale\Data::getList($locale, 'citytotimezone');
+        $element['options']['value_options'] = $languages;
+        return $element;
+    }
 }

@@ -65,13 +65,21 @@ class User extends AbstractItem
         'create' => array(
             'getSalt()',
             'getPassword()',
+            'getOnlineStatus()',
         ),
     );
+
+    public function getOnlineStatus()
+    {
+        if(!$this->onlineStatus){
+            return $this->onlineStatus = 'offline';
+        }
+    }
 
     public function getRegisterTime()
     {
         if(!$this->registerTime){
-            return \Eva\Date\Date::getNow();
+            return $this->registerTime = \Eva\Date\Date::getNow();
         }
     }
 

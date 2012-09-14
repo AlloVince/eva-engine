@@ -108,7 +108,8 @@ class ProfileForm extends \Eva\Form\RestfulForm
         ),
         'country' => array (
             'name' => 'country',
-            'type' => 'text',
+            'type' => 'select',
+            'callback' => 'getCountries',
             'options' => array (
                 'label' => 'Country',
             ),
@@ -886,4 +887,14 @@ class ProfileForm extends \Eva\Form\RestfulForm
             ),
         ),
     );
+
+
+    public function getCountries($element)
+    {
+        $translator = \Eva\Api::_()->getServiceManager()->get('translator');
+        $locale = $translator->getLocale();
+        $countries = \Eva\Locale\Data::getList($locale, 'territory');
+        $element['options']['value_options'] = $countries;
+        return $element;
+    }
 }

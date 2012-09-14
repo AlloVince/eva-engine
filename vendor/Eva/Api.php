@@ -334,4 +334,9 @@ class Api
         }
         return $this->view = $this->event->getApplication()->getServiceManager()->get('ViewManager')->getRenderer();
     }
+
+    public function getServiceManager()
+    {
+        return $this->event->getApplication()->getServiceManager();
+    }
 }

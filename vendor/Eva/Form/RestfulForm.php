@@ -14,8 +14,10 @@ namespace Eva\Form;
 use Zend\Form\Form;
 use Zend\Form\Fieldset;
 use Zend\Form\FormInterface;
+use Zend\Form\FieldsetInterface;
 use Zend\Config\Config;
 use Zend\InputFilter\InputFilter;
+use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilterProviderInterface;
 use Zend\InputFilter\Factory as FilterFactory;
 use Eva\File\Transfer\TransferFactory;
@@ -93,7 +95,14 @@ class RestfulForm extends Form implements InputFilterProviderInterface
     *
     * @var boolean
     */
-    protected $elementInited = false;
+    protected $elementsInited = false;
+
+    /**
+    * Form filters inited
+    *
+    * @var boolean
+    */
+    protected $filtersInited = false;
 
     /**
     * File Transfer
@@ -352,14 +361,25 @@ class RestfulForm extends Form implements InputFilterProviderInterface
 
     protected function initFilters()
     {
+        if(true === $this->filtersInited){
+            return $this;
+        }
+
         $filters = $this->mergeFilters();
         $formFactory  = $this->getFormFactory();
         $inputFactory = $formFactory->getInputFilterFactory();
-        $inputFilter = $this->getInputFilter();
+
+        if (null === $this->filter) {
+            $inputFilter = $this->filter = new InputFilter();
+        } else {
+            $inputFilter = $this->filter;
+        }
+
         foreach($filters as $name => $filter){
             $input = $inputFactory->createInput($filter);
             $inputFilter->add($input, $name);
         }
+        $this->filtersInited = true;
         return $this;
     }
 
@@ -421,7 +441,6 @@ class RestfulForm extends Form implements InputFilterProviderInterface
 
     public function isValid()
     {
-        //NOTE : add form merged filters when start valid
         $this->initFilters();
         if(!$this->fileTransfer){
             return parent::isValid();
@@ -435,6 +454,16 @@ class RestfulForm extends Form implements InputFilterProviderInterface
         }
         return $result;
     }
+
+
+    /*
+    public function attachInputFilterDefaults(InputFilterInterface $inputFilter, FieldsetInterface $fieldset)
+    {
+        parent::attachInputFilterDefaults($inputFilter, $fieldset);
+        //Run after default filters inited, so we could overwrite it.
+        return $this;
+    }
+    */
 
     public function bind($valuesOrObject, $flags = FormInterface::VALUES_NORMALIZED)
     {

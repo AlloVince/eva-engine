@@ -8,17 +8,11 @@ $this->textDelay('breadcrumbText', $title);
 if($this->form){
 	$form = $this->form;
 } else {
-    if($item) {
-        $form = new User\Form\UserForm();
-        $form->useSubFormGroup();
-        $form->setMethod('put');
-    } else {
-        $form = new User\Form\UserEditForm();
-        $form->useSubFormGroup();
-        $form->setMethod('post');
-    }
+    $form = $item ? new User\Form\UserEditForm() : new User\Form\UserForm();
+    $form->useSubFormGroup();
 }
 
+$form->setMethod($item ? 'put' : 'post');
 $form->setView($this)
      ->setAction($this->uri('/admin/user/'))
      ->bind($item)
@@ -123,14 +117,14 @@ $form->setView($this)
                     <div class="control-group <?=$form->isError('timezone') ? 'error' : '';?>">
                         <?=$form->helper('timezone', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper('timezone', array('class' => ''))?>        
+                            <?=$form->helper('timezone', 'formSelect', array('class' => ''))?>        
                             <div class="help-block"><?=$form->helper('timezone', 'formElementErrors')?></div>
                         </div>
                     </div>
                     <div class="control-group <?=$form->isError('language') ? 'error' : '';?>">
                         <?=$form->helper('language', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper('language', array('class' => ''))?>        
+                            <?=$form->helper('language', 'formSelect', array('class' => ''))?>        
                             <div class="help-block"><?=$form->helper('language', 'formElementErrors')?></div>
                         </div>
                     </div>
@@ -232,7 +226,7 @@ $form->setView($this)
                     <div class="control-group <?=$form->isError(array('Profile', 'country')) ? 'error' : '';?>">
                         <?=$form->helper(array('Profile', 'country'), 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper(array('Profile', 'country'), array('class' => ''))?>        
+                            <?=$form->helper(array('Profile', 'country'), 'formSelect', array('class' => ''))?>        
                             <div class="help-block"><?=$form->helper(array('Profile', 'country'), 'formElementErrors')?></div>
                         </div>
                     </div>

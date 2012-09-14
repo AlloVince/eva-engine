@@ -151,7 +151,6 @@ class Data
         // needed for alias tag when referring to other locale
         if (empty(self::$_ldml[(string) $locale])) {
             $filename = dirname(__FILE__) . '/Data/' . $locale . '.xml';
-            p($filename);
             if (!file_exists($filename)) {
                 require_once 'Zend/Locale/Exception.php';
                 throw new Zend_Locale_Exception("Missing locale file '$filename' for '$locale' locale.");

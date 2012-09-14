@@ -76,6 +76,13 @@ class User extends AbstractModelService
         $this->trigger('remove.pre');
 
         $item = $this->getItem();
+
+        $subItem = $item->join('Profile');
+        $subItem->remove();
+
+        $subItem = $item->join('Account');
+        $subItem->remove();
+
         $item->remove();
 
         $this->trigger('remove');
