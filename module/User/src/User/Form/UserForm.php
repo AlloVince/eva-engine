@@ -200,6 +200,34 @@ class UserForm extends \Eva\Form\RestfulForm
                 'value' => 'zh_CN',
             ),
         ),
+        'onlineStatus' => array (
+            'name' => 'onlineStatus',
+            'type' => 'select',
+            'options' => array (
+                'label' => 'Online Status',
+                'value_options' => array (
+                    array (
+                        'label' => 'Online',
+                        'value' => 'online',
+                    ),
+                    array (
+                        'label' => 'Busy',
+                        'value' => 'busy',
+                    ),
+                    array (
+                        'label' => 'Invisible',
+                        'value' => 'invisible',
+                    ),
+                    array (
+                        'label' => 'Offline',
+                        'value' => 'offline',
+                    ),
+                ),
+            ),
+            'attributes' => array (
+                'value' => 'offline',
+            ),
+        ),
     );
 
     /**
@@ -483,6 +511,25 @@ class UserForm extends \Eva\Form\RestfulForm
                     'name' => 'StringLength',
                     'options' => array (
                         'max' => '10',
+                    ),
+                ),
+            ),
+        ),
+        'onlineStatus' => array (
+            'name' => 'onlineStatus',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+                'inArray' => array (
+                    'name' => 'InArray',
+                    'options' => array (
+                        'haystack' => array (
+                            'online',
+                            'busy',
+                            'invisible',
+                            'offline',
+                        ),
                     ),
                 ),
             ),

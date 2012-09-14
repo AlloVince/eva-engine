@@ -20,8 +20,9 @@ class UserController extends RestfulModuleController
 
         $query = $request->getQuery();
 
-        $form = Api::_()->getForm('User\Form\UserSearchForm');
-        $selectQuery = $form->fieldsMap($query, true);
+        $form = new Form\UserSearchForm();
+        $form->bind($query)->isValid();
+        $selectQuery = $form->getData();
 
         $itemModel = Api::_()->getModelService('User\Model\User');
         if(!$selectQuery){

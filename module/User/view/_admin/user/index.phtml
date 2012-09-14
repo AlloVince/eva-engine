@@ -2,16 +2,12 @@
 $title = $this->_('User List');
 $this->headTitle($title, 'SET');
 $this->textDelay('breadcrumbText', $title);
-if($this->form){
-	$form = $this->form;
-} else {
-    $form = Eva\Api::_()->getForm('User\Form\UserSearchForm');
-}
-$form->init(array(
-    'action' => $this->uri('/admin/user/'),
-    'method' => 'get',
-    'values' => $this->query
-));
+
+$form = $this->form ? $this->form : new User\Form\UserSearchForm();
+$form->setView($this)
+     ->setMethod('get')
+     ->setAction($this->uri('/admin/user/'))
+     ->prepare();
 
 $lableMap = array(
     'active' => 'label-success',
