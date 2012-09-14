@@ -456,14 +456,17 @@ class RestfulForm extends Form implements InputFilterProviderInterface
     }
 
 
-    /*
-    public function attachInputFilterDefaults(InputFilterInterface $inputFilter, FieldsetInterface $fieldset)
+    public function getData($flag = FormInterface::VALUES_NORMALIZED)
     {
-        parent::attachInputFilterDefaults($inputFilter, $fieldset);
-        //Run after default filters inited, so we could overwrite it.
-        return $this;
+        $data = parent::getData($flag);
+        $data = $this->prepareData($data);
+        return $data;
     }
-    */
+
+    public function prepareData($data)
+    {
+        return $data;
+    }
 
     public function bind($valuesOrObject, $flags = FormInterface::VALUES_NORMALIZED)
     {

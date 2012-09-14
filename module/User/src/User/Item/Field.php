@@ -26,6 +26,12 @@ class Field extends AbstractItem
             'joinParameters' => array(
             ),
         ),
+        'FieldRole' => array(
+            'targetEntity' => 'User\Item\FieldRole',
+            'relationship' => 'OneToMany',
+            'joinColumn' => 'field_id',
+            'referencedColumn' => 'id',
+        ),
         'Roles' => array(
             'targetEntity' => 'User\Item\Role',
             'relationship' => 'ManyToMany',

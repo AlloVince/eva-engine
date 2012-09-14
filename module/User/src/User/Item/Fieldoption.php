@@ -20,27 +20,24 @@ class Fieldoption extends AbstractItem
 
     public function create()
     {
-        $data = $this->toArray();
-        $fieldItem = $this->getModel()->getItem('User\Item\Field');
+        $fieldItem = $this->getModel()->getItem();
         $fieldId = $fieldItem->id;
-
         if(!$fieldId) {
             return;
         }
 
         $dataClass = $this->getDataClass();
-        if(isset($data[0])) {
-            foreach($data as $key => $fieldOption){
-                $fieldOption['field_id'] = $fieldId;
-                $dataClass->create($fieldOption);
+        if(isset($this[0])){
+            foreach($this as $item){
+                $item['field_id'] = $fieldId;
+                $dataClass->create($item);
             }
         }
     }
 
     public function save()
     {
-        $data = $this->toArray();
-        $fieldItem = $this->getModel()->getItem('User\Item\Field');
+        $fieldItem = $this->getModel()->getItem();
         $fieldId = $fieldItem->id;
 
         if(!$fieldId) {
@@ -51,10 +48,10 @@ class Fieldoption extends AbstractItem
         $dataClass->where(array(
             'field_id' => $fieldId
         ))->remove();
-        if(isset($data[0])) {
-            foreach($data as $key => $fieldOption){
-                $fieldOption['field_id'] = $fieldId;
-                $dataClass->create($fieldOption);
+        if(isset($this[0])){
+            foreach($this as $item){
+                $item['field_id'] = $fieldId;
+                $dataClass->create($item);
             }
         }
     }

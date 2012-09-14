@@ -338,4 +338,24 @@ class FieldForm extends \Eva\Form\RestfulForm
             ),
         ),
     );
+
+    public function prepareData($data)
+    {
+        if(isset($data['FieldRole']['role_id']) && is_array($data['FieldRole']['role_id'])){
+            $fieldRoleArray = array();
+            $fieldRoles = $data['FieldRole']['role_id'];
+            foreach($fieldRoles as $fieldRole){
+                if(!$fieldRole){
+                    continue;
+                }
+                $fieldRoleArray[] = array(
+                    'field_id' => null,
+                    'role_id' => $fieldRole
+                );
+            }
+            $data['FieldRole'] = $fieldRoleArray;
+        }
+        return $data;
+    }
+
 }

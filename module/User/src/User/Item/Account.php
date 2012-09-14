@@ -16,16 +16,4 @@ class Account extends AbstractItem
             'referencedColumnName' => 'id',
         ),
     );
-
-    protected $map = array(
-    );
-
-    /*
-    public function getUserId()
-    {
-        if(!$this->user_id){
-            return $this->user_id = $this->model->getItem()->id;
-        }
-    }
-    */
 }

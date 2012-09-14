@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2012 年 09 月 06 日 10:41
+-- 生成日期: 2012 年 09 月 14 日 09:46
 -- 服务器版本: 5.5.16
 -- PHP 版本: 5.3.8
 
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `eva_user_fieldoptions` (
   `order` smallint(6) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `field_id` (`field_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=15 ;
 
 -- --------------------------------------------------------
 
@@ -62,8 +62,10 @@ DROP TABLE IF EXISTS `eva_user_fields`;
 CREATE TABLE IF NOT EXISTS `eva_user_fields` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `fieldKey` varchar(24) COLLATE utf8_unicode_ci NOT NULL,
+  `fieldType` enum('text','radio','select','multiCheckbox','number','email','textarea','url') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'text',
   `label` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `description` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `applyToAll` tinyint(1) NOT NULL DEFAULT '0',
   `required` tinyint(1) NOT NULL DEFAULT '0',
   `display` tinyint(1) unsigned NOT NULL,
   `order` smallint(3) unsigned NOT NULL DEFAULT '0',
@@ -74,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `eva_user_fields` (
   `style` text COLLATE utf8_unicode_ci,
   `error` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -207,10 +209,9 @@ DROP TABLE IF EXISTS `eva_user_roles`;
 CREATE TABLE IF NOT EXISTS `eva_user_roles` (
   `id` int(5) NOT NULL AUTO_INCREMENT,
   `roleName` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `description` text COLLATE utf8_unicode_ci,
-  `roleCache` text COLLATE utf8_unicode_ci,
+  `description` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
 
 -- --------------------------------------------------------
 
@@ -222,7 +223,40 @@ DROP TABLE IF EXISTS `eva_user_roles_users`;
 CREATE TABLE IF NOT EXISTS `eva_user_roles_users` (
   `role_id` int(5) NOT NULL,
   `user_id` int(10) NOT NULL,
+  `status` enum('active','pending','expired') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'pending',
+  `pendingTime` datetime DEFAULT NULL,
+  `activeTime` datetime DEFAULT NULL,
+  `expiredTime` datetime DEFAULT NULL,
   PRIMARY KEY (`role_id`,`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `eva_user_tags`
+--
+
+DROP TABLE IF EXISTS `eva_user_tags`;
+CREATE TABLE IF NOT EXISTS `eva_user_tags` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `tagName` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `language` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'en',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `eva_user_tags_users`
+--
+
+DROP TABLE IF EXISTS `eva_user_tags_users`;
+CREATE TABLE IF NOT EXISTS `eva_user_tags_users` (
+  `user_id` int(10) NOT NULL,
+  `tag_id` int(10) NOT NULL,
+  `createTime` datetime NOT NULL,
+  `orderNumber` int(5) NOT NULL,
+  PRIMARY KEY (`user_id`,`tag_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -249,7 +283,7 @@ CREATE TABLE IF NOT EXISTS `eva_user_users` (
   `timezone` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
   `registerTime` datetime DEFAULT NULL,
   `lastLoginTime` datetime DEFAULT NULL,
-  `language` varchar(10) COLLATE utf8_unicode_ci DEFAULT 'zh_CN',
+  `language` varchar(10) COLLATE utf8_unicode_ci DEFAULT 'en',
   `setting` int(10) NOT NULL DEFAULT '0',
   `inviteUserId` int(10) DEFAULT '0',
   `onlineStatus` enum('online','busy','invisible','offline') COLLATE utf8_unicode_ci DEFAULT 'offline',
@@ -258,7 +292,7 @@ CREATE TABLE IF NOT EXISTS `eva_user_users` (
   `registerIp` varbinary(16) DEFAULT NULL,
   `lastLoginIp` varbinary(16) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=15 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
