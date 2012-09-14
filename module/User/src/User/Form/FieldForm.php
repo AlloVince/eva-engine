@@ -138,7 +138,7 @@ class FieldForm extends \Eva\Form\RestfulForm
                 ),
             ),
             'attributes' => array (
-                'value' => '1',
+                'value' => '0',
             ),
         ),
         'required' => array (
@@ -355,6 +355,20 @@ class FieldForm extends \Eva\Form\RestfulForm
             }
             $data['FieldRole'] = $fieldRoleArray;
         }
+
+        //Skip empty field options
+        if(isset($data['Fieldoption'])){
+            $fieldOptionsArray = array();
+            $fieldOptions = $data['Fieldoption'];
+            foreach($fieldOptions as $fieldOption){
+                if(!$fieldOption['label'] && !$fieldOption['option']){
+                    continue;
+                }
+                $fieldOptionsArray[] = $fieldOption;
+            }
+            $data['Fieldoption'] = $fieldOptionsArray;
+        }
+
         return $data;
     }
 

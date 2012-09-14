@@ -9,11 +9,13 @@ use User\Form,
 class FieldController extends RestfulModuleController
 {
     protected $addResources = array(
+        'userfield',
         'create',
         'remove',
     );
 
     protected $renders = array(
+        'restGetFieldUserfield' => 'user/field',
         'restGetFieldCreate' => 'field/get',
         'restPutField' => 'field/get',
         'restPostField' => 'field/get',
@@ -64,7 +66,7 @@ class FieldController extends RestfulModuleController
 
     public function restGetField()
     {
-        $id = (int)$this->getEvent()->getRouteMatch()->getParam('id');
+        $id = (int)$this->params('id');
         $itemModel = Api::_()->getModelService('User\Model\Field');
         $item = $itemModel->getField($id);
 
@@ -81,6 +83,58 @@ class FieldController extends RestfulModuleController
                 )
             ),
         ));
+        return array(
+            'item' => $item,
+            'flashMessenger' => $this->flashMessenger()->getMessages(),
+        );
+    }
+
+    public function restGetFieldUserfield()
+    {
+        $id = (int)$this->params('id');
+        $itemModel = Api::_()->getModelService('User\Model\User');
+        $item = $itemModel->getUser($id);
+
+        $item = $item->toArray(array(
+            'self' => array(
+                '*',
+            ),
+            'join' => array(
+                'Roles' => array(
+                    'self' => array(
+                    ),
+                    'join' => array(
+                        'CommonFields' => array(
+                            'self' => array(
+                                '*'
+                            ),
+                            'join' => array(
+                                'Fieldoption' => array(
+                                    'self' => array(
+                                        '*'
+                                    ),
+                                ),
+                            ),
+                        ),
+                        'RoleFields' => array(
+                            'self' => array(
+                                '*'
+                            ),
+                            'join' => array(
+                                'Fieldoption' => array(
+                                    'self' => array(
+                                        '*'
+                                    ),
+                                ),
+                            ),
+                        ),
+                    )
+                )
+            ),
+        ));
+
+        p($item['Roles'][0], 1);
+
         return array(
             'item' => $item,
             'flashMessenger' => $this->flashMessenger()->getMessages(),

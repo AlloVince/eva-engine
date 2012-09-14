@@ -8,6 +8,11 @@ use Eva\Api,
 class Field extends AbstractModelService
 {
 
+    public function toFormElements(array $roleArray)
+    {
+
+    }
+
     public function createField(array $data = array())
     {
         if($data) {

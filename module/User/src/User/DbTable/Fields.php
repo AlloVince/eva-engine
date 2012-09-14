@@ -15,6 +15,11 @@ class Fields extends TableGateway
     {
         $this->enableCount();
 
+        if($params->applyToAll !== null){
+            $this->where(array(
+                'applyToAll' => $params->applyToAll,
+            ));
+        }
 
         if($params->keyword){
             $keyword = $params->keyword;

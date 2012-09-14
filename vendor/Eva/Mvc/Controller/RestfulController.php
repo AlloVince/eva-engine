@@ -11,6 +11,7 @@
 
 namespace Eva\Mvc\Controller;
 use Eva\View\Model\ViewModel,
+    Eva\Mvc\Exception,
     Zend\Http\Request as HttpRequest,
     Zend\Http\PhpEnvironment\Response as HttpResponse,
     Zend\Mvc\MvcEvent;
@@ -103,7 +104,7 @@ abstract class RestfulController extends \Zend\Mvc\Controller\AbstractRestfulCon
         $render = $resource['render'];
 
         if(false === method_exists($this, $function)) {
-            throw new \Eva\Core\Exception\RestfulException(sprintf('Request restful resource %s not exist', $function));
+            throw new Exception\InvalidArgumentException(sprintf('Request restful resource %s not exist', $function));
         }
 
         $variables = $this->$function();
