@@ -1,385 +1,63 @@
 <?
 $item = $this->item;
-$title = $item ? 'Edit User' : 'Create User';
+$forms = $this->forms;
+$title = 'User Custom Fields';
 $title = $this->_($title);
 $this->headTitle($title, 'SET');
 $this->textDelay('breadcrumbText', $title);
 
-if($this->form){
-	$form = $this->form;
-} else {
-    $form = $item ? new User\Form\UserEditForm() : new User\Form\UserForm();
-    $form->useSubFormGroup();
-}
+$form = new \Eva\Form\RestfulForm();
 
-$roleValues = array();
-if(isset($item['RoleUser'])){
-    foreach($item['RoleUser'] as $fieldRole){
-        $roleValues[] = $fieldRole['role_id'];
-    }
-}
-
-$form->setMethod($item ? 'put' : 'post');
+$form->setMethod('put');
 $form->setView($this)
-     ->setAction($this->uri('/admin/user/'))
+     ->setAction($this->uri('/admin/user/fieldvalue'))
      ->bind($item)
      ->prepare();
 ?>
 
-<input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
-<div id="user-create-succeed" class="alert alert-success hide">
-    <a href="#" data-dismiss="alert" class="close">x</a>
-    <h4 class="alert-heading"><?=$this->_('New User Created')?></h4>
-</div>
-
-<div id="user-edit-succeed" class="alert alert-success hide">
-    <a href="#" data-dismiss="alert" class="close">x</a>
-    <h4 class="alert-heading"><?=$this->_('User Edit Succeed')?></h4>
-</div>
-
-<div id="user-edit-failed" class="alert alert-error hide">
-    <a href="#" data-dismiss="alert" class="close">x</a>
-    <h4 class="alert-heading"><?=$this->_('User Edit Failed')?></h4>
-</div>
-
-
-
 <div class="row">
     <form <?=$this->formAttr($form)?>>
         <?=$form->restful();?>
-        <?=$form->helper('id');?>
         <div class="span10">
-            <?if($item):?>
-            <div class="btn-group pull-right">
-                <a href="<?=$this->uri('/admin/user/create')?>" class="btn"><?=$this->_('Clear Cache')?></a>
-                <a href="<?=$this->uri('/admin/user/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/user/' . $item['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
-            </div>
-            <ul class="nav nav-tabs">
-                <li class="active">
-                <a href="<?=$this->uri('/admin/user/' . $item['id'])?>"><?=$title?></a>
+            <div class="slate">
+             <ul class="nav nav-tabs">
+                <li>
+                <a href="<?=$this->uri('/admin/user/' . $item['id'])?>">Edit User</a>
                 </li>
-                <li><a href="<?=$this->uri('/admin/user/field/userfield/' . $item['id'])?>"><?=$this->_('User Fields')?></a></li>
+                <li class="active"><a href="<?=$this->uri('/admin/user/field/userfield/' . $item['id'])?>"><?=$this->_('User Fields')?></a></li>
                 <li><a href="#"><?=$this->_('User Tags')?></a></li>
             </ul>
-            <?else:?>
-            <div class="slate">
-                <div class="page-headr">
-                    <h2><?=$title?></h2>
-                </div>
             </div>
-            <?endif?>
         </div><!--span10 end-->
 
-        <div class="span5">
-            <div class="slate">
-                <div class="page-header">
-                    <h3><?=$this->_('User Basic Info')?></h3>
-                </div>
-
-                <fieldset class="form-horizontal">
-                    <div class="control-group <?=$form->isError('userName') ? 'error' : '';?>">
-                        <?=$form->helper('userName', 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper('userName', array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper('userName', 'formElementErrors')?></div>
-                        </div>
-                    </div>
-
-                    <div class="control-group <?=$form->isError('status') ? 'error' : '';?>">
-                        <?=$form->helper('status', 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper('status', 'formSelect', array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper('status', 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError('screenName') ? 'error' : '';?>">
-                        <?=$form->helper('screenName', 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper('screenName', array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper('screenName', 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError('firstName') ? 'error' : '';?>">
-                        <?=$form->helper('firstName', 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper('firstName', array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper('firstName', 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError('lastName') ? 'error' : '';?>">
-                        <?=$form->helper('lastName', 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper('lastName', array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper('lastName', 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError('gender') ? 'error' : '';?>">
-                        <?=$form->helper('gender', 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper('gender', 'formSelect', array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper('gender', 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError('avatar') ? 'error' : '';?>">
-                        <?=$form->helper('avatar', 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper('avatar', array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper('avatar', 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError('timezone') ? 'error' : '';?>">
-                        <?=$form->helper('timezone', 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper('timezone', 'formSelect', array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper('timezone', 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError('language') ? 'error' : '';?>">
-                        <?=$form->helper('language', 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper('language', 'formSelect', array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper('language', 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                </fieldset>
-            </div>
-        </div><!--span5 end-->
-
-        <div class="span5">
-            <div class="slate">
-                <div class="page-header">
-                    <h3><?=$this->_('Security Setting')?></h3>
-                </div>
-                <fieldset class="form-horizontal">
-                   <div class="control-group <?=$form->isError('email') ? 'error' : '';?>">
-                        <?=$form->helper('email', 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper('email', array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper('email', 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError('password') ? 'error' : '';?>">
-                        <?=$form->helper('password', 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper('password', array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper('password', 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                </fieldset>
-            </div>
-        </div><!--span5 end-->
-
-        <div class="span5">
-            <div class="slate">
-                <div class="page-header">
-                    <h3><?=$this->_('Roles & Permissions')?></h3>
-                </div>
-                <fieldset class="form-horizontal">
-                    <div class="control-group <?=$form->isError(array('RoleUser', 'role_id')) ? 'error' : '';?>">
-                        <?=$form->helper(array('RoleUser', 'role_id'), 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper(array('RoleUser', 'role_id'), 'formMultiCheckbox', array(
-                                'class' => '',
-                                'value' => $roleValues,
-                            ))?>
-                            <div class="help-block"><?=$form->helper(array('RoleUser', 'role_id'), 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                </fieldset>
-            </div>
-        </div><!--span5 end-->
-
-        <div class="span5">
-            <div class="slate">
-                <div class="page-header">
-                    <h3><?=$this->_('Credits Setting')?></h3>
-                </div>
-                <fieldset class="form-horizontal">
-                    <div class="control-group <?=$form->isError(array('Account', 'credits')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Account', 'credits'), 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper(array('Account', 'credits'), array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper(array('Account', 'credits'), 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError(array('Account', 'points')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Account', 'points'), 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper(array('Account', 'points'), array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper(array('Account', 'points'), 'formElementErrors')?></div>
-                        </div>
-                    </div>
-
-                </fieldset>
-            </div>
-        </div><!--span5 end-->
-
-
-
+        <?foreach($forms as $forminfo):?>
+<?
+$form = new \Eva\Form\RestfulForm($forminfo['name']);
+$form->setMethod('put')
+->setView($this)
+->setMergeElements($forminfo['elements'])
+->init()
+->setAction($this->uri('/admin/user/fieldvalue'))
+->bind($item)
+->prepare();
+?>
         <div class="span10">
             <div class="slate">
-                <div class="page-header">
-                    <h2><?=$this->_('User Profile')?></h2>
-                </div>
                 <fieldset class="form-horizontal">
-                    <div class="control-group <?=$form->isError(array('Profile', 'site')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Profile', 'site'), 'label', array('class' => 'control-label'))?>
+                    <?foreach($form->getMergeElements() as $element):?>
+                    <div class="control-group <?=$form->isError($element['name']) ? 'error' : '';?>">
+                        <?=$form->helper($element['name'], 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper(array('Profile', 'site'), array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper(array('Profile', 'site'), 'formElementErrors')?></div>
+                            <?=$form->helper($element['name'], 'form' . ucfirst($element['type']), array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper($element['name'], 'formElementErrors')?></div>
                         </div>
                     </div>
-                    <div class="control-group <?=$form->isError(array('Profile', 'fullName')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Profile', 'fullName'), 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper(array('Profile', 'fullName'), array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper(array('Profile', 'fullName'), 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError(array('Profile', 'birthday')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Profile', 'birthday'), 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper(array('Profile', 'birthday'), array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper(array('Profile', 'birthday'), 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError(array('Profile', 'height')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Profile', 'height'), 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper(array('Profile', 'height'), array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper(array('Profile', 'height'), 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError(array('Profile', 'weight')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Profile', 'weight'), 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper(array('Profile', 'weight'), array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper(array('Profile', 'weight'), 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError(array('Profile', 'country')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Profile', 'country'), 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper(array('Profile', 'country'), 'formSelect', array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper(array('Profile', 'country'), 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError(array('Profile', 'address')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Profile', 'address'), 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper(array('Profile', 'address'), array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper(array('Profile', 'address'), 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError(array('Profile', 'addressMore')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Profile', 'addressMore'), 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper(array('Profile', 'addressMore'), array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper(array('Profile', 'addressMore'), 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError(array('Profile', 'city')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Profile', 'city'), 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper(array('Profile', 'city'), array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper(array('Profile', 'city'), 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError(array('Profile', 'province')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Profile', 'province'), 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper(array('Profile', 'province'), array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper(array('Profile', 'province'), 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError(array('Profile', 'state')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Profile', 'state'), 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper(array('Profile', 'state'), array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper(array('Profile', 'state'), 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError(array('Profile', 'zipcode')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Profile', 'zipcode'), 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper(array('Profile', 'zipcode'), array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper(array('Profile', 'zipcode'), 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError(array('Profile', 'phoneBusiness')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Profile', 'phoneBusiness'), 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper(array('Profile', 'phoneBusiness'), array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper(array('Profile', 'phoneBusiness'), 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError(array('Profile', 'phoneMobile')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Profile', 'phoneMobile'), 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper(array('Profile', 'phoneMobile'), array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper(array('Profile', 'phoneMobile'), 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError(array('Profile', 'phoneHome')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Profile', 'phoneHome'), 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper(array('Profile', 'phoneHome'), array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper(array('Profile', 'phoneHome'), 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError(array('Profile', 'fax')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Profile', 'fax'), 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper(array('Profile', 'fax'), array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper(array('Profile', 'fax'), 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError(array('Profile', 'signature')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Profile', 'signature'), 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper(array('Profile', 'signature'), array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper(array('Profile', 'signature'), 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError(array('Profile', 'location')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Profile', 'location'), 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper(array('Profile', 'location'), array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper(array('Profile', 'location'), 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError(array('Profile', 'bio')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Profile', 'bio'), 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper(array('Profile', 'bio'), 'formTextarea', array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper(array('Profile', 'bio'), 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError(array('Profile', 'localIm')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Profile', 'localIm'), 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper(array('Profile', 'localIm'), array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper(array('Profile', 'localIm'), 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError(array('Profile', 'internalIm')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Profile', 'internalIm'), 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper(array('Profile', 'internalIm'), array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper(array('Profile', 'internalIm'), 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError(array('Profile', 'otherIm')) ? 'error' : '';?>">
-                        <?=$form->helper(array('Profile', 'otherIm'), 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper(array('Profile', 'otherIm'), array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper(array('Profile', 'otherIm'), 'formElementErrors')?></div>
-                        </div>
-                    </div>
+                    <?endforeach?>
 
                 </fieldset>
             </div>
         </div><!--span10 end-->
+        <?endforeach?>
 
 
         <div class="span10 listing-buttons">

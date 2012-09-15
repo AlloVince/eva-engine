@@ -102,6 +102,7 @@ class FieldController extends RestfulModuleController
             'join' => array(
                 'Roles' => array(
                     'self' => array(
+                        '*'
                     ),
                     'join' => array(
                         'CommonFields' => array(
@@ -133,10 +134,20 @@ class FieldController extends RestfulModuleController
             ),
         ));
 
-        p($item['Roles'][0], 1);
+        $fieldModel = Api::_()->getModelService('User\Model\Field');
+        $forms = array();
+        if($item['Roles']){
+            foreach($item['Roles'] as $roleArray){
+                $forms[] = array(
+                    'name' => $roleArray['roleName'],
+                    'elements' => $fieldModel->roleFieldsArrayToForm($roleArray),
+                );
+            }
+        }
 
         return array(
             'item' => $item,
+            'forms' => $forms,
             'flashMessenger' => $this->flashMessenger()->getMessages(),
         );
     }

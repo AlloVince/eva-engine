@@ -8,9 +8,49 @@ use Eva\Api,
 class Field extends AbstractModelService
 {
 
-    public function toFormElements(array $roleArray)
+    public function roleFieldsArrayToForm(array $roleArray)
     {
+        $elements = array();
+        if(isset($roleArray['CommonFields'])){
+            $fields = $roleArray['CommonFields'];
+            foreach($fields as $field){
+                $elements[] = $this->fieldToElement($field);
+            }
+        }
 
+        if(isset($roleArray['Fields'])){
+            $fields = $roleArray['Fields'];
+            foreach($fields as $field){
+                $elements[] = $this->fieldToElement($field);
+            }
+        }
+
+        return $elements;
+    }
+
+    protected function fieldToElement($field)
+    {
+        $element = array(
+            'name' => $field['fieldKey'],
+            'type' => $field['fieldType'],
+            'options' => array(
+                'label' => $field['label'],
+            ),
+            'attributes' => array(
+                'value' => $field['defaultValue'],
+            ),
+        );
+        if(isset($field['Fieldoption'])){
+            $options = array();
+            foreach($field['Fieldoption'] as $key => $option){
+                $options[] = array(
+                    'label' => $option['label'],
+                    'value' => $option['option'],
+                );
+            }
+            $element['options']['value_options'] = $options;
+        }
+        return $element;
     }
 
     public function createField(array $data = array())
@@ -20,7 +60,7 @@ class Field extends AbstractModelService
         }
 
         $item = $this->getItem();
-        
+
         $this->trigger('create.pre');
 
         $itemId = $item->create();
@@ -32,7 +72,7 @@ class Field extends AbstractModelService
         }
         $this->trigger('create');
 
-    
+
         $this->trigger('create.post');
 
         return $itemId;
@@ -45,7 +85,7 @@ class Field extends AbstractModelService
         }
 
         $item = $this->getItem();
-        
+
         $this->trigger('save.pre');
 
         $item->save();
@@ -57,7 +97,7 @@ class Field extends AbstractModelService
         }
         $this->trigger('save');
 
-    
+
         $this->trigger('save.post');
 
 
@@ -77,7 +117,7 @@ class Field extends AbstractModelService
         $item->remove();
 
         $this->trigger('remove');
-    
+
         $this->trigger('remove.post');
 
         return true;
