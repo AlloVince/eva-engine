@@ -100,9 +100,16 @@ abstract class AbstractModelService implements ServiceLocatorAwareInterface
         }
 
         $this->dataSource = $dataSource;
+
+        //Other model has already inited connected item
+        $itemClass = $this->getItemClass();
+        if(!$this->item && $this->serviceLocator->has($itemClass)){
+            $this->item = $this->serviceLocator->get($itemClass);
+        }
+
         //Clear last item and get new one
-        if($item = $this->getItem()) {
-            $item->setDataSource($dataSource);
+        if($this->item) {
+            $this->item->setDataSource($dataSource);
         }
         return $this;
     }
@@ -118,7 +125,11 @@ abstract class AbstractModelService implements ServiceLocatorAwareInterface
         }
 
         if($this->serviceLocator->has($itemClass)){
-            return $this->serviceLocator->get($itemClass);
+            if($itemClass == $this->getItemClass()){
+                return $this->item = $this->serviceLocator->get($itemClass);
+            } else {
+                return $this->serviceLocator->get($itemClass);
+            }
         }
 
         $model = &$this;
@@ -131,7 +142,7 @@ abstract class AbstractModelService implements ServiceLocatorAwareInterface
         if($itemClass == $this->getItemClass()){
             return $this->item = $this->serviceLocator->get($itemClass);
         }
-        return $this->item = $this->serviceLocator->get($itemClass);
+        return $this->serviceLocator->get($itemClass);
     }
 
     public function setItemList($itemList)
