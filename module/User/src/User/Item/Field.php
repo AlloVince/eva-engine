@@ -54,6 +54,10 @@ class Field extends AbstractItem
             'getFieldKey()',
             'getFieldName()',
         ),
+        'save' => array(
+            'getFieldKey()',
+            'getFieldName()',
+        ),
     );
 
     public function getFieldKey()

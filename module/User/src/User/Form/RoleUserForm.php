@@ -20,6 +20,7 @@ namespace User\Form;
  */
 class RoleUserForm extends \Eva\Form\RestfulForm
 {
+    protected $role;
 
     /**
      * Form basic elements
@@ -30,7 +31,6 @@ class RoleUserForm extends \Eva\Form\RestfulForm
         'role_id' => array (
             'name' => 'role_id',
             'type' => 'multiCheckbox',
-            'callback' => 'getUserRoles',
             'options' => array (
                 'label' => 'User Roles',
             ),
@@ -70,6 +70,36 @@ class RoleUserForm extends \Eva\Form\RestfulForm
             ),
             'attributes' => array (
                 'value' => 'pending',
+            ),
+        ),
+        'pendingTime' => array (
+            'name' => 'pendingTime',
+            'type' => 'datetime',
+            'options' => array (
+                'label' => 'Pending Time',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
+        'activeTime' => array (
+            'name' => 'activeTime',
+            'type' => 'datetime',
+            'options' => array (
+                'label' => 'Active Time',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
+        'expiredTime' => array (
+            'name' => 'expiredTime',
+            'type' => 'datetime',
+            'options' => array (
+                'label' => 'Expired Time',
+            ),
+            'attributes' => array (
+                'value' => '',
             ),
         ),
     );
@@ -114,20 +144,46 @@ class RoleUserForm extends \Eva\Form\RestfulForm
                 ),
             ),
         ),
+        'pendingTime' => array (
+            'name' => 'pendingTime',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+            ),
+        ),
+        'activeTime' => array (
+            'name' => 'activeTime',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+            ),
+        ),
+        'expiredTime' => array (
+            'name' => 'expiredTime',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+            ),
+        ),
+
     );
 
-    public function getUserRoles($element)
+    public function getRole()
     {
-        $model = \Eva\Api::_()->getModelService('User\Model\Role');
-        $items = $model->getRoleList();
-        $valueOptions = array();
-        foreach($items as $item){
-            $valueOptions[] = array(
-                'label' => $item['roleName'],
-                'value' => $item['id'],
-            );
+        if($this->role) {
+            return $this->role;
         }
-        $element['options']['value_options'] = $valueOptions;
-        return $element;
+
+        $roleId = $this->get('role_id')->getValue();
+        if(!$roleId){
+            return array();
+        }
+
+        $model = \Eva\Api::_()->getModelService('User\Model\Role');
+        $item = $model->getRole($roleId);
+        return $item;
     }
 }

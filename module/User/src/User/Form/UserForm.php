@@ -24,7 +24,10 @@ class UserForm extends \Eva\Form\RestfulForm
         'default' => array(
             'Profile' => 'User\Form\ProfileForm',
             'Account' => 'User\Form\AccountForm',
-            'RoleUser' => 'User\Form\RoleUserForm',
+            'RoleUser' => array(
+                'formClass' => 'User\Form\RoleUserForm',
+                'collection' => true,
+            ),
         )
     );
 
@@ -499,6 +502,34 @@ class UserForm extends \Eva\Form\RestfulForm
             ),
         ),
     );
+
+    public function beforeBind($values)
+    {
+        $model = \Eva\Api::_()->getModelService('User\Model\Role');
+        $roles = $model->getRoleList()->toArray();
+        $roleUsers = array();
+        if(isset($values['RoleUser']) && $values['RoleUser']){
+            foreach($roles as $key => $role){
+                $value = array(
+                    'role_id' => $role['id']
+                );
+                foreach($values['RoleUser'] as $roleUser){
+                    if($role['id'] == $roleUser['role_id']){
+                        $value = $roleUser;
+                    }
+                }
+                $roleUsers[] = $value;
+            }
+        } else {
+            foreach($roles as $key => $role){
+                $roleUsers[] = array(
+                    'role_id' => $role['id']
+                );
+            }
+        }
+        $values['RoleUser'] = $roleUsers;
+        return $values;
+    }
 
     public function getLanguages($element)
     {

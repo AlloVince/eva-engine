@@ -74,17 +74,17 @@ class Role extends AbstractModelService
         return true;
     }
 
-    public function getRole($userIdOrName = null, array $map = array())
+    public function getRole($roleIdOrName = null, array $map = array())
     {
         $this->trigger('get.precache');
 
-        if(is_numeric($userIdOrName)){
+        if(is_numeric($roleIdOrName)){
             $this->setItem(array(
-                'id' => $userIdOrName,
+                'id' => $roleIdOrName,
             ));
-        } elseif(is_string($userIdOrName)) {
+        } elseif(is_string($roleIdOrName)) {
             $this->setItem(array(
-                'fieldKey' => $userIdOrName,
+                'roleName' => $roleIdOrName,
             ));
         }
         $this->trigger('get.pre');

@@ -12,13 +12,6 @@ if($this->form){
     $form->useSubFormGroup();
 }
 
-$roleValues = array();
-if(isset($item['RoleUser'])){
-    foreach($item['RoleUser'] as $fieldRole){
-        $roleValues[] = $fieldRole['role_id'];
-    }
-}
-
 $form->setMethod($item ? 'put' : 'post');
 $form->setView($this)
      ->setAction($this->uri('/admin/user/'))
@@ -169,25 +162,6 @@ $form->setView($this)
             </div>
         </div><!--span5 end-->
 
-        <div class="span5">
-            <div class="slate">
-                <div class="page-header">
-                    <h3><?=$this->_('Roles & Permissions')?></h3>
-                </div>
-                <fieldset class="form-horizontal">
-                    <div class="control-group <?=$form->isError(array('RoleUser', 'role_id')) ? 'error' : '';?>">
-                        <?=$form->helper(array('RoleUser', 'role_id'), 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper(array('RoleUser', 'role_id'), 'formMultiCheckbox', array(
-                                'class' => '',
-                                'value' => $roleValues,
-                            ))?>
-                            <div class="help-block"><?=$form->helper(array('RoleUser', 'role_id'), 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                </fieldset>
-            </div>
-        </div><!--span5 end-->
 
         <div class="span5">
             <div class="slate">
@@ -215,6 +189,38 @@ $form->setView($this)
         </div><!--span5 end-->
 
 
+        <div class="span10">
+            <div class="slate">
+                <div class="page-header">
+                    <h3><?=$this->_('Roles & Permissions')?></h3>
+                </div>
+                <?foreach($form->get('RoleUser') as $subForm):?>
+                <?$role = $subForm->getRole()?>
+                <fieldset class="form-horizontal">
+                    <div class="control-group <?=$subForm->isError('role_id') ? 'error' : '';?> span3">
+                        <?=$subForm->helper('role_id', 'label', array(
+                            'class' => 'control-label',
+                            'label' => $role['roleName'],
+                        ))?>
+                        <div class="controls">
+                            <?=$subForm->helper('role_id', 'formCheckbox', array(
+                                'class' => '',
+                                'checked' => 'unchecked'
+                            ))?>
+                            <div class="help-block"><?=$subForm->helper('role_id', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$subForm->isError('status') ? 'error' : '';?> span3">
+                        <?=$subForm->helper('status', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$subForm->helper('status', 'formSelect', array('class' => ''))?>        
+                            <div class="help-block"><?=$subForm->helper('status', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                </fieldset>
+                <?endforeach?>
+            </div>
+        </div><!--span5 end-->
 
         <div class="span10">
             <div class="slate">

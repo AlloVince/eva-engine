@@ -15,45 +15,12 @@ $lableMap = array(
         <div class="btn-group pull-right">
             <a href="<?=$this->uri('/admin/user/field/create')?>" class="btn btn-info"><?=$this->_('Add New Field')?></a>
         </div>
-        <!--
-        <form action="<?=$this->uri('/admin/user/field/')?>" method="post" class="pull-left" data-multiform="post">
-            <input type="hidden" name="id" class="multiform-container-main" value="" />
-            <input type="hidden" name="order" class="multiform-container" value="" />
-            <div class="btn-group">
-                <span class="btn"><input type="checkbox" class="multiform-checker" /></span>
-                <span data-toggle="dropdown" class="btn dropdown-toggle">
-                    <?=$this->_('Status')?>
-                    <span class="caret"></span>
-                </span>
-                <ul class="dropdown-menu">
-                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/user/field/multi/status/active')?>"><?=$this->_('Active')?></a></li>
-                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/user/field/multi/status/inactive')?>"><?=$this->_('Inactive')?></a></li>
-                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/user/field/multi/status/blocked')?>"><?=$this->_('Blocked')?></a></li>
-                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/user/field/multi/status/deleted')?>"><?=$this->_('Deleted')?></a></li>
-                </ul>
-            </div>
-        </form>
-        -->
+
     </div>
 
     <div class="span10">
         <div class="slate">
             <div class="page-header">
-                <!--
-                <div class="btn-group pull-right">
-                    <span data-toggle="dropdown" class="btn dropdown-toggle">
-                        <?=$this->_('Order')?> <span class="caret"></span>
-                    </span>
-                    <ul class="dropdown-menu">
-                        <li><a href="<?=$this->uri('/admin/user/field/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'idasc',),));?>" class=""><i class="icon-arrow-up"></i> <?=$this->_('Id')?></a></li>
-                        <li><a href="<?=$this->uri('/admin/user/field/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'iddesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Id')?></a></li>
-                        <li><a href="<?=$this->uri('/admin/user/field/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'titleasc',),));?>" class=""><i class="icon-arrow-up"></i> <?=$this->_('Title')?></a></li>
-                        <li><a href="<?=$this->uri('/admin/user/field/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'titledesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Title')?></a></li>
-                        <li><a href="<?=$this->uri('/admin/user/field/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'timeasc',),));?>" class=""><i class="icon-arrow-up"></i> <?=$this->_('Time')?></a></li>
-                        <li><a href="<?=$this->uri('/admin/user/field/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'timedesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Time')?></a></li>
-                    </ul>
-                </div>
-                -->
                 <h2><?=$title?></h2>
             </div>
 
@@ -75,7 +42,7 @@ $lableMap = array(
                             <input name="id" type="checkbox" class="multiform-item-checkbox"  data-multiform="post" data-multiform-itemid="<?=$item['id'] ?>" value="<?=$item['id'] ?>" />
                         </td>	
                         <td>
-                            <a href="<?=$this->uri('/admin/user/field/' . $item['id'])?>" class="title"><?=$item['fieldKey'] ?></a>
+                            <a href="<?=$this->uri('/admin/user/field/' . $item['id'])?>" class="title"><?=$item['fieldName'] ?></a>
                             <p>
                             <span class="meta"> <?=$item['description']?></span>
                             </p>
