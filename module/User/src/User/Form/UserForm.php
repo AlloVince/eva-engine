@@ -28,7 +28,10 @@ class UserForm extends \Eva\Form\RestfulForm
                 'formClass' => 'User\Form\RoleUserForm',
                 'collection' => true,
             ),
-        )
+            'CommonField' => 'User\Form\UserCommonFieldForm',
+        ),
+        'userfield' => array(
+        ),
     );
 
     /**
@@ -503,6 +506,7 @@ class UserForm extends \Eva\Form\RestfulForm
         ),
     );
 
+    /*
     public function beforeBind($values)
     {
         $model = \Eva\Api::_()->getModelService('User\Model\Role');
@@ -530,7 +534,26 @@ class UserForm extends \Eva\Form\RestfulForm
         $values['RoleUser'] = $roleUsers;
         return $values;
     }
+    */
 
+    public function prepareData($data)
+    {
+        if(isset($data['CommonField']) && is_array($data['CommonField'])){
+            $fieldvalues = array();
+            foreach($data['CommonField'] as $key => $fieldValue){
+                if(!$fieldValue){
+                    continue;
+                }
+                $fieldvalues[] = array(
+                    'field_id' => $key,
+                    'value' => $fieldValue,
+                );
+            }
+            $data['CommonField'] = $fieldvalues;
+        }
+
+        return $data;
+    }
     public function getLanguages($element)
     {
         $translator = \Eva\Api::_()->getServiceManager()->get('translator');

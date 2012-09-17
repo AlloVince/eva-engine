@@ -46,6 +46,8 @@ class RestfulForm extends Form implements InputFilterProviderInterface
     */
     protected $mergeElements = array();
 
+    protected $mergedElements = array();
+
     /**
     * Filter definitions
     *
@@ -243,7 +245,12 @@ class RestfulForm extends Form implements InputFilterProviderInterface
     {
         //TODO: could merge parent class elements
         $elements = $elements ? $elements : $this->mergeElements;
-        return $this->merge($this->baseElements, $elements);
+        return $this->mergedElements = $this->merge($this->baseElements, $elements);
+    }
+
+    public function getElementsArray()
+    {
+        return $this->mergedElements;
     }
 
     public function mergeFilters()

@@ -28,10 +28,11 @@ class Field extends AbstractModelService
         return $elements;
     }
 
-    protected function fieldToElement($field)
+    public function fieldToElement($field)
     {
         $element = array(
-            'name' => $field['fieldKey'],
+            //'name' => $field['fieldKey'],
+            'name' => $field['id'],
             'type' => $field['fieldType'],
             'options' => array(
                 'label' => $field['label'],

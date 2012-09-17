@@ -17,6 +17,7 @@ $form->setView($this)
      ->setAction($this->uri('/admin/user/'))
      ->bind($item)
      ->prepare();
+
 ?>
 
 <input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
@@ -189,6 +190,7 @@ $form->setView($this)
         </div><!--span5 end-->
 
 
+        <!--
         <div class="span10">
             <div class="slate">
                 <div class="page-header">
@@ -221,6 +223,7 @@ $form->setView($this)
                 <?endforeach?>
             </div>
         </div><!--span5 end-->
+        -->
 
         <div class="span10">
             <div class="slate">
@@ -387,6 +390,26 @@ $form->setView($this)
             </div>
         </div><!--span10 end-->
 
+        <div class="span10">
+            <div class="slate">
+                <div class="page-header">
+                    <h2><?=$this->_('User Custom Fields')?></h2>
+                </div>
+                <fieldset class="form-horizontal">
+                    <?if($subForm = $form->get('CommonField')):?>
+                    <?foreach($subForm->getElementsArray() as $element):?>
+                    <div class="control-group <?=$subForm->isError($element['name']) ? 'error' : '';?>">
+                        <?=$subForm->helper($element['name'], 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$subForm->helper($element['name'], 'form' . ucfirst($element['type']), array('class' => ''))?>        
+                            <div class="help-block"><?=$subForm->helper($element['name'], 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <?endforeach?>
+                    <?endif?>
+                </div>
+            </div>
+        </div>
 
         <div class="span10 listing-buttons">
             <button id="save-publish" class="btn btn-success btn-large"><?=$this->_('Save')?></button>

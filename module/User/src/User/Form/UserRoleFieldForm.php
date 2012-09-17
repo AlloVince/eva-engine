@@ -18,10 +18,28 @@ namespace User\Form;
  * @category   Eva
  * @package    Eva_Form
  */
-class UserFieldForm extends \Eva\Form\RestfulForm
+class UserRoleFieldForm extends \Eva\Form\RestfulForm
 {
+    protected $role;
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    public function setRole($role)
+    {
+        $this->role = $role;
+        return $this;
+    }
+
+    public function __construct($formName = null, $role)
+    {
+        $this->setRole($role);
+        parent::__construct($formName);
+    }
+
     public function init()
     {
-    
+        $roleKey = $this->getRole();
     }
 }

@@ -46,6 +46,14 @@ class User extends AbstractItem
                 'referencedColumn' => 'id',
             ),
         ),
+        'CommonField' => array(
+            'targetEntity' => 'User\Item\Fieldvalue',
+            'relationship' => 'OneToMany',
+            'joinColumn' => 'user_id',
+            'referencedColumn' => 'id',
+            'joinParameters' => array(
+            ),
+        ),
         'MyFriends' => array(
             'targetEntity' => 'User\Item\User',
             'relationship' => 'ManyToMany',

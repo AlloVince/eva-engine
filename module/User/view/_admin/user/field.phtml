@@ -5,19 +5,9 @@ $title = 'User Custom Fields';
 $title = $this->_($title);
 $this->headTitle($title, 'SET');
 $this->textDelay('breadcrumbText', $title);
-
-$form = new \Eva\Form\RestfulForm();
-
-$form->setMethod('put');
-$form->setView($this)
-     ->setAction($this->uri('/admin/user/fieldvalue'))
-     ->bind($item)
-     ->prepare();
 ?>
 
 <div class="row">
-    <form <?=$this->formAttr($form)?>>
-        <?=$form->restful();?>
         <div class="span10">
             <div class="slate">
              <ul class="nav nav-tabs">
@@ -41,10 +31,15 @@ $form->setMethod('put')
 ->bind($item)
 ->prepare();
 ?>
+    <form <?=$this->formAttr($form)?>>
+        <?=$form->restful();?>
         <div class="span10">
             <div class="slate">
+                <div class="page-headr">
+                    <h3><?=$forminfo['name']?></h3>
+                </div>
                 <fieldset class="form-horizontal">
-                    <?foreach($form->getMergeElements() as $element):?>
+                    <?foreach($form->getElementsArray() as $element):?>
                     <div class="control-group <?=$form->isError($element['name']) ? 'error' : '';?>">
                         <?=$form->helper($element['name'], 'label', array('class' => 'control-label'))?>
                         <div class="controls">
@@ -57,11 +52,12 @@ $form->setMethod('put')
                 </fieldset>
             </div>
         </div><!--span10 end-->
-        <?endforeach?>
-
+    </form>
 
         <div class="span10 listing-buttons">
             <button id="save-publish" class="btn btn-success btn-large"><?=$this->_('Save')?></button>
         </div>
-    </form>
+        <?endforeach?>
+
+
 </div>
