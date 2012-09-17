@@ -33,7 +33,7 @@ use Zend\I18n\Translator\TextDomain;
      * @return TextDomain|null
      * @throws Exception\InvalidArgumentException
      */
-    public function load($filename, $locale)
+    public function load($locale, $filename)
     {
         if (!is_file($filename) || !is_readable($filename)) {
             throw new Exception\InvalidArgumentException(sprintf(

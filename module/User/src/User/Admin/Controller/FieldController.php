@@ -164,6 +164,7 @@ class FieldController extends RestfulModuleController
         if ($form->isValid()) {
 
             $postData = $form->getData();
+
             $itemModel = Api::_()->getModelService('User\Model\Field');
             $itemId = $itemModel->setItem($postData)->createField();
             $this->flashMessenger()->addMessage('item-create-succeed');

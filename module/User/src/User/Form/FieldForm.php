@@ -47,6 +47,16 @@ class FieldForm extends \Eva\Form\RestfulForm
                 'value' => '',
             ),
         ),
+        'fieldName' => array (
+            'name' => 'fieldName',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Field Name',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
         'fieldKey' => array (
             'name' => 'fieldKey',
             'type' => 'text',
@@ -105,7 +115,7 @@ class FieldForm extends \Eva\Form\RestfulForm
             'name' => 'label',
             'type' => 'text',
             'options' => array (
-                'label' => 'Label',
+                'label' => 'Field Label',
             ),
             'attributes' => array (
                 'value' => '',
@@ -145,7 +155,7 @@ class FieldForm extends \Eva\Form\RestfulForm
             'type' => 'select',
             'name' => 'required',
             'options' => array (
-                'label' => 'Required',
+                'label' => 'Required Field',
                 'value_options' => array(
                     array (
                         'label' => 'Yes',
@@ -192,9 +202,9 @@ class FieldForm extends \Eva\Form\RestfulForm
                 ),
             ),
         ),
-        'fieldKey' => array (
-            'name' => 'fieldKey',
-            'required' => true,
+        'fieldName' => array (
+            'name' => 'fieldName',
+            'required' => false,
             'filters' => array (
                 'stripTags' => array (
                     'name' => 'StripTags',
@@ -212,7 +222,35 @@ class FieldForm extends \Eva\Form\RestfulForm
                 'stringLength' => array (
                     'name' => 'StringLength',
                     'options' => array (
-                        'max' => '24',
+                        'max' => '50',
+                    ),
+                ),
+            ),
+        ),
+        'fieldKey' => array (
+            'name' => 'fieldKey',
+            'required' => false,
+            'filters' => array (
+                'separatorToCamelCase' => array (
+                    'name' => 'WordSeparatorToCamelCase',
+                ),
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+                'notEmpty' => array (
+                    'name' => 'NotEmpty',
+                    'options' => array (
+                    ),
+                ),
+                'stringLength' => array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => '50',
                     ),
                 ),
             ),
@@ -242,7 +280,7 @@ class FieldForm extends \Eva\Form\RestfulForm
         ),
         'label' => array (
             'name' => 'label',
-            'required' => false,
+            'required' => true,
             'filters' => array (
                 'stripTags' => array (
                     'name' => 'StripTags',
@@ -260,7 +298,7 @@ class FieldForm extends \Eva\Form\RestfulForm
                 'stringLength' => array (
                     'name' => 'StringLength',
                     'options' => array (
-                        'max' => '64',
+                        'max' => '100',
                     ),
                 ),
             ),

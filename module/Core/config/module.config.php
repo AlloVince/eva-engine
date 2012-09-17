@@ -130,6 +130,11 @@ return array(
             'admin',
         ),
         'translation_file_patterns' => array(
+            'zf' => array(
+                'type' => 'PhpArray',
+                'base_dir' => EVA_LIB_PATH . '/Zend/resources/languages/',
+                'pattern' => '%s/Zend_Validate.php'
+            ),
             'main' => array(
                 'type' => 'csv',
                 'base_dir' => EVA_ROOT_PATH . '/data/languages',

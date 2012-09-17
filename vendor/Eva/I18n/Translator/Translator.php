@@ -226,7 +226,7 @@ class Translator extends \Zend\I18n\Translator\Translator
                 if (is_file($filename)) {
                     $messages = $this->getPluginManager()
                          ->get($pattern['type'])
-                         ->load($filename, $locale);
+                         ->load($locale, $filename);
                     //EvaEngine : add merge array
                     $this->mergeMessages($textDomain, $locale, $messages);
                 }
@@ -242,7 +242,7 @@ class Translator extends \Zend\I18n\Translator\Translator
             $file = $this->files[$textDomain][$currentLocale];
             $messages = $this->getPluginManager()
                  ->get($file['type'])
-                 ->load($file['filename'], $locale);
+                 ->load($locale, $file['filename']);
             //EvaEngine : add merge array
             $this->mergeMessages($textDomain, $locale, $messages);
 

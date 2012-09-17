@@ -51,7 +51,23 @@ class Field extends AbstractItem
 
     protected $map = array(
         'create' => array(
+            'getFieldKey()',
+            'getFieldName()',
         ),
     );
+
+    public function getFieldKey()
+    {
+        if(!$this->fieldKey) {
+            return $this->fieldKey = \Eva\Stdlib\String\Hash::uniqueHash();
+        }
+    }
+
+    public function getFieldName()
+    {
+        if(!$this->fieldName) {
+            return $this->fieldName = $this->label;
+        }
+    } 
 
 }
