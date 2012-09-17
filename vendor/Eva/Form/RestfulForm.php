@@ -344,6 +344,11 @@ class RestfulForm extends Form implements InputFilterProviderInterface
         return $this;
     }
 
+    public function afterInit()
+    {
+        return $this;
+    }
+
     protected function initElement(array $element)
     {
         $element = $this->autoElementId($element);
@@ -468,8 +473,15 @@ class RestfulForm extends Form implements InputFilterProviderInterface
         return $data;
     }
 
+    public function beforeBind($valuesOrObject)
+    {
+        return $valuesOrObject;
+    }
+
     public function bind($valuesOrObject, $flags = FormInterface::VALUES_NORMALIZED)
     {
+        $valuesOrObject = $this->beforeBind($valuesOrObject);
+
         if(!$valuesOrObject){
             return $this;
         }
@@ -479,6 +491,13 @@ class RestfulForm extends Form implements InputFilterProviderInterface
         } else {
             parent::bind($valuesOrObject);
         }
+
+        $this->afterBind();
+        return $this;
+    }
+
+    public function afterBind()
+    {
         return $this;
     }
 
@@ -566,6 +585,10 @@ class RestfulForm extends Form implements InputFilterProviderInterface
             $options = $this->merge($element->getAttributes(), $options);
         }
 
+        if(isset($options['label'])){
+            $element->setLabel($options['label']);
+        }
+
         //Merge Value Options
         if(isset($options['value_options']) && method_exists($element, 'getValueOptions')){
             $element->setValueOptions($this->merge($element->getValueOptions(), $options['value_options']));
@@ -589,5 +612,6 @@ class RestfulForm extends Form implements InputFilterProviderInterface
     {
         parent::__construct($name);
         $this->init();
+        $this->afterInit();
     }
 }

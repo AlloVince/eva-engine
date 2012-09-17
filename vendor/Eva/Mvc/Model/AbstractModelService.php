@@ -92,24 +92,27 @@ abstract class AbstractModelService implements ServiceLocatorAwareInterface
         return $this->serviceLocator;
     }
 
-    public function setItem($item)
+    public function setItem($dataSource)
     {
-        if($item instanceof AbstractItem){
-            $this->item = $item;
+        if($dataSource instanceof AbstractItem){
+            $this->item = $dataSource;
             return $this;
         }
 
+        $this->dataSource = $dataSource;
         //Clear last item and get new one
-        if($this->item){
-            $this->item->setDataSource($item);
-        } else {
-            $this->dataSource = $item;
+        if($item = $this->getItem()) {
+            $item->setDataSource($dataSource);
         }
         return $this;
     }
 
     public function getItem($itemClass = null)
     {
+        if(!$itemClass && $this->item){
+            return $this->item;
+        }
+
         if(!$itemClass){
             $itemClass = $this->getItemClass();
         }
@@ -128,7 +131,7 @@ abstract class AbstractModelService implements ServiceLocatorAwareInterface
         if($itemClass == $this->getItemClass()){
             return $this->item = $this->serviceLocator->get($itemClass);
         }
-        return $this->serviceLocator->get($itemClass);
+        return $this->item = $this->serviceLocator->get($itemClass);
     }
 
     public function setItemList($itemList)

@@ -668,9 +668,10 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     {
         $dataClass = $this->getDataClass();
         $primaryKey = $dataClass->getPrimaryKey();
+
         if(is_string($primaryKey)){
             if(!$this->$primaryKey){
-                throw new Exception\InvalidArgumentException(sprintf('Primary Key not set in item %s', get_class($this)));
+                throw new Exception\InvalidArgumentException(sprintf('Primary Key %s not set in item %s', $primaryKey, get_class($this)));
             }
             $where = array($primaryKey => $this->$primaryKey);
         } elseif(is_array($primaryKey)) {
