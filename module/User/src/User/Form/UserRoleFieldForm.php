@@ -41,5 +41,36 @@ class UserRoleFieldForm extends \Eva\Form\RestfulForm
     public function init()
     {
         $roleKey = $this->getRole();
+
+        $itemModel = \Eva\Api::_()->getModelService('User\Model\Role');
+        $item = $itemModel->getRole($roleKey);
+        $item = $item->toArray(array(
+            'self' => array(
+                '*'
+            ),
+            'join' => array(
+                'RoleFields' => array(
+                    'self' => array(
+                        '*'
+                    ),
+                    'join' => array(
+                        'Fieldoption' => array(
+                            'self' => array(
+                                '*'
+                            ),
+                        ),
+                    ),
+                ),
+            )
+        ));
+        if(isset($item['Fields'])){
+            $fieldModel = \Eva\Api::_()->getModelService('User\Model\Field');
+            $elements = array();
+            foreach($item['Fields'] as $field){
+                $elements[] = $fieldModel->fieldToElement($field);
+            }
+            $this->setMergeElements($elements);
+            parent::init();
+        }
     }
 }

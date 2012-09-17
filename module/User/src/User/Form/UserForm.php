@@ -552,8 +552,24 @@ class UserForm extends \Eva\Form\RestfulForm
             $data['CommonField'] = $fieldvalues;
         }
 
+
+
         return $data;
     }
+
+    public function beforeBind($data)
+    {
+        if(isset($data['UserCommonField'])){
+            $fieldValueArray = array();
+            $fieldValues = $data['UserCommonField'];
+            foreach($fieldValues as $fieldValue){
+                $fieldValueArray[$fieldValue['field_id']] = $fieldValue['value'];
+            }
+            $data['CommonField'] = $fieldValueArray;
+        }
+        return $data;
+    }
+
     public function getLanguages($element)
     {
         $translator = \Eva\Api::_()->getServiceManager()->get('translator');

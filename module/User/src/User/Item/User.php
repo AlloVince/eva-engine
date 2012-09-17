@@ -46,7 +46,7 @@ class User extends AbstractItem
                 'referencedColumn' => 'id',
             ),
         ),
-        'CommonField' => array(
+        'UserCommonField' => array(
             'targetEntity' => 'User\Item\Fieldvalue',
             'relationship' => 'OneToMany',
             'joinColumn' => 'user_id',

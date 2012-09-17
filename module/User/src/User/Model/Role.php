@@ -84,7 +84,7 @@ class Role extends AbstractModelService
             ));
         } elseif(is_string($roleIdOrName)) {
             $this->setItem(array(
-                'roleName' => $roleIdOrName,
+                'roleKey' => $roleIdOrName,
             ));
         }
         $this->trigger('get.pre');

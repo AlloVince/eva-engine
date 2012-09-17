@@ -1,6 +1,6 @@
 <?
 $item = $this->item;
-$forms = $this->forms;
+$roles = $item['Roles'];
 $title = 'User Custom Fields';
 $title = $this->_($title);
 $this->headTitle($title, 'SET');
@@ -20,24 +20,27 @@ $this->textDelay('breadcrumbText', $title);
             </div>
         </div><!--span10 end-->
 
-        <?foreach($forms as $forminfo):?>
+        <?foreach($roles as $role):?>
 <?
-$form = new \Eva\Form\RestfulForm($forminfo['name']);
+$form = new User\Form\UserEditForm();
+$roleForm = new User\Form\UserRoleFieldForm('UserRoleFields', $role['id']);
+$roleForm->setView($this);
+$form->add($roleForm);
 $form->setMethod('put')
 ->setView($this)
-->setMergeElements($forminfo['elements'])
-->init()
-->setAction($this->uri('/admin/user/fieldvalue'))
-->bind($item)
+->setAction($this->uri('/admin/user/'))
+//->bind($item)
 ->prepare();
 ?>
     <form <?=$this->formAttr($form)?>>
         <?=$form->restful();?>
+        <?=$form->helper('id')?>
         <div class="span10">
             <div class="slate">
                 <div class="page-headr">
-                    <h3><?=$forminfo['name']?></h3>
+                    <h3><?=$role['roleName']?></h3>
                 </div>
+                <?$form = $form->get('UserRoleFields')?>
                 <fieldset class="form-horizontal">
                     <?foreach($form->getElementsArray() as $element):?>
                     <div class="control-group <?=$form->isError($element['name']) ? 'error' : '';?>">

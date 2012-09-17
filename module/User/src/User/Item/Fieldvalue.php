@@ -24,4 +24,27 @@ class Fieldvalue extends AbstractItem
             }
         }
     }
+
+    public function save()
+    {
+        $userItem = $this->getModel()->getItem('User\Item\User');
+        $userId = $userItem->id;
+
+        if(!$userId) {
+            return;
+        }
+
+        $dataClass = $this->getDataClass();
+        if(isset($this[0])){
+            foreach($this as $item){
+                $item['user_id'] = $userId;
+                $dataClass->where(array(
+                    'user_id' => $userId,
+                    'field_id' => $item['field_id'],
+                ))->delete($item);
+                $dataClass->create($item);
+            }
+        }
+    }
+
 }

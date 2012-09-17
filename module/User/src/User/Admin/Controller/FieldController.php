@@ -104,50 +104,12 @@ class FieldController extends RestfulModuleController
                     'self' => array(
                         '*'
                     ),
-                    'join' => array(
-                        'CommonFields' => array(
-                            'self' => array(
-                                '*'
-                            ),
-                            'join' => array(
-                                'Fieldoption' => array(
-                                    'self' => array(
-                                        '*'
-                                    ),
-                                ),
-                            ),
-                        ),
-                        'RoleFields' => array(
-                            'self' => array(
-                                '*'
-                            ),
-                            'join' => array(
-                                'Fieldoption' => array(
-                                    'self' => array(
-                                        '*'
-                                    ),
-                                ),
-                            ),
-                        ),
-                    )
                 )
             ),
         ));
 
-        $fieldModel = Api::_()->getModelService('User\Model\Field');
-        $forms = array();
-        if($item['Roles']){
-            foreach($item['Roles'] as $roleArray){
-                $forms[] = array(
-                    'name' => $roleArray['roleName'],
-                    'elements' => $fieldModel->roleFieldsArrayToForm($roleArray),
-                );
-            }
-        }
-
         return array(
             'item' => $item,
-            'forms' => $forms,
             'flashMessenger' => $this->flashMessenger()->getMessages(),
         );
     }
