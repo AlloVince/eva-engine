@@ -42,6 +42,16 @@ class RoleForm extends \Eva\Form\RestfulForm
                 'value' => '',
             ),
         ),
+        'roleKey' => array (
+            'name' => 'roleKey',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Role Key',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
         'roleName' => array (
             'name' => 'roleName',
             'type' => 'text',
@@ -79,6 +89,38 @@ class RoleForm extends \Eva\Form\RestfulForm
                 'notEmpty' => array (
                     'name' => 'NotEmpty',
                     'options' => array (
+                    ),
+                ),
+            ),
+        ),
+        'roleKey' => array (
+            'name' => 'roleKey',
+            'required' => false,
+            'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+                'stringToUpper' => array(
+                    'name' => 'StringToUpper'
+                ),
+                /*
+                'wordSeparatorToSeparator' => array(
+                    'name' => 'WordSeparatorToSeparator',
+                    'options' => array(
+                        'SearchSeparator' => ' ',
+                        'ReplacementSeparator' => '_',
+                    )
+                ),
+                */
+            ),
+            'validators' => array (
+                'stringLength' => array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => '50',
                     ),
                 ),
             ),

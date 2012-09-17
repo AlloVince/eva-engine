@@ -77,6 +77,16 @@ $form->setView($this)
                             <div class="help-block"><?=$form->helper('roleName', 'formElementErrors')?></div>
                         </div>
                     </div>
+                    <div class="control-group <?=$form->isError('roleKey') ? 'error' : '';?>">
+                        <?=$form->helper('roleKey', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('roleKey', array('class' => 'disabled', 'disabled' => 'disabled'))?>  
+                            <div class="help-block">
+                                <p><?=$this->_('Will display on urls and templates, uppercase letters and underline only.')?></p>
+                                <?=$form->helper('roleKey', 'formElementErrors')?>
+                            </div>
+                        </div>
+                    </div>
                     <div class="control-group <?=$form->isError('description') ? 'error' : '';?>">
                         <?=$form->helper('description', 'label', array('class' => 'control-label'))?>
                         <div class="controls">

@@ -35,4 +35,20 @@ class Role extends AbstractItem
             ),
         ),
     );
+
+    protected $map = array(
+        'create' => array(
+            'getRoleKey()',
+        ),
+        'save' => array(
+            'getRoleKey()',
+        ),
+    );
+
+    public function getRoleKey()
+    {
+        if(!$this->roleKey){
+            $this->roleKey = preg_replace('/[^\w]/', '_', strtoupper($this->roleName));
+        }
+    }
 }
