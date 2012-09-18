@@ -28,8 +28,22 @@ use Zend\Cache\PatternFactory;
  */
 class PageCapture extends AbstractPlugin
 {
+    protected $pageId;
+
+    public function getPageId()
+    {
+        return $this->pageId;
+    }
+
+    public function setPageId($id)
+    {
+        $this->pageId = $id;
+        return $this;
+    }
+
     public function __invoke($pageId = null, $pageExtension = null, array $options = array())
     {
+        $this->setPageId($pageId);
 
         $config = $this->getConfig();
         if(!isset($config['cache']['page_capture'])){
@@ -78,6 +92,7 @@ class PageCapture extends AbstractPlugin
     public function onFinish($event)
     {
         $response = $event->getApplication()->getResponse();
+        $pageId = $this->getPageId();
         //Save this to memcached;
         $response->getContent();
     }
