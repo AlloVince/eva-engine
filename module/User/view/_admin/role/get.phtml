@@ -73,7 +73,7 @@ $form->setView($this)
                     <div class="control-group <?=$form->isError('roleName') ? 'error' : '';?>">
                         <?=$form->helper('roleName', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper('roleName', array('class' => ''))?>        
+                            <?=$form->helper('roleName', array('class' => 'required'))?>        
                             <div class="help-block"><?=$form->helper('roleName', 'formElementErrors')?></div>
                         </div>
                     </div>

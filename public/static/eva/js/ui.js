@@ -11,6 +11,7 @@
 			pathJqueryUi : ["/javascripts/jquery/jquery-ui.js", "/javascripts/jquery/jquery-ui-i18n.js", "/javascripts/jquery/jquery-ui-custom.js"],
 			pathCodeMirror : ['/lib/js/codemirror/lib/codemirror.js'],
 			pathSwfUploader : ["/javascripts/jquery/jquery.swfupload.js", "/javascripts/swfupload/swfupload.js", "/javascripts/swfupload/swfupload.queue.js"],
+			pathDatepiker : ["/lib/js/bootstrap/datepicker/bootstrap-datepicker.js"],
 			pathFileUploader : [
 				"/lib/js/jstemplates/tmpl.js", 
 				"/lib/js/loadimage/load-image.js", 
@@ -113,9 +114,13 @@
 		},
 
 		initDatepicker : function(setting){
-			$(this._itemClass.datepicker).each(function(){
-				$(this).datepicker(methods._getOption(this, setting));
-			});						
+			eva.loadcss(eva.s(['/lib/js/bootstrap/datepicker/datepicker.css']));
+			eva.loader(eva.s(methods.config.pathDatepiker), function(){
+				$(methods._itemClass.datepicker).each(function(){
+					$(this).datepicker();
+				});	
+			});
+
 		},
 
 		//beta

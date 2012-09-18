@@ -127,7 +127,7 @@ class RoleForm extends \Eva\Form\RestfulForm
         ),
         'roleName' => array (
             'name' => 'roleName',
-            'required' => false,
+            'required' => true,
             'filters' => array (
                 'stripTags' => array (
                     'name' => 'StripTags',

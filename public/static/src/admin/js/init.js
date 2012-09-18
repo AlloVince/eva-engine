@@ -110,6 +110,9 @@ eva.construct = function(){
 	//$('.dropdown-toggle').dropdown();
 
 	eva.ui.init();
+
+	$("form").validate();
+	
 	return false;
 };
 

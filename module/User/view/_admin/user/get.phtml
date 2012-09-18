@@ -248,7 +248,7 @@ $form->setView($this)
                     <div class="control-group <?=$form->isError(array('Profile', 'birthday')) ? 'error' : '';?>">
                         <?=$form->helper(array('Profile', 'birthday'), 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper(array('Profile', 'birthday'), array('class' => ''))?>        
+                            <?=$form->helper(array('Profile', 'birthday'), array('class' => 'datepicker', 'data-date-format' => 'yyyy-mm-dd'))?>        
                             <div class="help-block"><?=$form->helper(array('Profile', 'birthday'), 'formElementErrors')?></div>
                         </div>
                     </div>
