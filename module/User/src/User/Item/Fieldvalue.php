@@ -33,7 +33,6 @@ class Fieldvalue extends AbstractItem
         if(!$userId) {
             return;
         }
-
         $dataClass = $this->getDataClass();
         if(isset($this[0])){
             foreach($this as $item){
@@ -41,7 +40,7 @@ class Fieldvalue extends AbstractItem
                 $dataClass->where(array(
                     'user_id' => $userId,
                     'field_id' => $item['field_id'],
-                ))->delete($item);
+                ))->remove();
                 $dataClass->create($item);
             }
         }

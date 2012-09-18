@@ -285,33 +285,41 @@ class RestfulForm extends Form implements InputFilterProviderInterface
 
     public function addSubForm($formName, $formConfig = array())
     {
-        if(is_array($formConfig)) {
+        if($formConfig instanceof RestfulForm){
 
-            if(isset($formConfig[0])){
-                $subFormClass = $formConfig[0];
-            } elseif(isset($formConfig['formClass'])) {
-                $subFormClass = $formConfig['formClass'];
+            $subForm = $formConfig;
+            $subForm->setName($formName);
+
+        } else {
+
+            if(is_array($formConfig)) {
+
+                if(isset($formConfig[0])){
+                    $subFormClass = $formConfig[0];
+                } elseif(isset($formConfig['formClass'])) {
+                    $subFormClass = $formConfig['formClass'];
+                } else {
+                    throw new Exception\InvalidArgumentException(sprintf(
+                        'Subform %s not find defined class', $formName
+                    ));
+                }
+
+            } elseif(is_string($formConfig)){
+
+                $subFormClass = $formConfig;
+
             } else {
                 throw new Exception\InvalidArgumentException(sprintf(
-                    'Subform %s not find defined class', $formName
+                    'Subform %s config not correct, require string or object', $formName
                 ));
             }
 
-        } elseif(is_string($formConfig)){
-
-            $subFormClass = $formConfig;
-
-        } else {
-            throw new Exception\InvalidArgumentException(sprintf(
-                'Subform %s config not correct, require string or object', $formName
-            ));
+            if(!class_exists($subFormClass)){
+                return $this;
+            }
+            $subForm = new $subFormClass($formName);
         }
 
-        if(!class_exists($subFormClass)){
-            return $this;
-        }
-
-        $subForm = new $subFormClass($formName);
         $subForm->setParent($this);
         if(is_array($formConfig) && isset($formConfig['collection']) && $formConfig['collection']) {
             $object = isset($formConfig['object']) ? $formConfig['object'] : array();

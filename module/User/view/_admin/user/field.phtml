@@ -20,21 +20,20 @@ $this->textDelay('breadcrumbText', $title);
             </div>
         </div><!--span10 end-->
 
-        <?foreach($roles as $role):?>
+<?foreach($roles as $role):?>
 <?
-$form = new User\Form\UserEditForm();
-$roleForm = new User\Form\UserRoleFieldForm('UserRoleFields', $role['id']);
-$roleForm->setView($this);
-$form->add($roleForm);
+$form = new User\Form\UserConnectForm();
+$form->addSubForm('UserRoleFields', new User\Form\UserRoleFieldForm(null, $role['id']));
 $form->setMethod('put')
 ->setView($this)
-->setAction($this->uri('/admin/user/'))
-//->bind($item)
+->setAction($this->uri('/admin/user/field/userfield/'))
+->bind($item)
 ->prepare();
 ?>
     <form <?=$this->formAttr($form)?>>
         <?=$form->restful();?>
         <?=$form->helper('id')?>
+        <input type="hidden" name="role_id" value="<?=$role['id']?>" />
         <div class="span10">
             <div class="slate">
                 <div class="page-headr">
@@ -55,12 +54,11 @@ $form->setMethod('put')
                 </fieldset>
             </div>
         </div><!--span10 end-->
-    </form>
 
         <div class="span10 listing-buttons">
             <button id="save-publish" class="btn btn-success btn-large"><?=$this->_('Save')?></button>
         </div>
-        <?endforeach?>
-
+    </form>
+<?endforeach?>
 
 </div>

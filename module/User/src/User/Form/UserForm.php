@@ -300,7 +300,7 @@ class UserForm extends \Eva\Form\RestfulForm
         ),
         'status' => array (
             'name' => 'status',
-            'required' => true,
+            'required' => false,
             'filters' => array (
             ),
             'validators' => array (

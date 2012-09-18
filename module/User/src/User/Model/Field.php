@@ -31,7 +31,6 @@ class Field extends AbstractModelService
     public function fieldToElement($field)
     {
         $element = array(
-            //'name' => $field['fieldKey'],
             'name' => $field['id'],
             'type' => $field['fieldType'],
             'options' => array(
@@ -41,7 +40,7 @@ class Field extends AbstractModelService
                 'value' => $field['defaultValue'],
             ),
         );
-        if(isset($field['Fieldoption'])){
+        if(isset($field['Fieldoption']) && $field['Fieldoption']){
             $options = array();
             foreach($field['Fieldoption'] as $key => $option){
                 $options[] = array(

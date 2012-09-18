@@ -104,13 +104,13 @@ class Input extends \Zend\Form\View\Helper\AbstractHelper
         unset($options['i18n']);
 
         $args = array();
-        if(isset($option['args'])){
-            if($option['args'] && is_array($option['args'])){
+        if(isset($options['args'])){
+            if($options['args'] && is_array($options['args'])){
                 foreach($args as $key => $value){
                     $args[] = $value; 
                 }
             }
-            unset($option['args']);
+            unset($options['args']);
         }
 
 
