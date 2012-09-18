@@ -57,9 +57,13 @@ class Evajs extends \Zend\Form\View\Helper\AbstractHelper
             $jsParams = array();
         }
 
-
+        $lang = 'en';
+        $sm = Api::_()->getServiceManager();
+        if($sm->has('translator')){
+            $lang = $sm->get('translator')->getLocale();
+        }
+        
         $config = Api::_()->getConfig();
-
         $jsConfig = array_merge(array(
             'debug' => false,
             'version' => 1,
@@ -67,6 +71,7 @@ class Evajs extends \Zend\Form\View\Helper\AbstractHelper
             'dir' => $this->view->uri('/', '-b'),
             'f' => $this->view->uri($this->view->serverUrl() . '/', '-b'),
             's' => $this->view->link('/', '-B'),
+            'lang' => $lang,
             'ie' => false,
         ), $jsParams);
         return '<script type="text/javascript">var eva_config = ' . \Zend\Json\Json::encode($jsConfig) . '</script>';
