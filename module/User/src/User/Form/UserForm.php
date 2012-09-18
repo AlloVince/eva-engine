@@ -552,8 +552,6 @@ class UserForm extends \Eva\Form\RestfulForm
             $data['CommonField'] = $fieldvalues;
         }
 
-
-
         return $data;
     }
 
