@@ -32,7 +32,7 @@ class Input extends \Zend\Form\View\Helper\AbstractHelper
         $class = $element->getAttribute('class');
 
         $validateClass = array();
-        if(isset($filter['validators']['notEmpty'])){
+        if(isset($filter['required']) && $filter['required']){
             $validateClass[] = 'validate[required]';
         }
         if($validateClass){
