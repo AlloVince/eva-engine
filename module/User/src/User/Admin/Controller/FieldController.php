@@ -136,7 +136,6 @@ class FieldController extends RestfulModuleController
             $this->redirect()->toUrl('/admin/user/field/userfield/' . $itemId);
 
         } else {
-            p($form->getMessages());
         }
 
         return array(

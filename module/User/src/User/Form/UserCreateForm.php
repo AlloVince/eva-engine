@@ -28,6 +28,15 @@ class UserCreateForm extends UserForm
         ),
     );
 
+    protected $mergeFilters = array(
+        'userName' => array (
+            'required' => true,
+        ),
+        'email' => array (
+            'required' => true,
+        ),
+    );
+
     /*
     public function beforeBind($values)
     {

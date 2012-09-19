@@ -40,12 +40,17 @@ class RestfulForm extends Form implements InputFilterProviderInterface
     protected $baseElements = array();
 
     /**
-    * Merge Element definitions
+    * Tobe Merge Element definitions
     *
     * @var array
     */
     protected $mergeElements = array();
 
+    /**
+    * Merged Element definitions
+    *
+    * @var array
+    */
     protected $mergedElements = array();
 
     /**
@@ -56,11 +61,18 @@ class RestfulForm extends Form implements InputFilterProviderInterface
     protected $baseFilters = array();
 
     /**
-    * Merge Filter definitions
+    * Tobe Merge Filter definitions
     *
     * @var array
     */
     protected $mergeFilters = array();
+
+    /**
+    * Merged Filter definitions
+    *
+    * @var array
+    */
+    protected $mergedFilters = array();
 
     /**
     * Resful form method
@@ -135,6 +147,7 @@ class RestfulForm extends Form implements InputFilterProviderInterface
     * @var Eva\Form\RestfulForm
     */
     protected $parent;
+
 
     public function setParent($parent)
     {
@@ -243,6 +256,9 @@ class RestfulForm extends Form implements InputFilterProviderInterface
 
     public function mergeElements(array $elements = array())
     {
+        if($this->mergedElements){
+            return $this->mergedElements;
+        }
         //TODO: could merge parent class elements
         $elements = $elements ? $elements : $this->mergeElements;
         return $this->mergedElements = $this->merge($this->baseElements, $elements);
@@ -253,9 +269,33 @@ class RestfulForm extends Form implements InputFilterProviderInterface
         return $this->mergedElements;
     }
 
+    public function searchElementsArray($elementName)
+    {
+        if(isset($this->mergedElements[$elementName])){
+            return $this->mergedElements[$elementName];
+        }
+        return array();
+    }
+
     public function mergeFilters()
     {
-        return $this->merge($this->baseFilters, $this->mergeFilters);
+        if($this->mergedFilters){
+            return $this->mergedFilters;
+        }
+        return $this->mergedFilters = $this->merge($this->baseFilters, $this->mergeFilters);
+    }
+
+    public function getFiltersArray()
+    {
+        return $this->mergedFilters;
+    }
+
+    public function searchFiltersArray($filterName)
+    {
+        if(isset($this->mergedFilters[$filterName])){
+            return $this->mergedFilters[$filterName];
+        }
+        return array();
     }
 
     public function useSubFormGroup($groupName = 'default')
@@ -568,15 +608,40 @@ class RestfulForm extends Form implements InputFilterProviderInterface
         return $element;
     }
 
-    public function helper($elementNameOrArray, $optionOrInputType = null, array $options = array(), array $setting = array())
+    public function getFilter($filterNameOrArray)
     {
-        $defaultSetting = array(
-            'i18n' => true,
-            'replace' => true,
-            'reorder' => false,
-        );
-        $setting = array_merge($defaultSetting, $setting);
+        $this->mergeFilters();
+        if(true === is_string($filterNameOrArray)){
+            return $this->searchFiltersArray($filterNameOrArray);
+        }
 
+        if(true === is_array($filterNameOrArray) && isset($filterNameOrArray[0]) && isset($filterNameOrArray[1])){
+            $fieldsetName = $filterNameOrArray[0];
+            $filterName = $filterNameOrArray[1];
+        } elseif(is_string($filterNameOrArray)) {
+            $fieldsetName = '';
+            $filterName = $filterNameOrArray;
+        } else {
+            throw new Exception\InvalidArgumentException(sprintf('Filter Name require string or array'));
+        }
+
+        if($fieldsetName) {
+            $this->get($fieldsetName)->mergeFilters();
+            $filter = $this->get($fieldsetName)->searchFiltersArray($filterName);
+        } else {
+            $filter = $this->searchFiltersArray($filterNameOrArray);
+        }
+
+        if(!$filter){
+            throw new Exception\InvalidArgumentException(sprintf('Request Filter %s not found', $filterName));
+        }
+
+        return $filter;
+    }
+
+
+    public function helper($elementNameOrArray, $attrsOrInputType = null, array $attrs = array(), array $options = array())
+    {
         $view = $this->getView();
         if(!$view && $this->parent){
             $view = $this->parent->getView();
@@ -586,29 +651,55 @@ class RestfulForm extends Form implements InputFilterProviderInterface
         }
 
         $element = $this->getElement($elementNameOrArray);
+        if(!$element){
+            throw new Exception\InvalidArgumentException(sprintf('Request element %s not found', $elementNameOrArray));
+        }
 
-        if($optionOrInputType){
-            if(is_string($optionOrInputType)){
-                $options = array_merge(array('type' => $optionOrInputType), $options);
+        $defaultOptions = array(
+            'i18n' => true,
+            'replace' => true,
+            'reorder' => false,
+            'args' => array(),
+            'type' => 'formInput',
+            'validator' => true,
+        );
+        $options = array_merge($defaultOptions, $options);
+
+        if($attrsOrInputType){
+            if(is_string($attrsOrInputType)){
+                //TODO:: if type changed, should re-generate new element
+                $options['type'] = $attrsOrInputType;
+            } elseif(is_array($attrsOrInputType)){
+                $attrs = $attrsOrInputType;
             } else {
-                $options = array_merge($optionOrInputType, $options);
+                throw new Exception\InvalidArgumentException(sprintf('Element %s attributes require array.', $elementNameOrArray));
             }
         }
 
+        if(isset($attrs['type']) && $attrs['type']){
+            $options['type'] = $attrs['type'];
+            unset($attrs['type']);
+        }
+
         //Merge attributes
-        if(false === $setting['replace']){
-            $options = $this->merge($element->getAttributes(), $options);
+        if(false === $options['replace']){
+            $attrs = $this->merge($element->getAttributes(), $attrs);
+        } else {
+            $attrs = array_merge($element->getAttributes(), $attrs);
+        }
+        $element->setAttributes($attrs);
+
+
+        if(isset($attrs['label'])){
+            $element->setLabel($attrs['label']);
         }
 
-        if(isset($options['label'])){
-            $element->setLabel($options['label']);
-        }
-
+        $filter = $this->getFilter($elementNameOrArray);
         //Merge Value Options
-        if(isset($options['value_options']) && method_exists($element, 'getValueOptions')){
-            $element->setValueOptions($this->merge($element->getValueOptions(), $options['value_options']));
+        if(isset($attrs['value_options']) && method_exists($element, 'getValueOptions')){
+            $element->setValueOptions($this->merge($element->getValueOptions(), $attrs['value_options']));
         }
-        return $view->input($element, $options); 
+        return $view->input($element, $options, $filter); 
     }
 
     protected function merge(array $global, array $local)

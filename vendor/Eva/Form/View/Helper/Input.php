@@ -27,6 +27,32 @@ use Zend\Form\ElementInterface;
 class Input extends \Zend\Form\View\Helper\AbstractHelper
 {
 
+    protected function autoValidator($element, $filter)
+    {
+        $class = $element->getAttribute('class');
+
+        $validateClass = array();
+        if(isset($filter['validators']['notEmpty'])){
+            $validateClass[] = 'validate[required]';
+        }
+        if($validateClass){
+            $class .= $class ? ' ' . implode(' ', $validateClass) : implode(' ', $validateClass);
+            $element->setAttribute('class', $class);
+        }
+
+        return $element;
+    }
+
+    protected function isInputElement($elementType)
+    {
+        $notElementTypes = array(
+            'label',
+            'formElementErrors',
+        );
+
+        return in_array($elementType, $notElementTypes) ? false : true;
+    }
+
     /*
     protected function translateElement(ElementInterface $element)
     {
@@ -75,10 +101,6 @@ class Input extends \Zend\Form\View\Helper\AbstractHelper
     }
     */
 
-    protected $map = array(
-        ''
-    );
-
     /**
     * Invoke helper as functor
     *
@@ -87,21 +109,21 @@ class Input extends \Zend\Form\View\Helper\AbstractHelper
     * @param  ElementInterface $element 
     * @return string
     */
-    public function __invoke(ElementInterface $element, array $options = array())
+    public function __invoke(ElementInterface $element, array $options = array(), array $filter = array())
     {
         $defaultOptions = array(
             'type' => 'formInput',
             'args' => array(),
             'i18n' => true,
+            'validator' => true,
+            'reorder' => false,
         );
 
         $options = array_merge($defaultOptions, $options);
         $elementType = $options['type'];
-        unset($options['type']);
 
 
         $i18n = $options['i18n'];
-        unset($options['i18n']);
 
         $args = array();
         if(isset($options['args'])){
@@ -110,16 +132,18 @@ class Input extends \Zend\Form\View\Helper\AbstractHelper
                     $args[] = $value; 
                 }
             }
-            unset($options['args']);
         }
 
+        if(true === $options['validator'] && $filter && $this->isInputElement($elementType)){
+            $element = $this->autoValidator($element, $filter);
+        }
 
         //NOTE: clone element not effect to form original element
         $element = clone $element;
 
         if($options){
             foreach($options as $key => $value){
-                $element->setAttribute($key, $value);
+                //$element->setAttribute($key, $value);
             }
             if(true === $i18n){
                 //$element = $this->translateElement($element);
