@@ -72,7 +72,6 @@ class UserController extends RestfulModuleController
                     '*'
                 ),
                 'Account' => array('*'),
-                'UserCommonField' => array('*'),
             ),
         ));
         return array(
@@ -85,7 +84,7 @@ class UserController extends RestfulModuleController
     {
         $request = $this->getRequest();
         $postData = $request->getPost();
-        $form = new Form\UserForm();
+        $form = new Form\UserCreateForm();
         $form->useSubFormGroup()->bind($postData);
 
         if ($form->isValid()) {

@@ -20,20 +20,6 @@ namespace User\Form;
  */
 class UserForm extends \Eva\Form\RestfulForm
 {
-    protected $subFormGroups = array(
-        'default' => array(
-            'Profile' => 'User\Form\ProfileForm',
-            'Account' => 'User\Form\AccountForm',
-            'RoleUser' => array(
-                'formClass' => 'User\Form\RoleUserForm',
-                'collection' => true,
-            ),
-            'CommonField' => 'User\Form\UserCommonFieldForm',
-        ),
-        'userfield' => array(
-        ),
-    );
-
     /**
      * Form basic elements
      *
@@ -91,7 +77,7 @@ class UserForm extends \Eva\Form\RestfulForm
                 ),
             ),
             'attributes' => array (
-                'value' => 'active',
+                'value' => 'inactive',
             ),
         ),
         'screenName' => array (
@@ -185,7 +171,6 @@ class UserForm extends \Eva\Form\RestfulForm
         'timezone' => array (
             'name' => 'timezone',
             'type' => 'select',
-            'callback' => 'getTimezones',
             'options' => array (
                 'label' => 'Timezone',
             ),
@@ -196,7 +181,6 @@ class UserForm extends \Eva\Form\RestfulForm
         'language' => array (
             'name' => 'language',
             'type' => 'select',
-            'callback' => 'getLanguages',
             'options' => array (
                 'label' => 'Language',
             ),
@@ -506,83 +490,4 @@ class UserForm extends \Eva\Form\RestfulForm
         ),
     );
 
-    /*
-    public function beforeBind($values)
-    {
-        $model = \Eva\Api::_()->getModelService('User\Model\Role');
-        $roles = $model->getRoleList()->toArray();
-        $roleUsers = array();
-        if(isset($values['RoleUser']) && $values['RoleUser']){
-            foreach($roles as $key => $role){
-                $value = array(
-                    'role_id' => $role['id']
-                );
-                foreach($values['RoleUser'] as $roleUser){
-                    if($role['id'] == $roleUser['role_id']){
-                        $value = $roleUser;
-                    }
-                }
-                $roleUsers[] = $value;
-            }
-        } else {
-            foreach($roles as $key => $role){
-                $roleUsers[] = array(
-                    'role_id' => $role['id']
-                );
-            }
-        }
-        $values['RoleUser'] = $roleUsers;
-        return $values;
-    }
-    */
-
-    public function prepareData($data)
-    {
-        if(isset($data['CommonField']) && is_array($data['CommonField'])){
-            $fieldvalues = array();
-            foreach($data['CommonField'] as $key => $fieldValue){
-                if(!$fieldValue){
-                    continue;
-                }
-                $fieldvalues[] = array(
-                    'field_id' => $key,
-                    'value' => $fieldValue,
-                );
-            }
-            $data['CommonField'] = $fieldvalues;
-        }
-
-        return $data;
-    }
-
-    public function beforeBind($data)
-    {
-        if(isset($data['UserCommonField'])){
-            $fieldValueArray = array();
-            $fieldValues = $data['UserCommonField'];
-            foreach($fieldValues as $fieldValue){
-                $fieldValueArray[$fieldValue['field_id']] = $fieldValue['value'];
-            }
-            $data['CommonField'] = $fieldValueArray;
-        }
-        return $data;
-    }
-
-    public function getLanguages($element)
-    {
-        $translator = \Eva\Api::_()->getServiceManager()->get('translator');
-        $locale = $translator->getLocale();
-        $languages = \Eva\Locale\Data::getList($locale, 'language');
-        $element['options']['value_options'] = $languages;
-        return $element;
-    }
-
-    public function getTimezones($element)
-    {
-        $translator = \Eva\Api::_()->getServiceManager()->get('translator');
-        $locale = $translator->getLocale();
-        $languages = \Eva\Locale\Data::getList($locale, 'citytotimezone');
-        $element['options']['value_options'] = $languages;
-        return $element;
-    }
 }

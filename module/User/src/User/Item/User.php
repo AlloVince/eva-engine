@@ -54,7 +54,7 @@ class User extends AbstractItem
             'joinParameters' => array(
             ),
         ),
-        'UserCommonField' => array(
+        'UserCommonFields' => array(
             'targetEntity' => 'User\Item\Fieldvalue',
             'relationship' => 'OneToMany',
             'joinColumn' => 'user_id',

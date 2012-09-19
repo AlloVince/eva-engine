@@ -18,7 +18,7 @@ namespace User\Form;
  * @category   Eva
  * @package    Eva_Form
  */
-class UserCommonFieldForm extends \Eva\Form\RestfulForm
+class UserCommonFieldsForm extends \Eva\Form\RestfulForm
 {
     public function init()
     {
@@ -38,7 +38,8 @@ class UserCommonFieldForm extends \Eva\Form\RestfulForm
         ));
 
         foreach($items as $item){
-            $this->baseElements[] = $itemModel->fieldToElement($item);
+            $this->baseElements[$item['id']] = $itemModel->fieldToElement($item);
+            $this->baseFilters[$item['id']] = $itemModel->fieldToFilter($item);
         }
 
         parent::init();

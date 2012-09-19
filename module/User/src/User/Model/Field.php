@@ -53,6 +53,15 @@ class Field extends AbstractModelService
         return $element;
     }
 
+    public function fieldToFilter($field)
+    {
+        $filter = array(
+            'name' => $field['id'],
+            'required' => $field['required'] ? true : false,
+        );
+        return $filter;
+    }
+
     public function createField(array $data = array())
     {
         if($data) {

@@ -18,7 +18,7 @@ namespace User\Form;
  * @category   Eva
  * @package    Eva_Form
  */
-class UserRoleFieldForm extends \Eva\Form\RestfulForm
+class UserRoleFieldsForm extends \Eva\Form\RestfulForm
 {
     protected $role;
     public function getRole()
@@ -67,9 +67,9 @@ class UserRoleFieldForm extends \Eva\Form\RestfulForm
             $fieldModel = \Eva\Api::_()->getModelService('User\Model\Field');
             $elements = array();
             foreach($item['Fields'] as $field){
-                $elements[] = $fieldModel->fieldToElement($field);
+                $this->baseElements[$field['id']] = $fieldModel->fieldToElement($field);
+                $this->baseFilters[$field['id']] = $fieldModel->fieldToFilter($field);
             }
-            $this->setMergeElements($elements);
             parent::init();
         }
     }

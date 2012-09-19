@@ -106,6 +106,7 @@ class FieldController extends RestfulModuleController
                         '*'
                     ),
                 ),
+                'UserCommonFields' => array('*'),
                 'UserRoleFields' => array(),
             ),
         ));
@@ -121,8 +122,10 @@ class FieldController extends RestfulModuleController
         $postData = $request->getPost();
 
         $roleId = $postData['role_id'];
-        $form = new Form\UserConnectForm();
-        $form->addSubForm('UserRoleFields', new Form\UserRoleFieldForm(null, $roleId))
+        $form = new Form\UserFieldsForm();
+        $form
+        ->useSubFormGroup()
+        ->addSubForm('UserRoleFields', new Form\UserRoleFieldsForm(null, $roleId))
         ->bind($postData);
 
         if ($form->isValid()) {
@@ -133,23 +136,8 @@ class FieldController extends RestfulModuleController
             $this->redirect()->toUrl('/admin/user/field/userfield/' . $itemId);
 
         } else {
-            $id = $postData['id'];
-            $itemModel = Api::_()->getModelService('User\Model\User');
-            $item = $itemModel->getUser($id);
-            $item = $item->toArray(array(
-                'self' => array(
-                    '*',
-                ),
-                'join' => array(
-                    'Roles' => array(
-                        'self' => array(
-                            '*'
-                        ),
-                    )
-                ),
-            ));
+            p($form->getMessages());
         }
-
 
         return array(
             'item' => $postData,
