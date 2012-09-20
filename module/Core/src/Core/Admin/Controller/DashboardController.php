@@ -27,6 +27,15 @@ class DashboardController extends ActionController
             $view['filesCount'] = $filesCount;
         }
 
+
+        if($api->isModuleLoaded('User')){
+            $userModel = Api::_()->getModelService('User\Model\User');
+            $users = $userModel->setItemList(array('page' => 1))->getUserList();
+            $usersCount = $userModel->getPaginator()->getRowCount();
+            $view['users'] = $users;
+            $view['usersCount'] = $usersCount;
+        }
+
         return new ViewModel($view); 
     }
 }

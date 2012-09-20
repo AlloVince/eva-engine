@@ -12,6 +12,11 @@ class Paginator extends \Zend\Paginator\Paginator
 
     protected $baseQuery = array();
 
+    public function getRowCount()
+    {
+        return $this->rowCount;
+    }
+
     public function setBaseQuery($baseQuery)
     {
         $this->baseQuery = $baseQuery;

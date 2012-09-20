@@ -14,7 +14,7 @@ namespace Eva\Mvc\Model;
 use Zend\Di\Di,
     Zend\Di\Config as DiConfig,
     Eva\Config\Config,
-    Eva\Mvc\Item\AbstractItem,
+    //Eva\Mvc\Item\AbstractItem,
     Zend\Mvc\Exception\MissingLocatorException,
     Eva\Mvc\Exception\InvalidEventException,
     Zend\ServiceManager\ServiceLocatorAwareInterface,
@@ -94,7 +94,7 @@ abstract class AbstractModelService implements ServiceLocatorAwareInterface
 
     public function setItem($dataSource)
     {
-        if($dataSource instanceof AbstractItem){
+        if($dataSource instanceof \Eva\Mvc\Item\AbstractItem){
             $this->item = $dataSource;
             return $this;
         }
@@ -147,7 +147,7 @@ abstract class AbstractModelService implements ServiceLocatorAwareInterface
 
     public function setItemList($itemList)
     {
-        if($itemList instanceof AbstractItem){
+        if($itemList instanceof \Eva\Mvc\Item\AbstractItem){
             $this->itemList = $itemList;
             return $this;
         }
