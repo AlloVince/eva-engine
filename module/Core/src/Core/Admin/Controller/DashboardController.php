@@ -31,7 +31,11 @@ class DashboardController extends ActionController
         if($api->isModuleLoaded('User')){
             $userModel = Api::_()->getModelService('User\Model\User');
             $users = $userModel->setItemList(array('page' => 1))->getUserList();
-            $usersCount = $userModel->getPaginator()->getRowCount();
+            if($userModel->getPaginator()) {
+                $usersCount = $userModel->getPaginator()->getRowCount();
+            } else {
+                $usersCount = 0;
+            }
             $view['users'] = $users;
             $view['usersCount'] = $usersCount;
         }

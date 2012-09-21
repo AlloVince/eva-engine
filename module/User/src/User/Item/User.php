@@ -92,6 +92,8 @@ class User extends AbstractItem
             'getSalt()',
             'getPassword()',
             'getOnlineStatus()',
+            'getRegisterTime()',
+            'getRegisterIp()',
         ),
     );
 
