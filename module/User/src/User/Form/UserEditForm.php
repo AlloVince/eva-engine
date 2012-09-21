@@ -25,4 +25,22 @@ class UserEditForm extends UserCreateForm
             'required' => true,
         ),
     );
+
+    protected $mergeFilters = array(
+        'userName' => array (
+            'required' => true,
+        ),
+        'email' => array (
+            'required' => true,
+            'validators' => array (
+                'db' => array(
+                    'name' => 'Eva\Validator\Db\NoRecordExists',
+                    'options' => array(
+                        'field' => 'email',
+                        'table' => 'user_users',
+                    ),
+                ),
+            ),
+        ),
+    );
 }

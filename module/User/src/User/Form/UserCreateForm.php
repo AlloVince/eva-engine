@@ -34,6 +34,21 @@ class UserCreateForm extends UserForm
         ),
         'email' => array (
             'required' => true,
+            'validators' => array (
+                'db' => array(
+                    'name' => 'Eva\Validator\Db\NoRecordExists',
+                    'options' => array(
+                        'field' => 'email',
+                        'table' => 'user_users',
+                        'exclude' => array(
+                            'field' => 'id',
+                            'value' => array(
+                                ''
+                            ),
+                        ),
+                    ),
+                ),
+            ),
         ),
     );
 

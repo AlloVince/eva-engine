@@ -320,7 +320,7 @@ class PostForm extends Form
                     ),
                 ),
                 'db' => array(
-                    'name' => 'DbNoRecordExists',
+                    'name' => 'Eva\Validator\Db\NoRecordExists',
                     'options' => array(
                         'field' => 'urlName',
                         'table' => 'eva_blog_posts',

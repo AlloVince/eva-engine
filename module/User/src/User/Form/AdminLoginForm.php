@@ -1,10 +1,7 @@
 <?php
 namespace User\Form;
 
-use Eva\Form\Form;
-use Zend\Form\Element;
-
-class AdminLoginForm extends Form
+class AdminLoginForm extends \Eva\Form\RestfulForm
 {
     /**
      * Form basic elements
