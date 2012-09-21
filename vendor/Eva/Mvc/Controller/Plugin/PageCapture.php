@@ -65,8 +65,21 @@ class PageCapture extends AbstractPlugin
                     'public_dir' => EVA_PUBLIC_PATH . '/static/cache/',
                 );
         }
+        
+        if (!$pageId) {
+            $request = $this->getController()->getEvent()->getRequest();
+            $baseUrl = $request->getBaseUrl();
+            $path = $request->getUri()->getPath();
+            if($baseUrl){
+                $path = substr($path, strlen($baseUrl));
+            }
+        }
 
         if(isset($config['adapter']) && $config['adapter'] == 'memcached'){
+            if (!$pageId) {
+                $pageId = $path;
+                $this->setPageId($pageId);
+            }
             //Note: get global MvcEvent must use getApplication
             $this->getController()->getEvent()->getApplication()->getEventManager()->attach(MvcEvent::EVENT_FINISH, array($this, 'onFinish'));
         } else {
@@ -75,12 +88,6 @@ class PageCapture extends AbstractPlugin
             if($pageId) {
                 $pageId .= '.' . $pageExtension;
             } else {
-                $request = $this->getController()->getEvent()->getRequest();
-                $baseUrl = $request->getBaseUrl();
-                $path = $request->getUri()->getPath();
-                if($baseUrl){
-                    $path = substr($path, strlen($baseUrl));
-                }
                 $pageId = $path . '.' . $pageExtension;
             }
 
@@ -94,7 +101,17 @@ class PageCapture extends AbstractPlugin
         $response = $event->getApplication()->getResponse();
         $pageId = $this->getPageId();
         //Save this to memcached;
-        $response->getContent();
+        $htmlContent = $response->getContent();
+        
+        $options = array();
+        
+        $config = $this->getConfig();
+        $config = $config['cache']['page_capture'];
+        $options = $config['options'];
+        unset($options['public_dir']);
+        $cache = new \Zend\Cache\Storage\Adapter\Memcached($options);
+
+        $cache->setItem($pageId, $htmlContent);
     }
 
     protected function getConfig()
