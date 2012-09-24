@@ -5,15 +5,18 @@ $this->headTitle($title, 'SET');
 if($this->form){
 	$form = $this->form;
 } else {
-    $form = Eva\Api::_()->getForm('User\Form\AdminLoginForm');
+    $form = new Core\Form\SuperAdminLoginForm();
 }
 
-$url = $this->uri('/admin/user/login/');
-$form->init(array(
-    'action' => $url,
-    'method' => 'put',
-    'values' => $this->user
-));
+if($this->hasModule('User')){
+    $url = $this->uri('/admin/user/login/');
+} else {
+    $url = $this->uri('/admin/core/login/');
+}
+$form->setView($this)
+     ->setMethod('put')
+     ->setAction($url)
+     ->prepare();
 ?>
 
 <style>
@@ -85,9 +88,11 @@ $form->init(array(
                                     </div>
                                 </div>
                                 <div class="form-actions">
-                                    <input name="callback" type="hidden" value="<?=$this->callback?>" />
+                                    <input name="callback" type="hidden" value="<?=$callback?>" />
                                     <button class="btn btn-primary" type="submit"><?=$this->_('Login')?></button>
+                                    <?if($this->hasModule('User')):?>
                                     <a href="<?=$this->uri('/admin/user/reset/')?>"><?=$this->_('Forgot Passsword')?></a>
+                                    <?endif?>
                                 </div>
                             </fieldset>
                         </form>
@@ -99,4 +104,3 @@ $form->init(array(
     </div>
 
 </div>
-

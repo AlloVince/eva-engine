@@ -24,9 +24,6 @@ class UserEditForm extends UserCreateForm
         'id' => array (
             'required' => true,
         ),
-    );
-
-    protected $mergeFilters = array(
         'userName' => array (
             'required' => true,
         ),

@@ -11,6 +11,7 @@
 
 namespace Eva\Form;
 
+use Eva\Api;
 use Zend\Form\Form;
 use Zend\Form\Fieldset;
 use Zend\Form\FormInterface;
@@ -719,5 +720,12 @@ class RestfulForm extends Form implements InputFilterProviderInterface
         parent::__construct($name);
         $this->init();
         $this->afterInit();
+
+        /*
+        if(Api::_()->getServiceManager()->has('translator')){
+            Api::_()->getServiceManager()->get('translator')->setLocale('zh');
+            \Zend\Validator\AbstractValidator::setDefaultTranslator(Api::_()->getServiceManager()->get('translator'));
+        }
+        */
     }
 }

@@ -104,7 +104,7 @@ abstract class RestfulController extends \Zend\Mvc\Controller\AbstractRestfulCon
         $render = $resource['render'];
 
         if(false === method_exists($this, $function)) {
-            throw new Exception\InvalidArgumentException(sprintf('Request restful resource %s not exist', $function));
+            throw new Exception\InvalidArgumentException(sprintf('Request restful resource %s not exist in %s', $function, get_class($this)));
         }
 
         $variables = $this->$function();

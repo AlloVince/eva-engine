@@ -14,6 +14,7 @@ if($this->hasModule('User')){
     $url = $this->uri('/admin/core/login/');
 }
 $form->setView($this)
+     ->setMethod('put')
      ->setAction($url)
      ->prepare();
 ?>

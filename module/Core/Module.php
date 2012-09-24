@@ -39,6 +39,7 @@ class Module
 
     public function language($e)
     {
+        //TODO:: should init language on Bootstrap
         $controller = $e->getTarget();
         $language = $controller->cookie()->read('lang');
         $config = $e->getApplication()->getConfig();
