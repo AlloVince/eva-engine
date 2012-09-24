@@ -1,6 +1,6 @@
 <?
 $item = $this->item;
-$title = $item ? 'Edit User' : 'Create User';
+$title = $item['id'] ? 'Edit User' : 'Create User';
 $title = $this->_($title);
 $this->headTitle($title, 'SET');
 $this->textDelay('breadcrumbText', $title);
@@ -8,11 +8,11 @@ $this->textDelay('breadcrumbText', $title);
 if($this->form){
 	$form = $this->form;
 } else {
-    $form = $item ? new User\Form\UserEditForm() : new User\Form\UserCreateForm();
+    $form = $item['id'] ? new User\Form\UserEditForm() : new User\Form\UserCreateForm();
     $form->useSubFormGroup();
 }
 
-$form->setMethod($item ? 'put' : 'post');
+$form->setMethod($item['id'] ? 'put' : 'post');
 $form->setView($this)
      ->setAction($this->uri('/admin/user/'))
      ->bind($item)

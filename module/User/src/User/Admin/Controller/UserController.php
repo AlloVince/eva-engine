@@ -124,6 +124,7 @@ class UserController extends RestfulModuleController
         }
 
         return array(
+            'item' => $postData,
             'form' => $form,
         );
     }
