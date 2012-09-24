@@ -41,7 +41,7 @@ class Module
     {
         //TODO:: should init language on Bootstrap
         $controller = $e->getTarget();
-        $language = $controller->cookie()->read('lang');
+        $language = $controller->cookie()->crypt(false)->read('lang');
         $config = $e->getApplication()->getConfig();
         if(!$language){
             if(isset($config['translator']['auto_switch']) && $config['translator']['auto_switch']){
