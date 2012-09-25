@@ -250,4 +250,54 @@ abstract class AbstractModelService implements ServiceLocatorAwareInterface
     {
         return $this->getItem()->getPaginator($paginatorOptions);
     }
+
+    public function createItem($data = null)
+    {
+        if($data) {
+            $this->setItem($data);
+        }
+        $item = $this->getItem();
+        $this->trigger('create.pre');
+        $itemId = $item->create();
+        if($item->hasLoadedRelationships()){
+            foreach($item->getLoadedRelationships() as $key => $relItem){
+                $relItem->create();
+            }
+        }
+        $this->trigger('create');
+        $this->trigger('create.post');
+        return $itemId;
+    }
+
+    public function saveItem($data = null)
+    {
+        if($data) {
+            $this->setItem($data);
+        }
+
+        $item = $this->getItem();
+        $this->trigger('save.pre');
+        $itemId = $item->save();
+        if($item->hasLoadedRelationships()){
+            foreach($item->getLoadedRelationships() as $key => $relItem){
+                $relItem->save();
+            }
+        }
+        $this->trigger('save');
+        $this->trigger('save.post');
+        return $itemId;
+    }
+
+    public function removeItem($data = null)
+    {
+        if($data) {
+            $this->setItem($data);
+        }
+        $this->trigger('remove.pre');
+        $item = $this->getItem();
+        $item->remove();
+        $this->trigger('remove');
+        $this->trigger('remove.post');
+        return true;
+    }
 }

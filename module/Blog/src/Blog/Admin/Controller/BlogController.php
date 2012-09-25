@@ -16,20 +16,26 @@ class BlogController extends RestfulModuleController
 
     public function restIndexBlog()
     {
-        $request = $this->getRequest();
+        $query = $this->getRequest()->getQuery();
 
-        $query = $request->getQuery();
+        $form = new Form\PostSearchForm();
+        $form->bind($query);
+        if($form->isValid()){
+            $query = $form->getData();
+        } else {
+            return array(
+                'form' => $form,
+                'posts' => array(),
+            );
+        }
 
-        $form = Api::_()->getForm('Blog\Form\PostSearchForm');
-        $selectQuery = $form->fieldsMap($query, true);
-
-        $postModel = Api::_()->getModel('Blog\Model\Post');
-        $posts = $postModel->setItemListParams($selectQuery)->getPosts();
-        $paginator = $postModel->getPaginator();
+        $itemModel = Api::_()->getModelService('Blog\Model\Post');
+        $items = $itemModel->setItemList($query)->getPostList();
+        $paginator = $itemModel->getPaginator();
 
         return array(
             'form' => $form,
-            'posts' => $posts,
+            'items' => $items,
             'query' => $query,
             'paginator' => $paginator,
         );
@@ -37,41 +43,46 @@ class BlogController extends RestfulModuleController
 
     public function restGetBlog()
     {
-        $id = (int)$this->getEvent()->getRouteMatch()->getParam('id');
-        $postModel = Api::_()->getModel('Blog\Model\Post');
-        $postinfo = $postModel->setItemParams($id)->getPost();
+        $id = $this->params('id');
+        $itemModel = Api::_()->getModelService('Blog\Model\Post');
+        $item = $itemModel->getPost($id, array(
+            'self' => array(
+                '*',
+            ),
+            'join' => array(
+                'Text' => array(
+                    'self' => array(
+                        '*',
+                        'getContentHtml()',
+                    ),
+                ),
+                'Categories' => array(
+                
+                )
+            )
+        ));
+
         return array(
-            'post' => $postinfo,
-            'flashMessenger' => $this->flashMessenger()->getMessages(),
+            'item' => $item,
         );
     }
 
     public function restPostBlog()
     {
-        $request = $this->getRequest();
-        $postData = $request->getPost();
-        $form = new Form\PostForm();
+        $postData = $this->params()->fromPost();
+        $form = new Form\PostCreateForm();
+        $form->useSubFormGroup()
+             ->bind($postData);
 
-        $subForms = array(
-            'Text' => array('Blog\Form\TextForm'),
-            'CategoryPost' => array('Blog\Form\CategoryPostForm'),
-            'FileConnect' => array('File\Form\FileConnectForm'),
-        );
-        $form->setSubforms($subForms)->init();
-
-        $form->setData($postData)->enableFilters();
         if ($form->isValid()) {
-
             $postData = $form->getData();
-            $postModel = Api::_()->getModel('Blog\Model\Post');
-            $postData = $form->fieldsMap($postData, true);
-            $postId = $postModel->setSubItemMap($subForms)->setItem($postData)->createPost();
+            $itemModel = Api::_()->getModelService('Blog\Model\Post');
+            $postId = $itemModel->setItem($postData)->createPost();
             $this->flashMessenger()->addMessage('post-create-succeed');
             $this->redirect()->toUrl('/admin/blog/' . $postId);
 
         } else {
             
-            //p($form->getInputFilter()->getInvalidInput());
         }
 
         return array(
@@ -82,54 +93,42 @@ class BlogController extends RestfulModuleController
 
     public function restPutBlog()
     {
-        $request = $this->getRequest();
-        $postData = $request->getPost();
+        $postData = $this->params()->fromPost();
         $form = new Form\PostEditForm();
-        $subForms = array(
-            'Text' => array('Blog\Form\TextForm'),
-            'CategoryPost' => array('Blog\Form\CategoryPostForm'),
-            'FileConnect' => array('File\Form\FileConnectForm'),
-        );
-        
-        $form->setSubforms($subForms)
-             ->init()
-             ->setData($postData)
-             ->enableFilters();
+        $form->useSubFormGroup()
+             ->bind($postData);
 
         $flashMesseger = array();
+
         if ($form->isValid()) {
             $postData = $form->getData();
-            $postModel = Api::_()->getModel('Blog\Model\Post');
-            $postData = $form->fieldsMap($postData, true);
-            $postId = $postModel->setSubItemMap($subForms)->setItem($postData)->savePost();
+            $itemModel = Api::_()->getModelService('Blog\Model\Post');
+            $postId = $itemModel->setItem($postData)->savePost();
+
             $this->flashMessenger()->addMessage('post-edit-succeed');
             $this->redirect()->toUrl('/admin/blog/' . $postData['id']);
+
         } else {
-            //$this->flashMessenger()->addMessage('');
-            $flashMesseger = array('post-edit-failed');
         }
 
         return array(
             'form' => $form,
-            'post' => $postData,
-            'flashMessenger' => $flashMesseger
+            'item' => $postData,
         );
     }
 
     public function restDeleteBlog()
     {
-        $request = $this->getRequest();
-        $postData = $request->getPost();
-        $callback = $request->getPost()->get('callback');
+        $postData = $this->params()->fromPost();
+        $callback = $this->params()->fromPost('callback');
 
         $form = new Form\PostDeleteForm();
-        $form->enableFilters()->setData($postData);
+        $form->bind($postData);
         if ($form->isValid()) {
 
             $postData = $form->getData();
-            $postTable = Api::_()->getDbTable('Blog\DbTable\Posts');
-
-            $postTable->where("id = {$postData['id']}")->remove();
+            $itemModel = Api::_()->getModelService('Blog\Model\Post');
+            $itemModel->setItem($postData)->removePost();
 
             if($callback){
                 $this->redirect()->toUrl($callback);

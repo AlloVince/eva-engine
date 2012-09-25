@@ -3,15 +3,16 @@
 namespace Blog\DbTable;
 
 use Eva\Db\TableGateway\TableGateway;
+use Zend\Stdlib\Parameters;
 
 class Categories extends TableGateway
 {
     protected $tableName ='categories';
     protected $primaryKey = 'id';
 
-    public function selectCategories(\Zend\Stdlib\Parameters $params)
+    public function setParameters(Parameters $params)
     {
-        if($params->enableCount){
+        if($params->page){
             $this->enableCount();
         }
 
@@ -24,8 +25,8 @@ class Categories extends TableGateway
             'iddesc' => 'id DESC',
             'timeasc' => 'createTime ASC',
             'timedesc' => 'createTime DESC',
-            'titleasc' => 'categoryName ASC',
-            'titledesc' => 'categoryName DESC',
+            'nameasc' => 'categoryName ASC',
+            'namedesc' => 'categoryName DESC',
         );
         
         if($params->order){

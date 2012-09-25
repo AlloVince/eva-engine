@@ -61,28 +61,28 @@ $form->init(array(
                     </tr>
                 </thead>
                 <tbody>
-                    <?if($this->categories):?>
-                    <?foreach($this->categories as $key=>$category):?>
+                    <?if($this->items):?>
+                    <?foreach($this->items as $key=>$item):?>
                     <tr class="">
                         <td>
-                            <input name="id" type="checkbox" class="multiform-item-checkbox"  data-multiform="post" data-multiform-itemid="<?=$category['id'] ?>" value="<?=$category['id'] ?>" />
+                            <input name="id" type="checkbox" class="multiform-item-checkbox"  data-multiform="post" data-multiform-itemid="<?=$item['id'] ?>" value="<?=$item['id'] ?>" />
                         </td>	
                         <td>
-                               <?if($category['level'] > 1) {
-			                        echo str_repeat("&nbsp;&nbsp;&nbsp;",$category['level']).'|_';
+                               <?if($item['level'] > 1) {
+			                        echo str_repeat("&nbsp;&nbsp;&nbsp;",$item['level']).'|_';
 			                    }?>
-                            <a href="<?=$this->uri('/admin/blog/category/' . $category['id'])?>" class="title"><?=$category['categoryName'] ?></a>
+                            <a href="<?=$this->uri('/admin/blog/category/' . $item['id'])?>" class="title"><?=$item['categoryName'] ?></a>
                             <p>
-                            <span class="meta"><?=$category['urlName'] ?> <?=$category['createTime'];?></span>
+                            <span class="meta"><?=$item['urlName'] ?> <?=$item['createTime'];?></span>
                             </p>
                         </td>
                         <td>
-                            <input name="order" tabindex="<?=$key+1 ?>" type="text" class="span1 multiform-item-input" size="2" maxlength="3"  data-multiform="post" data-multiform-itemid="<?=$category['id'] ?>" value="<?=$category['orderNumber'] ? $category['orderNumber'] : "0" ?>" />
+                            <input name="order" tabindex="<?=$key+1 ?>" type="text" class="span1 multiform-item-input" size="2" maxlength="3"  data-multiform="post" data-multiform-itemid="<?=$item['id'] ?>" value="<?=$item['orderNumber'] ? $item['orderNumber'] : "0" ?>" />
                         </td>
                         <td class="actions">
-                            <a href="<?=$this->uri('/admin/blog/category/remove/' . $category['id'], 'c', array('c' => $this->uri('/admin/blog/category', array('page' => $this->page)))); ?>" class="btn btn-small btn-danger"><?=$this->_('Delete')?></a>
-                            <a href="<?=$this->uri('/admin/blog/?category=' . $category['id'])?>" class="btn btn-small"><?=$this->_('Search Posts')?></a>
-                            <a href="<?=$this->uri('/admin/blog/category/' . $category['id'])?>" class="btn btn-small"><?=$this->_('Edit')?></a>
+                            <a href="<?=$this->uri('/admin/blog/category/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/blog/category', array('page' => $this->page)))); ?>" class="btn btn-small btn-danger"><?=$this->_('Delete')?></a>
+                            <a href="<?=$this->uri('/admin/blog/?category=' . $item['id'])?>" class="btn btn-small"><?=$this->_('Search Posts')?></a>
+                            <a href="<?=$this->uri('/admin/blog/category/' . $item['id'])?>" class="btn btn-small"><?=$this->_('Edit')?></a>
                         </td>
                     </tr>
                     <?endforeach;?>

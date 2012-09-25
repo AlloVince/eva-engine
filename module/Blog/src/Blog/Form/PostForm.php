@@ -1,38 +1,40 @@
 <?php
 namespace Blog\Form;
 
-use Eva\Form\Form;
-use Zend\Form\Element;
-
-class PostForm extends Form
+class PostForm extends \Eva\Form\RestfulForm
 {
-    protected $fieldsMap = array(
-        
-    );
-
-    protected $baseElements = array(
+    /**
+     * Form basic elements
+     *
+     * @var array
+     */
+    protected $baseElements = array (
         'id' => array (
             'name' => 'id',
-            'attributes' => array (
-                'type' => 'hidden',
+            'type' => 'hidden',
+            'options' => array (
                 'label' => 'Id',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'title' => array (
             'name' => 'title',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Title',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'status' => array (
             'name' => 'status',
-            'attributes' => array (
-                'type' => 'select',
+            'type' => 'select',
+            'options' => array (
                 'label' => 'Status',
-                'options' => array (
+                'value_options' => array (
                     array (
                         'label' => 'Deleted',
                         'value' => 'deleted',
@@ -50,15 +52,17 @@ class PostForm extends Form
                         'value' => 'pending',
                     ),
                 ),
+            ),
+            'attributes' => array (
                 'value' => 'published',
             ),
         ),
         'visibility' => array (
             'name' => 'visibility',
-            'attributes' => array (
-                'type' => 'select',
+            'type' => 'select',
+            'options' => array (
                 'label' => 'Visibility',
-                'options' => array (
+                'value_options' => array (
                     array (
                         'label' => 'Public',
                         'value' => 'public',
@@ -73,13 +77,15 @@ class PostForm extends Form
                     ),
                 ),
             ),
+            'attributes' => array (
+            ),
         ),
         'codeType' => array (
             'name' => 'codeType',
-            'attributes' => array (
-                'type' => 'multiCheckbox',
+            'type' => 'radio',
+            'options' => array (
                 'label' => 'Code Type',
-                'options' => array (
+                'value_options' => array (
                     array (
                         'label' => 'Markdown',
                         'value' => 'markdown',
@@ -88,7 +94,6 @@ class PostForm extends Form
                         'label' => 'Html',
                         'value' => 'html',
                     ),
-                    /*
                     array (
                         'label' => 'Wiki',
                         'value' => 'wiki',
@@ -101,46 +106,69 @@ class PostForm extends Form
                         'label' => 'Other',
                         'value' => 'other',
                     ),
-                    */
                 ),
+            ),
+            'attributes' => array (
                 'value' => 'markdown',
             ),
         ),
         'language' => array (
             'name' => 'language',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Language',
+            ),
+            'attributes' => array (
                 'value' => 'en',
             ),
         ),
 
-
+        'trackback' => array (
+            'name' => 'trackback',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Trackback',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
         'urlName' => array (
             'name' => 'urlName',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Post Url',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
-
+        'preview' => array (
+            'name' => 'preview',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Preview',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
         'postPassword' => array (
             'name' => 'postPassword',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Post Password',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
-
-
         'commentStatus' => array (
             'name' => 'commentStatus',
-            'attributes' => array (
-                'type' => 'select',
+            'type' => 'select',
+            'options' => array (
                 'label' => 'Comment Status',
-                'options' => array (
+                'value_options' => array (
                     array (
                         'label' => 'Open',
                         'value' => 'open',
@@ -154,15 +182,17 @@ class PostForm extends Form
                         'value' => 'authority',
                     ),
                 ),
+            ),
+            'attributes' => array (
                 'value' => 'open',
             ),
         ),
         'commentType' => array (
             'name' => 'commentType',
-            'attributes' => array (
-                'type' => 'select',
+            'type' => 'select',
+            'options' => array (
                 'label' => 'Comment Type',
-                'options' => array (
+                'value_options' => array (
                     array (
                         'label' => 'Local',
                         'value' => 'local',
@@ -180,10 +210,11 @@ class PostForm extends Form
                         'value' => 'duoshuo',
                     ),
                 ),
+            ),
+            'attributes' => array (
                 'value' => 'local',
             ),
         ),
-
     );
 
     /**
@@ -207,7 +238,7 @@ class PostForm extends Form
         ),
         'title' => array (
             'name' => 'title',
-            'required' => true,
+            'required' => false,
             'filters' => array (
                 'stripTags' => array (
                     'name' => 'StripTags',
@@ -220,9 +251,6 @@ class PostForm extends Form
                 'notEmpty' => array (
                     'name' => 'NotEmpty',
                     'options' => array (
-                        'messages' => array(
-                            \Zend\Validator\NotEmpty::IS_EMPTY => 'Title not allow empty',
-                        ), 
                     ),
                 ),
                 'stringLength' => array (
@@ -295,7 +323,47 @@ class PostForm extends Form
                 ),
             ),
         ),
+        'language' => array (
+            'name' => 'language',
+            'required' => false,
+            'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+                'stringLength' => array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => '5',
+                    ),
+                ),
+            ),
+        ),
 
+        'trackback' => array (
+            'name' => 'trackback',
+            'required' => false,
+            'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+                'stringLength' => array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => '255',
+                    ),
+                ),
+            ),
+        ),
         'urlName' => array (
             'name' => 'urlName',
             'required' => false,
@@ -319,19 +387,28 @@ class PostForm extends Form
                         'max' => '255',
                     ),
                 ),
-                'db' => array(
-                    'name' => 'Eva\Validator\Db\NoRecordExists',
-                    'options' => array(
-                        'field' => 'urlName',
-                        'table' => 'eva_blog_posts',
-                        'messages' => array(
-                            //\Zend\Validator\Db\NoRecordExists::ERROR_RECORD_FOUND => 'Abc',
-                        ), 
+            ),
+        ),
+        'preview' => array (
+            'name' => 'preview',
+            'required' => false,
+            'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+                'stringLength' => array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => '500',
                     ),
                 ),
             ),
         ),
-
         'postPassword' => array (
             'name' => 'postPassword',
             'required' => false,

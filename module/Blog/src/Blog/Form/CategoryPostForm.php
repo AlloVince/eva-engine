@@ -5,7 +5,6 @@
  * @link      https://github.com/AlloVince/eva-engine
  * @copyright Copyright (c) 2012 AlloVince (http://avnpc.com/)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Eva_Api.php
  * @author    AlloVince
  */
 
@@ -18,7 +17,7 @@ namespace Blog\Form;
  * @category   Eva
  * @package    Eva_Form
  */
-class CategoryPostForm extends \Eva\Form\Form
+class CategoryPostForm extends \Eva\Form\RestfulForm
 {
     /**
      * Form basic elements
@@ -28,23 +27,21 @@ class CategoryPostForm extends \Eva\Form\Form
     protected $baseElements = array (
         'category_id' => array (
             'name' => 'category_id',
+            'type' => 'hidden',
+            'options' => array (
+                'label' => 'Category_id',
+            ),
             'attributes' => array (
-                'type' => 'select',
-                'label' => 'Category',
-                'options' => array(
-                    array(
-                        'label' => 'Select Category',
-                        'value' => '',
-                    ),  
-                ),
                 'value' => '',
             ),
         ),
         'post_id' => array (
             'name' => 'post_id',
-            'attributes' => array (
-                'type' => 'hidden',
+            'type' => 'hidden',
+            'options' => array (
                 'label' => 'Post_id',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),

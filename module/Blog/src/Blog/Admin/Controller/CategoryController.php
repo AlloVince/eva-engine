@@ -22,20 +22,21 @@ class CategoryController extends RestfulModuleController
 
     public function restIndexCategory()
     {
-        $request = $this->getRequest();
-        
-        $query = $request->getQuery();
+        $query = $this->getRequest()->getQuery();
 
-        $form = Api::_()->getForm('Blog\Form\CategoryForm');
-        $selectQuery = $form->fieldsMap($query, true);
+        $form = new Form\CategorySearchForm();
+        $form->bind($query);
+        if($form->isValid()){
+            $query = $form->getData();
+        }
        
-        $categoryModel = Api::_()->getModel('Blog\Model\Category');
-        $categories = $categoryModel->setItemListParams($selectQuery)->getCategories();
-        $paginator = $categoryModel->getPaginator();
+        $itemModel = Api::_()->getModelService('Blog\Model\Category');
+        $items = $itemModel->setItemList($query)->getCategoryList();
+        $paginator = $itemModel->getPaginator();
 
         return array(
             'form' => $form,
-            'categories' => $categories,
+            'items' => $items,
             'query' => $query,
             'paginator' => $paginator,
         );
@@ -47,106 +48,90 @@ class CategoryController extends RestfulModuleController
 
     public function restGetCategory()
     {
-        $id = (int)$this->getEvent()->getRouteMatch()->getParam('id');
-        $itemModel = Api::_()->getModel('Blog\Model\Category');
-        $categoryinfo = $itemModel->setItemParams($id)->getCategory();
+        $id = $this->params('id');
+        $itemModel = Api::_()->getModelService('Blog\Model\Category');
+        $item = $itemModel->getCategory($id);
         return array(
-            'category' => $categoryinfo,
-            'flashMessenger' => $this->flashMessenger()->getMessages(),
+            'item' => $item,
         );
     }
 
     public function restGetCategoryRemove()
     {
-        $id = (int)$this->getEvent()->getRouteMatch()->getParam('id');
-        $itemModel = Api::_()->getModel('Blog\Model\Category');
-        $categoryinfo = $itemModel->setItemParams($id)->getCategory();
+        $id = $this->params('id');
+        $itemModel = Api::_()->getModelService('Blog\Model\Category');
+        $item = $itemModel->getCategory($id);
         return array(
-            'category' => $categoryinfo,
-            'callback' => $this->getRequest()->getQuery()->get('callback'),
+            'item' => $item,
+            'callback' => $this->params()->fromQuery('callback'),
         );
     }
 
     public function restPostCategory()
     {
-        $request = $this->getRequest();
-        $postData = $request->getPost();
-        $form = new Form\CategoryForm();
-        
-        $subForms = array(
-            'FileConnect' => array('File\Form\FileConnectForm'),
-        );
-        $form->setSubforms($subForms)->init();
-        $form->setData($postData)->enableFilters();
+        $postData = $this->params()->fromPost();
+        $form = new Form\CategoryCreateForm();
+        $form->useSubFormGroup();
+        $form->bind($postData);
         if ($form->isValid()) {
             $postData = $form->getData();
-            $itemModel = Api::_()->getModel('Blog\Model\Category');
-            $postData = $form->fieldsMap($postData, true);
-            $itemId = $itemModel->setSubItemMap($subForms)->setItem($postData)->createCategory();
+
+            $itemModel = Api::_()->getModelService('Blog\Model\Category');
+            $itemId = $itemModel->setItem($postData)->createCategory();
+            
             $this->flashMessenger()->addMessage('category-create-succeed');
             $this->redirect()->toUrl('/admin/blog/category/' . $itemId);
         } else {
-
-            //p($form->getInputFilter()->getInvalidInput());
         }
 
         return array(
             'form' => $form,
-            'category' => $postData,
+            'item' => $postData,
         );
     }
 
     public function restPutCategory()
     {
-        $request = $this->getRequest();
-        $postData = $request->getPost();
+        $postData = $this->params()->fromPost();
         $form = new Form\CategoryEditForm();
-        $subForms = array(
-            'FileConnect' => array('File\Form\FileConnectForm'),
-        );
-
-        $form->setSubforms($subForms)
-             ->init()
-             ->setData($postData)
-             ->enableFilters();
+        $form->useSubFormGroup();
+        $form->bind($postData);
 
         if ($form->isValid()) {
-            $postData = $form->getData();
-            $itemModel = Api::_()->getModel('Blog\Model\Category');
-            $postData = $form->fieldsMap($postData, true);
-            $itemId = $itemModel->setSubItemMap($subForms)->setItem($postData)->saveCategory();
-            $this->flashMessenger()->addMessage('category-edit-succeed');
-            $this->redirect()->toUrl('/admin/blog/category/' . $itemId);
-        } else {
 
-            //p($form->getInputFilter()->getInvalidInput());
+            $postData = $form->getData();
+            $itemModel = Api::_()->getModelService('Blog\Model\Category');
+            $itemModel->setItem($postData)->saveCategory();
+            
+            $this->flashMessenger()->addMessage('category-edit-succeed');
+            $this->redirect()->toUrl('/admin/blog/category/' . $postData['id']);
+        } else {
         }
 
         return array(
             'form' => $form,
-            'category' => $postData,
+            'item' => $postData,
         );
     }
 
     public function restDeleteCategory()
     {
-        $request = $this->getRequest();
-        $postData = $request->getPost();
-        $callback = $request->getPost()->get('callback');
+        $postData = $this->params()->fromPost();
+        $callback = $this->params()->fromPost('callback');
 
         $form = new Form\CategoryDeleteForm();
-        $form->enableFilters()->setData($postData);
+        $form->bind($postData);
         if ($form->isValid()) {
-            $categoryData = $form->getData();
-            $itemModel = Api::_()->getModel('Blog\Model\Category');
-            $itemId = $itemModel->setItem($categoryData)->deleteCategory();
+            $postData = $form->getData();
+            $itemModel = Api::_()->getModelService('Blog\Model\Category');
+            $itemId = $itemModel->setItem($postData)->removeCategory();
             if($callback){
                 $this->redirect()->toUrl($callback);
             }
 
         } else {
             return array(
-                'category' => $categoryData,
+                'item' => $postData,
             );
         }
     }

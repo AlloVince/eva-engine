@@ -5,13 +5,15 @@ $this->textDelay('breadcrumbText', $title);
 if($this->form){
 	$form = $this->form;
 } else {
-    $form = Eva\Api::_()->getForm('\Blog\Form\PostSearchForm');
+    $form = new Blog\Form\PostSearchForm();
 }
-$form->init(array(
-    'action' => $this->uri('/admin/blog/'),
-    'method' => 'get',
-    'values' => $this->query
-));
+
+$form
+->setView($this)
+->setMethod('get')
+->setAction($this->uri('/admin/blog/'))
+->bind($this->query)
+->prepare();
 
 $lableMap = array(
     'draft' => '',
@@ -28,10 +30,10 @@ $lableMap = array(
                 <?=$form->helper('keyword', array('class' => 'input-large', 'placeholder' => 'Keyword...'))?>
                 <?=$form->helper('status', 'formSelect', array('class' => 'span2'))?>
                 <?=$form->helper('visibility', 'formSelect', array('class' => 'span2'))?>
-                <?=$form->helper('category', 'formSelect', array(
+                <?/*=$form->helper('category', 'formSelect', array(
                     'class' => 'span2',
                     'value_options' => $this->action('Blog\Api\Controller\CategoryController', 'selectAction'),
-                ), array('replace' => false, 'i18n' => false))?>
+                ), array('replace' => false, 'i18n' => false))*/?>
                 <button class="btn" type="submit"><?=$this->_('Filter Posts')?></button>
             </form>
         </div>
@@ -94,29 +96,29 @@ $lableMap = array(
                     </tr>
                 </thead>
                 <tbody>
-                    <?if($this->posts):?>
-                    <?foreach($this->posts as $key=>$post):?>
+                    <?if($this->items):?>
+                    <?foreach($this->items as $key=>$item):?>
                     <tr class="">
                         <td>
-                            <input name="id" type="checkbox" class="multiform-item-checkbox"  data-multiform="post" data-multiform-itemid="<?=$post['id'] ?>" value="<?=$post['id'] ?>" />
+                            <input name="id" type="checkbox" class="multiform-item-checkbox"  data-multiform="post" data-multiform-itemid="<?=$item['id'] ?>" value="<?=$item['id'] ?>" />
                         </td>	
                         <td>
-                            <a href="<?=$this->uri('/admin/blog/' . $post['id'])?>" class="title"><?=$post['title'] ?></a>
-                            <span class="label <?=$lableMap[$post['status']]?>"><?=$this->_($post['status'])?></span>
-                            <?if($post['visibility'] == 'private'):?>
+                            <a href="<?=$this->uri('/admin/blog/' . $item['id'])?>" class="title"><?=$item['title'] ?></a>
+                            <span class="label <?=$lableMap[$item['status']]?>"><?=$this->_($item['status'])?></span>
+                            <?if($item['visibility'] == 'private'):?>
                             <span class="label label-important"><?=$this->_('private')?></span>
                             <?endif?>
                             <p>
-                            <span class="meta"><?=$post['user_name'] ?> <?=$post['createTime'];?></span>
+                            <span class="meta"><?=$item['user_name'] ?> <?=$item['createTime'];?></span>
                             </p>
                         </td>
                         <td>
-                            <input name="order" tabindex="<?=$key+1 ?>" type="text" class="span1 multiform-item-input" size="2" maxlength="3"  data-multiform="post" data-multiform-itemid="<?=$post['id'] ?>" value="<?=$post['orderNumber'] ? $post['orderNumber'] : "0" ?>" />
+                            <input name="order" tabindex="<?=$key+1 ?>" type="text" class="span1 multiform-item-input" size="2" maxlength="3"  data-multiform="post" data-multiform-itemid="<?=$item['id'] ?>" value="<?=$item['orderNumber'] ? $item['orderNumber'] : "0" ?>" />
                         </td>
                         <td class="actions">
-                            <a href="<?=$this->uri('/admin/blog/remove/' . $post['id'], 'c', array('c' => $this->uri('/admin/blog', array('page' => $this->page)))); ?>" class="btn btn-small btn-danger"><?=$this->_('Delete')?></a>
-                            <a href="<?=$this->uri('/blog/page/' . $post['urlName'])?>" class="btn btn-small"><?=$this->_('View')?></a>
-                            <a href="<?=$this->uri('/admin/blog/' . $post['id'])?>" class="btn btn-small"><?=$this->_('Edit')?></a>
+                            <a href="<?=$this->uri('/admin/blog/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/blog/', array('page' => $this->page)))); ?>" class="btn btn-small btn-danger"><?=$this->_('Delete')?></a>
+                            <a href="<?=$this->uri('/blog/page/' . $item['urlName'])?>" class="btn btn-small"><?=$this->_('View')?></a>
+                            <a href="<?=$this->uri('/admin/blog/' . $item['id'])?>" class="btn btn-small"><?=$this->_('Edit')?></a>
                         </td>
                     </tr>
                     <?endforeach;?>

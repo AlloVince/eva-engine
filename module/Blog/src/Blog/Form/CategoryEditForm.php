@@ -1,9 +1,6 @@
 <?php
 namespace Blog\Form;
 
-use Eva\Form\Form;
-use Zend\Form\Element;
-
 class CategoryEditForm extends CategoryForm
 {
     protected $mergeFilters = array(
@@ -22,18 +19,15 @@ class CategoryEditForm extends CategoryForm
                     ),
                 ),
                 array(
-                    'name' => 'Eva\Validator\Db\NoRecordExistsExcludeSelf',
+                    'name' => 'Eva\Validator\Db\NoRecordExists',
+                    'injectdata' => true,
                     'options' => array(
                         'field' => 'urlName',
-                        'table' => 'eva_blog_categories',
+                        'table' => 'blog_categories',
                         'exclude' => array(
                             'field' => 'id',
                         ),
-                        'messages' => array(
-                             'recordFound' => 'Abc',
-                        ), 
                     ),
-
                 ),
             ),
         ),

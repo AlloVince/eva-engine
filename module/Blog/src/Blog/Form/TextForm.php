@@ -1,46 +1,80 @@
 <?php
+/**
+ * EvaEngine
+ *
+ * @link      https://github.com/AlloVince/eva-engine
+ * @copyright Copyright (c) 2012 AlloVince (http://avnpc.com/)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @author    AlloVince
+ */
+
 namespace Blog\Form;
 
-use Eva\Form\Form;
-use Zend\Form\Element;
-
-class TextForm extends Form
+/**
+ * Eva Form will automatic combination form Elements & Validators & Filters
+ * Also allow add sub forms and unit validate
+ * 
+ * @category   Eva
+ * @package    Eva_Form
+ */
+class TextForm extends \Eva\Form\RestfulForm
 {
-    protected $fieldsMap = array(
-        
-    );
-
-    protected $baseElements = array(
-        'post_id' => array(
+    /**
+     * Form basic elements
+     *
+     * @var array
+     */
+    protected $baseElements = array (
+        'post_id' => array (
             'name' => 'post_id',
-            'attributes' => array(
-                'type' => 'hidden',
+            'type' => 'hidden',
+            'options' => array (
+                'label' => 'Post_id',
+            ),
+            'attributes' => array (
+                'value' => '',
             ),
         ),
-
-        'content' => array(
-            'name' => 'content',
-            'attributes' => array(
-                'type'  => 'textarea',
-                'label' => 'Content',
-            ),
-        ),
-
-        'metaKeywords' => array(
+        'metaKeywords' => array (
             'name' => 'metaKeywords',
-            'attributes' => array(
-                'type'  => 'text',
+            'type' => 'textarea',
+            'options' => array (
                 'label' => 'Meta Keywords',
             ),
+            'attributes' => array (
+                'value' => '',
+            ),
         ),
-
-        'metaDescription' => array(
+        'metaDescription' => array (
             'name' => 'metaDescription',
-            'attributes' => array(
-                'type'  => 'textarea',
+            'type' => 'textarea',
+            'options' => array (
                 'label' => 'Meta Description',
             ),
-        )
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
+        'toc' => array (
+            'name' => 'toc',
+            'type' => 'textarea',
+            'options' => array (
+                'label' => 'Toc',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
+        'content' => array (
+            'name' => 'content',
+            'type' => 'textarea',
+            'options' => array (
+                'label' => 'Content',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
     );
 
     /**
@@ -66,12 +100,6 @@ class TextForm extends Form
             'name' => 'metaKeywords',
             'required' => false,
             'filters' => array (
-                'stripTags' => array (
-                    'name' => 'StripTags',
-                ),
-                'stringTrim' => array (
-                    'name' => 'StringTrim',
-                ),
             ),
             'validators' => array (
             ),
@@ -80,23 +108,22 @@ class TextForm extends Form
             'name' => 'metaDescription',
             'required' => false,
             'filters' => array (
-                'stripTags' => array (
-                    'name' => 'StripTags',
-                ),
-                'stringTrim' => array (
-                    'name' => 'StringTrim',
-                ),
+            ),
+            'validators' => array (
+            ),
+        ),
+        'toc' => array (
+            'name' => 'toc',
+            'required' => false,
+            'filters' => array (
             ),
             'validators' => array (
             ),
         ),
         'content' => array (
             'name' => 'content',
-            'required' => true,
+            'required' => false,
             'filters' => array (
-                'stringTrim' => array (
-                    'name' => 'StringTrim',
-                ),
             ),
             'validators' => array (
                 'notEmpty' => array (
@@ -107,6 +134,5 @@ class TextForm extends Form
             ),
         ),
     );
-
-
 }
+

@@ -26,6 +26,16 @@ class UserCreateForm extends UserForm
         'language' => array (
             'callback' => 'getLanguages',
         ),
+        'inputPassword' => array (
+            'name' => 'inputPassword',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Password',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
     );
 
     protected $mergeFilters = array(
@@ -44,6 +54,26 @@ class UserCreateForm extends UserForm
                         'exclude' => array(
                             'field' => 'id',
                         ),
+                    ),
+                ),
+            ),
+        ),
+        'inputPassword' => array (
+            'name' => 'inputPassword',
+            'required' => false,
+            'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+                'stringLength' => array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => '128',
                     ),
                 ),
             ),

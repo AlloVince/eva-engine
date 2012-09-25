@@ -1,20 +1,20 @@
 <?
-$post = $this->post;
+$item = $this->item;
 $title = $this->_('Delete Post');
 $this->headTitle($title, 'SET');
-$form = Eva\Api::_()->getForm('\Blog\Form\PostDeleteForm');
+$form = new Blog\Form\PostDeleteForm();
 
-$form->init(array(
-	'action' => $this->uri('/admin/blog/'),
-	'method' => 'delete',
-	'values' => $this->post
-));
+$form->setView($this)
+->setMethod('delete')
+->setAction($this->uri('/admin/blog/'))
+->bind($item)
+->prepare();
 ?>
 
-<?if($post):?>
+<?if($item):?>
 <div class="alert alert-block">
    <h2 class="alert-heading"><?=$title?></h2>
-   <p><?=$this->_(array('Post %title% will be deleted, are you sure?', $post['title']))?></p>
+   <p><?=$this->_(array('Post %title% will be deleted, are you sure?', $item['title']))?></p>
    <p>
 		<form class="form-horizontal" <?=$this->formAttr($form)?>>
 			<?=$form->restful();?>

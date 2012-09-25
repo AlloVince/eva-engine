@@ -3,16 +3,17 @@
 namespace Blog\DbTable;
 
 use Eva\Db\TableGateway\TableGateway;
+use Zend\Stdlib\Parameters;
 
 class Posts extends TableGateway
 {
     protected $tableName ='posts';
+
     protected $primaryKey = 'id';
 
-
-    public function selectPosts(\Zend\Stdlib\Parameters $params)
+    public function setParameters(Parameters $params)
     {
-        if($params->enableCount){
+        if($params->page){
             $this->enableCount();
         }
 

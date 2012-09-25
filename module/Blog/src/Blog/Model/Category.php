@@ -3,16 +3,12 @@
 namespace Blog\Model;
 
 use Eva\Api,
-    Eva\Mvc\Model\AbstractModel;
+    Eva\Mvc\Model\AbstractModelService;
 
-class Category extends AbstractModel
+class Category extends AbstractModelService
 {
     protected $itemTableName = 'Blog\DbTable\Categories';
 
-    protected $events = array(
-    );
-
-    
     protected $treeConfig = array(
         'adapter'   => 'BinaryTreeDb',
         'direction' => false,
@@ -21,144 +17,63 @@ class Category extends AbstractModel
         ),
     );
 
-    public function createCategory()
+    public function createCategory($data = null)
     {
-        $item = $this->setItemAttrMap(array(
-            'urlName' => array('urlName', 'getUrlName'),
-            'createTime' => array('createTime', 'getCreateTime'),
-        ))->getItemArray();
-
-        $tree = new \Core\Tree\Tree($this->treeConfig['adapter'], $this->treeConfig['direction'], $this->treeConfig['options']);
-
-        $itemId = $tree->insertNode($item);
-
-        if($itemId){
-            $item['id'] = $itemId;
-            $this->item = $item;
-        }
-        
-        if($itemId && $this->getSubItem('FileConnect')){
-            $subData = $this->getSubItem('FileConnect');
-            $subTable = Api::_()->getDbTable('File\DbTable\FilesConnections');
-            $subItem = $this->getItemClass($subData, array(
-                'connect_id' => array('connect_id', 'getConnectId'),
-                'connectType' => array('connectType', 'getConnectType')
-            ), 'File\Model\FileConnect\Item');
-            $subData = $subItem->toArray();
-            $subTable->where(array('connect_id' => $itemId, 'connectType' => 'category'))->remove();
-            if($subData['connect_id'] && $subData['file_id']) {
-                $subTable->where(array('connect_id' => $itemId, 'connectType' => 'category'))->create($subData);
-            }
-        }
-
-        return $itemId;
+        return $this->createItem($data);
     }
 
-    public function saveCategory()
+    public function saveCategory($data = null)
     {
-        $item = $this->setItemAttrMap(array(
-            'urlName' => array('urlName', 'getUrlName'),
-        ))->getItemArray();
-        
-        $tree = new \Core\Tree\Tree($this->treeConfig['adapter'], $this->treeConfig['direction'], $this->treeConfig['options']);
-        $itemId = $tree->updateNode($item);
-
-        if($itemId){
-            $item['id'] = $itemId;
-            $this->item = $item;
-        }
-
-        if($itemId && $this->getSubItem('FileConnect')){
-            $subData = $this->getSubItem('FileConnect');
-            $subTable = Api::_()->getDbTable('File\DbTable\FilesConnections');
-            $subItem = $this->getItemClass($subData, array(
-                'connect_id' => array('connect_id', 'getConnectId'),
-                'connectType' => array('connectType', 'getConnectType')
-            ), 'File\Model\FileConnect\Item');
-            $subData = $subItem->toArray();
-            $subTable->where(array('connect_id' => $itemId, 'connectType' => 'category'))->remove();
-            if($subData['connect_id'] && $subData['file_id']) {
-                $subTable->where(array('connect_id' => $itemId, 'connectType' => 'category'))->create($subData);
-            }
-        }
-
-        return $itemId;
+        return $this->saveItem($data);
     }
 
-    public function deleteCategory()
+    public function removeCategory($data = null)
     {
-        $item = $this->getItemArray();
-
-        $tree = new \Core\Tree\Tree($this->treeConfig['adapter'], $this->treeConfig['direction'], $this->treeConfig['options']);
-        $itemId = $tree->deleteNode($item);
-
-        if($itemId){
-            $item['id'] = $itemId;
-            $this->item = $item;
-        }
-        $subTable = Api::_()->getDbTable('File\DbTable\FilesConnections');
-        $subTable->where(array('connect_id' => $itemId, 'connectType' => 'category'))->remove();
-
-        return $itemId;
+        return $this->removeItem($data);
     }
 
-    public function getCategory()
+    public function getCategory($categoryId, array $map = array())
     {
-        $params = $this->getItemParams();
+        $this->trigger('get.precache');
 
-        if(!$params || !(is_numeric($params) || is_string($params))){
-            throw new \Core\Model\Exception\InvalidArgumentException(sprintf(
-                '%s params %s not correct',
-                __METHOD__,
-                $params
+        if(is_numeric($categoryId)){
+            $this->setItem(array(
+                'id' => $categoryId,
             ));
-        }
+        } 
+        $this->trigger('get.pre');
 
-        $itemTable = $this->getItemTable();
-
-        if(is_numeric($params)){
-            $this->item = $category = $itemTable->where(array('id' => $params))->find('one');
+        $item = $this->getItem();
+        if($map){
+            $item = $item->toArray($map);
         } else {
-            $this->item = $category = $itemTable->where(array('urlName' => $params))->find('one');
+            $item = $item->self(array('*'));
         }
 
-        if($category) {
-            $this->item = $category = $this->setItemAttrMap(array(
-                'FileConnect' => array(
-                    'connect_id' => null,
-                ),
-                'File' => array(
-                    'connect_id' => null,
-                ),
-            ))->getItemArray();
-        }
+        $this->trigger('get');
 
-        return $this->item = $category;
+        $this->trigger('get.post');
+        $this->trigger('get.postcache');
+
+        return $item;
     }
 
-    public function getCategories()
+    public function getCategoryList(array $map = array())
     {
-        $defaultParams = array(
-            'enableCount' => true,
-            'page' => 1,
-            'order' => 'iddesc',
-        );
-        $params = $this->getItemListParams();
-        $params = new \Zend\Stdlib\Parameters(array_merge($defaultParams, $params));
+        $this->trigger('list.precache');
 
-        $tree = new \Core\Tree\Tree($this->treeConfig['adapter'], $this->treeConfig['direction'], $this->treeConfig['options']);
-        $categories = $tree->getTree(); 
+        $this->trigger('list.pre');
 
-        $res = array();
-
-        if ($categories) {
-            foreach ($categories as $cateArray) {
-                $category = $this->setItemParams($cateArray['id'])->getCategory(); 
-                $category['level'] = $cateArray['level'];
-                $res[] = $category;
-            }    
+        $item = $this->getItemList();
+        if($map){
+            $item = $item->toArray($map);
         }
 
-        return $this->itemList = $res;
+        $this->trigger('get');
+
+        $this->trigger('list.post');
+        $this->trigger('list.postcache');
+
+        return $item;
     }
 }

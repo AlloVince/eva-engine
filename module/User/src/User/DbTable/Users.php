@@ -13,7 +13,9 @@ class Users extends TableGateway
 
     public function setParameters(Parameters $params)
     {
-        $this->enableCount();
+        if($params->page){
+            $this->enableCount();
+        }
 
         if($params->keyword){
             $keyword = $params->keyword;
@@ -46,10 +48,10 @@ class Users extends TableGateway
         $orders = array(
             'idasc' => 'id ASC',
             'iddesc' => 'id DESC',
-            'timeasc' => 'updateTime ASC',
-            'timedesc' => 'updateTime DESC',
-            'titleasc' => 'title ASC',
-            'titledesc' => 'title DESC',
+            'timeasc' => 'registerTime ASC',
+            'timedesc' => 'registerTime DESC',
+            'nameasc' => 'userName ASC',
+            'namedesc' => 'userName DESC',
         );
 
         if($params->order){

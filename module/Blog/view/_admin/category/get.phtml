@@ -1,24 +1,20 @@
 <?
-$category = $this->category;
-$title = $category['id'] ? 'Edit Category' : 'Create Category';
+$item = $this->item;
+$title = $item['id'] ? 'Edit Category' : 'Create Category';
 $title = $this->_($title);
-$method = $category['id'] ? 'put' : 'post';
 $this->headTitle($title, 'SET');
 $this->textDelay('breadcrumbText', $title);
 
 if($this->form){
 	$form = $this->form;
 } else {
-    $form = Eva\Api::_()->getForm('\Blog\Form\CategoryForm');
+    $form = $item['id'] ? new Blog\Form\CategoryEditForm() : new Blog\Form\CategoryCreateForm();
 }
-$form->setSubForms(array(
-    'FileConnect' => array('File\Form\FileConnectForm'),
-));
-$form->init(array(
-    'action' => $this->uri('/admin/blog/category/'),
-    'method' => $method,
-    'values' => $this->category
-));
+$form->setView($this)
+->setMethod($item['id'] ? 'put' : 'post')
+->setAction($this->uri('/admin/blog/category/'))
+->bind($item)
+->prepare();
 ?>
 
 <input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
@@ -45,11 +41,11 @@ $form->init(array(
         <div class="span5">
             <div class="slate">
                 <div class="page-header">
-                    <?if($category):?>
+                    <?if($item):?>
                     <div class="btn-group pull-right">
                         <a href="<?=$this->uri('/admin/blog/category/create')?>" class="btn"><?=$this->_('Create Category')?></a>
-                        <a href="<?=$this->uri('/admin/blog/?category=' . $category['id'])?>" class="btn"><?=$this->_('View Category Posts')?></a>
-                        <a href="<?=$this->uri('/admin/blog/category/remove/' . $category['id'], 'c', array('c' => $this->uri('/admin/category/' . $category['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
+                        <a href="<?=$this->uri('/admin/blog/?category=' . $item['id'])?>" class="btn"><?=$this->_('View Category Posts')?></a>
+                        <a href="<?=$this->uri('/admin/blog/category/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/category/' . $item['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
                     </div>
                     <?endif?>
                     <h2><?=$title?></h2>
@@ -65,9 +61,9 @@ $form->init(array(
                     <div class="control-group <?=$form->isError('parentId') ? 'error' : '';?>">
                         <?=$form->helper('parentId', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper('parentId', 'formSelect', array(
-                                'value_options' => $this->action('Blog\Api\Controller\CategoryController', 'selectAction'),
-                            ), array('replace' => false, 'i18n' => false))?>
+                            <?//=$form->helper('parentId', 'formSelect', array(
+                             //   'value_options' => $this->action('Blog\Api\Controller\CategoryController', 'selectAction'),
+                            //), array('replace' => false, 'i18n' => false))?>
                             <div class="help-block"><?=$form->helper('parentId', 'formElementErrors')?></div>
                         </div>
                     </div>
@@ -93,22 +89,24 @@ $form->init(array(
             </div>
         </div><!--span5 end-->
         
+        <?if($this->hasModule('File')):?>
         <div class="span5">
             <div class="slate">
                 <div class="page-header">
                     <h2><?=$this->_('Category Image')?></h2>
                 </div>
                 <div class="well">
-                    <?if($category['File']):?>
-                    <img id="category-image" src="<?=$this->thumb($category['File']['Thumb'], array('h_250'))?>" alt="" />
+                    <?if($item['File']):?>
+                    <img id="category-image" src="<?=$this->thumb($item['File']['Thumb'], array('h_250'))?>" alt="" />
                     <?else:?>
                     <img id="category-image" src="http://placehold.it/260x180" alt="" />
                     <?endif?>
-                    <?=$form->helper(array('FileConnect', 'file_id'), 'formHidden')?>
+                    <?//=$form->helper(array('FileConnect', 'file_id'), 'formHidden')?>
                 </div>
                 <a id="connect-image" href="<?=$this->uri('/api/file/')?>" class="btn"><?=$this->_('Select Image')?></a>
             </div>
         </div><!--span5 end-->
+        <?endif?>
 
         <div class="span10 listing-buttons">
             <button class="btn btn-info btn-large"><?=$this->_('Save')?></button>

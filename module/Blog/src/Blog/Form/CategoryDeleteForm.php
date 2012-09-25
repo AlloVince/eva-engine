@@ -1,11 +1,10 @@
 <?php
 namespace Blog\Form;
 
-use Eva\Form\Form;
-use Zend\Form\Element;
-
 class CategoryDeleteForm extends CategoryForm
 {
+    protected $validationGroup = array('id');
+
     protected $baseFilters = array(
         'id' => array(
             'name' => 'id',

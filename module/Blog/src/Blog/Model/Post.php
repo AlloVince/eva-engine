@@ -3,253 +3,129 @@
 namespace Blog\Model;
 
 use Eva\Api,
-    Eva\Mvc\Model\AbstractModel;
+    Eva\Mvc\Model\AbstractModelService;
 
-class Post extends AbstractModel
+class Post extends AbstractModelService
 {
     protected $itemTableName = 'Blog\DbTable\Posts';
 
-    protected $data;
-    protected $subData;
 
-    protected $user;
-
-    protected $events = array(
-        'createPost.pre',
-        'createPost',
-        'createPost.post',
-        'savePost.pre',
-        'savePost',
-        'savePost.post',
-        'removePost.pre',
-        'removePost',
-        'removePost.post',
-        'getPost.precache',
-        'getPost.pre',
-        'getPost',
-        'getPost.post',
-        'getPost.postcache',
-        'getPostList.precache',
-        'getPostList.pre',
-        'getPostList',
-        'getPostList.post',
-        'getPostList.postcache',
-    );
-
-    public function createPost()
+    public function createPost($data = null)
     {
-        $this->getEvent()->trigger('createPost.pre', $this);
-
-        $item = $this->setItemAttrMap(array(
-            'urlName' => array('urlName', 'getUrlName'),
-            'preview' => array('preview', 'getPreview'),
-            'createTime' => array('createTime', 'getCreateTime'),
-            'updateTime' => array('updateTime', 'getUpdateTime'),
-        ))->getItemArray();
-        
-        $itemTable = $this->getItemTable();
-        $itemTable->create($item);
-        $postId = $itemTable->getLastInsertValue();
-        
-        if($postId){
-            $item['id'] = $postId;
-            $this->item = $item;
+        if($data) {
+            $this->setItem($data);
         }
 
-        if($postId && $this->getSubItem('Text')){
-            $textData = $this->getSubItem('Text');
-            $textTable = Api::_()->getDbTable('Blog\DbTable\Texts');
-            $textItem = $this->getItemClass($textData, array(
-                'post_id' => array('post_id', 'getPostId')
-            ), 'Blog\Model\Text\Item');
-            $textData = $textItem->toArray();
-            $textTable->create($textData);
-        }
+        $item = $this->getItem();
+        
+        $this->trigger('create.pre');
 
-        if($postId && $this->getSubItem('CategoryPost')){
-            $subData = $this->getSubItem('CategoryPost');
-            $subTable = Api::_()->getDbTable('Blog\DbTable\CategoriesPosts');
-            $subItem = $this->getItemClass($subData, array(
-                'post_id' => array('post_id', 'getPostId')
-            ), 'Blog\Model\CategoryPost\Item');
-            $subData = $subItem->toArray();
-            $subTable->where(array('post_id' => $postId))->remove();
-            if($subData['category_id']) {
-                $subTable->where(array('post_id' => $postId))->create($subData);
+        $itemId = $item->create();
+
+        if($item->hasLoadedRelationships()){
+            foreach($item->getLoadedRelationships() as $key => $relItem){
+                $relItem->create();
             }
         }
-        
-        if($postId && $this->getSubItem('FileConnect')){
-            $subData = $this->getSubItem('FileConnect');
-            $subTable = Api::_()->getDbTable('File\DbTable\FilesConnections');
-            $subItem = $this->getItemClass($subData, array(
-                'connect_id' => array('connect_id', 'getConnectId'),
-                'connectType' => array('connectType', 'getConnectType')
-            ), 'File\Model\FileConnect\Item');
-            $subData = $subItem->toArray();
-            $subTable->where(array('connect_id' => $postId, 'connectType' => $subData['connectType']))->remove();
-            if($subData['connect_id'] && $subData['file_id']) {
-                $subTable->where(array('connect_id' => $postId, 'connectType' => $subData['connectType']))->create($subData);
-            }
-        } 
-        
-        $this->getEvent()->trigger('createPost.post', $this);
+        $this->trigger('create');
+    
+        $this->trigger('create.post');
 
-        return $postId;
+        return $itemId;
     }
 
-    public function savePost()
+    public function savePost($data = null)
     {
-        $this->getEvent()->trigger('savePost.pre', $this);
-
-        $item = $this->setItemAttrMap(array(
-            'urlName' => array('urlName', 'getUrlName'),
-            'preview' => array('preview', 'getPreview'),
-            'updateTime' => array('updateTime', 'getUpdateTime'),
-        ))->getItemArray();
-
-        $postId = $item['id'];
-
-        if(!$postId){
-            throw new \Core\Model\Exception\InvalidArgumentException(sprintf(
-                '%s post id not found',
-                __METHOD__
-            ));
-        }
-        $itemTable = $this->getItemTable();
-        $itemTable->where(array('id' => $postId))->save($item);
-
-        if($postId && $this->getSubItem('Text')){
-            $textData = $this->getSubItem('Text');
-            $textTable = Api::_()->getDbTable('Blog\DbTable\Texts');
-            $textItem = $this->getItemClass($textData, array(
-                'post_id' => array('post_id', 'getPostId')
-            ), 'Blog\Model\Text\Item');
-            $textData = $textItem->toArray();
-            $textTable->where(array('post_id' => $postId))->save($textData);
+        if($data) {
+            $this->setItem($data);
         }
 
-        if($postId && $this->getSubItem('CategoryPost')){
-            $subData = $this->getSubItem('CategoryPost');
-
-            $subTable = Api::_()->getDbTable('Blog\DbTable\CategoriesPosts');
-            $subItem = $this->getItemClass($subData, array(
-                'post_id' => array('post_id', 'getPostId')
-            ), 'Blog\Model\CategoryPost\Item');
-            $subData = $subItem->toArray();
-            $subTable->where(array('post_id' => $postId))->remove();
-            if($subData['category_id']) {
-                $subTable->where(array('post_id' => $postId))->create($subData);
-            }
-        }
+        $item = $this->getItem();
         
-        if($postId && $this->getSubItem('FileConnect')){
-            $subData = $this->getSubItem('FileConnect');
-            $subTable = Api::_()->getDbTable('File\DbTable\FilesConnections');
-            $subItem = $this->getItemClass($subData, array(
-                'connect_id' => array('connect_id', 'getConnectId'),
-                'connectType' => array('connectType', 'getConnectType')
-            ), 'File\Model\FileConnect\Item');
-            $subData = $subItem->toArray();
-            $subTable->where(array('connect_id' => $postId, 'connectType' => $subData['connectType']))->remove();
-            if($subData['connect_id'] && $subData['file_id']) {
-                $subTable->where(array('connect_id' => $postId, 'connectType' => $subData['connectType']))->create($subData);
+        $this->trigger('save.pre');
+
+        $item->save();
+
+        if($item->hasLoadedRelationships()){
+            foreach($item->getLoadedRelationships() as $key => $relItem){
+                $relItem->save();
             }
-        } 
+        }
+        $this->trigger('save');
 
-        $this->getEvent()->trigger('savePost.post', $this);
+    
+        $this->trigger('save.post');
 
-        return $postId;
+
+        return $item->id;
     }
 
-    public function getPost()
+    public function removePost()
     {
-        $this->getEvent()->trigger('getPost.precache', $this);
+        $this->trigger('remove.pre');
 
-        $params = $this->getItemParams();
-        if(!$params || !(is_numeric($params) || is_string($params))){
-            throw new \Core\Model\Exception\InvalidArgumentException(sprintf(
-                '%s params %s not correct',
-                __METHOD__,
-                $params
+        $item = $this->getItem();
+
+        $subItem = $item->join('Text');
+        $subItem->remove();
+
+        $item->remove();
+
+        $this->trigger('remove');
+    
+        $this->trigger('remove.post');
+
+        return true;
+    
+    }
+
+    public function getPost($postIdOrUrlName = null, array $map = array())
+    {
+        $this->trigger('get.precache');
+
+        if(is_numeric($postIdOrUrlName)){
+            $this->setItem(array(
+                'id' => $postIdOrUrlName,
+            ));
+        } elseif(is_string($postIdOrUrlName)) {
+            $this->setItem(array(
+                'urlName' => $postIdOrUrlName,
             ));
         }
+        $this->trigger('get.pre');
 
-        $this->getEvent()->trigger('getPost.pre', $this);
-
-        $itemTable = $this->getItemTable();
-
-        if(is_numeric($params)){
-            $this->item = $post = $itemTable->where(array('id' => $params))->find('one');
+        $item = $this->getItem();
+        if($map){
+            $item = $item->toArray($map);
         } else {
-            $this->item = $post = $itemTable->where(array('urlName' => $params))->find('one');
+            $item = $item->self(array('*'));
         }
 
-        $this->getEvent()->trigger('getPost', $this);
+        $this->trigger('get');
 
-        if($post) {
-            $this->item = $post = $this->setItemAttrMap(array(
-                'Url' => array('urlName', 'getUrl', 'callback'),
-                'Text' => array(
-                    'contentHtml' => array('contentHtml', 'getContentHtml'),
-                ),
-                'CategoryPost' => array(
-                    'category_id' => null,
-                ),
-                'FileConnect' => array(
-                    'connect_id' => null,
-                ),
-                'File' => array(
-                    'connect_id' => null,
-                ),
-            ))->getItemArray();
-        }
-        
-        $this->getEvent()->trigger('getPost.post', $this);
+        $this->trigger('get.post');
+        $this->trigger('get.postcache');
 
-
-        $this->getEvent()->trigger('getPost.postcache', $this);
-
-        return $this->item = $post;
+        return $item;
     }
 
-    public function getPosts()
+    public function getPostList(array $map = array())
     {
-        $this->getEvent()->trigger('getPostList.precache', $this);
+        $this->trigger('list.precache');
 
-        $defaultParams = array(
-            'enableCount' => true,
-            'keyword' => '',
-            'status' => '',
-            'visibility' => '',
-            'page' => 1,
-            'order' => 'iddesc',
-        );
-        $params = $this->getItemListParams();
-        $params = new \Zend\Stdlib\Parameters(array_merge($defaultParams, $params));
+        $this->trigger('list.pre');
 
-        $itemTable = $this->getItemTable();
-
-        $result = $itemTable->selectPosts($params);
-        
-        if ($result === false) {
-            return array();
+        $item = $this->getItemList();
+        if($map){
+            $item = $item->toArray($map);
         }
-        
-        $posts = $itemTable->find('all');
-        //p($itemTable->debug());
 
-        $res = array();
+        $this->trigger('get');
 
-        if ($posts) {
-            foreach ($posts as $postinfo) {
-                $post = $this->setItemParams($postinfo['id'])->getPost(); 
-                $res[] = $post;   
-            }
-        }
-        
-        $this->getEvent()->trigger('getPost.postcache', $this);
-        return $this->itemList = $res;
+        $this->trigger('list.post');
+        $this->trigger('list.postcache');
+
+        return $item;
     }
 
 }

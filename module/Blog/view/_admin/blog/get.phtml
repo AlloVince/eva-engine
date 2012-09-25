@@ -1,47 +1,26 @@
 <?
-$post = $this->post;
-$title = $post['id'] ? 'Edit Post' : 'Create Post';
+$item = $this->item;
+$title = $item['id'] ? 'Edit Post' : 'Create Post';
 $title = $this->_($title);
-$method = $post['id'] ? 'put' : 'post';
+$method = $item['id'] ? 'put' : 'post';
 $this->headTitle($title, 'SET');
 $this->textDelay('breadcrumbText', $title);
 
 if($this->form){
 	$form = $this->form;
 } else {
-    if($post) {
-        $form = Eva\Api::_()->getForm('\Blog\Form\PostEditForm');
+    if($item['id']) {
+        $form = new Blog\Form\PostEditForm();
     } else {
-        $form = Eva\Api::_()->getForm('\Blog\Form\PostForm');
+        $form = new Blog\Form\PostCreateForm();
     }
 }
-$form->setSubForms(array(
-    'Text' => array('Blog\Form\TextForm'),
-    'CategoryPost' => array('Blog\Form\CategoryPostForm'),
-    'FileConnect' => array('File\Form\FileConnectForm'),
-));
-$form->init(array(
-    'action' => $this->uri('/admin/blog/'),
-    'method' => $method,
-    'values' => $this->post
-));
-
-
-//Form usage:
-//is error
-//$form->subForm('Text')->get('content')->getMessages() ? 'error' : '';
-//$form->isError(array('Text', 'content'))
-
-
-//$this->input($form->subForm('Text')->get('content'), array(
-//    'type' => 'formTextarea',
-//    'class' => 'span9',
-//    'rows' => '15',
-//))
-//$form->input(array('Text', 'content), 'formTextarea', array('class' => 'span9','rows' => '15',))
-
-//Print out error messages:
-//foreach($form->subForm('Text')->get('content')->getMessages() as $message):
+$form->useSubFormGroup()
+     ->setMethod($item['id'] ? 'put' : 'post')
+     ->setView($this)
+     ->setAction($this->uri('/admin/blog/'))
+     ->bind($item)
+     ->prepare();
 ?>
 
 <input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
@@ -69,11 +48,11 @@ $form->init(array(
         <div class="span10">
             <div class="slate">
                 <div class="page-header">
-                    <?if($post):?>
+                    <?if($item['id']):?>
                     <div class="btn-group pull-right">
-                        <a href="<?=$this->uri('/blog/page/' . $post['urlName'])?>" class="btn"><?=$this->_('View')?></a>
+                        <a href="<?=$this->uri('/pages/' . $item['urlName'])?>" class="btn"><?=$this->_('View')?></a>
                         <a href="<?=$this->uri('/admin/blog/create')?>" class="btn"><?=$this->_('Clear Cache')?></a>
-                        <a href="<?=$this->uri('/admin/blog/remove/' . $post['id'], 'c', array('c' => $this->uri('/admin/blog/' . $post['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
+                        <a href="<?=$this->uri('/admin/blog/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/blog/' . $item['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
                     </div>
                     <?endif?>
                     <h2><?=$title?></h2>
@@ -127,7 +106,7 @@ $form->init(array(
                                 </div>
                             </div>
                             -->
-                            <?=$form->helper(array('Text', 'content'), 'formTextarea', array('class' => 'span9','rows' => '15',))?>
+                            <?=$form->helper(array('Text', 'content'), 'formTextarea', array('class' => 'span9', 'rows' => '15',))?>
                         </div>
                         <div id="editor-right" class="markdown-preview"></div>
                         <div class="help-block"><?=$form->helper(array('Text', 'content'), 'formElementErrors')?></div>
@@ -212,38 +191,40 @@ $form->init(array(
                     <h3><?=$this->_('Category And Tags')?></h3>
                 </div>
                 <fieldset class="form-horizontal">
-                    <div class="control-group <?=$form->isError(array('CategoryPost', 'category_id')) ? 'error' : '';?>">
-                        <?=$form->helper(array('CategoryPost', 'category_id'), 'label', array('class' => 'control-label'))?>
+                    <div class="control-group <?//=$form->isError(array('CategoryPost', 'category_id')) ? 'error' : '';?>">
+                        <?//=$form->helper(array('CategoryPost', 'category_id'), 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper(array('CategoryPost', 'category_id'), 'formSelect', array(
-                                'value_options' => $this->action('Blog\Api\Controller\CategoryController', 'selectAction'),
-                            ), array('replace' => false, 'i18n' => false))?>
-                            <?=$form->helper(array('CategoryPost', 'post_id'), 'formHidden', array(
-                                'value' => $post['id']
-                            ))?>    
-                            <div class="help-block"><?=$form->helper(array('CategoryPost', 'category_id'), 'formElementErrors')?></div>
+                            <?//=$form->helper(array('CategoryPost', 'category_id'), 'formSelect', array(
+                              //  'value_options' => $this->action('Blog\Api\Controller\CategoryController', 'selectAction'),
+                            //), array('replace' => false, 'i18n' => false))?>
+                            <?//=$form->helper(array('CategoryPost', 'post_id'), 'formHidden', array(
+                              //  'value' => $item['id']
+                            //))?>    
+                            <div class="help-block"><?//=$form->helper(array('CategoryPost', 'category_id'), 'formElementErrors')?></div>
                         </div>
                     </div>
                 </fieldset>
             </div>
         </div><!--span5 end-->
        
+        <?if($this->hasModule('File')):?>
         <div class="span5">
             <div class="slate">
                 <div class="page-header">
                     <h2><?=$this->_('Connect Images')?></h2>
                 </div>
                 <div class="well">
-                    <?if($post['File']):?>
-                    <img id="post-image" src="<?=$this->thumb($post['File']['Thumb'], array('h_250'))?>" alt="" />
+                    <?if($item['File']):?>
+                    <img id="post-image" src="<?=$this->thumb($item['File']['Thumb'], array('h_250'))?>" alt="" />
                     <?else:?>
                     <img id="post-image" src="http://placehold.it/260x180" alt="" />
                     <?endif?>
-                    <?=$form->helper(array('FileConnect', 'file_id'), 'formHidden')?>
+                    <?//=$form->helper(array('FileConnect', 'file_id'), 'formHidden')?>
                 </div>
                 <a id="connect-image" href="<?=$this->uri('/api/file/')?>" class="btn"><?=$this->_('Select Image')?></a>
             </div>
         </div><!--span5 end-->
+        <?endif?>
 
         <div class="span10">
             <div class="slate">

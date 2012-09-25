@@ -1,10 +1,23 @@
 <?php
+/**
+ * EvaEngine
+ *
+ * @link      https://github.com/AlloVince/eva-engine
+ * @copyright Copyright (c) 2012 AlloVince (http://avnpc.com/)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @author    AlloVince
+ */
+
 namespace Blog\Form;
 
-use Eva\Form\Form;
-use Zend\Form\Element;
-
-class CategoryForm extends Form
+/**
+ * Eva Form will automatic combination form Elements & Validators & Filters
+ * Also allow add sub forms and unit validate
+ * 
+ * @category   Eva
+ * @package    Eva_Form
+ */
+class CategoryForm extends \Eva\Form\RestfulForm
 {
     /**
      * Form basic elements
@@ -14,47 +27,51 @@ class CategoryForm extends Form
     protected $baseElements = array (
         'id' => array (
             'name' => 'id',
-            'attributes' => array (
-                'type' => 'hidden',
+            'type' => 'hidden',
+            'options' => array (
                 'label' => 'Id',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'categoryName' => array (
             'name' => 'categoryName',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Category Name',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'urlName' => array (
             'name' => 'urlName',
-            'attributes' => array (
-                'type' => 'text',
-                'label' => 'Category Url',
-                'value' => '',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Url Name',
             ),
-        ),
-        'parentId' => array (
-            'name' => 'parentId',
             'attributes' => array (
-                'type' => 'select',
-                'label' => 'Parent Category',
-                'options' => array(
-                    array(
-                        'label' => 'Select Parent Category',
-                        'value' => '',
-                    ),  
-                ),
                 'value' => '',
             ),
         ),
         'description' => array (
             'name' => 'description',
-            'attributes' => array (
-                'type' => 'textarea',
+            'type' => 'textarea',
+            'options' => array (
                 'label' => 'Description',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
+        'parentId' => array (
+            'name' => 'parentId',
+            'type' => 'select',
+            'options' => array (
+                'label' => 'Parent Id',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
@@ -81,7 +98,7 @@ class CategoryForm extends Form
         ),
         'categoryName' => array (
             'name' => 'categoryName',
-            'required' => true,
+            'required' => false,
             'filters' => array (
                 'stripTags' => array (
                     'name' => 'StripTags',
@@ -129,14 +146,6 @@ class CategoryForm extends Form
                 ),
             ),
         ),
-        'parentId' => array (
-            'name' => 'parentId',
-            'required' => false,
-            'filters' => array (
-            ),
-            'validators' => array (
-            ),
-        ),
         'description' => array (
             'name' => 'description',
             'required' => false,
@@ -145,6 +154,14 @@ class CategoryForm extends Form
             'validators' => array (
             ),
         ),
+        'parentId' => array (
+            'name' => 'parentId',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+            ),
+        ),
     );
+}
 
-}          

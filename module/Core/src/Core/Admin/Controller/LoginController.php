@@ -3,8 +3,11 @@ namespace Core\Admin\Controller;
 
 use Eva\Api,
     Eva\Mvc\Controller\ActionController,
-    Eva\View\Model\ViewModel;
-use Zend\Authentication\Result;
+    Eva\View\Model\ViewModel,
+    Zend\Authentication\Result,
+    Core\Form,
+    Core\Auth;
+    
 
 class LoginController extends ActionController
 {
@@ -15,7 +18,7 @@ class LoginController extends ActionController
         $postData = $request->getPost();
         
         $flashMesseger = array();
-        $form = Api::_()->getForm('Core\Form\SuperAdminLoginForm');
+        $form = new Form\SuperAdminLoginForm();
 
         $viewVariables = array(
             'form' => $form,
@@ -27,12 +30,12 @@ class LoginController extends ActionController
             return $viewVariables;
         }
 
-        $form->init()->enableFilters()->setData($postData);
+        $form->bind($postData);
         if (!$form->isValid()) {
             return $viewVariables;
         }
 
-        $auth = new \Core\Auth();
+        $auth = new Auth();
         $authResult = $auth->configAuthenticate($postData['userName'], $postData['password']);
 
         if($authResult->isValid()){
@@ -57,7 +60,6 @@ class LoginController extends ActionController
 
     public function indexAction()
     {
-
         $viewVariables = $this->superAdminLogin();
         $model = new ViewModel();
         $this->layout('layout/adminblank');

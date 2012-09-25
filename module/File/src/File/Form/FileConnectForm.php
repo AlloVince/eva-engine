@@ -18,7 +18,7 @@ namespace File\Form;
  * @category   Eva
  * @package    Eva_Form
  */
-class FileConnectForm extends \Eva\Form\Form
+class FileConnectForm extends \Eva\Form\RestfulForm
 {
     /**
      * Form basic elements
@@ -28,23 +28,31 @@ class FileConnectForm extends \Eva\Form\Form
     protected $baseElements = array (
         'file_id' => array (
             'name' => 'file_id',
+            'type' => NULL,
+            'options' => array (
+                'label' => 'File_id',
+            ),
             'attributes' => array (
-                'type' => 'text',
-                'label' => 'File',
-                'options' => array(
-                    array(
-                        'label' => 'Select File',
-                        'value' => '',
-                    ),  
-                ),
                 'value' => '',
             ),
         ),
         'connect_id' => array (
             'name' => 'connect_id',
-            'attributes' => array (
-                'type' => 'hidden',
+            'type' => NULL,
+            'options' => array (
                 'label' => 'Connect_id',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
+        'connectType' => array (
+            'name' => 'connectType',
+            'type' => NULL,
+            'options' => array (
+                'label' => 'Connect Type',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
@@ -56,32 +64,29 @@ class FileConnectForm extends \Eva\Form\Form
      * @var array
      */
     protected $baseFilters = array (
-        'connect_id' => array (
-            'name' => 'connect_id',
-            'required' => false,
-            'filters' => array (
-            ),
-            'validators' => array (
-                'notEmpty' => array (
-                    'name' => 'NotEmpty',
-                    'options' => array (
-                    ),
-                ),
-            ),
-        ),
         'file_id' => array (
             'name' => 'file_id',
             'required' => false,
             'filters' => array (
             ),
             'validators' => array (
-                'notEmpty' => array (
-                    'name' => 'NotEmpty',
-                    'options' => array (
-                    ),
-                ),
+            ),
+        ),
+        'connect_id' => array (
+            'name' => 'connect_id',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+            ),
+        ),
+        'connectType' => array (
+            'name' => 'connectType',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
             ),
         ),
     );
 }
-
