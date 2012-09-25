@@ -75,7 +75,6 @@ class FormController extends RestfulModuleController
                 'filters' => @$postData['filters'][$columnName],
                 'default' => @$postData['defaults'][$columnName],
             );
-        
         }
 
         $generator = new \Scaffold\Model\FormClassGenerator();
@@ -86,7 +85,9 @@ class FormController extends RestfulModuleController
         $elementsCode = $generator->printCode($elements);
         $validatorsCode = $generator->printCode($validators);
         $formClassName = $generator->getFormClassName();
+        $formNamespace = $generator->getFormNamespace();
         return array(
+            'formNamespace' => $formNamespace,
             'formClassName' => $formClassName,
             'elementsCode' => $elementsCode,
             'validatorsCode' => $validatorsCode,

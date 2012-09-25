@@ -3,14 +3,12 @@ $title = 'Form Class Generator';
 $this->headTitle($title, 'SET');
 $this->textDelay('breadcrumbText', $title);
 
-$method = 'put';
-$form = Eva\Api::_()->getForm('Scaffold\Form\AutoClassForm');
-
-$form->init(array(
-    'action' => $this->uri('/scaffold/form/'),
-    'method' => $method,
-    'values' => $this->tab
-));
+$form = new Scaffold\Form\AutoClassForm();
+$form
+->setView($this)
+->setMethod('put')
+->setAction($this->uri('/scaffold/form/'))
+->bind($this->tab);
 
 function selectType($dataName, $dataType, $columnType)
 {
@@ -100,7 +98,7 @@ function autoCheck($dataName, $dataType, $columnType)
                         <?foreach($this->columns as $key=>$column):?>
                         <tr id="column_<?=$column['name'] ?>" class="">
                             <td>
-                                <input type="checkbox" class="multiform-item-checkbox" <?=autoCheck($column['name'], $column['data_type'], $column['data_type'])?>  data-multiform="createform" name="selectedColumns[]" value="<?=$column['name'] ?>" />
+                                <input type="checkbox" class="multiform-item-checkbox" <?=autoCheck($column['name'], $column['data_type'], $column['data_type'])?>  data-multiform="createform" name="selectedColumns[<?=$key?>]" value="<?=$column['name'] ?>" />
                             </td>
                             <td>
                                 <a href="#"><?=$column['name'] ?></a>

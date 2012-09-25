@@ -62,16 +62,31 @@ class FormClassGenerator
         return $this->metadata = $res;
     }
 
-    public function getFormClassName()
+
+    public function getFormNamespace()
     {
         $dbTableName = $this->dbTableName;
         $className = explode("_", $dbTableName);
         array_shift($className);
+        array_pop($className);
         array_push($className, 'Form');
         $className = array_map(function($string){
             return ucfirst($string);
         }, $className);
         return implode("\\", $className);
+    }
+
+    public function getFormClassName()
+    {
+        $dbTableName = $this->dbTableName;
+        $className = explode("_", $dbTableName);
+        array_shift($className);
+        array_shift($className);
+        array_push($className, 'Form');
+        $className = array_map(function($string){
+            return ucfirst($string);
+        }, $className);
+        return implode("", $className);
     }
 
     public function printCode($array)
