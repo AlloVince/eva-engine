@@ -1,20 +1,21 @@
 <?
-$file = $this->file;
+$item = $this->file;
 $title = $this->_('Delete File');
 $this->headTitle($title, 'SET');
-$form = Eva\Api::_()->getForm('\File\Form\FileDeleteForm');
 
-$form->init(array(
-    'action' => $this->uri('/admin/file/'),
-	'method' => 'delete',
-	'values' => $this->file
-));
+$item = $this->item;
+$form = new File\Form\FileDeleteForm();
+$form->setView($this)
+->setMethod('delete')
+->setAction($this->uri('/admin/file/'))
+->bind($item)
+->prepare();
 ?>
 
-<?if($file):?>
+<?if($item):?>
 <div class="alert alert-block">
    <h2 class="alert-heading"><?=$title?></h2>
-   <p><?=$this->_(array('File %title% will be deleted, are you sure?', $file['title']))?></p>
+   <p><?=$this->_(array('File %title% will be deleted, are you sure?', $item['title']))?></p>
    <p>
 		<form class="form-horizontal" <?=$this->formAttr($form)?>>
 			<?=$form->restful();?>

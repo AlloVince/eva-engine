@@ -2,17 +2,19 @@
 $title = $this->_('Edit File');
 $this->headTitle($title, 'SET');
 $this->textDelay('breadcrumbText', $title);
+$item = $this->item;
 
 if($this->form){
 	$form = $this->form;
 } else {
-    $form = Eva\Api::_()->getForm('File\Form\FileEditForm');
+    $form = new File\Form\FileEditForm();
 }
-$form->init(array(
-    'action' => $this->uri('/admin/form'),
-    'method' => 'put',
-    'values' => $this->file
-));
+
+$form->setView($this)
+->setMethod('put')
+->setAction($this->uri('/admin/file'))
+->bind($item)
+->prepare();
 ?>
 
 <div class="row">
@@ -23,8 +25,8 @@ $form->init(array(
             <div class="slate">
                 <div class="page-header">
                     <div class="btn-group pull-right">
-                        <a href="<?=$file['Url']?>" class="btn"><?=$this->_('Download File')?></a>
-                        <a href="<?=$this->uri('/admin/file/remove/' . $file['id'], 'c', array('c' => $this->uri('/admin/file/' . $file['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
+                        <a href="<?=$item['Url']?>" class="btn"><?=$this->_('Download File')?></a>
+                        <a href="<?=$this->uri('/admin/file/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/file/' . $item['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
                     </div>
                     <h2><?=$title?></h2>
                 </div>
@@ -74,25 +76,25 @@ $form->init(array(
                 </div>
                 <dl class="well dl-horizontal">
                     <dt><?=$this->_('Original Name')?>:</dt>
-                    <dd><?=$file['originalName']?></dd>
+                    <dd><?=$item['originalName']?></dd>
                     <dt><?=$this->_('File Size')?>:</dt>
-                    <dd><?=$file['ReadableFileSize']?></dd>
+                    <dd><?=$item['ReadableFileSize']?></dd>
                     <dt><?=$this->_('File Hash')?>:</dt>
-                    <dd><?=$file['fileHash']?></dd>
+                    <dd><?=$item['fileHash']?></dd>
                     <dt><?=$this->_('File Upload Time')?>:</dt>
-                    <dd><?=$file['createTime']?></dd>
-                    <?if($file['isImage']):?>
+                    <dd><?=$item['createTime']?></dd>
+                    <?if($item['isImage']):?>
                     <dt><?=$this->_('Image Width')?>:</dt>
-                    <dd><?=$file['imageWidth']?> px</dd>
+                    <dd><?=$item['imageWidth']?> px</dd>
                     <dt><?=$this->_('Image Height')?>:</dt>
-                    <dd><?=$file['imageHeight']?> px</dd>
+                    <dd><?=$item['imageHeight']?> px</dd>
                     <?endif?>
                 </dl>
             </div>
         </div><!--span5 end-->
     </form>
 
-    <?if($file['isImage']):?>
+    <?if($item['isImage']):?>
     <div class="span10">
         <div class="slate">
             <div class="page-header">
@@ -103,11 +105,11 @@ $form->init(array(
                     <label class="control-label"><?=$this->_('Thumbnail Url')?></label>
                     <div class="controls">
                         <div class="input-append">
-                            <input type="text" value="<?=$file['Thumb']?>" class="span3" /><a href="<?=$file['Thumb']?>" class="btn" target="blank"><?=$this->_('Open')?></a><a href="<?=$file['Thumb']?>" class="btn" target="blank"><?=$this->_('Copy')?></a>
+                            <input type="text" value="<?=$item['Thumb']?>" class="span3" /><a href="<?=$item['Thumb']?>" class="btn" target="blank"><?=$this->_('Open')?></a><a href="<?=$item['Thumb']?>" class="btn" target="blank"><?=$this->_('Copy')?></a>
                         </div>
                     </div>
                 </div>
-                <div><img src="<?=$this->thumb($file['Thumb'], array('w_100'))?>" alt="" /></div>
+                <div><img src="<?=$this->thumb($item['Thumb'], array('w_100'))?>" alt="" /></div>
             </fieldset>
         </div>
     </div><!--span10 end-->

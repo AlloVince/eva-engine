@@ -126,25 +126,25 @@ $form->useSubFormGroup()
 
                 <fieldset class="form-horizontal">
 
-                    <div class="control-group <?=$form->isError('urlName') ? 'error' : '';?>">
+                    <div class="control-group <?=$form->isError('status') ? 'error' : '';?>">
                         <?=$form->helper('status', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper('status', 'formSelect')?>
+                            <?=$form->helper('status', 'formSelect', array('class' => ''))?>
                             <div class="help-block"><?=$form->helper('status', 'formElementErrors')?></div>
                         </div>
                     </div>
 
-                    <div class="control-group <?=$form->isError('urlName') ? 'error' : '';?>">
+                    <div class="control-group <?=$form->isError('codeType') ? 'error' : '';?>">
                         <?=$form->helper('codeType', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
                             <?=$form->helper('codeType', 'formRadio', array('class' => 'checkbox inline'))?>
                             <div class="help-block"><?=$form->helper('codeType', 'formElementErrors')?></div>
                         </div>
                     </div>
-                    <div class="control-group <?=$form->isError('urlName') ? 'error' : '';?>">
+                    <div class="control-group <?=$form->isError('visibility') ? 'error' : '';?>">
                         <?=$form->helper('visibility', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper('visibility', 'formSelect')?>
+                            <?=$form->helper('visibility', 'formSelect', array('class' => ''))?>
                             <div class="help-block"><?=$form->helper('visibility', 'formElementErrors')?></div>
                         </div>
                     </div>

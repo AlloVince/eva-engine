@@ -10,8 +10,5 @@ class UploadController extends RestfulModuleController
 {
     public function restIndexUpload()
     {
-        return array(
-            'flashMessenger' => $this->flashMessenger()->getMessages()
-        );
     }
 }

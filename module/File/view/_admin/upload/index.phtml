@@ -6,13 +6,12 @@ $this->textDelay('breadcrumbText', $title);
 if($this->form){
 	$form = $this->form;
 } else {
-    $form = Eva\Api::_()->getForm('File\Form\UploadForm');
+    $form = new File\Form\UploadForm();
 }
-$form->init(array(
-    'action' => $this->uri('/api/file/'),
-    'method' => 'post',
-));
-$file = array();
+
+$form->setView($this)
+->setMethod('post')
+->setAction($this->uri('/admin/file/'));
 ?>
 
 <input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
@@ -29,16 +28,11 @@ $file = array();
 
 
 <div class="row">
-    <form <?=$this->formAttr($form)?> enctype="multipart/form-data" class="hide">
+    <form <?=$this->formAttr($form)?> enctype="multipart/form-data" class="">
         <?=$form->restful();?>
         <div class="span10">
             <div class="slate">
                 <div class="page-header">
-                    <?if($file):?>
-                    <div class="btn-group pull-right">
-                        <a href="<?=$this->uri('/admin/file/remove/' . $file['id'], 'c', array('c' => $this->uri('/admin/file/' . $file['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
-                    </div>
-                    <?endif?>
                     <h2><?=$title?></h2>
                 </div>
                 <fieldset class="">

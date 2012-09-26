@@ -3,14 +3,13 @@
 namespace File\Model;
 
 use Eva\Api,
-    Eva\Mvc\Model\AbstractModel;
+    Eva\Mvc\Model\AbstractModelService,
+    Eva\Mvc\Exception;
 
-class File extends AbstractModel
+class File extends AbstractModelService
 {
     protected $itemTableName = 'File\DbTable\Files';
 
-    protected $files = array();
-    protected $file;
     protected $lastFileId;
 
     protected $configKey;
@@ -54,66 +53,49 @@ class File extends AbstractModel
     }
 
 
-    public function getFile()
+    public function getFile($fileId = null, array $map = array())
     {
-        $params = $this->getItemParams();
-        if(!$params || !is_numeric($params)){
-            throw new \Core\Model\Exception\InvalidArgumentException(sprintf(
-                '%s params %s not correct',
-                __METHOD__,
-                $params
+        $this->trigger('get.precache');
+
+        if(is_numeric($fileId)){
+            $this->setItem(array(
+                'id' => $fileId,
             ));
         }
+        $this->trigger('get.pre');
 
-
-        $itemTable = $this->getItemTable();
-
-        $this->item = $item = $itemTable->where(array('id' => $params))->find('one');
-
-        if($item) {
-            $this->item = $item = $this->setItemAttrMap(array(
-                'Url' => array('configKey', 'getUrl'),
-                'Thumb' => array('configKey', 'getThumb'),
-                'ReadableFileSize' => array('fileSize', 'getReadableFileSize'),
-                'description' => array('description', 'getDescription'),
-            ))->getItemArray();
+        $item = $this->getItem();
+        if($map){
+            $item = $item->toArray($map);
+        } else {
+            $item = $item->self(array('*'));
         }
 
-        return $this->item = $item;
+        $this->trigger('get');
+
+        $this->trigger('get.post');
+        $this->trigger('get.postcache');
+
+        return $item;
     }
 
-    public function getFiles()
+    public function getFileList(array $map = array())
     {
-        $defaultParams = array(
-            'enableCount' => true,
-            'keyword' => '',
-            'status' => '',
-            'fileExtension' => '',
-            'isImage' => null,
-            'fileSizeFrom' => '',
-            'fileSizeTo' => '',
-            'imageWidthFrom' => '',
-            'imageWidthTo' => '',
-            'imageHeightFrom' => '',
-            'imageHeightTo' => '',
-            'page' => 1,
-            'order' => 'iddesc',
-        );
-        $params = $this->getItemListParams();
-        $params = new \Zend\Stdlib\Parameters(array_merge($defaultParams, $params));
+        $this->trigger('list.precache');
 
-        $itemTable = $this->getItemTable();
+        $this->trigger('list.pre');
 
-        $itemTable->selectFiles($params);
-        $items = $itemTable->find('all');
-
-        $newItems = array();
-        foreach($items as $key => $item){
-            $newItems[$key] = $this->setItemParams($item['id'])->getFile();
+        $item = $this->getItemList();
+        if($map){
+            $item = $item->toArray($map);
         }
-        $items = $newItems;
 
-        return $this->itemList = $items;
+        $this->trigger('get');
+
+        $this->trigger('list.post');
+        $this->trigger('list.postcache');
+
+        return $item;
     }
 
     public function createFiles()
@@ -122,52 +104,67 @@ class File extends AbstractModel
         $items = array();
         foreach($files as $key => $file){
             $this->file = $file;
-            $this->item = array();
             $this->createFile();
         }
 
         return true;
     }
 
-    public function createFile()
+    public function createFile($data = null)
     {
-        $file = $this->file;
+        $file = $this->getUploadFile();
         if(!$file || !$file['received']){
             return false;
         }
 
-        $configKey = $this->getConfigKey();
-        $globelConfig = Api::_()->getConfig();
-        if(!$configKey || !isset($globelConfig['upload']['storage'][$configKey])){
-            throw new Exception\InvalidArgumentException(printf(
-                'No file config key found.'
-            ));
+        $data['fileName'] = $file['name'];
+        if($data) {
+            $this->setItem($data);
         }
 
-        $item = $this->setItemAttrMap(array(
-            'title' => array('title', 'getTitle'),
-            'status' => array('status', 'getStatus'),
-            'isImage' => array('isImage', 'getIsImage'),
-            'configKey' => array('configKey', 'getConfigKey'),
-            'fileName' => array('fileName', 'getFileName'),
-            'fileExtension' => array('fileExtension', 'getFileExtension'),
-            'originalName' => array('originalName', 'getOriginalName'),
-            'fileServerKey' => array('fileServerKey', 'getServerKey'),
-            'fileServerName' => array('fileServerName', 'getServerName'),
-            'filePath' => array('filePath', 'getFilePath'),
-            'fileHash' => array('fileHash', 'getFileHash'),
-            'fileSize' => array('fileSize', 'getFileSize'),
-            'imageWidth' => array('imageWidth', 'getImageWidth'),
-            'imageHeight' => array('imageHeight', 'getImageHeight'),
-            'user_id' => array('user_id', 'getUserId'),
-            'user_name' => array('user_name', 'getUserName'),
-            'createTime' => array('createTime', 'getCreateTime'),
-        ))->getItemArray();
+        $item = $this->getItem();
+        
+        $this->trigger('create.pre');
 
-        $itemTable = $this->getItemTable();
-        $itemTable->create($item);
-        $this->lastFileId = $itemTable->getLastInsertValue();
+        $itemId = $item->create();
 
-        return $this->lastFileId;
+        if($item->hasLoadedRelationships()){
+            foreach($item->getLoadedRelationships() as $key => $relItem){
+                $relItem->create();
+            }
+        }
+        $this->trigger('create');
+        $this->trigger('create.post');
+        return $this->lastFileId = $itemId;
+    }
+
+    public function saveFile($data = null)
+    {
+        return $this->saveItem($data);
+    }
+
+
+    public function removeFile()
+    {
+        $this->trigger('remove.pre');
+
+        $item = $this->getFile();
+        $itemArray = $item->toArray(array(
+            '*',
+            'getFullPath()'
+        ));
+
+        $filePath = $itemArray['FullPath'];
+
+        $item->remove();
+        if(file_exists($filePath)){
+            @unlink($filePath);
+        }
+
+
+        $this->trigger('remove');
+        $this->trigger('remove.post');
+        return true;
+    
     }
 }

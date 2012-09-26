@@ -214,6 +214,7 @@ class RestfulForm extends Form implements InputFilterProviderInterface
         if($this->fileTransfer){
             return $this->fileTransfer;
         }
+        $this->initFileTransfer();
         return $this->fileTransfer = TransferFactory::factory($this->getFileTransferOptions());
     }
 
@@ -452,6 +453,61 @@ class RestfulForm extends Form implements InputFilterProviderInterface
             $inputFilter->add($input, $name);
         }
         $this->filtersInited = true;
+        return $this;
+    }
+
+    public function initFileTransfer()
+    {
+        $elements = $this->getElementsArray();
+        $fileElements = array();
+        foreach($elements as $key => $element){
+            if(isset($element['type']) && $element['type'] == 'file'){
+                $fileElements[$key] = $element;
+            }
+        }
+
+        if(!$fileElements){
+            return $this;
+        }
+
+        $config = array(
+            'di' => array('instance' => array(
+                'Eva\File\Transfer\Adapter\Http' => array(
+                    'parameters' => array(
+                        'validators' => array(
+                        ),
+                        'filters' => array(
+                        ),
+                    ),
+                ),
+                'Eva\File\Transfer\Transfer' => array(
+                    'parameters' => array(
+                        'adapter' => 'Eva\File\Transfer\Adapter\Http',
+                    ),
+                ),
+            )
+        ));
+
+        $mergeFilters = $this->getFiltersArray();
+        foreach($fileElements as $key => $element){
+            if(isset($mergeFilters[$key]['validators'])){
+                foreach($mergeFilters[$key]['validators'] as $validator){
+                    $config['di']['instance']['Eva\File\Transfer\Adapter\Http']['parameters']['validators'][] = array(
+                        $validator['name'], true, $validator['options'], $element['name']
+                    ); 
+                }
+            }
+            if(isset($mergeFilters[$key]['filters'])){
+                foreach($mergeFilters[$key]['filters'] as $filter){
+                    $config['di']['instance']['Eva\File\Transfer\Adapter\Http']['parameters']['filters'][$filter['name']] = $filter['options'];
+                }
+            }
+            if(isset($mergeFilters[$key]['options'])){
+                $config['di']['instance']['Eva\File\Transfer\Adapter\Http']['parameters']['options'] = $mergeFilters[$key]['options'];
+            }
+        }
+
+        $this->fileTransferOptions = $config;
         return $this;
     }
 

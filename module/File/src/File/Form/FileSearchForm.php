@@ -1,81 +1,121 @@
 <?php
 namespace File\Form;
 
-class FileSearchForm extends FileEditForm
+class FileSearchForm extends FileForm
 {
     protected $mergeElements = array(
         'status' => array (
-            'attributes' => array (
-                'options' => array (
+            'options' => array (
+                'value_options' => array(
                     array (
                         'label' => 'Select Status',
                         'value' => '',
                     ),
-                ),
+                )
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'keyword' =>     array(
             'name' => 'keyword',
-            'attributes' => array(
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Keyword',
+            ),
+            'attributes' => array(
             ),
         ),
         'fileSizeFrom' => array (
             'name' => 'fileSizeFrom',
-            'attributes' => array (
-                'type' => 'range',
+            'type' => 'range',
+            'options' => array (
                 'label' => 'From',
+            ),
+            'attributes' => array (
             ),
         ),
         'fileSizeTo' => array (
             'name' => 'fileSizeTo',
-            'attributes' => array (
-                'type' => 'range',
+            'type' => 'range',
+            'options' => array (
                 'label' => 'To',
+            ),
+            'attributes' => array (
             ),
         ),
         'imageWidthFrom' => array (
             'name' => 'imageWidthFrom',
-            'attributes' => array (
-                'type' => 'number',
+            'type' => 'number',
+            'options' => array (
                 'label' => 'From',
             ),
         ),
         'imageWidthTo' => array (
             'name' => 'imageWidthTo',
-            'attributes' => array (
-                'type' => 'number',
+            'type' => 'number',
+            'options' => array (
                 'label' => 'To',
             ),
         ),
         'imageHeightFrom' => array (
             'name' => 'imageHeightFrom',
-            'attributes' => array (
-                'type' => 'number',
+
+            'type' => 'number',
+            'options' => array (
                 'label' => 'From',
             ),
         ),
         'imageHeightTo' => array (
             'name' => 'imageHeightTo',
-            'attributes' => array (
-                'type' => 'number',
+            'type' => 'number',
+            'options' => array (
                 'label' => 'To',
             ),
         ),
         'isImage' => array (
             'name' => 'isImage',
-            'type' => 'Zend\Form\Element\Checkbox',
+            'type' => 'checkbox',
             'options' => array(
+                'label' => 'Is Image',
                 'use_hidden_element' => false,
                 'checked_value' => false,
             ),
             'attributes' => array (
-                'type' => 'checkbox',
-                'label' => 'Is Image',
                 'value' => '1',
             ),
         ),
+    );
+
+    protected $mergeFilters = array(
+        'fileSizeFrom' => array (
+            'name' => 'fileSizeFrom',
+            'required' => false,
+        ),
+        'fileSizeTo' => array (
+            'name' => 'fileSizeTo',
+            'required' => false,
+        ),
+        'imageWidthFrom' => array (
+            'name' => 'imageWidthFrom',
+            'required' => false,
+        ),
+        'imageWidthTo' => array (
+            'name' => 'imageWidthTo',
+            'required' => false,
+        ),
+        'imageHeightFrom' => array (
+            'name' => 'imageHeightFrom',
+            'required' => false,
+        ),
+        'imageHeightTo' => array (
+            'name' => 'imageHeightTo',
+            'required' => false,
+        ),
+        'isImage' => array (
+            'name' => 'isImage',
+            'required' => false,
+        ),
+    
     );
 }

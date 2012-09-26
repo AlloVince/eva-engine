@@ -53,9 +53,7 @@ class Post extends AbstractModelService
         }
         $this->trigger('save');
 
-    
         $this->trigger('save.post');
-
 
         return $item->id;
     }

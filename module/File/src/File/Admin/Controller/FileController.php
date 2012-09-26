@@ -9,62 +9,73 @@ use File\Form,
 class FileController extends RestfulModuleController
 {
     protected $renders = array(
-        'restPutFile' => 'blog/get',    
+        'restPutFile' => 'file/get',    
         'restPostFile' => 'upload/index',    
         'restDeleteFile' => 'remove/get',    
     );
 
     public function restIndexFile()
     {
-        $request = $this->getRequest();
+        $query = $this->getRequest()->getQuery();
 
-        $query = $request->getQuery();
+        $form = new Form\FileSearchForm();
+        $form->bind($query);
+        if($form->isValid()){
+            $query = $form->getData();
+        }
 
-        $form = Api::_()->getForm('File\Form\FileSearchForm');
-        $selectQuery = $form->fieldsMap($query, true);
-
-        $fileModel = Api::_()->getModel('File\Model\File');
-        $files = $fileModel->setItemListParams($selectQuery)->getFiles();
-        $paginator = $fileModel->getPaginator();
+        $itemModel = Api::_()->getModelService('File\Model\File');
+        $items = $itemModel->setItemList($query)->getFileList(array(
+            'self' => array(
+                '*',
+                'getUrl()',
+                'getThumb()',
+                'getReadableFileSize()',
+            ),
+        ));
+        $paginator = $itemModel->getPaginator();
 
         return array(
             'form' => $form,
-            'files' => $files,
+            'items' => $items,
             'query' => $query,
             'paginator' => $paginator,
         );
-
     }
 
     public function restGetFile()
     {
-        $id = (int)$this->getEvent()->getRouteMatch()->getParam('id');
-        $fileModel = Api::_()->getModel('File\Model\File');
-        $fileinfo = $fileModel->setItemParams($id)->getFile();
+        $id = $this->params('id');
+        $itemModel = Api::_()->getModelService('File\Model\File');
+        $item = $itemModel->getFile($id, array(
+            'self' => array(
+                '*',
+                'getUrl()',
+                'getThumb()',
+                'getReadableFileSize()',
+            ),
+        ));
         return array(
-            'file' => $fileinfo,
-            'flashMessenger' => $this->flashMessenger()->getMessages(),
+            'item' => $item,
         );
     }
 
     public function restPostFile()
     {
-        $request = $this->getRequest();
-        $postData = $request->getPost();
+        $postData = $this->params()->fromPost();
         $form = new Form\UploadForm();
-        $form->init()
-             ->setData($postData)
-             ->enableFilters()
-             ->enableFileTransfer();
+        $form->bind($postData);
 
-        $fileModel = Api::_()->getModel('File\Model\File');
-        $flashMesseger = array();
+        $itemModel = Api::_()->getModelService('File\Model\File');
         if ($form->isValid() && $form->getFileTransfer()->isUploaded()) {
             if($form->getFileTransfer()->receive()){
+                
                 $files = $form->getFileTransfer()->getFileInfo();
-                $fileModel->setUploadFiles($files);
-                $fileModel->setConfigKey('default')->createFiles();
-                $lastFileId = $fileModel->getLastFileId();
+                $itemModel->setUploadFiles($files);
+                $itemModel->setConfigKey('default')->createFiles();
+
+                $lastFileId = $itemModel->getLastFileId();
+
                 if($lastFileId) {
                     $this->flashMessenger()->addMessage('file-upload-succeed');
                     $this->redirect()->toUrl('/admin/file/' . $lastFileId);
@@ -79,28 +90,24 @@ class FileController extends RestfulModuleController
 
         return array(
             'form' => $form,
-            'post' => $postData,
-            'flashMessenger' => $flashMesseger
+            'item' => $postData,
         );
     }
 
     public function restPutFile()
     {
-        $request = $this->getRequest();
-        $postData = $request->getPost();
-        $form = new Form\PostEditForm();
-        $form->init()
-             ->setData($postData)
-             ->enableFilters();
+        $postData = $this->params()->fromPost();
 
-        $flashMesseger = array();
+        $form = new Form\FileEditForm();
+        $form->bind($postData);
+        
         if ($form->isValid()) {
             $postData = $form->getData();
-            $fileModel = Api::_()->getModel('File\Model\File');
-            $postData = $form->fieldsMap($postData, true);
-            $postId = $fileModel->setItem($postData)->saveFile();
-            $this->redirect()->toUrl('/admin/blog/' . $postData['id']);
-            $this->flashMessenger()->addMessage('post-edit-succeed');
+            $itemModel = Api::_()->getModelService('File\Model\File');
+            $itemModel->setItem($postData)->saveFile();
+
+            $this->redirect()->toUrl('/admin/file/' . $postData['id']);
+            $this->flashMessenger()->addMessage('file-edit-succeed');
         } else {
             //$this->flashMessenger()->addMessage('');
             $flashMesseger = array('post-edit-failed');
@@ -109,31 +116,27 @@ class FileController extends RestfulModuleController
         return array(
             'form' => $form,
             'post' => $postData,
-            'flashMessenger' => $flashMesseger
         );
     }
 
     public function restDeleteFile()
     {
-        $request = $this->getRequest();
-        $itemData = $request->getPost();
-        $callback = $request->getPost()->get('callback');
+        $postData = $this->params()->fromPost();
+        $callback = $this->params()->fromPost('callback');
 
         $form = new Form\FileDeleteForm();
-        $form->enableFilters()->setData($itemData);
+        $form->bind($postData);
         if ($form->isValid()) {
-
-            $itemData = $form->getData();
-            $itemTable = Api::_()->getDbTable('File\DbTable\Files');
-            $itemTable->where("id = {$itemData['id']}")->remove();
-
+            $postData = $form->getData();
+            $itemModel = Api::_()->getModelService('File\Model\File');
+            $itemId = $itemModel->setItem($postData)->removeFile();
             if($callback){
                 $this->redirect()->toUrl($callback);
             }
 
         } else {
             return array(
-                'post' => $itemData,
+                'item' => $postData,
             );
         }
     }

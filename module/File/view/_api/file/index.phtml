@@ -2,16 +2,18 @@
 $title = $this->_('File Management');
 $this->headTitle($title, 'SET');
 $this->textDelay('breadcrumbText', $title);
+$items = $this->items;
+
 if($this->form){
 	$form = $this->form;
 } else {
-    $form = Eva\Api::_()->getForm('\File\Form\FileSearchForm');
+    $form = new File\Form\FileSearchForm();
 }
-$form->init(array(
-    'action' => $this->uri('/api/file/'),
-    'method' => 'get',
-    'values' => $this->query
-));
+$form->setView($this)
+->setMethod('get')
+->setAction($this->uri('/admin/file/'))
+->bind($this->query)
+->prepare();
 
 $lableMap = array(
     'draft' => '',
@@ -112,32 +114,32 @@ function getFileTypeIcon($ext)
                 </tr>
             </thead>
             <tbody>
-                <?if($files):?>
-                <?foreach($files as $key=>$file):?>
+                <?if($items):?>
+                <?foreach($items as $key=>$item):?>
                 <tr class="">
                     <td>
-                        <input name="id" type="checkbox" class="multiform-item-checkbox"  data-multiform="post" data-multiform-itemid="<?=$file['id'] ?>" value="<?=$file['id'] ?>" />
+                        <input name="id" type="checkbox" class="multiform-item-checkbox"  data-multiform="post" data-multiform-itemid="<?=$item['id'] ?>" value="<?=$item['id'] ?>" />
                     </td>	
 
                     <td>
-                        <a href="<?=$this->uri('/api/file/' . $file['id'])?>" class="title"><?=$file['title'] ?></a>
-                        <span class="label <?=$lableMap[$file['status']]?>"><?=$this->_($file['status'])?></span>
-                        <span class="label"><?=$file['fileExtension']?></span>
+                        <a href="<?=$this->uri('/api/file/' . $item['id'])?>" class="title"><?=$item['title'] ?></a>
+                        <span class="label <?=$lableMap[$item['status']]?>"><?=$this->_($item['status'])?></span>
+                        <span class="label"><?=$item['fileExtension']?></span>
                         <p>
-                        <span class="meta"><?=$file['user_name'] ?> <?=$file['createTime'];?></span>
+                        <span class="meta"><?=$item['user_name'] ?> <?=$item['createTime'];?></span>
                         </p>
                     </td>
                     <td>
-                        <?if($file['isImage']):?>
-                        <img src="<?=$this->thumb($file['Thumb'], array('w_50'))?>" alt="<?=$file['fileExtension']?>" />
+                        <?if($item['isImage']):?>
+                        <img src="<?=$this->thumb($item['Thumb'], array('w_50'))?>" alt="<?=$item['fileExtension']?>" />
                         <?else:?>
-                        <img src="<?=$this->link(getFileTypeIcon($file['fileExtension']))?>" alt="<?=$file['fileExtension']?>" />
+                        <img src="<?=$this->link(getFileTypeIcon($item['fileExtension']))?>" alt="<?=$item['fileExtension']?>" />
                         <?endif?>
                     </td>	
                     <td class="actions">
-                        <a href="<?=$this->uri('/admin/file/' . $file['id'])?>" class="btn btn-small action-connect" data-connect-id="<?=$file['id']?>" data-connect-method="connectFile" data-connect-json="<?=$this->escapeHtmlAttr($this->json($file))?>"><?=$this->_('Connect')?></a>
-                        <a href="<?=$this->uri('/admin/file/' . $file['id'])?>" class="btn btn-small action-insert" data-connect-id="<?=$file['id']?>"><?=$this->_('Insert To Editor')?></a>
-                        <a href="<?=$this->uri('/admin/file/' . $file['id'])?>" class="btn btn-small" target="_blank"><?=$this->_('Manage')?></a>
+                        <a href="<?=$this->uri('/admin/file/' . $item['id'])?>" class="btn btn-small action-connect" data-connect-id="<?=$item['id']?>" data-connect-method="connectFile" data-connect-json="<?=$this->escapeHtmlAttr($this->json($item))?>"><?=$this->_('Connect')?></a>
+                        <a href="<?=$this->uri('/admin/file/' . $item['id'])?>" class="btn btn-small action-insert" data-connect-id="<?=$item['id']?>"><?=$this->_('Insert To Editor')?></a>
+                        <a href="<?=$this->uri('/admin/file/' . $item['id'])?>" class="btn btn-small" target="_blank"><?=$this->_('Manage')?></a>
                     </td>
                 </tr>
                 <?endforeach;?>

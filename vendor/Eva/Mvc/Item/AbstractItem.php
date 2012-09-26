@@ -488,14 +488,6 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
             }
         }
 
-        //Auto complete
-        if($functions){
-            foreach($functions as $key => $function){
-                if(true === method_exists($this, $function)){
-                    $this->$function();
-                }
-            }
-        }
 
         //Merge to original DataSource
         $originalDataSource = $this->getDataSource();
@@ -508,11 +500,22 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         }
         $dataSource = $originalDataSource;
 
+
         if(!$dataSource){
             $this->setDataSource(array());
         } else {
             $this->setDataSource((array) $dataSource);
         }
+
+        //Auto complete
+        if($functions){
+            foreach($functions as $key => $function){
+                if(true === method_exists($this, $function)){
+                    $this->$function();
+                }
+            }
+        }
+
         return $this;
     }
 

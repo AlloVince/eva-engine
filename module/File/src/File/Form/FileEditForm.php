@@ -18,7 +18,7 @@ namespace File\Form;
  * @category   Eva
  * @package    Eva_Form
  */
-class FileEditForm extends UploadForm
+class FileEditForm extends FileForm
 {
     /**
      * Form basic elements

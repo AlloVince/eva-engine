@@ -12,9 +12,9 @@ class DashboardController extends ActionController
         $api = Api::_();
         $view = array();
         if($api->isModuleLoaded('Blog')){
-            $postModel = Api::_()->getModel('Blog\Model\Post');
-            $posts = $postModel->getPosts();
-            $postsCount = $postModel->getItemTable()->find('count');
+            $postModel = Api::_()->getModelService('Blog\Model\Post');
+            $posts = $postModel->getPostList();
+            $postsCount = $postModel->getItem()->getDataClass()->find('count');
             $view['posts'] = $posts;
             $view['postsCount'] = $postsCount;
         }

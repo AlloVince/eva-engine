@@ -1,11 +1,10 @@
 <?php
 namespace File\Form;
 
-use Eva\Form\Form;
-use Zend\Form\Element;
-
-class FileDeleteForm extends UploadForm
+class FileDeleteForm extends FileForm
 {
+    protected $validationGroup = array('id');
+
     protected $baseFilters = array(
         'id' => array(
             'name' => 'id',

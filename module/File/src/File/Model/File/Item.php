@@ -8,6 +8,7 @@ use Eva\Mvc\Model\AbstractItem,
 class Item extends AbstractItem
 {
     protected $image;
+
     protected function mergePath()
     {
         $config = Api::_()->getConfig();
@@ -24,6 +25,34 @@ class Item extends AbstractItem
         }
 
         return $file['destination'];
+    }
+
+    public function getFullPath()
+    {
+        $item = $this->item;
+
+        $configKey = $item['configKey'] ? $item['configKey'] : 'default';
+        $config = Api::_()->getConfig();
+        $dir = str_replace(array('/', '\\'), '/', $item['filePath']);
+        $dir = trim($dir, '/\\');
+        $domain = '';
+        $dirPrefix = '';
+        if(isset($config['upload']['storage'][$configKey])){
+            $config = $config['upload']['storage'][$configKey];
+            $rootpath = $config['rootpath'];
+            $urlroot = $config['urlroot'];
+            $domain = $config['domain'];
+
+            $dirPrefix = str_replace($urlroot, '', $rootpath);
+            if($dirPrefix){
+                $dirPrefix = trim($dirPrefix, '/\\');
+                $dirPrefix = str_replace(array('/', '\\'), '/', $dirPrefix);
+            }
+        }
+
+        $url = $domain ? 'http://' . $domain . '/' : '/'; 
+        $url .= $dirPrefix . '/' . $dir . '/' . $item['fileName'];
+        return $url;
     }
 
     public function getUrl()
@@ -83,17 +112,7 @@ class Item extends AbstractItem
         return round($size, 2).$units[$i];
     }
 
-    public function getTitle($title)
-    {
-        $file = $this->model->getUploadFile();
-        $fileName = isset($file['original_name']) && $file['original_name'] ? $file['original_name'] : $file['name'];
-        $nameArray = explode(".", $fileName);
-        if(count($nameArray) == 1){
-            return $fileName;
-        }
-        array_pop($nameArray);
-        return implode(".", $nameArray);
-    }
+
 
     public function getStatus($status)
     {
