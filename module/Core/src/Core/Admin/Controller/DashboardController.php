@@ -13,16 +13,16 @@ class DashboardController extends ActionController
         $view = array();
         if($api->isModuleLoaded('Blog')){
             $postModel = Api::_()->getModelService('Blog\Model\Post');
-            $posts = $postModel->getPostList();
+            $posts = $postModel->setItemList(array('order' => 'iddesc'))->getPostList();
             $postsCount = $postModel->getItem()->getDataClass()->find('count');
             $view['posts'] = $posts;
             $view['postsCount'] = $postsCount;
         }
 
         if($api->isModuleLoaded('File')){
-            $fileModel = Api::_()->getModel('File\Model\File');
-            $files = $fileModel->getFiles();
-            $filesCount = $fileModel->getItemTable()->find('count');
+            $fileModel = Api::_()->getModelService('File\Model\File');
+            $files = $fileModel->setItemList(array('order' => 'iddesc'))->getFileList();
+            $filesCount = $fileModel->getItem()->getDataClass()->find('count');
             $view['files'] = $files;
             $view['filesCount'] = $filesCount;
         }
@@ -30,7 +30,7 @@ class DashboardController extends ActionController
 
         if($api->isModuleLoaded('User')){
             $userModel = Api::_()->getModelService('User\Model\User');
-            $users = $userModel->setItemList(array('page' => 1))->getUserList();
+            $users = $userModel->setItemList(array('order' => 'iddesc'))->setItemList(array('page' => 1))->getUserList();
             if($userModel->getPaginator()) {
                 $usersCount = $userModel->getPaginator()->getRowCount();
             } else {

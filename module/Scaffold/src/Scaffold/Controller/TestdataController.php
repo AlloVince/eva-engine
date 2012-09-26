@@ -19,15 +19,12 @@ class TestdataController extends RestfulModuleController
     
     public function restGetTestdataPosts()
     {
-        $request = $this->getRequest();
-        
-        $query = $request->getQuery();
+        $query = $this->getRequest()->getQuery();
 
-        $form = Api::_()->getForm('Blog\Form\CategoryForm');
-        $selectQuery = $form->fieldsMap($query, true);
+        $form = new \Blog\Form\CategoryForm();
        
-        $categoryModel = Api::_()->getModel('Blog\Model\Category');
-        $categories = $categoryModel->setItemListParams($selectQuery)->getCategories();
+        $categoryModel = Api::_()->getModelService('Blog\Model\Category');
+        $categories = $categoryModel->setItemList($query)->getCategoryList();
         $paginator = $categoryModel->getPaginator();
 
         return array(
@@ -44,8 +41,8 @@ class TestdataController extends RestfulModuleController
         $postData = $request->getPost();
         $dataArray = MultiForm::getPostDataArray($postData);
         
-        $itemModel = Api::_()->getModel('Blog\Model\Category');
-        $postModel = Api::_()->getModel('Blog\Model\Post');
+        $itemModel = Api::_()->getModelService('Blog\Model\Category');
+        $postModel = Api::_()->getModelService('Blog\Model\Post');
         
         $content = "国际在线专稿：据英国广播公司8月10日报道，71岁的巴西球王贝利近日在英国伦敦观看奥运会比赛。贝利接受媒体采访时表示，他认为伦敦奥运会非常成功，而作为下届奥运会举办国，巴西还未做好准备，恐难超越伦敦奥运会。
 巴西将在2014年举办世界杯，2年后又将迎来41届夏季奥运会。贝利说，“当前事情看起来不大妙，我们的建筑项目还有些小问题。”他表示，交通和传媒方面可能存在最大的问题，希望届时能顺利解决。距离举办巴西世界杯只有两年时间了，贝利似乎对巴西的举办能力缺乏信心。他说，“我已经和总统罗塞夫就此事讨论过，她说会尽最大努力筹备组织奥运会，但我们还没有真正准备好。”

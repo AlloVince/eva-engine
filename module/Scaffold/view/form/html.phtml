@@ -3,13 +3,10 @@ $title = 'Form Html Generator';
 $this->headTitle($title, 'SET');
 $this->textDelay('breadcrumbText', $title);
 
-$method = 'put';
-$form = Eva\Api::_()->getForm('Scaffold\Form\AutoHtmlForm');
-$form->init(array(
-    'action' => $this->uri('/scaffold/form/html'),
-    'method' => $method,
-    'values' => $this->tab
-));
+$form = new Scaffold\Form\AutoHtmlForm();
+$form->setView($this)
+->setMethod('put')
+->setAction($this->uri('/scaffold/form/html'));
 ?>
 <header class="page-header">
 <h2 class="">Form Html Generator</h2>

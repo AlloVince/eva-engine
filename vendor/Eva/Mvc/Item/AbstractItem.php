@@ -430,11 +430,19 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     }
 
 
-    public function collections(array $params)
+    public function collections($params = null)
     {
         $dataClass = $this->getDataClass();
         if($params && method_exists($dataClass, 'setParameters')){
-            $params = new \Zend\Stdlib\Parameters($params);
+            if(is_array($params)){
+                $params = new \Zend\Stdlib\Parameters($params);
+            } elseif($params instanceof \Zend\Stdlib\Parameters){
+                $params = $params;
+            } else {
+                throw new Exception\InvalidArgumentException(sprintf(
+                    'Item collection require array or Zend\Stdlib\Parameters input'
+                ));
+            }
             $dataClass->setParameters($params);
         }
         $items = $dataClass->find('all');

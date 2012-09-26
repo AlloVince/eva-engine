@@ -1,16 +1,18 @@
 <?=htmlentities('<?')?>
 
-$method = 'post';
-
+$item = $this->item;
 if($this->form){
 	$form = $this->form;
 } else {
-    $form = Eva\Api::_()->getForm('<?=$formClassName?>');
+    $form = new <?=$formClassName?>();
 }
-$form->setSubForms(<?=$this->codeIndent($this->subFormsCode)?>);
-$form->init(array(
-    'action' => $this->uri('/admin/'),
-    'method' => $method,
-    'values' => ''
-));
+
+$form
+->setView($this)
+->useSubFormGroup()
+->setMethod('post')
+->setAction($this->uri('/admin/'))
+->bind($item)
+->prepare();
 <?=htmlentities('?>') . "\n"?>
+
