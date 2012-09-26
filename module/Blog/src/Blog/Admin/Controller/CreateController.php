@@ -14,7 +14,6 @@ class CreateController extends RestfulModuleController
 
     public function restIndexCreate()
     {
-        $request = $this->getRequest();
         return array(
         );
     }

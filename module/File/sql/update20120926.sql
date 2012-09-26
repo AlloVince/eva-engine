@@ -1,0 +1,1 @@
+ALTER TABLE `eva_file_files_connections` CHANGE `connectType` `connectType` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;

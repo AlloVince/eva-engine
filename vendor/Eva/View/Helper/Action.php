@@ -28,25 +28,6 @@ use Zend\Mvc\Router\RouteStackInterface,
 class Action extends \Zend\View\Helper\AbstractHelper
 {
 
-    /**
-     * Renders a template fragment within a variable scope distinct from the
-     * calling View object.
-     *
-     * If no arguments are passed, returns the helper instance.
-     *
-     * If the $model is an array, it is passed to the view object's assign()
-     * method.
-     *
-     * If the $model is an object, it first checks to see if the object
-     * implements a 'toArray' method; if so, it passes the result of that
-     * method to to the view object's assign() method. Otherwise, the result of
-     * get_object_vars() is passed.
-     *
-     * @param  string $name Name of view script
-     * @param  array $model Variables to populate in the view
-     * @return string|Partial
-     * @throws Exception\RuntimeException
-     */
     public function __invoke($controllerName, $actionName, $params = array())
     {
         $controllerLoader = \Eva\Api::_()->getEvent()->getApplication()->getServiceManager()->get('ControllerLoader');

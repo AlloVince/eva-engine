@@ -40,6 +40,7 @@ class HelperConfig implements ConfigInterface
          'thumb' => 'Eva\View\Helper\Thumb',
          'datetime' => 'Eva\View\Helper\Datetime',
          'googleAnalytics' => 'Eva\View\Helper\GoogleAnalytics',
+         'flashMessenger' => 'Eva\View\Helper\FlashMessenger',
      );
 
     /**

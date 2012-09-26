@@ -21,6 +21,7 @@ $form->useSubFormGroup()
      ->setAction($this->uri('/admin/blog/'))
      ->bind($item)
      ->prepare();
+
 ?>
 
 <input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
