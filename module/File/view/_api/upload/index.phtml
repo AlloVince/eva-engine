@@ -5,13 +5,12 @@ $this->headTitle($title, 'SET');
 if($this->form){
 	$form = $this->form;
 } else {
-    $form = Eva\Api::_()->getForm('File\Form\UploadForm');
+    $form = new File\Form\UploadForm();
 }
-$form->init(array(
-    'action' => $this->uri('/api/file/'),
-    'method' => 'post',
-));
-$file = array();
+
+$form->setView($this)
+->setMethod('post')
+->setAction($this->uri('/api/file/'));
 ?>
 
 <div class="container-fluid">

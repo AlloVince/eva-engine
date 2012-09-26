@@ -85,6 +85,25 @@ class FileSearchForm extends FileForm
                 'value' => '1',
             ),
         ),
+        'page' =>     array(
+            'name' => 'page',
+            'type' => 'text',
+            'options' => array(
+                'label' => 'Page',
+            ),
+            'attributes' => array(
+                'value' => 1,
+            ),
+        ),
+        'order' =>     array(
+            'name' => 'order',
+            'type' => 'text',
+            'options' => array(
+                'label' => 'order',
+            ),
+            'attributes' => array(
+            ),
+        ),
     );
 
     protected $mergeFilters = array(
@@ -118,4 +137,18 @@ class FileSearchForm extends FileForm
         ),
     
     );
+
+
+    public function prepareData($data)
+    {
+        if(!$data['page']){
+            $data['page'] = 1;
+        }
+
+        if(!$data['order']) {
+            $data['order'] = 'iddesc';
+        }
+
+        return $data;
+    }
 }

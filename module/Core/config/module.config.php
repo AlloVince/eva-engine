@@ -60,6 +60,7 @@ return array(
             'index/index'   => EVA_MODULE_PATH . '/Core/view/index/index.phtml',
             'error/404'     => EVA_MODULE_PATH . '/Core/view/error/404.phtml',
             'error/index'   => EVA_MODULE_PATH . '/Core/view/error/index.phtml',
+            'blank' => EVA_MODULE_PATH . '/Core/view/blank.phtml',
         ),
         'module_namespace_layout_map' => array(
             'Admin' => 'layout/admin'

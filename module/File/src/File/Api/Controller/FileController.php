@@ -19,7 +19,14 @@ class FileController extends RestfulModuleController
         }
 
         $itemModel = Api::_()->getModelService('File\Model\File');
-        $items = $itemModel->setItemList($query)->getFileList();
+        $items = $itemModel->setItemList($query)->getFileList(array(
+            'self' => array(
+                '*',
+                'getUrl()',
+                'getThumb()',
+                'getReadableFileSize()',
+            ),
+        ));
         $paginator = $itemModel->getPaginator();
 
         $this->layout('layout/adminblank');
@@ -60,7 +67,7 @@ class FileController extends RestfulModuleController
                     $file = array(
                         'id' => $item['id'],
                         'name' => $item['originalName'],
-                        'size' => (int)$fileinfo['fileSize'],
+                        'size' => (int)$item['fileSize'],
                         'url' => $item['Url'],
                         'thumbnail_url' => $item['Thumb'],
                     );

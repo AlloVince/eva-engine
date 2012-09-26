@@ -11,7 +11,7 @@ if($this->form){
 
 $form->setView($this)
 ->setMethod('post')
-->setAction($this->uri('/admin/file/'));
+->setAction($this->uri('/api/file/'));
 ?>
 
 <input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />

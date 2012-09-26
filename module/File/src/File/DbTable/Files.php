@@ -3,16 +3,17 @@
 namespace File\DbTable;
 
 use Eva\Db\TableGateway\TableGateway;
+use Zend\Stdlib\Parameters;
 
 class Files extends TableGateway
 {
     protected $tableName ='files';
+
     protected $primaryKey = 'id';
 
-
-    public function selectFiles(\Zend\Stdlib\Parameters $params)
+    public function setParameters(Parameters $params)
     {
-        if($params->enableCount){
+        if($params->page){
             $this->enableCount();
         }
 
