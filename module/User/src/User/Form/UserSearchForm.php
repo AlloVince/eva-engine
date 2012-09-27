@@ -32,12 +32,7 @@ class UserSearchForm extends UserForm
         ),
         'status' => array(
             'options' => array(
-                'value_options' => array(
-                    array(
-                        'label' => 'User Status',
-                        'value' => '',
-                    ),
-                )
+                'empty_option' => 'User Status'
             ),
             'attributes' => array(
                 'value' => '',
@@ -45,12 +40,7 @@ class UserSearchForm extends UserForm
         ),
         'gender' => array(
             'options' => array(
-                'value_options' => array(
-                    array(
-                        'label' => 'Select Gender',
-                        'value' => '',
-                    ),
-                )
+                'empty_option' => 'Select Gender'
             ),
             'attributes' => array(
                 'value' => '',
@@ -58,12 +48,7 @@ class UserSearchForm extends UserForm
         ),
         'onlineStatus' => array(
             'options' => array(
-                'value_options' => array(
-                    array(
-                        'label' => 'Online/Offline',
-                        'value' => '',
-                    ),
-                )
+                'empty_option' => 'Online/Offline'
             ),
             'attributes' => array(
                 'value' => '',

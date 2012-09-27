@@ -126,6 +126,7 @@ class UserCreateForm extends UserForm
         $locale = $translator->getLocale();
         $languages = \Eva\Locale\Data::getList($locale, 'language');
         $element['options']['value_options'] = $languages;
+        $element['attributes']['value'] = $locale;
         return $element;
     }
 

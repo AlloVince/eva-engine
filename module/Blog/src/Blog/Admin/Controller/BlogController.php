@@ -17,7 +17,6 @@ class BlogController extends RestfulModuleController
     public function restIndexBlog()
     {
         $query = $this->getRequest()->getQuery();
-
         $form = new Form\PostSearchForm();
         $form->bind($query);
         if($form->isValid()){
@@ -25,7 +24,7 @@ class BlogController extends RestfulModuleController
         } else {
             return array(
                 'form' => $form,
-                'posts' => array(),
+                'items' => array(),
             );
         }
 

@@ -34,12 +34,7 @@ class PostSearchForm extends PostForm
         ),
         'status' => array(
             'options' => array(
-                'value_options' => array(
-                    array(
-                        'label' => 'Post Status',
-                        'value' => '',
-                    ),
-                ),
+                'empty_option' => 'Post Status',
             ),
             'attributes' => array(
                 'value' => '',
@@ -47,12 +42,7 @@ class PostSearchForm extends PostForm
         ),
         'visibility' => array(
             'options' => array(
-                'value_options' => array(
-                    array(
-                        'label' => 'Select Visibility',
-                        'value' => '',
-                    ),  
-                ),
+                'empty_option' => 'Select Visibility',
             ),
             'attributes' => array(
                 'value' => '',
@@ -63,12 +53,7 @@ class PostSearchForm extends PostForm
             'type' => 'select',
             'options' => array(
                 'label' => 'Category',
-                'value_options' => array(
-                    array(
-                        'label' => 'Select Category',
-                        'value' => '',
-                    ),  
-                ),
+                'empty_option' => 'Select Category',
             ),
             'attributes' => array(
                 'value' => '',

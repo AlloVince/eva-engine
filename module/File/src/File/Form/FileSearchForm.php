@@ -6,12 +6,7 @@ class FileSearchForm extends FileForm
     protected $mergeElements = array(
         'status' => array (
             'options' => array (
-                'value_options' => array(
-                    array (
-                        'label' => 'Select Status',
-                        'value' => '',
-                    ),
-                )
+                'empty_option' => 'Select Status',
             ),
             'attributes' => array (
                 'value' => '',
@@ -60,7 +55,6 @@ class FileSearchForm extends FileForm
         ),
         'imageHeightFrom' => array (
             'name' => 'imageHeightFrom',
-
             'type' => 'number',
             'options' => array (
                 'label' => 'From',
