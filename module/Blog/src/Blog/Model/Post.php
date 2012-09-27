@@ -10,6 +10,60 @@ class Post extends AbstractModel
     protected $itemTableName = 'Blog\DbTable\Posts';
 
 
+    public function getPost($postIdOrUrlName = null, array $map = array())
+    {
+        $this->trigger('get.precache');
+
+        if(is_numeric($postIdOrUrlName)){
+            $this->setItem(array(
+                'id' => $postIdOrUrlName,
+            ));
+        } elseif(is_string($postIdOrUrlName)) {
+            $item = $this->getItem()->getDataClass()->columns(array('id'))->where(array(
+                'urlName' => $postIdOrUrlName
+            ))->find('one');
+            if($item){
+                $this->setItem(array(
+                    'id' => $item['id'],
+                ));
+            }
+        }
+        $this->trigger('get.pre');
+
+        $item = $this->getItem();
+        if($map){
+            $item = $item->toArray($map);
+        } else {
+            $item = $item->self(array('*'));
+        }
+
+        $this->trigger('get');
+
+        $this->trigger('get.post');
+        $this->trigger('get.postcache');
+
+        return $item;
+    }
+
+    public function getPostList(array $map = array())
+    {
+        $this->trigger('list.precache');
+
+        $this->trigger('list.pre');
+
+        $item = $this->getItemList();
+        if($map){
+            $item = $item->toArray($map);
+        }
+
+        $this->trigger('get');
+
+        $this->trigger('list.post');
+        $this->trigger('list.postcache');
+
+        return $item;
+    }
+
     public function createPost($data = null)
     {
         if($data) {
@@ -77,53 +131,5 @@ class Post extends AbstractModel
     
     }
 
-    public function getPost($postIdOrUrlName = null, array $map = array())
-    {
-        $this->trigger('get.precache');
-
-        if(is_numeric($postIdOrUrlName)){
-            $this->setItem(array(
-                'id' => $postIdOrUrlName,
-            ));
-        } elseif(is_string($postIdOrUrlName)) {
-            $this->setItem(array(
-                'urlName' => $postIdOrUrlName,
-            ));
-        }
-        $this->trigger('get.pre');
-
-        $item = $this->getItem();
-        if($map){
-            $item = $item->toArray($map);
-        } else {
-            $item = $item->self(array('*'));
-        }
-
-        $this->trigger('get');
-
-        $this->trigger('get.post');
-        $this->trigger('get.postcache');
-
-        return $item;
-    }
-
-    public function getPostList(array $map = array())
-    {
-        $this->trigger('list.precache');
-
-        $this->trigger('list.pre');
-
-        $item = $this->getItemList();
-        if($map){
-            $item = $item->toArray($map);
-        }
-
-        $this->trigger('get');
-
-        $this->trigger('list.post');
-        $this->trigger('list.postcache');
-
-        return $item;
-    }
 
 }

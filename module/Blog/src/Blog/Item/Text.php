@@ -16,7 +16,9 @@ class Text extends AbstractItem
     public function getContentHtml()
     {
         $blogItem = $this->getModel()->getItem();
-        if($blogItem->codeType != 'html'){
+        if($blogItem->codeType == 'html'){
+            return $this->ContentHtml = $this->content;
+        } else {
             require_once EVA_LIB_PATH . '/Markdown/markdownextra.php';
             $markdown = new \MarkdownExtra_Parser();
             return $this->ContentHtml = $markdown->transform($this->content);

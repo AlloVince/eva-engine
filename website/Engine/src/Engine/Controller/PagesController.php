@@ -21,6 +21,7 @@ class PagesController extends RestfulModuleController
             );
         }
 
+        $query['status'] = 'published';
         $itemModel = Api::_()->getModel('Blog\Model\Post');
         $items = $itemModel->setItemList($query)->getPostList();
         $paginator = $itemModel->getPaginator();
@@ -35,8 +36,34 @@ class PagesController extends RestfulModuleController
     public function getAction()
     {
         $id = $this->params('id');
-        $postModel = Api::_()->getModel('Blog\Model\Post');
-        $item = $postModel->getPost($id);
+        $itemModel = Api::_()->getModel('Blog\Model\Post');
+        $item = $itemModel->getPost($id, array(
+            'self' => array(
+                '*',
+            ),
+            'join' => array(
+                'Text' => array(
+                    'self' => array(
+                        '*',
+                        'getContentHtml()',
+                    ),
+                ),
+                'Categories' => array(
+                ),
+            ),
+            'proxy' => array(
+                'File\Item\File::PostCover' => array(
+                    'self' => array(
+                        '*',
+                        'getThumb()',
+                    )
+                )
+            ),
+        ));
+        if($item['status'] != 'published'){
+            $item = array();
+            $this->getResponse()->setStatusCode(404);
+        }
         //$this->pagecapture();
         return array(
             'item' => $item,

@@ -12,7 +12,7 @@ $items = $this->items;
 	<?if($this->items):?>
 	<?foreach($this->items as $key=>$item):?>
 	<div id="item_<?=$item['id'] ?>" class="table">
-        <h3><a href="<?=$this->Uri('/blog/page/' . $item['urlName'])?>" class="title"><?=$item['title'] ?></a></h3>
+        <h3><a href="<?=$this->Uri('/pages/' . $item['urlName'])?>" class="title"><?=$item['title'] ?></a></h3>
         <p><?=$this->datetime($item['createTime'])?></p>
 		<p><?=$item['preview'];?></p>
 	</div>
