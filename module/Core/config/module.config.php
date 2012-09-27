@@ -54,9 +54,9 @@ return array(
         'not_found_template'       => 'error/404',
         'exception_template'       => 'error/index',
         'template_map' => array(
-            'layout/layout' => EVA_MODULE_PATH . '/Core/view/layout/layout.phtml',
-            'layout/admin' => EVA_MODULE_PATH . '/Core/view/layout/admin.phtml',
-            'layout/adminblank' => EVA_MODULE_PATH . '/Core/view/layout/adminblank.phtml',
+            'layout/layout' => EVA_MODULE_PATH . '/Core/layout/layout.phtml',
+            'layout/admin' => EVA_MODULE_PATH . '/Core/layout/admin.phtml',
+            'layout/adminblank' => EVA_MODULE_PATH . '/Core/layout/adminblank.phtml',
             'index/index'   => EVA_MODULE_PATH . '/Core/view/index/index.phtml',
             'error/404'     => EVA_MODULE_PATH . '/Core/view/error/404.phtml',
             'error/index'   => EVA_MODULE_PATH . '/Core/view/error/index.phtml',

@@ -3,19 +3,30 @@ namespace Engine\Controller;
 
 use Eva\Api,
     Eva\Mvc\Controller\RestfulModuleController,
-    Blog\Model\PostTable,
     Eva\View\Model\ViewModel;
 
 class PagesController extends RestfulModuleController
 {
+
+    public function indexAction()
+    {
+        $id = $this->params('id');
+        $postModel = Api::_()->getModelService('Blog\Model\Post');
+        $items = $postModel->getPostList();
+        //$this->pagecapture();
+        return array(
+            'items' => $items,
+        );
+    }
+
     public function getAction()
     {
         $id = $this->params('id');
         $postModel = Api::_()->getModelService('Blog\Model\Post');
-        $postinfo = $postModel->getPost($id);
-        $this->pagecapture();
+        $item = $postModel->getPost($id);
+        //$this->pagecapture();
         return array(
-            'post' => $postinfo,
+            'item' => $item,
         );
     }
 

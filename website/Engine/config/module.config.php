@@ -7,6 +7,17 @@ return array(
     ),
     'router' => array(
         'routes' => array(
+            'blog' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/blog[/]',
+                    'defaults' => array(
+                        'controller' => 'PagesController',
+                        'action' => 'index',
+                    ),
+                ),
+                'priority' => 2,
+            ),
             'pages' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -15,8 +26,19 @@ return array(
                         'id'     => '[a-zA-Z][a-zA-Z0-9_-]+',
                     ),
                     'defaults' => array(
-                        'controller' => 'Engine\Controller\PagesController',
+                        'controller' => 'PagesController',
                         'action' => 'get',
+                    ),
+                ),
+                'priority' => 2,
+            ),
+            'index' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/',
+                    'defaults' => array(
+                        'controller' => 'IndexController',
+                        'action'     => 'index',
                     ),
                 ),
                 'priority' => 2,
@@ -25,7 +47,8 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Engine\Controller\PagesController' => 'Engine\Controller\PagesController',
+            'PagesController' => 'Engine\Controller\PagesController',
+            'IndexController' => 'Engine\Controller\IndexController',
         ),
     ),
 );

@@ -1,10 +1,10 @@
 <?php
-namespace Core\Controller;
+namespace Engine\Controller;
 
 use Eva\Mvc\Controller\ActionController,
     Eva\View\Model\ViewModel;
 
-class CoreController extends ActionController
+class IndexController extends ActionController
 {
     public function indexAction()
     {
