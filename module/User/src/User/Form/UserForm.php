@@ -18,7 +18,7 @@ namespace User\Form;
  * @category   Eva
  * @package    Eva_Form
  */
-class UserForm extends \Eva\Form\RestfulForm
+class UserForm extends \Eva\Form\Form
 {
     /**
      * Form basic elements

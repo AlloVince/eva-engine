@@ -25,7 +25,7 @@ class RoleController extends RestfulModuleController
         $request = $this->getRequest();
         $query = $request->getQuery();
 
-        $itemModel = Api::_()->getModelService('User\Model\Role');
+        $itemModel = Api::_()->getModel('User\Model\Role');
 
         $selectQuery = array(
             'page' => $request->getQuery('page', 1)
@@ -54,7 +54,7 @@ class RoleController extends RestfulModuleController
     {
         $id = (int)$this->params('id');
         
-        $itemModel = Api::_()->getModelService('User\Model\Role');
+        $itemModel = Api::_()->getModel('User\Model\Role');
         $item = $itemModel->getRole($id);
         return array(
             'callback' => $this->getRequest()->getQuery()->get('callback'),
@@ -65,7 +65,7 @@ class RoleController extends RestfulModuleController
     public function restGetRole()
     {
         $id = (int)$this->getEvent()->getRouteMatch()->getParam('id');
-        $itemModel = Api::_()->getModelService('User\Model\Role');
+        $itemModel = Api::_()->getModel('User\Model\Role');
         $item = $itemModel->getRole($id);
 
         $item = $item->toArray(array(
@@ -93,7 +93,7 @@ class RoleController extends RestfulModuleController
         if ($form->isValid()) {
 
             $postData = $form->getData();
-            $itemModel = Api::_()->getModelService('User\Model\Role');
+            $itemModel = Api::_()->getModel('User\Model\Role');
             $itemId = $itemModel->setItem($postData)->createRole();
             $this->flashMessenger()->addMessage('item-create-succeed');
             $this->redirect()->toUrl('/admin/user/role/' . $itemId);
@@ -120,7 +120,7 @@ class RoleController extends RestfulModuleController
 
         if ($form->isValid()) {
             $postData = $form->getData();
-            $itemModel = Api::_()->getModelService('User\Model\Role');
+            $itemModel = Api::_()->getModel('User\Model\Role');
 
             $itemId = $itemModel->setItem($postData)->saveRole();
 
@@ -150,7 +150,7 @@ class RoleController extends RestfulModuleController
         if ($form->isValid()) {
 
             $postData = $form->getData();
-            $itemModel = Api::_()->getModelService('User\Model\Role');
+            $itemModel = Api::_()->getModel('User\Model\Role');
             $itemModel->setItem(array(
                 'id' => $postData['id']
             ))->removeRole();

@@ -17,7 +17,7 @@ namespace Blog\Form;
  * @category   Eva
  * @package    Eva_Form
  */
-class CategoryForm extends \Eva\Form\RestfulForm
+class CategoryForm extends \Eva\Form\Form
 {
     /**
      * Form basic elements

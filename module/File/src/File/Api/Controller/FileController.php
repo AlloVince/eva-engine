@@ -18,7 +18,7 @@ class FileController extends RestfulModuleController
             $query = $form->getData();
         }
 
-        $itemModel = Api::_()->getModelService('File\Model\File');
+        $itemModel = Api::_()->getModel('File\Model\File');
         $items = $itemModel->setItemList($query)->getFileList(array(
             'self' => array(
                 '*',
@@ -45,7 +45,7 @@ class FileController extends RestfulModuleController
         $form = new Form\UploadForm();
         $form->bind($postData);
 
-        $itemModel = Api::_()->getModelService('File\Model\File');
+        $itemModel = Api::_()->getModel('File\Model\File');
 
         $response = array();
         if ($form->isValid() && $form->getFileTransfer()->isUploaded()) {

@@ -12,7 +12,6 @@
 namespace Eva\Form;
 
 use Eva\Api;
-use Zend\Form\Form;
 use Zend\Form\Fieldset;
 use Zend\Form\FormInterface;
 use Zend\Form\FieldsetInterface;
@@ -30,7 +29,7 @@ use Eva\File\Transfer\TransferFactory;
  * @category   Eva
  * @package    Eva_Form
  */
-class RestfulForm extends Form implements InputFilterProviderInterface
+class Form extends \Zend\Form\Form implements InputFilterProviderInterface
 {
 
     /**

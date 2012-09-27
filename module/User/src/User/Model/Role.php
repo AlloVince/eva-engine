@@ -3,9 +3,9 @@
 namespace User\Model;
 
 use Eva\Api,
-    Eva\Mvc\Model\AbstractModelService;
+    Eva\Mvc\Model\AbstractModel;
 
-class Role extends AbstractModelService
+class Role extends AbstractModel
 {
 
     public function createRole(array $data = array())

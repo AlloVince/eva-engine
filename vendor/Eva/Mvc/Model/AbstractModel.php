@@ -30,7 +30,7 @@ use Zend\Di\Di,
  * @copyright  Copyright (c) 2012 AlloVince (http://avnpc.com/)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class AbstractModelService implements ServiceLocatorAwareInterface
+abstract class AbstractModel implements ServiceLocatorAwareInterface
 {
     protected $events = array(
         'get.precache',

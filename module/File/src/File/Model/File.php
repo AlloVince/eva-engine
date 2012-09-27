@@ -3,10 +3,10 @@
 namespace File\Model;
 
 use Eva\Api,
-    Eva\Mvc\Model\AbstractModelService,
+    Eva\Mvc\Model\AbstractModel,
     Eva\Mvc\Exception;
 
-class File extends AbstractModelService
+class File extends AbstractModel
 {
     protected $itemTableName = 'File\DbTable\Files';
 

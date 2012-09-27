@@ -18,7 +18,7 @@ namespace User\Form;
  * @category   Eva
  * @package    Eva_Form
  */
-class RoleUserForm extends \Eva\Form\RestfulForm
+class RoleUserForm extends \Eva\Form\Form
 {
     protected $role;
 
@@ -182,7 +182,7 @@ class RoleUserForm extends \Eva\Form\RestfulForm
             return array();
         }
 
-        $model = \Eva\Api::_()->getModelService('User\Model\Role');
+        $model = \Eva\Api::_()->getModel('User\Model\Role');
         $item = $model->getRole($roleId);
         return $item;
     }

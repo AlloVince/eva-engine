@@ -1,7 +1,7 @@
 <?php
 namespace Scaffold\Form;
 
-class AutoClassForm extends \Eva\Form\RestfulForm
+class AutoClassForm extends \Eva\Form\Form
 {
     protected $baseElements = array(
         'select_type' => array(

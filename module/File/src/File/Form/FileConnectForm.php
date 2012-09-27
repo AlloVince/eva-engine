@@ -18,7 +18,7 @@ namespace File\Form;
  * @category   Eva
  * @package    Eva_Form
  */
-class FileConnectForm extends \Eva\Form\RestfulForm
+class FileConnectForm extends \Eva\Form\Form
 {
     /**
      * Form basic elements

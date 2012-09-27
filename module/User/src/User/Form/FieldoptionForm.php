@@ -18,7 +18,7 @@ namespace User\Form;
  * @category   Eva
  * @package    Eva_Form
  */
-class FieldoptionForm extends \Eva\Form\RestfulForm
+class FieldoptionForm extends \Eva\Form\Form
 {
     /**
      * Form basic elements

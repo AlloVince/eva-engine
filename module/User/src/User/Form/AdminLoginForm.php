@@ -1,7 +1,7 @@
 <?php
 namespace User\Form;
 
-class AdminLoginForm extends \Eva\Form\RestfulForm
+class AdminLoginForm extends \Eva\Form\Form
 {
     /**
      * Form basic elements

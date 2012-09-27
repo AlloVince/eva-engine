@@ -29,7 +29,7 @@ class BlogController extends RestfulModuleController
             );
         }
 
-        $itemModel = Api::_()->getModelService('Blog\Model\Post');
+        $itemModel = Api::_()->getModel('Blog\Model\Post');
         $items = $itemModel->setItemList($query)->getPostList();
         $paginator = $itemModel->getPaginator();
 
@@ -44,7 +44,7 @@ class BlogController extends RestfulModuleController
     public function restGetBlog()
     {
         $id = $this->params('id');
-        $itemModel = Api::_()->getModelService('Blog\Model\Post');
+        $itemModel = Api::_()->getModel('Blog\Model\Post');
         $item = $itemModel->getPost($id, array(
             'self' => array(
                 '*',
@@ -87,7 +87,7 @@ class BlogController extends RestfulModuleController
 
         if ($form->isValid()) {
             $postData = $form->getData();
-            $itemModel = Api::_()->getModelService('Blog\Model\Post');
+            $itemModel = Api::_()->getModel('Blog\Model\Post');
             $postId = $itemModel->setItem($postData)->createPost();
             $this->flashMessenger()->addMessage('post-create-succeed');
             $this->redirect()->toUrl('/admin/blog/' . $postId);
@@ -113,7 +113,7 @@ class BlogController extends RestfulModuleController
 
         if ($form->isValid()) {
             $postData = $form->getData();
-            $itemModel = Api::_()->getModelService('Blog\Model\Post');
+            $itemModel = Api::_()->getModel('Blog\Model\Post');
             $postId = $itemModel->setItem($postData)->savePost();
 
             $this->flashMessenger()->addMessage('post-edit-succeed');
@@ -138,7 +138,7 @@ class BlogController extends RestfulModuleController
         if ($form->isValid()) {
 
             $postData = $form->getData();
-            $itemModel = Api::_()->getModelService('Blog\Model\Post');
+            $itemModel = Api::_()->getModel('Blog\Model\Post');
             $itemModel->setItem($postData)->removePost();
 
             if($callback){

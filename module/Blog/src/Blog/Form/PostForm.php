@@ -1,7 +1,7 @@
 <?php
 namespace Blog\Form;
 
-class PostForm extends \Eva\Form\RestfulForm
+class PostForm extends \Eva\Form\Form
 {
     /**
      * Form basic elements

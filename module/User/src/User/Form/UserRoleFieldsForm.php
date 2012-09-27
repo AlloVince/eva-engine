@@ -18,7 +18,7 @@ namespace User\Form;
  * @category   Eva
  * @package    Eva_Form
  */
-class UserRoleFieldsForm extends \Eva\Form\RestfulForm
+class UserRoleFieldsForm extends \Eva\Form\Form
 {
     protected $role;
     public function getRole()
@@ -42,7 +42,7 @@ class UserRoleFieldsForm extends \Eva\Form\RestfulForm
     {
         $roleKey = $this->getRole();
 
-        $itemModel = \Eva\Api::_()->getModelService('User\Model\Role');
+        $itemModel = \Eva\Api::_()->getModel('User\Model\Role');
         $item = $itemModel->getRole($roleKey);
         $item = $item->toArray(array(
             'self' => array(
@@ -64,7 +64,7 @@ class UserRoleFieldsForm extends \Eva\Form\RestfulForm
             )
         ));
         if(isset($item['Fields'])){
-            $fieldModel = \Eva\Api::_()->getModelService('User\Model\Field');
+            $fieldModel = \Eva\Api::_()->getModel('User\Model\Field');
             $elements = array();
             foreach($item['Fields'] as $field){
                 $this->baseElements[$field['id']] = $fieldModel->fieldToElement($field);

@@ -3,9 +3,9 @@
 namespace Blog\Model;
 
 use Eva\Api,
-    Eva\Mvc\Model\AbstractModelService;
+    Eva\Mvc\Model\AbstractModel;
 
-class Category extends AbstractModelService
+class Category extends AbstractModel
 {
     protected $itemTableName = 'Blog\DbTable\Categories';
 

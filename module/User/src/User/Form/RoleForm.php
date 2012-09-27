@@ -18,7 +18,7 @@ namespace User\Form;
  * @category   Eva
  * @package    Eva_Form
  */
-class RoleForm extends \Eva\Form\RestfulForm
+class RoleForm extends \Eva\Form\Form
 {
 
     protected $subFormGroups = array(

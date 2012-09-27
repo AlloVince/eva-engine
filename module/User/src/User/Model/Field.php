@@ -3,9 +3,9 @@
 namespace User\Model;
 
 use Eva\Api,
-    Eva\Mvc\Model\AbstractModelService;
+    Eva\Mvc\Model\AbstractModel;
 
-class Field extends AbstractModelService
+class Field extends AbstractModel
 {
 
     public function roleFieldsArrayToForm(array $roleArray)

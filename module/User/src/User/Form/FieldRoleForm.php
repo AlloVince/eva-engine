@@ -18,7 +18,7 @@ namespace User\Form;
  * @category   Eva
  * @package    Eva_Form
  */
-class FieldRoleForm extends \Eva\Form\RestfulForm
+class FieldRoleForm extends \Eva\Form\Form
 {
     /**
      * Form basic elements
@@ -76,7 +76,7 @@ class FieldRoleForm extends \Eva\Form\RestfulForm
 
     public function getUserRoles($element)
     {
-        $model = \Eva\Api::_()->getModelService('User\Model\Role');
+        $model = \Eva\Api::_()->getModel('User\Model\Role');
         $items = $model->getRoleList();
         $valueOptions = array();
         foreach($items as $item){

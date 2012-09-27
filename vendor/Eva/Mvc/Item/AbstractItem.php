@@ -12,7 +12,7 @@
 namespace Eva\Mvc\Item;
 
 
-use Eva\Mvc\Model\AbstractModelService,
+use Eva\Mvc\Model\AbstractModel,
     Eva\Paginator\Paginator,
     Zend\Mvc\Exception,
     Zend\ServiceManager\ServiceLocatorAwareInterface,
@@ -41,7 +41,7 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     protected $count = null;
 
     /**
-     * @var Eva\Mvc\Model\AbstractModelService
+     * @var Eva\Mvc\Model\AbstractModel
      */
     protected $model;
 
@@ -122,7 +122,7 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
 
     public function setModel($model)
     {
-        if(!$model instanceof AbstractModelService){
+        if(!$model instanceof AbstractModel){
             throw new Exception\MissingLocatorException(printf('Model Service Locator not set by class %s',
             get_class($this)));
         }

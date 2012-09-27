@@ -3,9 +3,9 @@
 namespace Blog\Model;
 
 use Eva\Api,
-    Eva\Mvc\Model\AbstractModelService;
+    Eva\Mvc\Model\AbstractModel;
 
-class Post extends AbstractModelService
+class Post extends AbstractModel
 {
     protected $itemTableName = 'Blog\DbTable\Posts';
 

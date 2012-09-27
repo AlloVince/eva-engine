@@ -14,7 +14,7 @@ class RemoveController extends RestfulModuleController
     public function restGetRemove()
     {
         $id = $this->params('id');
-        $itemModel = Api::_()->getModelService('Blog\Model\Post');
+        $itemModel = Api::_()->getModel('Blog\Model\Post');
         $item = $itemModel->getPost($id)->toArray();
         return array(
             'callback' => $this->params()->fromQuery('callback'),

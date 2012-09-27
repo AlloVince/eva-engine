@@ -18,7 +18,7 @@ namespace User\Form;
  * @category   Eva
  * @package    Eva_Form
  */
-class FieldForm extends \Eva\Form\RestfulForm
+class FieldForm extends \Eva\Form\Form
 {
     protected $subFormGroups = array(
         'default' => array(

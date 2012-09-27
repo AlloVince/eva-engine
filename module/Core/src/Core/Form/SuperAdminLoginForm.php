@@ -18,7 +18,7 @@ namespace Core\Form;
  * @category   Eva
  * @package    Eva_Form
  */
-class SuperAdminLoginForm extends \Eva\Form\RestfulForm
+class SuperAdminLoginForm extends \Eva\Form\Form
 {
     /**
      * Form basic elements

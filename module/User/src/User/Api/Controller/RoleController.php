@@ -8,7 +8,7 @@ class RoleController extends ActionController
 {
     public function multicheckboxAction($params = null)
     {
-        $model = Api::_()->getModelService('User\Model\Role');
+        $model = Api::_()->getModel('User\Model\Role');
         $items = $model->getRoleList();
         $valueOptions = array();
         foreach($items as $item){

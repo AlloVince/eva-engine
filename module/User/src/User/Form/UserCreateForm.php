@@ -83,7 +83,7 @@ class UserCreateForm extends UserForm
     /*
     public function beforeBind($values)
     {
-        $model = \Eva\Api::_()->getModelService('User\Model\Role');
+        $model = \Eva\Api::_()->getModel('User\Model\Role');
         $roles = $model->getRoleList()->toArray();
         $roleUsers = array();
         if(isset($values['RoleUser']) && $values['RoleUser']){

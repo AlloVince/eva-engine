@@ -24,7 +24,7 @@ class FileController extends RestfulModuleController
             $query = $form->getData();
         }
 
-        $itemModel = Api::_()->getModelService('File\Model\File');
+        $itemModel = Api::_()->getModel('File\Model\File');
         $items = $itemModel->setItemList($query)->getFileList(array(
             'self' => array(
                 '*',
@@ -46,7 +46,7 @@ class FileController extends RestfulModuleController
     public function restGetFile()
     {
         $id = $this->params('id');
-        $itemModel = Api::_()->getModelService('File\Model\File');
+        $itemModel = Api::_()->getModel('File\Model\File');
         $item = $itemModel->getFile($id, array(
             'self' => array(
                 '*',
@@ -66,7 +66,7 @@ class FileController extends RestfulModuleController
         $form = new Form\UploadForm();
         $form->bind($postData);
 
-        $itemModel = Api::_()->getModelService('File\Model\File');
+        $itemModel = Api::_()->getModel('File\Model\File');
         if ($form->isValid() && $form->getFileTransfer()->isUploaded()) {
             if($form->getFileTransfer()->receive()){
                 
@@ -103,7 +103,7 @@ class FileController extends RestfulModuleController
         
         if ($form->isValid()) {
             $postData = $form->getData();
-            $itemModel = Api::_()->getModelService('File\Model\File');
+            $itemModel = Api::_()->getModel('File\Model\File');
             $itemModel->setItem($postData)->saveFile();
 
             $this->redirect()->toUrl('/admin/file/' . $postData['id']);
@@ -128,7 +128,7 @@ class FileController extends RestfulModuleController
         $form->bind($postData);
         if ($form->isValid()) {
             $postData = $form->getData();
-            $itemModel = Api::_()->getModelService('File\Model\File');
+            $itemModel = Api::_()->getModel('File\Model\File');
             $itemId = $itemModel->setItem($postData)->removeFile();
             if($callback){
                 $this->redirect()->toUrl($callback);

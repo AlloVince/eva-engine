@@ -24,7 +24,7 @@ class UserController extends RestfulModuleController
         $form->bind($query)->isValid();
         $selectQuery = $form->getData();
 
-        $itemModel = Api::_()->getModelService('User\Model\User');
+        $itemModel = Api::_()->getModel('User\Model\User');
         if(!$selectQuery){
             $selectQuery = array(
                 'page' => 1
@@ -57,7 +57,7 @@ class UserController extends RestfulModuleController
     public function restGetUser()
     {
         $id = $this->params('id');
-        $itemModel = Api::_()->getModelService('User\Model\User');
+        $itemModel = Api::_()->getModel('User\Model\User');
         $item = $itemModel->getUser($id);
 
         $item = $item->toArray(array(
@@ -89,7 +89,7 @@ class UserController extends RestfulModuleController
 
         if ($form->isValid()) {
             $postData = $form->getData();
-            $itemModel = Api::_()->getModelService('User\Model\User');
+            $itemModel = Api::_()->getModel('User\Model\User');
             $itemId = $itemModel->setItem($postData)->createUser();
             $this->flashMessenger()->addMessage('item-create-succeed');
             $this->redirect()->toUrl('/admin/user/' . $itemId);
@@ -112,7 +112,7 @@ class UserController extends RestfulModuleController
 
         if ($form->isValid()) {
             $postData = $form->getData();
-            $itemModel = Api::_()->getModelService('User\Model\User');
+            $itemModel = Api::_()->getModel('User\Model\User');
 
             $itemId = $itemModel->setItem($postData)->saveUser();
 
@@ -140,7 +140,7 @@ class UserController extends RestfulModuleController
         if ($form->isValid()) {
 
             $postData = $form->getData();
-            $itemModel = Api::_()->getModelService('User\Model\User');
+            $itemModel = Api::_()->getModel('User\Model\User');
             $itemModel->setItem(array(
                 'id' => $postData['id']
             ))->removeUser();

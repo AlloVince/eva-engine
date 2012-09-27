@@ -18,11 +18,11 @@ namespace User\Form;
  * @category   Eva
  * @package    Eva_Form
  */
-class UserCommonFieldsForm extends \Eva\Form\RestfulForm
+class UserCommonFieldsForm extends \Eva\Form\Form
 {
     public function init()
     {
-        $itemModel = \Eva\Api::_()->getModelService('User\Model\Field');
+        $itemModel = \Eva\Api::_()->getModel('User\Model\Field');
         $items = $itemModel->setItemList(array(
             'applyToAll' => 1
         ))->getFieldList();

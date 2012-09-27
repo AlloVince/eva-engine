@@ -30,7 +30,7 @@ class CategoryController extends RestfulModuleController
             $query = $form->getData();
         }
        
-        $itemModel = Api::_()->getModelService('Blog\Model\Category');
+        $itemModel = Api::_()->getModel('Blog\Model\Category');
         $items = $itemModel->setItemList($query)->getCategoryList();
         $paginator = $itemModel->getPaginator();
 
@@ -49,7 +49,7 @@ class CategoryController extends RestfulModuleController
     public function restGetCategory()
     {
         $id = $this->params('id');
-        $itemModel = Api::_()->getModelService('Blog\Model\Category');
+        $itemModel = Api::_()->getModel('Blog\Model\Category');
         $item = $itemModel->getCategory($id);
         return array(
             'item' => $item,
@@ -59,7 +59,7 @@ class CategoryController extends RestfulModuleController
     public function restGetCategoryRemove()
     {
         $id = $this->params('id');
-        $itemModel = Api::_()->getModelService('Blog\Model\Category');
+        $itemModel = Api::_()->getModel('Blog\Model\Category');
         $item = $itemModel->getCategory($id);
         return array(
             'item' => $item,
@@ -76,7 +76,7 @@ class CategoryController extends RestfulModuleController
         if ($form->isValid()) {
             $postData = $form->getData();
 
-            $itemModel = Api::_()->getModelService('Blog\Model\Category');
+            $itemModel = Api::_()->getModel('Blog\Model\Category');
             $itemId = $itemModel->setItem($postData)->createCategory();
             
             $this->flashMessenger()->addMessage('category-create-succeed');
@@ -100,7 +100,7 @@ class CategoryController extends RestfulModuleController
         if ($form->isValid()) {
 
             $postData = $form->getData();
-            $itemModel = Api::_()->getModelService('Blog\Model\Category');
+            $itemModel = Api::_()->getModel('Blog\Model\Category');
             $itemModel->setItem($postData)->saveCategory();
             
             $this->flashMessenger()->addMessage('category-edit-succeed');
@@ -123,7 +123,7 @@ class CategoryController extends RestfulModuleController
         $form->bind($postData);
         if ($form->isValid()) {
             $postData = $form->getData();
-            $itemModel = Api::_()->getModelService('Blog\Model\Category');
+            $itemModel = Api::_()->getModel('Blog\Model\Category');
             $itemId = $itemModel->setItem($postData)->removeCategory();
             if($callback){
                 $this->redirect()->toUrl($callback);

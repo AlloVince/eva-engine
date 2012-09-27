@@ -28,7 +28,7 @@ class FieldController extends RestfulModuleController
         $request = $this->getRequest();
         $query = $request->getQuery();
 
-        $itemModel = Api::_()->getModelService('User\Model\Field');
+        $itemModel = Api::_()->getModel('User\Model\Field');
 
         $selectQuery = array(
             'page' => $request->getQuery('page', 1)
@@ -57,7 +57,7 @@ class FieldController extends RestfulModuleController
     {
         $id = (int)$this->params('id');
         
-        $itemModel = Api::_()->getModelService('User\Model\Field');
+        $itemModel = Api::_()->getModel('User\Model\Field');
         $item = $itemModel->getField($id);
         return array(
             'callback' => $this->getRequest()->getQuery()->get('callback'),
@@ -68,7 +68,7 @@ class FieldController extends RestfulModuleController
     public function restGetField()
     {
         $id = (int)$this->params('id');
-        $itemModel = Api::_()->getModelService('User\Model\Field');
+        $itemModel = Api::_()->getModel('User\Model\Field');
         $item = $itemModel->getField($id);
 
         $item = $item->toArray(array(
@@ -93,7 +93,7 @@ class FieldController extends RestfulModuleController
     public function restGetFieldUserfield()
     {
         $id = (int)$this->params('id');
-        $itemModel = Api::_()->getModelService('User\Model\User');
+        $itemModel = Api::_()->getModel('User\Model\User');
         $item = $itemModel->getUser($id);
 
         $item = $item->toArray(array(
@@ -130,7 +130,7 @@ class FieldController extends RestfulModuleController
 
         if ($form->isValid()) {
             $postData = $form->getData();
-            $itemModel = Api::_()->getModelService('User\Model\User');
+            $itemModel = Api::_()->getModel('User\Model\User');
             $itemId = $itemModel->setItem($postData)->saveUser();
             $this->flashMessenger()->addMessage('item-create-succeed');
             $this->redirect()->toUrl('/admin/user/field/userfield/' . $itemId);
@@ -156,7 +156,7 @@ class FieldController extends RestfulModuleController
 
             $postData = $form->getData();
 
-            $itemModel = Api::_()->getModelService('User\Model\Field');
+            $itemModel = Api::_()->getModel('User\Model\Field');
             $itemId = $itemModel->setItem($postData)->createField();
             $this->flashMessenger()->addMessage('item-create-succeed');
             $this->redirect()->toUrl('/admin/user/field/' . $itemId);
@@ -183,7 +183,7 @@ class FieldController extends RestfulModuleController
 
         if ($form->isValid()) {
             $postData = $form->getData();
-            $itemModel = Api::_()->getModelService('User\Model\Field');
+            $itemModel = Api::_()->getModel('User\Model\Field');
 
             $itemId = $itemModel->setItem($postData)->saveField();
 
@@ -213,7 +213,7 @@ class FieldController extends RestfulModuleController
         if ($form->isValid()) {
 
             $postData = $form->getData();
-            $itemModel = Api::_()->getModelService('User\Model\Field');
+            $itemModel = Api::_()->getModel('User\Model\Field');
             $itemModel->setItem(array(
                 'id' => $postData['id']
             ))->removeField();
