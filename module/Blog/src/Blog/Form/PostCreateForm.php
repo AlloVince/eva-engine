@@ -12,7 +12,6 @@ class PostCreateForm extends PostForm
     );
 
     protected $mergeElements = array(
-
     );
 
     protected $mergeFilters = array(
@@ -32,4 +31,14 @@ class PostCreateForm extends PostForm
             ),
         ),
     );
+
+    public function prepareData($data)
+    {
+        if(isset($data['FileConnect'])){
+            $data['FileConnect']['connect_id'] = $data['id'];
+            $data['FileConnect']['connectType'] = 'PostCover';
+        }
+
+        return $data;
+    }
 }

@@ -79,7 +79,7 @@ class FileSearchForm extends FileForm
             'options' => array(
                 'label' => 'Is Image',
                 'use_hidden_element' => false,
-                'checked_value' => false,
+                'checked_value' => '1',
             ),
             'attributes' => array (
                 'value' => '1',

@@ -8,11 +8,14 @@ class FileConnect extends AbstractItem
 {
     protected $dataSourceClass = 'File\DbTable\FilesConnections';
 
-
-
     public function save()
     {
         $dataClass = $this->getDataClass();
+        if(!$this->connect_id){
+            $postItem = $this->getModel()->getItem('Blog\Item\Post');
+            $this->connect_id = $postItem->id;
+        }
+
         if($this->connect_id && $this->connectType){
             $dataClass->where(array(
                 'connect_id' => $this->connect_id,

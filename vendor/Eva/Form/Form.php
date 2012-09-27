@@ -761,6 +761,10 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
             $element->setLabel($attrs['label']);
         }
 
+        if(isset($attrs['value'])){
+            $element->setValue($attrs['value']);
+        }
+
         $filter = $this->getFilter($elementNameOrArray);
         //Merge Value Options
         if(isset($attrs['value_options']) && method_exists($element, 'getValueOptions')){

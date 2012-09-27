@@ -6,7 +6,7 @@ return array(
         'Blog',
         'File',
         'Scaffold',
-        //'Engine',
+        'Engine',
         //'ZendDeveloperTools',
         //'BjyProfiler',
         //'Doctrine',

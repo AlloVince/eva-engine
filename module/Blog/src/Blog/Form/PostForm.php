@@ -114,7 +114,8 @@ class PostForm extends \Eva\Form\Form
         ),
         'language' => array (
             'name' => 'language',
-            'type' => 'text',
+            'type' => 'select',
+            'callback' => 'getLanguages',
             'options' => array (
                 'label' => 'Language',
             ),
@@ -467,4 +468,15 @@ class PostForm extends \Eva\Form\Form
             ),
         ),
     );
+
+
+    public function getLanguages($element)
+    {
+        $translator = \Eva\Api::_()->getServiceManager()->get('translator');
+        $locale = $translator->getLocale();
+        $languages = \Eva\Locale\Data::getList($locale, 'language');
+        $element['options']['value_options'] = $languages;
+        $element['attributes']['value'] = $locale;
+        return $element;
+    }
 }

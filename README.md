@@ -1,4 +1,4 @@
-EvaEngine - php development engine
+EvaEngine - a php development engine
 =========
 
 EvaEngine is a PHP5 & Zend Framework 2.0 based development engine which is still **under developing**.
@@ -48,16 +48,38 @@ Create EvaEngine local config file by:
 Write config file as below and change the username/password to yours:
 
     <?php
-	return array(
+    return array(
 	    'db' => array(
 	        'dsn'            => 'mysql:dbname=eva;hostname=localhost',
 	        'username'       => 'dbusername',
 	        'password'       => 'dbpassword',
 	    ),
+		'superadmin' => array(
+            'username' => 'root',
+        	'password' => '123456',
+	    ),
 	);
+
+###Bind local domain
+
+Bind a local domain local.evaengine (or anything you want) to path
+
+    evaengine/public
+
+Then visit the local domain http://local.evaengine .
+
+Example
+---------
+
+Check a blog made by EvaEngine: http://avnpc.com/
+
+Blog source code is here:
+
+https://github.com/AlloVince/eva-engine/tree/avnpc
 
 Resources
 ---------
 
 Contact author AlloVince by his [blog](http://avnpc.com/) or email i#av2.me(replace # to @) .
+
 

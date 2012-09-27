@@ -33,6 +33,7 @@ class Listener implements ListenerAggregateInterface
     public function attach(EventManagerInterface $events)
     {
         $this->listeners[] = $events->attach('blog.model.post.save', array($this, 'onPostSave'));
+        $this->listeners[] = $events->attach('blog.model.post.create', array($this, 'onPostSave'));
     }
 
     /**
@@ -50,11 +51,9 @@ class Listener implements ListenerAggregateInterface
         }
     }
 
-
     public function onPostSave($e)
     {
         $postModel     = $e->getTarget();
-
         $dataSource = $postModel->getDataSource();
 
         if(!isset($dataSource['FileConnect'])){
