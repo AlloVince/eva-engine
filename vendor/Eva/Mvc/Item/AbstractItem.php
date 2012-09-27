@@ -58,6 +58,8 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     protected $dataSourceClass = '';
 
     protected $relationships = array();
+    
+    protected $inverseRelationships = array();
 
     protected $initialized = false;
 
@@ -273,10 +275,28 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         return false;
     }
 
+
+    public function hasInverseRelationship($key)
+    {
+        if(isset($this->inverseRelationships[$key]) && is_array($this->inverseRelationships[$key])){
+            return true;
+        }
+        return false;
+    }
+
+
     public function getRelationship($key)
     {
         if(isset($this->relationships[$key]) && is_array($this->relationships[$key]) && $this->relationships[$key]){
             return $this->relationships[$key];
+        }
+        return array(); 
+    }
+
+    public function getInverseRelationship($key)
+    {
+        if(isset($this->inverseRelationships[$key]) && is_array($this->inverseRelationships[$key]) && $this->inverseRelationships[$key]){
+            return $this->inverseRelationships[$key];
         }
         return array(); 
     }
@@ -394,11 +414,27 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
             return $self;
         }
 
+        foreach($proxy as $key => $map){
+            list($moduleItemClass, $relationshipKey) = explode('::', $key);
+            $modulesLoaded = $this->serviceLocator->get('modulemanager')->getLoadedModules();
+            $module = array_shift(explode('\\', $moduleItemClass));
+            if(!isset($modulesLoaded[$module])){
+                continue;
+            }
+
+            $proxyItem = $this->model->getItem($moduleItemClass);
+            if($proxyItem->hasInverseRelationship($relationshipKey)){
+                $relationshipArray = $proxyItem->getInverseRelationship($relationshipKey);
+                $this->addRelationship($relationshipKey, $relationshipArray);
+                $join[$relationshipKey] = $map;
+            }
+        }
+
         foreach($join as $key => $map){
             if(!isset($this->relationships[$key])){
                 continue;
             }
-            
+
             $relationship = $this->relationships[$key];
             $joinedItem = $this->join($key);
 
@@ -636,8 +672,8 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         }
 
         $proxyItem = $this->model->getItem($moduleItemClass);
-        if($proxyItem->hasRelationship($relationshipKey)){
-            $this->addRelationship($relationshipKey, $proxyItem->getRelationship($relationshipKey));
+        if($proxyItem->hasInverseRelationship($relationshipKey)){
+            $this->addRelationship($relationshipKey, $proxyItem->getInverseRelationship($relationshipKey));
         }
 
         return $this->join($relationshipKey);

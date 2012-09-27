@@ -169,7 +169,8 @@ abstract class AbstractModelService implements ServiceLocatorAwareInterface
 
     public function getEvent()
     {
-        return $this->getServiceLocator()->get('EventManager'); 
+        //Model event MUST use default EventManager of Application
+        return $this->getServiceLocator()->get('Application')->getEventManager();
     }
 
     public function trigger($event, $target = null, $argv = array(), $callback = null)
@@ -180,6 +181,7 @@ abstract class AbstractModelService implements ServiceLocatorAwareInterface
 
         $className = get_class($this);
         $event = str_replace('\\', '.', strtolower($className)) . '.' . $event;
+        $target = $target ? $target : $this;
         return $this->getEvent()->trigger($event, $target, $argv, $callback);
     }
 

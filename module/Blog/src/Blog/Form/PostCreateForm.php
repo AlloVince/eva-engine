@@ -7,6 +7,7 @@ class PostCreateForm extends PostForm
         'default' => array(
             'Text' => 'Blog\Form\TextForm',
             'CategoryPost' => 'Blog\Form\CategoryPostForm',
+            'FileConnect' => 'File\Form\FileConnectForm',
         ),
     );
 
@@ -19,7 +20,7 @@ class PostCreateForm extends PostForm
             'required' => true,
         ),
         'urlName' => array (
-            'required' => true,
+            'required' => false,
             'validators' => array (
                 'db' => array(
                     'name' => 'Eva\Validator\Db\NoRecordExists',

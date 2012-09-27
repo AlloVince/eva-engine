@@ -57,10 +57,21 @@ class BlogController extends RestfulModuleController
                     ),
                 ),
                 'Categories' => array(
-                
+                ),
+            ),
+            'proxy' => array(
+                'File\Item\File::PostCover' => array(
+                    'self' => array(
+                        '*',
+                        'getThumb()',
+                    )
                 )
-            )
+            ),
         ));
+
+        if(isset($item['FileConnect'][0])){
+            $item['FileConnect'] = $item['FileConnect'][0];
+        }
 
         return array(
             'item' => $item,

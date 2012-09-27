@@ -10,6 +10,7 @@ class PostEditForm extends PostForm
         'default' => array(
             'Text' => 'Blog\Form\TextForm',
             'CategoryPost' => 'Blog\Form\CategoryPostForm',
+            'FileConnect' => 'File\Form\FileConnectForm',
         ),
     );
 
@@ -37,4 +38,16 @@ class PostEditForm extends PostForm
             ),
         ),
     );
+
+
+    public function prepareData($data)
+    {
+
+        if(isset($data['FileConnect'])){
+            $data['FileConnect']['connect_id'] = $data['id'];
+            $data['FileConnect']['connectType'] = 'PostCover';
+        }
+
+        return $data;
+    }
 }

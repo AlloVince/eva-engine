@@ -7,6 +7,10 @@ class Module
     {
         $app = $e->getParam('application');
         $app->getEventManager()->attach('render', array($this, 'registerJsonStrategy'), 100);
+
+        $serviceManager = $app->getServiceManager();
+        $serviceManager->setInvokableClass('File\Event\Listener', 'File\Event\Listener');
+        $app->getEventManager()->attach($serviceManager->get('File\Event\Listener'));
     }
 
     public function registerJsonStrategy($e)

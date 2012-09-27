@@ -12,6 +12,27 @@ class File extends AbstractItem
 
     protected $dataSourceClass = 'File\DbTable\Files';
 
+    protected $inverseRelationships = array(
+        'PostCover' => array(
+            'targetEntity' => 'File\Item\File',
+            'relationship' => 'ManyToMany',
+            'mappedBy' => 'PostCover',
+            'joinColumns' => array(
+                'joinColumn' => 'connect_id',
+                'referencedColumn' => 'id',
+                'joinParameters' => array(
+                    'connectType' => 'PostCover',
+                ),
+            ),
+            'inversedBy' => 'File\Item\FileConnect',
+            'inversedMappedBy' => 'FileConnect',
+            'inverseJoinColumns' => array(
+                'joinColumn' => 'file_id',
+                'referencedColumn' => 'id',
+            ),
+        ),
+    );
+
     protected $relationships = array(
         'UserAvatar' => array(
             'targetEntity' => 'File\Item\File',
