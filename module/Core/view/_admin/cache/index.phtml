@@ -27,6 +27,31 @@ $this->textDelay('breadcrumbText', $title);
                                 <a href="<?=$this->uri('/admin/core/cache/static')?>" class="btn btn-small"><?=$this->_('Run')?></a>
                             </td>
                         </tr>
+                        <?if($this->stats):?>
+                        <tr class="">
+                            <td>
+                                <a href="<?=$this->uri('/admin/core/cache/memcached')?>" class="title">Memcached Cache Clean (<?=$this->availableSpace . '/' . $this->totalSpace;?>)</a>
+
+                            </td>
+                            <td class="actions">
+                                <a href="<?=$this->uri('/admin/core/cache/Memcached')?>" class="btn btn-small"><?=$this->_('Run')?></a>
+                            </td>
+                        </tr>
+                        <?foreach($this->stats as $key=>$server)?>
+                        <tr class="">
+                            <td>
+                                <?=$this->_('Server')?> : <?=$key?>
+                            </td>
+                            <td class="actions">
+                               <p>
+                               <?=$this->_('Available Space/Total Space');?> : <?=$server['availableSpace'] . '/' . $server['totalSpace'];?> 
+                               </p>
+                               <p>
+                               <?=$this->_('Hit Rate')?> : <?=$server['get_hits'] . '/' . $server['cmd_get'];?>(<?=$server['hitRate']?>%)
+                               </p>
+                            </td>
+                        </tr> 
+                        <?endif;?>
                     </tbody>
                 </table>
             </div>
