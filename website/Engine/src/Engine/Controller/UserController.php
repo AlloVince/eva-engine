@@ -12,17 +12,24 @@ class UserController extends RestfulModuleController
     {
         $request = $this->getRequest();
         if ($request->isPost()) {
+            
+            $item = $request->getPost();
             $form = new \User\Form\RegisterForm();
-            $form->bind($request->getPost());
+            $form->bind($item);
             if ($form->isValid()) {
                 $callback = $this->params()->fromPost('callback');
                 $callback = $callback ? $callback : '/';
-                $this->redirect()->toUrl($callback);
+
+                $item = $form->getData();
+                $itemModel = Api::_()->getModel('User\Model\Register');
+                $itemModel->setItem($item)->register();
+
+                //$this->redirect()->toUrl($callback);
             } else {
             }
             return array(
                 'form' => $form,
-                'item' => $request->getPost(),
+                'item' => $item,
             );
         }
     }

@@ -8,6 +8,14 @@ class RegisterForm extends UserForm
         ),
     );
 
+    protected $validationGroup = array(
+        'userName',
+        'email',
+        'screenName',
+        'inputPassword',
+        'repeatPassword',
+    );
+
     protected $mergeElements = array(
         'email' => array (
             'type' => 'email',
@@ -43,8 +51,8 @@ class RegisterForm extends UserForm
         'userName' => array (
             'required' => true,
             'validators' => array (
-                'digits' => array (
-                    'name' => 'Digits',
+                'alnum' => array (
+                    'name' => 'Alnum',
                 ),
                 'notNumber' => array (
                     'name' => 'Eva\Validator\NotNumber',
@@ -123,6 +131,7 @@ class RegisterForm extends UserForm
             'validators' => array (
                 'equalTo' => array(
                     'name' => 'Eva\Validator\EqualTo',
+                    'injectdata' => true,
                     'options' => array (
                         'field' => 'inputPassword',
                     ),
@@ -134,6 +143,18 @@ class RegisterForm extends UserForm
 
     public function prepareData($data)
     {
+        $data['status'] = 'inactive';
+        if($data['inputPassword']) {
+            $data['password'] = $data['inputPassword'];
+            unset($data['inputPassword']);
+            unset($data['repeatPassword']);
+        }
+        $data['Profile'] = array(
+            'user_id' => '',
+        );
+        $data['Account'] = array(
+            'user_id' => '',
+        );
         return $data;
     }
 

@@ -31,7 +31,7 @@ class EqualTo extends \Zend\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_EQUAL_TO => "The input is not match",
+        self::NOT_EQUAL_TO => "The two inputs are not match",
     );
 
     protected $data;
