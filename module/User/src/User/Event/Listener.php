@@ -52,6 +52,7 @@ class Listener implements ListenerAggregateInterface
 
     public function onRegisterPost($e)
     {
-        $userModel     = $e->getTarget();
+        $codeModel = \Eva\Api::_()->getModel('User\Model\Code');
+        $codeModel->createActiveCode();
     }
 }

@@ -47,6 +47,7 @@ class RegisterForm extends UserForm
         ),
     );
 
+    /*
     protected $mergeFilters = array(
         'userName' => array (
             'required' => true,
@@ -139,6 +140,7 @@ class RegisterForm extends UserForm
             ),
         ),
     );
+    */
 
 
     public function prepareData($data)
@@ -150,10 +152,10 @@ class RegisterForm extends UserForm
             unset($data['repeatPassword']);
         }
         $data['Profile'] = array(
-            'user_id' => '',
+            'user_id' => null,
         );
         $data['Account'] = array(
-            'user_id' => '',
+            'user_id' => null,
         );
         return $data;
     }

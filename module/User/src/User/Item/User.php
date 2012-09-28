@@ -11,7 +11,7 @@ class User extends AbstractItem
     protected $relationships = array(
         'Profile' => array(
             'targetEntity' => 'User\Item\Profile',
-            'relationship' => 'ManyToOne',
+            'relationship' => 'OneToOne',
             'joinColumn' => 'user_id',
             'referencedColumn' => 'id',
         ),

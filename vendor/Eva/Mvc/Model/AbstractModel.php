@@ -176,7 +176,8 @@ abstract class AbstractModel implements ServiceLocatorAwareInterface
     public function trigger($event, $target = null, $argv = array(), $callback = null)
     {
         if(false === in_array($event, $this->events)){
-            throw new InvalidEventException(printf('Invalid event %s not allow to trigger', $event));
+            //TODO: find a way to check event safe
+            //throw new InvalidEventException(printf('Invalid event %s not allow to trigger', $event));
         }
 
         $className = get_class($this);

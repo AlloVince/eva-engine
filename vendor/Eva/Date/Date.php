@@ -15,4 +15,25 @@ class Date
         date_default_timezone_set('UTC');
         return gmdate($format, mktime() + $timezone * 3600);
     }
+
+
+    /**
+     * Get a certain date in future by input seconds
+     *
+     * @access public
+     * @param int $seconds  seconds int
+     * @param string $startDate  datetime string
+     * @param string $format date format
+     *
+     * @return string date format
+     */
+    public static function getFuture($seconds = 0, $startDay = null, $format = 'Y-m-d', $timezone = 0)
+    {
+        date_default_timezone_set('UTC');
+        if (!$startDay) {
+            return gmdate($format, mktime() + $seconds + $timezone * 3600);
+        } else {
+            return gmdate($format, strtotime($startDay) + $seconds);
+        }    
+    }
 }

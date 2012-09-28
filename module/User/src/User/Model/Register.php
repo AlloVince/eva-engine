@@ -7,7 +7,6 @@ use Eva\Api,
 
 class Register extends AbstractModel
 {
-
     protected $itemClass = 'User\Item\User';
 
     public function register(array $data = array())
