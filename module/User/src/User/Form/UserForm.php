@@ -241,12 +241,6 @@ class UserForm extends \Eva\Form\Form
             'name' => 'userName',
             'required' => false,
             'filters' => array (
-                'stripTags' => array (
-                    'name' => 'StripTags',
-                ),
-                'stringTrim' => array (
-                    'name' => 'StringTrim',
-                ),
             ),
             'validators' => array (
                 'notEmpty' => array (
@@ -354,12 +348,6 @@ class UserForm extends \Eva\Form\Form
             'name' => 'password',
             'required' => false,
             'filters' => array (
-                'stripTags' => array (
-                    'name' => 'StripTags',
-                ),
-                'stringTrim' => array (
-                    'name' => 'StringTrim',
-                ),
             ),
             'validators' => array (
                 'stringLength' => array (

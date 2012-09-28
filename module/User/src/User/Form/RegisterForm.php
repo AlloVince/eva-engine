@@ -43,6 +43,12 @@ class RegisterForm extends UserForm
         'userName' => array (
             'required' => true,
             'validators' => array (
+                'digits' => array (
+                    'name' => 'Digits',
+                ),
+                'notNumber' => array (
+                    'name' => 'Eva\Validator\NotNumber',
+                ),
                 'stringLength' => array (
                     'name' => 'StringLength',
                     'options' => array (
@@ -115,11 +121,10 @@ class RegisterForm extends UserForm
             'filters' => array (
             ),
             'validators' => array (
-                'stringLength' => array (
-                    'name' => 'StringLength',
+                'equalTo' => array(
+                    'name' => 'Eva\Validator\EqualTo',
                     'options' => array (
-                        'min' => '6',
-                        'max' => '16',
+                        'field' => 'inputPassword',
                     ),
                 ),
             ),
