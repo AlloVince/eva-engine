@@ -14,17 +14,23 @@
     <link href="<?=$this->link('/lib/css/bootstrap/bootstrap.min.css')?>" media="all" rel="stylesheet" type="text/css" />
     <link href="<?=$this->link('/lib/css/bootstrap/bootstrap-responsive.min.css')?>" media="all" rel="stylesheet" type="text/css" />
     <!--<link href="<?=$this->link('/src/engine/css/ee.css')?>" media="all" rel="stylesheet" type="text/css" />-->
+    <?=$this->evajs()?>
+    <script src="<?=$this->link('/lib/js/labjs/labjs.min.js')?>"></script>
+    <script src="<?=$this->link('/lib/js/jquery/jquery.min.js')?>"></script>
+    <script src="<?=$this->link('/eva/js/core.js')?>"></script>
+    <script src="<?=$this->link('/eva/js/ui.js')?>"></script>
+    <script src="<?=$this->link('/src/admin/js/init.js')?>"></script>
 </head>
 
 <body class="">
 	<div class="navbar"><div class="navbar-inner"><div class="container">
                 <a class="brand" href="/">EvaEngine</a>	
     <ul class="nav">
-        <li class="active"><a href="/"><?=$this->_('Home')?></a></li>
+        <li data-highlight-url="^/$"><a href="/"><?=$this->_('Home')?></a></li>
         <?if($this->hasModule('Blog')):?>
-        <li><a href="/blog/"><?=$this->_('Blog')?></a></li>
+        <li data-highlight-url="/(blog|pages)/*"><a href="/blog/"><?=$this->_('Blog')?></a></li>
         <?endif?>
-        <?if($this->hasModule('User')):?>
+        <?if(0)://if($this->hasModule('User')):?>
         <li><a href="/user/"><?=$this->_('User')?></a></li>
         <?endif?>
 	</ul>
@@ -36,5 +42,10 @@
 <div id="page" class="page">
 <?=$this->content;?>
 </div><!-- #page end-->
+
+    <script>
+        eva.init(eva_config);
+    </script>
+
 </body>
 </html>

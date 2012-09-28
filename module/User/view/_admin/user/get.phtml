@@ -152,11 +152,11 @@ $form->setView($this)
                             <div class="help-block"><?=$form->helper('email', 'formElementErrors')?></div>
                         </div>
                     </div>
-                    <div class="control-group <?=$form->isError('password') ? 'error' : '';?>">
-                        <?=$form->helper('password', 'label', array('class' => 'control-label'))?>
+                    <div class="control-group <?=$form->isError('inputPassword') ? 'error' : '';?>">
+                        <?=$form->helper('inputPassword', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper('password', array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper('password', 'formElementErrors')?></div>
+                            <?=$form->helper('inputPassword', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('inputPassword', 'formElementErrors')?></div>
                         </div>
                     </div>
                 </fieldset>

@@ -3,6 +3,13 @@ namespace User;
 
 class Module
 {
+    public function onBootstrap($e)
+    {
+        $serviceManager = $e->getApplication()->getServiceManager();
+        $serviceManager->setInvokableClass('User\Event\Listener', 'User\Event\Listener');
+        $e->getApplication()->getEventManager()->attach($serviceManager->get('User\Event\Listener'));
+    }
+
     public function getAutoloaderConfig()
     {
         return array(

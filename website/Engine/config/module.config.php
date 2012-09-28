@@ -43,12 +43,24 @@ return array(
                 ),
                 'priority' => 2,
             ),
+            'register' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/register[/]',
+                    'defaults' => array(
+                        'controller' => 'UserController',
+                        'action' => 'register',
+                    ),
+                ),
+                'priority' => 2,
+            ),
         ),
     ),
     'controllers' => array(
         'invokables' => array(
             'PagesController' => 'Engine\Controller\PagesController',
             'IndexController' => 'Engine\Controller\IndexController',
+            'UserController' => 'Engine\Controller\UserController',
         ),
     ),
 );

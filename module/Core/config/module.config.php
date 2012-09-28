@@ -229,6 +229,23 @@ return array(
                 'public_dir' => EVA_PUBLIC_PATH . '/static/cache',
             ),
         ),
+        /*
+        'page_capture' => array(
+            'enable' => 1,
+            'adapter' => 'memcached', 
+            'page_extension' => 'html', 
+            'options' => array( 
+                'ttl' => 6000,
+                'servers' => array(
+                    array('127.0.0.1', 11211),
+                ),
+                'namespace' => null,
+                'lib_options' => array(
+                    'COMPRESSION' => false
+                ),
+            ),
+        ), 
+        */
     ),
 );
 

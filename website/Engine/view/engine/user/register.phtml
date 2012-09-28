@@ -1,0 +1,74 @@
+<? 
+$title = $this->_('Register');
+$this->headTitle($title, 'SET');
+$item = $this->item;
+if($this->form){
+	$form = $this->form;
+} else {
+    $form = new User\Form\RegisterForm();
+}
+
+$form
+->setView($this)
+->useSubFormGroup()
+->setMethod('post')
+->setAction($this->uri('/register/'))
+->bind($item)
+->prepare();
+
+?>
+<div class="container">
+
+	<header class="page-header">
+    <h2 class=""><?=$title?></h2>
+	</header>
+
+    <form <?=$this->formAttr($form)?> class="form-horizontal">
+        <?=$form->restful();?>
+        <?=$form->helper('id', array('class' => ''))?>
+        <div class="control-group <?=$form->isError('userName') ? 'error' : '';?>">
+            <?=$form->helper('userName', 'label', array('class' => 'control-label'))?>
+            <div class="controls">
+                <?=$form->helper('userName', array('class' => ''))?>        
+                <div class="help-block"><?=$form->helper('userName', 'formElementErrors')?></div>
+            </div>
+        </div>
+        <div class="control-group <?=$form->isError('email') ? 'error' : '';?>">
+            <?=$form->helper('email', 'label', array('class' => 'control-label'))?>
+            <div class="controls">
+                <?=$form->helper('email', array('class' => ''))?>        
+                <div class="help-block"><?=$form->helper('email', 'formElementErrors')?></div>
+            </div>
+        </div>
+
+        <div class="control-group <?=$form->isError('screenName') ? 'error' : '';?>">
+            <?=$form->helper('screenName', 'label', array('class' => 'control-label'))?>
+            <div class="controls">
+                <?=$form->helper('screenName', array('class' => ''))?>        
+                <div class="help-block"><?=$form->helper('screenName', 'formElementErrors')?></div>
+            </div>
+        </div>
+
+        <div class="control-group <?=$form->isError('inputPassword') ? 'error' : '';?>">
+            <?=$form->helper('inputPassword', 'label', array('class' => 'control-label'))?>
+            <div class="controls">
+                <?=$form->helper('inputPassword', array('class' => ''))?>        
+                <div class="help-block"><?=$form->helper('inputPassword', 'formElementErrors')?></div>
+            </div>
+        </div>
+        <div class="control-group <?=$form->isError('repeatPassword') ? 'error' : '';?>">
+            <?=$form->helper('repeatPassword', 'label', array('class' => 'control-label'))?>
+            <div class="controls">
+                <?=$form->helper('repeatPassword', array('class' => ''))?>        
+                <div class="help-block"><?=$form->helper('repeatPassword', 'formElementErrors')?></div>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-info btn-large"><?=$this->_('Register');?></button>
+        </div>
+
+
+    </form>
+
+
+</div>

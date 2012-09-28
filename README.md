@@ -30,7 +30,7 @@ Installation
 
     mkdir evaengine
     cd evaengine
-    git clone git@github.com:AlloVince/eva-engine.git
+    git clone git://github.com/AlloVince/eva-engine.git
     git submodules update --init
 
 ###Create mysql db tables
