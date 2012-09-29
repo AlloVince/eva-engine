@@ -30,8 +30,9 @@
         <?if($this->hasModule('Blog')):?>
         <li data-highlight-url="/(blog|pages)/*"><a href="/blog/"><?=$this->_('Blog')?></a></li>
         <?endif?>
-        <?if(0)://if($this->hasModule('User')):?>
-        <li><a href="/user/"><?=$this->_('User')?></a></li>
+        <?if($this->hasModule('User')):?>
+        <li data-highlight-url="/register/*"><a href="/register/"><?=$this->_('Register')?></a></li>
+        <li data-highlight-url="/login/*"><a href="/login/"><?=$this->_('Login')?></a></li>
         <?endif?>
 	</ul>
     <ul class="nav pull-right">

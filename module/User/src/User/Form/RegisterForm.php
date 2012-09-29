@@ -47,7 +47,6 @@ class RegisterForm extends UserForm
         ),
     );
 
-    /*
     protected $mergeFilters = array(
         'userName' => array (
             'required' => true,
@@ -140,8 +139,6 @@ class RegisterForm extends UserForm
             ),
         ),
     );
-    */
-
 
     public function prepareData($data)
     {
