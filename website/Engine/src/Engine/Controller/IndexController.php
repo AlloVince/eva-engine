@@ -8,6 +8,7 @@ class IndexController extends ActionController
 {
     public function indexAction()
     {
+        $this->pagecapture('index');
         $view = new ViewModel();
         return $view;
     }
