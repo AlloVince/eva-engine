@@ -36,6 +36,12 @@ class LoginForm extends \Eva\Form\Form
             'name' => 'loginName',
             'required' => true,
             'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
             ),
             'validators' => array (
                 'notEmpty' => array (

@@ -14,19 +14,15 @@ class LoginController extends ActionController
 
     protected function superAdminLogin()
     {
-        $request = $this->getRequest();
-        $postData = $request->getPost();
+        $postData = $this->params()->fromPost();
         
-        $flashMesseger = array();
         $form = new Form\SuperAdminLoginForm();
-
         $viewVariables = array(
             'form' => $form,
-            'user' => $postData,
-            'flashMessenger' => &$flashMesseger
+            'item' => $postData,
         );
 
-        if (!$request->isPost()) {
+        if (!$this->getRequest()->isPost()) {
             return $viewVariables;
         }
 
@@ -35,11 +31,15 @@ class LoginController extends ActionController
             return $viewVariables;
         }
 
-        $auth = new Auth();
-        $authResult = $auth->configAuthenticate($postData['userName'], $postData['password']);
+        $auth = new Auth('Config', 'Session');
+        //$auth = new Auth('DbTable', 'Session');
+        $authResult = $auth->authenticate(array(
+            'username' => $postData['userName'],
+            'password' => $postData['password'],
+        ));
 
         if($authResult->isValid()){
-            $auth->getStorage()->write($authResult->getIdentity());
+            $auth->getAuthStorage()->write($authResult->getIdentity());
             $callback = $this->params()->fromPost('callback');
             $callback = $callback ? $callback : '/admin/core/dashboard';
             $this->redirect()->toUrl($callback);

@@ -52,6 +52,7 @@ class UserController extends RestfulModuleController
 
                 //$this->redirect()->toUrl($callback);
             } else {
+                $item = $form->getData();
             }
             return array(
                 'form' => $form,

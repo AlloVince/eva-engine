@@ -12,6 +12,8 @@ namespace Core;
 
 use Eva\Api;
 use Zend\Authentication\AuthenticationService;
+use Zend\Authentication\Adapter\AdapterInterface;
+use Zend\Authentication\Storage\StorageInterface;
 use Zend\Config\Config;
 use Zend\Di\Di;
 use Zend\Di\Config as DiConfig;
@@ -28,41 +30,108 @@ class Auth
 
     protected $authService;
 
-    public function getAuthService()
+    protected $authAdapter;
+
+    protected $authResult;
+
+    protected $authStorage;
+
+    protected $adapterClass;
+    protected $storageClass;
+
+    protected $diConfig = array();
+
+    protected $adapterMap = array(
+        'Config' => 'Eva\Authentication\Adapter\Config',
+        'Digest' => 'Zend\Authentication\Adapter\Digest',
+        'DbTable' => 'Zend\Authentication\Adapter\DbTable',
+        'Http' => 'Zend\Authentication\Adapter\Http',
+        'Ldap' => 'Zend\Authentication\Adapter\Ldap',
+    );
+
+    protected $storageMap = array(
+        'Session' => 'Zend\Authentication\Storage\Session'
+    );
+
+    public function setAuthService(AuthenticationService $authService)
     {
-        return $this->authService;
+        $this->authService = $authService;
+        return $this;
+    }
+
+    public function getAuthService($params = null, $config = null)
+    {
+        if($this->authService) {
+            return $this->authService;
+        }
+
+        $this->initAdapter($params);
+        $this->initStorage();
+
+        $diConfig = $this->getDiConfig();
+        if($config) {
+            $diConfig = $this->merge($diConfig, $config);
+        }
+
+        $di = new Di();
+        $di->configure(new DiConfig($diConfig));
+        $this->authService = $authService = $di->get('Zend\Authentication\AuthenticationService');
+        return $authService;
+    }
+
+    public function getAuthAdapter()
+    {
+        if($this->authService){
+            return $this->authService->getAdapter();
+        }
+    }
+
+    public function setAuthAdapter(AdapterInterface $adapter)
+    {
+        $this->authAdapter = $adapter;
+        return $this;
+    }
+
+    public function getAuthResult()
+    {
+        return $this->authResult;
+    }
+
+    public function getAuthStorage()
+    {
+        if($this->authService){
+            return $this->authService->getStorage();
+        }
+
+        if($this->authStorage) {
+            return $this->authStorage;
+        }
+
+        $this->initStorage();
+        $diConfig = $this->getDiConfig();
+        $di = new Di();
+        $di->configure(new DiConfig($diConfig));
+        return $this->authStorage = $di->get($this->storageClass);
+    }
+
+    public function setAuthStorage($authStorage)
+    {
+        $this->authStorage = $authStorage;
+        return $this;
+    }
+
+    public function setDiConfig(DiConfig $diConfig)
+    {
+        $this->diConfig = $diConfig;
+        return $this;
     }
 
     public function getDiConfig(array $config = array())
     {
-        $globalConfig = Api::_()->getConfig();
-        $defaultConfig = array('instance' => array(
-            'Zend\Authentication\Storage\Session' => array(
-                'parameters' => array(
-                    //TODO : set session manager here
-                    'namespace'  => self::STORAGE_NAMESPACE,
-                ),
-            ),
-            'Eva\Authentication\Adapter\Config' => array(
-                'parameters' => array(
-                    'configArray'  => $globalConfig['superadmin'],
-                ),
-            ),
-            'Zend\Authentication\AuthenticationService' => array(
-                'parameters' => array(
-                    'storage'              => 'Zend\Authentication\Storage\Session',
-                    'adapter'              => 'Eva\Authentication\Adapter\Config',
-                )
-            ),
-        ));
-
-        if(isset($globalConfig['authentication'])){
-            $defaultConfig = $this->merge($defaultConfig, $globalConfig['authentication']);
-            $config = $this->merge($defaultConfig, $config);
-        } else {
-            $config = $this->merge($defaultConfig, $config);
-        } 
-        return $config;
+        if($this->diConfig && !$config) {
+            return $this->diConfig;
+        }
+        return $this->diConfig = $this->merge($this->diConfig, $config);
     }
 
     public function getStorage(array $config = array())
@@ -70,47 +139,106 @@ class Auth
         if($this->authService){
             return $this->authService->getStorage();
         }
-
-        $config = $this->getDiConfig($config);
-
-        $di = new Di();
-        $di->configure(new DiConfig($config));
-        return $di->get('Zend\Authentication\Storage\Session');
     }
 
-    public function configAuthenticate($username, $password, array $authConfig = array())
+    public function authenticate($params, array $config = array())
     {
-        $config = array('instance' => array(
-            'Eva\Authentication\Adapter\Config' => array(
+        $authService = $this->getAuthService($params, $config);
+        return $authService->getAdapter()->authenticate();
+    }
+
+    public function __construct($adapterName = null, $storageName = null)
+    {
+        $adapterClass = 'Zend\Authentication\Adapter\DbTable';
+        if($adapterName){
+            $adapterClass = isset($this->adapterMap[$adapterName]) ? $this->adapterMap[$adapterName] : null;
+            if(!$adapterClass){
+                throw new Exception\UnauthorizedException(sprintf(
+                    'Input authentication adapter %s not defined', $adapterName
+                ));
+            }
+        }
+        $this->adapterClass = $adapterClass;
+
+        $storageClass = 'Zend\Authentication\Storage\Session';
+        if($storageName){
+            $storageClass = isset($this->storageMap[$storageName]) ? $this->storageMap[$storageName] : null;
+            if(!$storageClass){
+                throw new Exception\UnauthorizedException(sprintf(
+                    'Input authentication storage %s not defined', $storageName
+                ));
+            }
+        }
+        $this->storageClass = $storageClass;
+
+        $this->diConfig = array('instance' => array(
+            'Zend\Authentication\AuthenticationService' => array(
                 'parameters' => array(
-                    'username' => $username,
-                    'password' => $password,
-                ),
+                    'storage'              => $storageClass,
+                    'adapter'              => $adapterClass
+                )
             ),
         ));
-        $config = $this->getDiConfig($config);
-
-        $di = new Di();
-        $di->configure(new DiConfig($config));
-        $this->authService = $di->get('Zend\Authentication\AuthenticationService');
-
-        return $this->authService->getAdapter()->authenticate();
     }
 
-    public function isConfigAuthValid()
+    protected function initStorage()
     {
+        $diConfig = $this->getDiConfig();
+        $storageClass = $this->storageClass;
+        switch($storageClass){
+            default:
+            $diConfig['instance']['Zend\Authentication\Storage\Session'] = array(
+                'parameters' => array(
+                    'namespace'  => self::STORAGE_NAMESPACE,
+                ),
+            );
+        }
     
+        $this->diConfig = $diConfig;
+        return $this;
     }
 
-    public function dbAuthenticate()
+    protected function initAdapter($params)
     {
+        $diConfig = $this->getDiConfig();
+        $adapterClass = $this->adapterClass;
 
+        switch($adapterClass) {
+            case 'Eva\Authentication\Adapter\Config':
+            $config = Api::_()->getConfig();
+            $params = array_merge($params, array(
+                'configArray'  => $config['superadmin'],
+            ));
+            break;
+            case 'Zend\Authentication\Adapter\DbTable':
+            $config = Api::_()->getConfig();
+            if(isset($params['tableName'])){
+                $params['tableName'] = $config['db']['prefix'] . $params['tableName'];
+            }
+            /*
+            if(isset($params['identity'])){
+                $diConfig['instance'][$adapterClass]['setIdentify'] = array(
+                    'value' => $params['identity']
+                );
+            }
+            if(isset($params['credential'])){
+                $diConfig['instance'][$adapterClass]['setCredential'] = array(
+                    'credential' => $params['credential']
+                );
+            }
+            */
+            $params = array_merge($params, array(
+                'zendDb'  => Api::_()->getDbAdapter()
+            ));
+            break;
+            default:;
+        }
+
+        $diConfig['instance'][$adapterClass]['parameters'] = $params;
+        $this->diConfig = $diConfig;
+        return $this;
     }
 
-    public function restfulAuthenticate()
-    {
-
-    }
 
     protected function merge(array $global, array $local)
     {
