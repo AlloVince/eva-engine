@@ -12,6 +12,7 @@
 namespace Eva\I18n\Translator;
 
 use Zend\I18n\Translator\TextDomain;
+use Zend\I18n\Translator\LoaderPluginManager;
 
 /**
  * Translator.
@@ -83,7 +84,7 @@ class Translator extends \Zend\I18n\Translator\Translator
     public function getPluginManager()
     {
         if (!$this->pluginManager instanceof LoaderPluginManager) {
-            $this->setPluginManager(new LoaderPluginManager());
+            $this->setPluginManager(new \Eva\I18n\Translator\LoaderPluginManager());
         }
 
         return $this->pluginManager;

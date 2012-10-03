@@ -27,7 +27,7 @@ class Module
     }
 
 
-    public function authority($event)
+    public static function authority($event)
     {
         $router = $event->getRouteMatch();
         $moduleNamespace = $router->getParam('moduleNamespace');
