@@ -16,7 +16,7 @@ use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * Check module whether installed
+ * Call FlashMessenger plugin in view helper
  * 
  * @category   Eva
  * @package    Eva_View
