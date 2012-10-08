@@ -13,7 +13,7 @@ class Date
     public static function getNow($timezone = 0, $format = 'Y-m-d H:i:s')
     {
         date_default_timezone_set('UTC');
-        return gmdate($format, mktime() + $timezone * 3600);
+        return gmdate($format, time() + $timezone * 3600);
     }
 
 
@@ -31,7 +31,7 @@ class Date
     {
         date_default_timezone_set('UTC');
         if (!$startDay) {
-            return gmdate($format, mktime() + $seconds + $timezone * 3600);
+            return gmdate($format, time() + $seconds + $timezone * 3600);
         } else {
             return gmdate($format, strtotime($startDay) + $seconds);
         }    

@@ -123,7 +123,7 @@ class Cookie extends AbstractPlugin
 	 */
 	public function clear($key)
 	{
-		setrawcookie($key,null,-1,'/');
+        setrawcookie($key, null, -1, '/');
 		unset($_COOKIE[$key]);
         return $this;
 	}

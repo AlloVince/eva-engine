@@ -1,5 +1,8 @@
 <?php
+
 namespace User;
+
+use Core\Auth;
 
 class Module
 {
@@ -43,6 +46,18 @@ class Module
             $controller == 'login' && $action = 'index' || 
             $controller == 'reset' && $action = 'index'){
             return true;
+        }
+
+        $user = Auth::getLoginUser();
+        if(!$user){
+            $application = $e->getApplication();
+            $event = $application->getEventManager();
+            $errorController = 'Core\Admin\Controller\ErrorController';
+
+            $router->setParam('controller', $errorController);
+            $router->setParam('action', 'index');
+            $controllerLoader = $application->getServiceManager()->get('ControllerLoader');
+            $controllerLoader->setInvokableClass($errorController, $errorController);
         }
 
         return true;

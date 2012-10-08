@@ -17,6 +17,7 @@ use Zend\Authentication\Storage\StorageInterface;
 use Zend\Config\Config;
 use Zend\Di\Di;
 use Zend\Di\Config as DiConfig;
+use Zend\Json\Json;
 
 /**
  * Core Authentication
@@ -52,6 +53,34 @@ class Auth
     protected $storageMap = array(
         'Session' => 'Zend\Authentication\Storage\Session'
     );
+
+    public static function factory()
+    {
+        $config = Api::_()->getConfig();
+        if(isset($config['authentication']['default_adapter']) && $config['authentication']['default_adapter']
+            && isset($config['authentication']['default_storage']) && $config['authentication']['default_storage']) {
+                return new static($config['authentication']['default_adapter'], $config['authentication']['default_storage']);
+        }
+
+        throw new Exception\InvalidConfigException(sprintf(
+            'Authentication adapter or storage not defined in config'
+        ));
+    }
+
+    public static function getLoginUser()
+    {
+        $auth = self::factory();
+        $user = $auth->getAuthStorage()->read();
+        if(!$user){
+            return false;
+        }
+        return Json::decode($user);
+    }
+
+    public function saveLoginUser($user)
+    {
+        return $this->getAuthStorage()->write(Json::encode($user));
+    }
 
     public function setAuthService(AuthenticationService $authService)
     {

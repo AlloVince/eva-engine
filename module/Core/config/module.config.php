@@ -176,7 +176,8 @@ return array(
     ),
 
     'authentication' => array(
-
+        'default_adapter' => 'DbTable',
+        'default_storage' => 'Session',
     ),
 
     'cache' => array(

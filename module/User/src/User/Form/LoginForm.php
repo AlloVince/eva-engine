@@ -29,6 +29,16 @@ class LoginForm extends \Eva\Form\Form
                 'value' => '',
             ),
         ),
+        'rememberMe' => array (
+            'name' => 'rememberMe',
+            'type' => 'checkbox',
+            'options' => array (
+                'label' => 'Remember Me',
+            ),
+            'attributes' => array (
+                'value' => '1',
+            ),
+        ),
     );
 
     protected $baseFilters = array(
@@ -64,6 +74,14 @@ class LoginForm extends \Eva\Form\Form
                         'max' => '16',
                     ),
                 ),
+            ),
+        ),
+        'rememberMe' => array (
+            'name' => 'rememberMe',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
             ),
         ),
     );

@@ -65,6 +65,17 @@ return array(
                 ),
                 'priority' => 2,
             ),
+            'autologin' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/autologin[/]',
+                    'defaults' => array(
+                        'controller' => 'UserController',
+                        'action' => 'autologin',
+                    ),
+                ),
+                'priority' => 2,
+            ),
         ),
     ),
     'controllers' => array(

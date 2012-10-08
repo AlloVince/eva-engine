@@ -65,6 +65,7 @@ class Session
 
     public static function getSessionManager()
     {
+        self::start();
         return self::$sessionManager;
     }
 

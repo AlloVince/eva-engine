@@ -100,6 +100,7 @@ class Module
         if($controller == 'core' && $action == 'index' || $controller == 'logout' && $action == 'index' || $controller == 'login' && $action = 'index'){
             return;
         }
+
         $auth = new Auth('Config', 'Session');
         $isAuthed = $auth->getAuthStorage()->read();
         if(!$isAuthed){
