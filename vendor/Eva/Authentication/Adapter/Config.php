@@ -11,6 +11,7 @@
 namespace Eva\Authentication\Adapter;
 
 use Zend\Authentication\Result as AuthenticationResult;
+use Zend\Authentication\Exception;
 
 /**
  * @category   Zend

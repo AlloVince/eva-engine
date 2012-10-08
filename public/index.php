@@ -7,7 +7,7 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  * @author    AlloVince
  */
-error_reporting(E_ALL);
+error_reporting(E_ALL | E_STRICT);
 
 // Check php version
 if( version_compare(phpversion(), '5.3.3', '<') ) {

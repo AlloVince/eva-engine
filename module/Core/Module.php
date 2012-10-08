@@ -98,8 +98,8 @@ class Module
         if($controller == 'core' && $action == 'index' || $controller == 'logout' && $action == 'index' || $controller == 'login' && $action = 'index'){
             return;
         }
-        $auth = new Auth();
-        $isAuthed = $auth->getStorage()->read();
+        $auth = new Auth('Config', 'Session');
+        $isAuthed = $auth->getAuthStorage()->read();
         if(!$isAuthed){
             $application = $e->getApplication();
             $event = $application->getEventManager();

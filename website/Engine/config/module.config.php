@@ -54,6 +54,17 @@ return array(
                 ),
                 'priority' => 2,
             ),
+            'login' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/login[/]',
+                    'defaults' => array(
+                        'controller' => 'UserController',
+                        'action' => 'login',
+                    ),
+                ),
+                'priority' => 2,
+            ),
         ),
     ),
     'controllers' => array(

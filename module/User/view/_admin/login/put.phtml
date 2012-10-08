@@ -88,7 +88,7 @@ $form->setView($this)
                                     </div>
                                 </div>
                                 <div class="form-actions">
-                                    <input name="callback" type="hidden" value="<?=$callback?>" />
+                                    <input name="callback" type="hidden" value="<?=$this->callback?>" />
                                     <button class="btn btn-primary" type="submit"><?=$this->_('Login')?></button>
                                     <?if($this->hasModule('User')):?>
                                     <a href="<?=$this->uri('/admin/user/reset/')?>"><?=$this->_('Forgot Passsword')?></a>
