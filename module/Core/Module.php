@@ -63,7 +63,9 @@ class Module
         if(!$lang){
             return $this;
         }
-        $lang = array_shift(array_keys($lang));
+        
+        $lang = array_keys($lang);
+        $lang = array_shift($lang);
         $subLang = explode('_', $lang);
         if(isset($subLang[1]) 
             && isset($config['translator']['sub_languages'])
