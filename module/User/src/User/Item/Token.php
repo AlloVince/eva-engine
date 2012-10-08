@@ -16,6 +16,11 @@ class Token extends AbstractItem
             'getRefreshTime()',
             'getExpiredTime()',
         ),
+        'save' => array(
+            'getToken()',
+            'getRefreshTime()',
+            'getExpiredTime()',
+        ),
     );
 
     private $tokenSalt = 'Eva_Login_Token_Salt';
@@ -26,9 +31,20 @@ class Token extends AbstractItem
         $data = $this->toArray(
             isset($this->map['create']) ? $this->map['create'] : array()
         );
-        $dataClass->create($data);
+        return $dataClass->create($data);
     }
 
+    public function save()
+    {
+        //Because refresh token will update primary key, need to get primary array first
+        $where = $this->getPrimaryArray();
+        $dataClass = $this->getDataClass();
+        $data = $this->toArray(
+            isset($this->map['save']) ? $this->map['save'] : array()
+        );
+        $dataClass->where($where)->save($data);
+        return true;
+    }
 
     public function setTokenSalt($tokenSalt)
     {

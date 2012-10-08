@@ -23,8 +23,7 @@ class UserController extends RestfulModuleController
                 $item = $form->getData();
                 $itemModel = Api::_()->getModel('User\Model\Register');
                 $itemModel->setItem($item)->register();
-
-                //$this->redirect()->toUrl($callback);
+                $this->redirect()->toUrl($callback);
             } else {
             }
             return array(
@@ -40,20 +39,25 @@ class UserController extends RestfulModuleController
         $realm = $this->cookie()->crypt(false)->read('realm');
 
         if(!$realm){
+            $this->cookie()->clear('realm');
             return $this->redirect()->toUrl($callback);
         }
 
         $itemModel = Api::_()->getModel('User\Model\Login');
         $loginResult = $itemModel->loginByToken($realm);
         if($loginResult->isValid()){
-        
+            $tokenString = $itemModel->refreshToken($realm);
+            //Cookie expired after 60 days
+            $this->cookie()->crypt(false)->write('realm', $tokenString, 3600 * 24 * 60);
         } else {
             $this->cookie()->clear('realm');
         }
-        //return $this->redirect()->toUrl($callback);
+        return $this->redirect()->toUrl($callback);
+        /*
         $viewModel = new ViewModel();
         $viewModel->setTemplate('blank');
         return $viewModel;
+        */
     }
 
     public function loginAction()
@@ -79,8 +83,7 @@ class UserController extends RestfulModuleController
                 //Cookie expired after 60 days
                 $this->cookie()->crypt(false)->write('realm', $tokenString, 3600 * 24 * 60);
             }
-            p($itemModel->getLoginResult());
-            //$this->redirect()->toUrl($callback);
+            $this->redirect()->toUrl($callback);
         } else {
             $item = $form->getData();
         }

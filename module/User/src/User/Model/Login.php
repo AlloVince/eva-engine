@@ -51,37 +51,28 @@ class Login extends AbstractModel
             $loginResult = $this->loginByPassword($item->loginName, $item->inputPassword);
         }
 
-        if($loginResult->isValid()){
-            $this->loadPermissions();
-        }
-
 
         $this->trigger('login.post');
-
         return true;
     }
 
-    public function createToken()
+    public function loginRefresh()
     {
-        $loginResult = $this->getLoginResult();
-        if(!$loginResult->isValid()){
-            return false;
+        $userId = $this->getUserId();
+        if(!$userId){
+            throw new \Core\Exception\InvalidArgumentException(sprintf(
+                'No user id found when refresh login'
+            ));
         }
 
-        $tokenItem = $this->getItem('User\Item\Token');
-        $tokenItem->user_id = $this->getUserId();
-        $tokenItem->create();
-
-        $tokenString = $tokenItem->sessionId . '|' 
-            . $tokenItem->token . '|'
-            . $tokenItem->userHash;
-
-        return $tokenString;
-    }
-
-    public function refreshToken($tokenString)
-    {
-
+        $user = $this->getItem()->getDataClass()->where(array(
+            'id' => $userId
+        ))->save(array(
+            'onlineStatus' => 'online',
+            'lastLoginTime' => \Eva\Date\Date::getNow(),
+            'lastLoginIp' => $_SERVER["REMOTE_ADDR"],
+        ));
+    
     }
 
     public function loginById($userId)
@@ -100,7 +91,9 @@ class Login extends AbstractModel
             )); 
         }
 
+        $user = $this->loadPermissions($user);
         Auth::factory()->saveLoginUser($user);
+        $this->loginRefresh();
         return $this->loginResult = new Result(Result::SUCCESS, $userId, array(
             Result::SUCCESS => 'Authentication successful.'
         )); 
@@ -113,15 +106,17 @@ class Login extends AbstractModel
 
     public function loginByToken($tokenString)
     {
-        list($sessionId, $token, $userHash) = explode('|', $tokenString);
+        if($tokenString) {
+            list($sessionId, $token, $userHash) = explode('|', $tokenString);
+        }
 
-        if(!$sessionId || !$token || !$userHash){
+        if(!$tokenString || !$sessionId || !$token || !$userHash){
             return $this->loginResult = new Result(Result::FAILURE, $tokenString, array(
                 Result::FAILURE => 'Auto login arguments missing'
             )); 
         }
 
-        $token = $this->getItem('User\Item\Token')->getDataClass()->columns(array('user_id'))->where(array(
+        $token = $this->getItem('User\Item\Token')->getDataClass()->columns(array('user_id', 'expiredTime'))->where(array(
             'sessionId' => $sessionId,
             'token' => $token,
             'userHash' => $userHash,
@@ -133,11 +128,17 @@ class Login extends AbstractModel
             )); 
         }
 
+        $expiredTime = new \DateTime($token['expiredTime']);
+        $now = new \DateTime();
+        if($expiredTime <= $now){
+            return $this->loginResult = new Result(Result::FAILURE_UNCATEGORIZED, $tokenString, array(
+                Result::FAILURE_UNCATEGORIZED => 'Login token expired.'
+            )); 
+        }
+
         $loginResult = $this->loginById($token['user_id']);
-        if($loginResult->isValid()){
-            $this->refreshToken($tokenString);
-        } else {
-            $this->clearToken();
+        if(!$loginResult->isValid()){
+            $this->clearToken($tokenString);
         }
         return $loginResult;
     }
@@ -213,8 +214,72 @@ class Login extends AbstractModel
     }
 
 
-    public function loadPermissions()
+    public function loadPermissions($user)
+    {
+        return $user;
+    }
+
+
+    public function createToken()
     {
         $loginResult = $this->getLoginResult();
+        if(!$loginResult->isValid()){
+            return false;
+        }
+
+        $tokenItem = $this->getItem('User\Item\Token');
+        $tokenItem->user_id = $this->getUserId();
+        $tokenItem->create();
+
+        $tokenString = $tokenItem->sessionId . '|' 
+            . $tokenItem->token . '|'
+            . $tokenItem->userHash;
+
+        return $tokenString;
     }
+
+    public function refreshToken($tokenString)
+    {
+        if($tokenString) {
+            list($sessionId, $token, $userHash) = explode('|', $tokenString);
+        }
+
+        if(!$tokenString || !$sessionId || !$token || !$userHash){
+            throw new \Core\Exception\InvalidArgumentException(sprintf(
+                'Login token missing arguments'
+            ));
+        }
+
+        $tokenItem = $this->getItem('User\Item\Token');
+        $tokenItem->sessionId = $sessionId;
+        $tokenItem->token = $token;
+        $tokenItem->userHash = $userHash;
+        $tokenItem->save();
+
+        $tokenString = $tokenItem->sessionId . '|' 
+            . $tokenItem->token . '|'
+            . $tokenItem->userHash;
+
+        return $tokenString;
+    }
+
+    public function clearToken($tokenString)
+    {
+        if($tokenString) {
+            list($sessionId, $token, $userHash) = explode('|', $tokenString);
+        }
+
+        if(!$tokenString || !$sessionId || !$token || !$userHash){
+            throw new \Core\Exception\InvalidArgumentException(sprintf(
+                'Login token missing arguments'
+            ));
+        }
+
+        $tokenItem = $this->getItem('User\Item\Token');
+        $tokenItem->sessionId = $sessionId;
+        $tokenItem->token = $token;
+        $tokenItem->userHash = $userHash;
+        $tokenItem->remove();
+    }
+
 }

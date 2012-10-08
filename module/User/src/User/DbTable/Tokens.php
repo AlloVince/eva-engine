@@ -9,9 +9,9 @@ class Tokens extends TableGateway
 {
     protected $tableName ='tokens';
     protected $primaryKey = array(
-        'session',
+        'sessionId',
         'token',
-        'userid',
+        'userHash',
     );
 
 
