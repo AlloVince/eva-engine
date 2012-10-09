@@ -74,7 +74,7 @@ class Auth
         if(!$user){
             return false;
         }
-        return Json::decode($user);
+        return (array) Json::decode($user);
     }
 
     public function saveLoginUser($user)

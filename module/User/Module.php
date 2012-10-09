@@ -30,9 +30,9 @@ class Module
     }
 
 
-    public static function authority($event)
+    public static function authority($e)
     {
-        $router = $event->getRouteMatch();
+        $router = $e->getRouteMatch();
         $moduleNamespace = $router->getParam('moduleNamespace');
         
         if($moduleNamespace != 'admin'){
@@ -41,15 +41,16 @@ class Module
 
         $controller = $router->getParam('controllerName');
         $action = $router->getParam('action');
-        if($controller == 'core' && $action == 'index' || 
-            $controller == 'logout' && $action == 'index' || 
-            $controller == 'login' && $action = 'index' || 
-            $controller == 'reset' && $action = 'index'){
+        if( ($controller == 'core' && $action == 'index') || 
+            ($controller == 'logout' && $action == 'index') || 
+            ($controller == 'login' && $action = 'index') || 
+            ($controller == 'reset' && $action = 'index')
+        ){
             return true;
         }
 
         $user = Auth::getLoginUser();
-        if(!$user){
+        if(!$user || !isset($user['Roles']) || !in_array('Admin', $user['Roles'])){
             $application = $e->getApplication();
             $event = $application->getEventManager();
             $errorController = 'Core\Admin\Controller\ErrorController';

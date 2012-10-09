@@ -5,13 +5,13 @@ $this->headTitle($title, 'SET');
 if($this->form){
 	$form = $this->form;
 } else {
-    $form = Eva\Api::_()->getForm('User\Form\ResetForm');
+    $form = new User\Form\ResetForm();
 }
-$form->init(array(
-    'action' => $this->uri('/admin/user/reset/'),
-	'method' => 'put',
-	'values' => $this->user
-));
+$form->setView($this)
+    ->setMethod('put')
+     ->setAction($this->uri('/admin/user/reset'))
+     ->bind($this->item)
+     ->prepare();
 ?>
 
 <div class="slate">

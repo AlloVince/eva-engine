@@ -3,7 +3,8 @@ namespace Core\Admin\Controller;
 
 use Eva\Api,
     Eva\Mvc\Controller\ActionController,
-    Eva\View\Model\ViewModel;
+    Eva\View\Model\ViewModel,
+    Core\Auth;
 
 class LogoutController extends ActionController
 {
@@ -12,8 +13,8 @@ class LogoutController extends ActionController
         $model = new ViewModel();
         $this->layout('layout/adminblank');
         $model->setTemplate('core/index');
-        $auth = new \Core\Auth();
-        $auth->getStorage()->clear();
+        $auth = new Auth('Config', 'Session');
+        $auth->getAuthStorage()->clear();
         return $this->redirect()->toUrl('/admin/');
     }
 }

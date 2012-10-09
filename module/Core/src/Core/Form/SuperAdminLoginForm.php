@@ -20,38 +20,47 @@ namespace Core\Form;
  */
 class SuperAdminLoginForm extends \Eva\Form\Form
 {
-    /**
-     * Form basic elements
-     *
-     * @var array
-     */
-    protected $baseElements = array (
-        'userName' => array (
-            'name' => 'userName',
-            'attributes' => array (
-                'type' => 'text',
+    protected $subFormGroups = array(
+        'default' => array(
+        ),
+    );
+
+    protected $baseElements = array(
+        'loginName' => array (
+            'name' => 'loginName',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'User Name',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
-        'password' => array (
-            'name' => 'password',
-            'attributes' => array (
-                'type' => 'password',
+        'inputPassword' => array (
+            'name' => 'inputPassword',
+            'type' => 'password',
+            'options' => array (
                 'label' => 'Password',
+            ),
+            'attributes' => array (
                 'value' => '',
+            ),
+        ),
+        'rememberMe' => array (
+            'name' => 'rememberMe',
+            'type' => 'checkbox',
+            'options' => array (
+                'label' => 'Remember Me',
+            ),
+            'attributes' => array (
+                'value' => '1',
             ),
         ),
     );
 
-    /**
-     * Form basic Validators
-     *
-     * @var array
-     */
-    protected $baseFilters = array (
-        'userName' => array (
-            'name' => 'userName',
+    protected $baseFilters = array(
+        'loginName' => array (
+            'name' => 'loginName',
             'required' => true,
             'filters' => array (
                 'stripTags' => array (
@@ -67,27 +76,41 @@ class SuperAdminLoginForm extends \Eva\Form\Form
                     'options' => array (
                     ),
                 ),
-                'stringLength' => array (
-                    'name' => 'StringLength',
-                    'options' => array (
-                        'max' => '128',
-                    ),
-                ),
             ),
         ),
-        'password' => array (
-            'name' => 'password',
+        'inputPassword' => array (
+            'name' => 'inputPassword',
             'required' => true,
             'filters' => array (
             ),
             'validators' => array (
-                'notEmpty' => array (
-                    'name' => 'NotEmpty',
+                'stringLength' => array (
+                    'name' => 'StringLength',
                     'options' => array (
+                        'min' => '6',
+                        'max' => '16',
                     ),
                 ),
             ),
         ),
+        'rememberMe' => array (
+            'name' => 'rememberMe',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+            ),
+        ),
     );
-}
 
+
+    public function prepareData($data)
+    {
+        return $data;
+    }
+
+    public function beforeBind($data)
+    {
+        return $data;
+    }
+}

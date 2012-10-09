@@ -14,32 +14,35 @@ class LoginController extends ActionController
 
     protected function superAdminLogin()
     {
-        $postData = $this->params()->fromPost();
+        $item = $this->params()->fromPost();
         
         $form = new Form\SuperAdminLoginForm();
         $viewVariables = array(
             'form' => $form,
-            'item' => $postData,
+            'item' => $item,
         );
 
         if (!$this->getRequest()->isPost()) {
             return $viewVariables;
         }
 
-        $form->bind($postData);
+        $form->bind($item);
         if (!$form->isValid()) {
             return $viewVariables;
         }
 
         $auth = new Auth('Config', 'Session');
-        //$auth = new Auth('DbTable', 'Session');
         $authResult = $auth->authenticate(array(
-            'username' => $postData['userName'],
-            'password' => $postData['password'],
+            'username' => $item['loginName'],
+            'password' => $item['inputPassword'],
         ));
 
         if($authResult->isValid()){
-            $auth->getAuthStorage()->write($authResult->getIdentity());
+            $auth->saveLoginUser(array(
+                'id' => '0',
+                'userName' => $item['loginName'],
+                'isSuperAdmin' => true,
+            ));
             $callback = $this->params()->fromPost('callback');
             $callback = $callback ? $callback : '/admin/core/dashboard';
             $this->redirect()->toUrl($callback);
@@ -48,14 +51,15 @@ class LoginController extends ActionController
 
         switch($authResult->getCode()){
             case Result::FAILURE_IDENTITY_NOT_FOUND:
-            $flashMesseger = array('user-name-failed');
-            return $viewVariables;
+            $this->flashMessenger()->addMessage('user-name-failed');
+            break;
             case Result::FAILURE_CREDENTIAL_INVALID:
-            $flashMesseger = array('password-failed');
-            return $viewVariables;
-            default:
-            return $viewVariables;
+            $this->flashMessenger()->addMessage('password-failed');
+            break;
+            default:;
         }
+
+        return $viewVariables;
     }
 
     public function indexAction()

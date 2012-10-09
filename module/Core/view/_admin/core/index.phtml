@@ -1,25 +1,28 @@
 <?
-$title = 'Admin Login';
-$this->headTitle($title, 'SET');
-$callback = $this->callback;
-
 if($this->form){
-	$form = $this->form;
+    $form = $this->form;
 } else {
-    $form = new Core\Form\SuperAdminLoginForm();
+    if($this->hasModule('User')){
+        $form = new User\Form\AdminLoginForm();
+    }else {
+        $form = new Core\Form\SuperAdminLoginForm();
+    }
 }
 
 if($this->hasModule('User')){
+    $title = 'Admin Login';
     $url = $this->uri('/admin/user/login/');
 } else {
+    $title = 'Super Admin Login';
     $url = $this->uri('/admin/core/login/');
 }
 $form->setView($this)
-     ->setMethod('put')
-     ->setAction($url)
-     ->prepare();
-?>
+->setMethod('put')
+->setAction($url)
+->prepare();
 
+$this->headTitle($title, 'SET');
+?>
 <style>
     html, body {
             background:#D7D7D7;
@@ -45,9 +48,8 @@ $form->setView($this)
     }
 
     #admin-login{
-        text-align:left;    
+            text-align:left;    
     }
-
 </style>
 
 <div class="block" style="">
@@ -55,41 +57,49 @@ $form->setView($this)
         <div id="admin-login" class="container">
             <div class="row">
                 <div class="span6 offset3">
-
-                    <input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
-                    <div id="user-name-failed" class="alert alert-error hide">
+                    <div id="user-name-failed" class="alert alert-error <?if(!$this->flashMessenger('user-name-failed')):?>hide<?endif?>">
                         <a href="#" data-dismiss="alert" class="close">x</a>
-                        <h4 class="alert-heading">Input user not exist</h4>
+                        <h4 class="alert-heading"><?=$this->_('Input user not exist');?></h4>
                     </div>
-                    <div id="password-failed" class="alert alert-error hide">
+                    <div id="password-failed" class="alert alert-error <?if(!$this->flashMessenger('password-failed')):?>hide<?endif?>">
                         <a href="#" data-dismiss="alert" class="close">x</a>
-                        <h4 class="alert-heading">Password not match</h4>
+                        <h4 class="alert-heading"><?=$this->_('Password not match');?></h4>
                     </div>
-
+                    <div id="permission-not-enough" class="alert alert-error <?if(!$this->flashMessenger('permission-not-enough')):?>hide<?endif?>">
+                        <a href="#" data-dismiss="alert" class="close">x</a>
+                        <h4 class="alert-heading"><?=$this->_('Permission not enough');?></h4>
+                    </div>
 
                     <div class="slate">
                         <form class="form-horizontal" <?=$this->formAttr($form)?> >
                             <?=$form->restful();?>
                             <header class="page-header">
-                            <h3><?=$this->_('Admin Login')?></h3>
+                            <h3><?=$this->_($title)?></h3>
                             </header>
                             <fieldset>
-                                <div class="control-group <?=$form->isError('userName') ? 'error' : '';?>">
-                                    <?=$form->helper('userName', 'label', array('class' => 'control-label'))?>
+                                <div class="control-group <?=$form->isError('loginName') ? 'error' : '';?>">
+                                    <?=$form->helper('loginName', 'label', array('class' => 'control-label'))?>
                                     <div class="controls">
-                                        <?=$form->helper('userName', array('class' => 'input-xlarge'))?>
-                                        <div class="help-block"><?=$form->helper('userName', 'formElementErrors')?></div>
+                                        <?=$form->helper('loginName', array('class' => ''))?>        
+                                        <div class="help-block"><?=$form->helper('loginName', 'formElementErrors')?></div>
                                     </div>
                                 </div>
-                                <div class="control-group <?=$form->isError('password') ? 'error' : '';?>">
-                                    <?=$form->helper('password', 'label', array('class' => 'control-label'))?>
+                                <div class="control-group <?=$form->isError('inputPassword') ? 'error' : '';?>">
+                                    <?=$form->helper('inputPassword', 'label', array('class' => 'control-label'))?>
                                     <div class="controls">
-                                        <?=$form->helper('password', array('class' => 'input-xlarge'))?>
-                                        <div class="help-block"><?=$form->helper('password', 'formElementErrors')?></div>
+                                        <?=$form->helper('inputPassword', array('class' => ''))?>        
+                                        <div class="help-block"><?=$form->helper('inputPassword', 'formElementErrors')?></div>
                                     </div>
                                 </div>
+                                <?if($this->hasModule('User')):?>
+                                <div class="control-group <?=$form->isError('isSuperAdmin') ? 'error' : '';?>">
+                                    <div class="controls">
+                                        <label class="checkbox"><?=$form->helper('isSuperAdmin', array('class' => 'checkbox'))?> <?=$this->_('Login As Super Admin');?></label>
+                                    </div>
+                                </div>
+                                <?endif?>
                                 <div class="form-actions">
-                                    <input name="callback" type="hidden" value="<?=$callback?>" />
+                                    <input name="callback" type="hidden" value="<?=$this->callback?>" />
                                     <button class="btn btn-primary" type="submit"><?=$this->_('Login')?></button>
                                     <?if($this->hasModule('User')):?>
                                     <a href="<?=$this->uri('/admin/user/reset/')?>"><?=$this->_('Forgot Passsword')?></a>
