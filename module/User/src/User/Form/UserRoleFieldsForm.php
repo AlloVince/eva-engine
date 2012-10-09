@@ -38,7 +38,7 @@ class UserRoleFieldsForm extends \Eva\Form\Form
         parent::__construct($formName);
     }
 
-    public function init()
+    public function init(array $options = array())
     {
         $roleKey = $this->getRole();
 

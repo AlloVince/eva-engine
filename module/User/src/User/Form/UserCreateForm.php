@@ -112,6 +112,10 @@ class UserCreateForm extends UserForm
 
     public function prepareData($data)
     {
+        if(isset($data['inputPassword'])){
+            $data['password'] = $data['inputPassword'];
+            unset($data['inputPassword']);
+        }
         return $data;
     }
 

@@ -326,7 +326,7 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
 
     public function addSubForm($formName, $formConfig = array())
     {
-        if($formConfig instanceof RestfulForm){
+        if($formConfig instanceof Form){
 
             $subForm = $formConfig;
             $subForm->setName($formName);

@@ -20,7 +20,7 @@ namespace User\Form;
  */
 class UserCommonFieldsForm extends \Eva\Form\Form
 {
-    public function init()
+    public function init(array $options = array())
     {
         $itemModel = \Eva\Api::_()->getModel('User\Model\Field');
         $items = $itemModel->setItemList(array(
