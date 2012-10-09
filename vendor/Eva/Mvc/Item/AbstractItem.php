@@ -417,7 +417,8 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         foreach($proxy as $key => $map){
             list($moduleItemClass, $relationshipKey) = explode('::', $key);
             $modulesLoaded = $this->serviceLocator->get('modulemanager')->getLoadedModules();
-            $module = array_shift(explode('\\', $moduleItemClass));
+            $module = explode('\\', $moduleItemClass);
+            $module = array_shift($module);
             if(!isset($modulesLoaded[$module])){
                 continue;
             }
