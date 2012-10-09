@@ -43,13 +43,17 @@ class Module
         $action = $router->getParam('action');
         if( ($controller == 'core' && $action == 'index') || 
             ($controller == 'logout' && $action == 'index') || 
-            ($controller == 'login' && $action = 'index') || 
-            ($controller == 'reset' && $action = 'index')
+            ($controller == 'login' && $action == 'index') || 
+            ($controller == 'reset' && $action == 'index')
         ){
             return true;
         }
 
         $user = Auth::getLoginUser();
+        if(isset($user['isSuperAdmin'])){
+            return true;
+        }
+
         if(!$user || !isset($user['Roles']) || !in_array('Admin', $user['Roles'])){
             $application = $e->getApplication();
             $event = $application->getEventManager();
