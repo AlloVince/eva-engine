@@ -22,3 +22,6 @@
 [submodule "vendor/EvaCloudImage"]
 	path = vendor/EvaCloudImage
 	url = git://github.com/AlloVince/EvaCloudImage.git
+[submodule "vendor/ZendOAuth"]
+	path = vendor/ZendOAuth
+	url = git://github.com/zendframework/ZendOAuth.git
