@@ -10,6 +10,9 @@
 
 namespace Oauth;
 
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
+
 /**
  * @category   Zend
  * @package    Oauth
@@ -37,11 +40,12 @@ class OauthService
 
     protected $options;
 
+
     /**
      * Constructor
      *
      */
-     public static function factory(array $options)
+     public static function factory(array $options, ServiceLocatorInterface $serviceLocator)
      {
          $defaultOptions = array(
              'adapter' => '',
@@ -64,12 +68,13 @@ class OauthService
 
          $oauth = new static();
          $oauth->setOauthVersion($version);
+         $oauth->setServiceLocator($serviceLocator);
 
          $adapter = strtolower($options['adapter']);
          $version = strtolower($version);
 
          
-         $config = \Eva\Api::_()->getConfig();
+         $config = $serviceLocator->get('Config');
          $options = array(
              'enable' => true,
              'consumer_key' => '',
@@ -93,9 +98,37 @@ class OauthService
          $oauth->setOptions($options);
 
          $adapter = $oauth->initAdapter($adapter, $version);
+         $storage = $oauth->initStorage($storage);
 
          return $oauth;
      }
+
+    /**
+    * @var ServiceLocatorInterface
+    */
+    protected $serviceLocator;
+
+    /**
+    * Set the service locator.
+    *
+    * @param ServiceLocatorInterface $serviceLocator
+    * @return AbstractHelper
+    */
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+        return $this;
+    }
+
+    /**
+     * Get the service locator.
+     *
+     * @return \Zend\ServiceManager\ServiceLocatorInterface
+     */
+    public function getServiceLocator()
+    {
+        return $this->serviceLocator;
+    }
 
      public function getOptions()
      {
@@ -131,10 +164,19 @@ class OauthService
          $adapterClass = 'Oauth\Adapter\\' . $oauthVersion . '\\' . ucfirst(strtolower($adapterName));
 
          if(false === class_exists($adapterClass)){
-            //throw new Exception\InvalidArgumentException(sprintf('Undefined oauth adapter %s by oauth version %s', $adapterName, $oauthVersion));
+            throw new Exception\InvalidArgumentException(sprintf('Undefined oauth adapter %s by oauth version %s', $adapterName, $oauthVersion));
          }
         
          return $this->adapter = new $adapterClass($options);
+     }
+
+     public function initStorage($storageName)
+     {
+         $storageClass = 'Oauth\Storage\\' . ucfirst(strtolower($storageName));
+         if(false === class_exists($storageClass)){
+             throw new Exception\InvalidArgumentException(sprintf('Undefined oauth storage %s', $storageName));
+         }
+         return $this->storage = new $storageClass();
      }
 
      /**
@@ -188,6 +230,5 @@ class OauthService
         $this->storage = $storage;
         return $this;
     }
-
 
 }

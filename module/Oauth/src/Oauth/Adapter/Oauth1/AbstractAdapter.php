@@ -6,6 +6,7 @@ use Oauth\Adapter\AdapterInterface;
 use Oauth\Exception;
 use ZendOAuth\OAuth as ZendOAuth;
 use ZendOAuth\Consumer;
+use ZendOAuth\Token\Access as AccessToken;
 
 
 abstract class AbstractAdapter
@@ -146,7 +147,26 @@ abstract class AbstractAdapter
     public function getRequestTokenUrl()
     {
         return $this->getConsumer()->getRedirectUrl();
-	}
+    }
+
+    /**
+    * Redirect to oauth service page
+    */
+    public function getAccessToken($queryData, $token, $httpMethod = null, $request = null)
+    {
+        return $this->getConsumer()->getAccessToken($queryData, $token, $httpMethod, $request);
+    }
+
+
+    public function accessTokenToArray(AccessToken $accessToken)
+    {
+        return array(
+            'adapterKey' => $this->getAdapterKey(),
+            'token' => $accessToken->getToken(),
+            'tokenSecret' => $accessToken->getTokenSecret(),
+            'version' => 'Oauth1',
+        );
+    }
 
     public function __construct(array $options = array())
     {
