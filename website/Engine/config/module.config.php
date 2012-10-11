@@ -57,21 +57,13 @@ return array(
             'login' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/login[/]',
-                    'defaults' => array(
-                        'controller' => 'UserController',
-                        'action' => 'login',
+                    'route' => '/login/[:action/]',
+                    'constraints' => array(
+                        'action'     => '[a-zA-Z]+',
                     ),
-                ),
-                'priority' => 2,
-            ),
-            'autologin' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/autologin[/]',
                     'defaults' => array(
-                        'controller' => 'UserController',
-                        'action' => 'autologin',
+                        'controller' => 'LoginController',
+                        'action' => 'index',
                     ),
                 ),
                 'priority' => 2,
@@ -82,6 +74,7 @@ return array(
         'invokables' => array(
             'PagesController' => 'Engine\Controller\PagesController',
             'IndexController' => 'Engine\Controller\IndexController',
+            'LoginController' => 'Engine\Controller\LoginController',
             'UserController' => 'Engine\Controller\UserController',
         ),
     ),
