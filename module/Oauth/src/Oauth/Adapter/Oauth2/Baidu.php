@@ -3,12 +3,14 @@
 namespace Oauth\Adapter\Oauth2;
 
 use Oauth\Adapter\AdapterInterface;
-use Oauth\Adapter\Oauth1\AbstractAdapter;
+use Oauth\Adapter\Oauth2\AbstractAdapter;
 
 
 class Baidu extends AbstractAdapter implements AdapterInterface
 {
-    protected $requestTokenUrl = "https://openapi.baidu.com/oauth/2.0/authorize";
+    protected $responseFormat = 'json';
+
+    protected $requestMethod = 'post';
 
     protected $authorizeUrl = "https://openapi.baidu.com/oauth/2.0/authorize";
 

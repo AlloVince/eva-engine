@@ -3,7 +3,7 @@
 namespace Oauth\Adapter\Oauth2;
 
 use Oauth\Adapter\AdapterInterface;
-use Oauth\Adapter\Oauth1\AbstractAdapter;
+use Oauth\Adapter\Oauth2\AbstractAdapter;
 
 
 class Weibo extends AbstractAdapter implements AdapterInterface

@@ -13,7 +13,6 @@ class OauthController extends AbstractActionController
         $adapter = $this->params()->fromQuery('service');
         $callback = $this->params()->fromQuery('callback');
         $version = (int) $this->params()->fromQuery('version');
-        $version = $version ? 'Oauth' . $version : OauthService::VERSION_OAUTH2;
 
         if(!$adapter){
             throw new Exception\InvalidArgumentException(sprintf(
@@ -32,8 +31,11 @@ class OauthController extends AbstractActionController
 
         $url = $helper() . $config['oauth']['access_url_path'] . '?' . http_build_query(array(
             'callback' => urlencode($callback),
+            'service' => $adapter,
+            'version' => $version
         ));
 
+        $version = $version ? 'Oauth' . $version : OauthService::VERSION_OAUTH2;
         $options = array(
             'adapter' => $adapter,
             'version' => $version,
