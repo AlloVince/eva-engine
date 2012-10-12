@@ -3,6 +3,7 @@ namespace Engine\Controller;
 
 use Eva\Api,
     Eva\Mvc\Controller\RestfulModuleController,
+    Core\Auth,
     Eva\View\Model\ViewModel;
 
 class UserController extends RestfulModuleController
@@ -31,5 +32,36 @@ class UserController extends RestfulModuleController
                 'item' => $item,
             );
         }
+    }
+
+    public function pricingAction()
+    {
+        $user = Auth::getLoginUser();
+    
+        if(isset($user['isSuperAdmin']) || !$user){
+            exit;;
+        } 
+        
+        $itemModel = Api::_()->getModel('User\Model\User');
+        $item = $itemModel->getUser($user['id']);
+
+        $item = $item->toArray(array(
+            'self' => array(
+                '*',
+            ),
+            'join' => array(
+                'Profile' => array(
+                    '*'
+                ),
+                'Roles' => array(
+                    '*'
+                ),
+                'Account' => array('*'),
+            ),
+        ));
+        
+        return array(
+            'item' => $item,
+        );
     }
 }

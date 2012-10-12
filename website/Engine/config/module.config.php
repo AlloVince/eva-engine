@@ -54,6 +54,17 @@ return array(
                 ),
                 'priority' => 2,
             ),
+            'pricing' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/pricing[/]',
+                    'defaults' => array(
+                        'controller' => 'UserController',
+                        'action' => 'pricing',
+                    ),
+                ),
+                'priority' => 2,
+            ),
             'login' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(

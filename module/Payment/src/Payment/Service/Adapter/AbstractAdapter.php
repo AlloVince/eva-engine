@@ -223,55 +223,68 @@ abstract class AbstractAdapter
             ));
             return;
         }
-
+        
+        $userId = $log['user_id'];
+        
         $logData = array(
             'id' => $log['id'],
             'logStep' => 'response',
         );
         
         $itemModel->setItem($logData)->saveLog();
-    
+        
+        if ($userId) {
+            $table = Api::_()->getDbTable('User\DbTable\RolesUsers'); 
+            $role['user_id'] = $userId;
+            $role['role_id'] = 2;
+            $table->where(array(
+                'user_id' => $userId,
+                'role_id' => $role['role_id'],
+            ))->remove();
+            $table->create($role);
+        }
+
         return $log['id'];
     }
 
-    public function makeUrl($url) 
-    {
-        if (!$url) {
-            return $url;
-        }
-        
-        $params = $this->getCallbackUrlParams();
-        $params['secretKey'] = $this->getSecretKey();
+   public function makeUrl($url) 
+   {
+       if (!$url) {
+           return $url;
+       }
 
-        return $url . "&" . http_build_query($params); 
-    }
+       $params = $this->getCallbackUrlParams();
+       $params['secretKey'] = $this->getSecretKey();
 
-    public function setOptions(array $options = array())
-    {
-        if(!$options['account']){
-            throw new Exception\InvalidArgumentException(sprintf('No account found in %s', get_class($this)));
-        }
+       return $url . "&" . http_build_query($params); 
+   }
 
-        $this->setSandbox($options['sandbox'])
-            ->setOrderTitle($options['orderTitle'])
-            ->setAccount($options['account']);
+   public function setOptions(array $options = array())
+   {
+       if(!$options['account']){
+           throw new Exception\InvalidArgumentException(sprintf('No account found in %s', get_class($this)));
+       }
 
-        if (isset($options['consumerKey'])) {
-            $this->setConsumerKey($options['consumerKey']);
-        }
+       $this->setSandbox($options['sandbox'])
+           ->setOrderTitle($options['orderTitle'])
+           ->setAccount($options['account']);
 
-        if (isset($options['consumerSecret'])) {
-            $this->setConsumerSecret($options['consumerSecret']);
-        }
+       if (isset($options['consumerKey'])) {
+           $this->setConsumerKey($options['consumerKey']);
+       }
 
-        $this->options = $options;
-        return $this;
-    }
+       if (isset($options['consumerSecret'])) {
+           $this->setConsumerSecret($options['consumerSecret']);
+       }
 
-    public function getOptions()
-    {
-        return $this->options;
-    }
+       $this->options = $options;
+       return $this;
+   }
+
+   public function getOptions()
+   {
+       return $this->options;
+   }
 
 
 }

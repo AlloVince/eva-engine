@@ -1,0 +1,33 @@
+<? 
+$title = $this->_('Pricing');
+$this->headTitle($title, 'SET');
+$roleKey = $this->item['Roles'] ? $this->item['Roles'][0]['roleKey'] : null;
+?>
+<div class="container">
+
+	<header class="page-header">
+    <h2 class=""><?=$title?></h2>
+	</header>
+
+            <div class="well">
+
+                <?if($roleKey == 'PROFESSIONAL'):?>
+                <header class="page-header">
+                <h4 class=""><?=$this->_('Your role is Professional now.')?></h4>
+                </header>
+                <div class="btn-group btn-group-vertical">
+                </div>
+                <?else:?>
+                <hr />
+                <header class="page-header">
+                <h4 class=""><?=$this->_('Pay 1 update to Professional')?></h4>
+                </header>
+                <div class="btn-group btn-group-vertical">
+                    <a href="<?=$this->uri('/payment/request/', array('callback' => $this->serverUrl() . '/pricing/', 'adapter' => 'paypalec', 'amount' => 1))?>" class="btn btn-small">Payapl</a>
+                    <a href="<?=$this->uri('/payment/request/', array('callback' => $this->serverUrl() . '/pricing/', 'adapter' => 'alipayec', 'amount' => 1))?>" class="btn btn-small">Alipay</a>
+                </div>
+                <?endif;?>
+            </div>
+
+
+</div>
