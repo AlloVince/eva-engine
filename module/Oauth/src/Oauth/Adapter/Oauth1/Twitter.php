@@ -2,11 +2,10 @@
     
 namespace Oauth\Adapter\Oauth1;
 
-use Oauth\Adapter\AdapterInterface;
 use Oauth\Adapter\Oauth1\AbstractAdapter;
 
 
-class Twitter extends AbstractAdapter implements AdapterInterface
+class Twitter extends AbstractAdapter
 {
     protected $requestTokenUrl = "https://api.twitter.com/oauth/request_token";
 
