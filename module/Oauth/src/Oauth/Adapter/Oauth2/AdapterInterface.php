@@ -2,7 +2,7 @@
 
 namespace Oauth\Adapter\Oauth2;
 
-use ZendOAuth\Token\Access as AccessToken;
+use Oauth\Service\Token\Access as AccessToken;
 
 
 /**

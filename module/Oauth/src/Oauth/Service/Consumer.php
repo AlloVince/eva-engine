@@ -19,32 +19,6 @@ use ZendOAuth\Consumer as ZendConsumer;
  */
 class Consumer extends ZendConsumer
 {
-    protected $responseType = 'code';
-
-    protected $scope;
-
-    public function getScope()
-    {
-        return $this->scope;
-    }
-
-    public function setScope($scope)
-    {
-        $this->scope = $scope;
-        return $this;
-    }
-
-    public function getResponseType()
-    {
-        return $this->responseType;
-    }
-
-    public function setResponseType($responseType)
-    {
-        $this->responseType = $responseType;
-        return $this;
-    }
-
     public function getRequestToken(
         array $customServiceParameters = null,
         $httpMethod = null,
@@ -104,5 +78,16 @@ class Consumer extends ZendConsumer
         $this->_requestToken = $token;
         $this->_accessToken = $request->execute();
         return $this->_accessToken;
+    }
+
+    public function __construct($options = null)
+    {
+        $this->_config = new Config\Oauth2Config;
+        if ($options !== null) {
+            if ($options instanceof Traversable) {
+                $options = ArrayUtils::iteratorToArray($options);
+            }
+            $this->_config->setOptions($options);
+        }
     }
 }

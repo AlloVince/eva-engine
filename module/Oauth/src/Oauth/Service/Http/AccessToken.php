@@ -40,7 +40,7 @@ class AccessToken extends \ZendOAuth\Http\AccessToken
 		);
         $params = array_merge($defaultParams, $params);
         $response = $this->startRequestCycle($params);
-        $return   = new Token\Access($response);
+        $return   = new Token\Access($response, null, $this->_consumer->getAccessTokenFormat());
         return $return;
     }
 

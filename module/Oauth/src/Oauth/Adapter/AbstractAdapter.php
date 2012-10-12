@@ -156,16 +156,6 @@ abstract class AbstractAdapter implements AdapterInterface
     }
 
 
-    public function accessTokenToArray(AccessToken $accessToken)
-    {
-        return array(
-            'adapterKey' => $this->getAdapterKey(),
-            'token' => $accessToken->getToken(),
-            'tokenSecret' => $accessToken->getTokenSecret(),
-            'version' => 'Oauth2',
-        );
-    }
-
     public function __construct(array $options = array())
     {
         if($options){

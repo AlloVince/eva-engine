@@ -6,11 +6,40 @@ use Oauth\Adapter\Oauth2\AdapterInterface;
 use Oauth\Exception;
 use ZendOAuth\OAuth as ZendOAuth;
 use Oauth\Service\Consumer;
-use ZendOAuth\Token\Access as AccessToken;
+use Oauth\Service\Token\Access as AccessToken;
 
 
 abstract class AbstractAdapter extends \Oauth\Adapter\AbstractAdapter implements AdapterInterface
 {
+    const ACCESS_TOKEN_FORMAT_JSON = 'json';
+    const ACCESS_TOKEN_FORMAT_JSONP = 'jsonp';
+    const ACCESS_TOKEN_FORMAT_XML = 'xml';
+
+    protected $accessTokenFormat = 'json';
+
+    protected $accessTokenRequestMethod = ZendOAuth::POST;
+
+    public function getAccessTokenFormat()
+    {
+        return $this->accessTokenFormat;
+    }
+
+    public function setAccessTokenFormat($accessToken)
+    {
+        if($accessToken != self::ACCESS_TOKEN_FORMAT_JSON
+            && $accessToken != self::ACCESS_TOKEN_FORMAT_JSONP
+            && $accessToken != self::ACCESS_TOKEN_FORMAT_XML
+        ){
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Undefined access token format %s input, accept format are json|jsonp|xml',
+                $accessToken
+            ));
+        }
+
+        $this->accessTokenFormat = $accessToken;
+        return $this;
+    }
+
     public function setOptions(array $options = array())
     {
 		$defaultOptions = array(
@@ -21,6 +50,7 @@ abstract class AbstractAdapter extends \Oauth\Adapter\AbstractAdapter implements
             'consumerSecret' => $this->getConsumerSecret(),
             'authorizeUrl' => $this->authorizeUrl,
             'accessTokenUrl' => $this->accessTokenUrl,
+            'accessTokenFormat' => $this->accessTokenFormat,
 		);
 
         $options = array_merge($defaultOptions, $options);
@@ -40,6 +70,7 @@ abstract class AbstractAdapter extends \Oauth\Adapter\AbstractAdapter implements
         $this->setConsumerKey($options['consumerKey']);
         $this->setConsumerSecret($options['consumerSecret']);
         $this->setCallback($options['callbackUrl']);
+        $this->setAccessTokenFormat($options['accessTokenFormat']);
 
         $this->options = $options;
         return $this;
@@ -64,7 +95,7 @@ abstract class AbstractAdapter extends \Oauth\Adapter\AbstractAdapter implements
         return array(
             'adapterKey' => $this->getAdapterKey(),
             'token' => $accessToken->getToken(),
-            'tokenSecret' => $accessToken->getTokenSecret(),
+            //'tokenSecret' => $accessToken->getTokenSecret(),
             'version' => 'Oauth2',
         );
     }

@@ -29,7 +29,7 @@ class AccessController extends AbstractActionController
         $config = $this->getServiceLocator()->get('config');
         $helper = $this->getEvent()->getApplication()->getServiceManager()->get('viewhelpermanager')->get('serverurl');
         $url = $helper() . $config['oauth']['access_url_path'] . '?' . http_build_query(array(
-            'callback' => urlencode($callback),
+            'callback' => $callback,
             'service' => $adapter,
             'version' => $version
         ));
@@ -45,14 +45,14 @@ class AccessController extends AbstractActionController
         $query = $this->params()->fromQuery();
         $requestToken = $oauth->getStorage()->getRequestToken();
         $accessToken = $oauth->getAdapter()->getAccessToken($query, $requestToken);
-        p($accessToken);
         
         //$request = $oauth->getAdapter()->getRequest();
         //$response = $oauth->getAdapter()->getResponse();
 
-        //$accessTokenArray = $oauth->getAdapter()->accessTokenToArray($accessToken);
-        //$oauth->getStorage()->saveAccessToken($accessTokenArray);
-        //return $this->redirect()->toUrl($callback);
+        $accessTokenArray = $oauth->getAdapter()->accessTokenToArray($accessToken);
+        $oauth->getStorage()->saveAccessToken($accessTokenArray);
+        return $this->redirect()->toUrl($callback);
+
         $view = new ViewModel();
         $view = new \Zend\View\Model\JsonModel();
         $view->setTemplate('blank');
