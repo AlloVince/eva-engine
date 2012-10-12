@@ -30,7 +30,7 @@ class OauthController extends AbstractActionController
         $helper = $this->getEvent()->getApplication()->getServiceManager()->get('viewhelpermanager')->get('serverurl');
 
         $url = $helper() . $config['oauth']['access_url_path'] . '?' . http_build_query(array(
-            'callback' => urlencode($callback),
+            'callback' => $callback,
             'service' => $adapter,
             'version' => $version
         ));

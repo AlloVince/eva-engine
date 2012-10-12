@@ -8,7 +8,7 @@ use Oauth\Adapter\Oauth2\AbstractAdapter;
 
 class Weibo extends AbstractAdapter implements AdapterInterface
 {
-    protected $requestTokenUrl = "https://api.weibo.com/oauth2/authorize";
+    protected $responseFormat = 'json';
 
     protected $authorizeUrl = "https://api.weibo.com/oauth2/authorize";
 
