@@ -14,6 +14,7 @@ abstract class AbstractAdapter extends \Oauth\Adapter\AbstractAdapter implements
     const ACCESS_TOKEN_FORMAT_JSON = 'json';
     const ACCESS_TOKEN_FORMAT_JSONP = 'jsonp';
     const ACCESS_TOKEN_FORMAT_XML = 'xml';
+    const ACCESS_TOKEN_FORMAT_PAIR = 'pair';
 
     protected $accessTokenFormat = 'json';
 
@@ -29,6 +30,7 @@ abstract class AbstractAdapter extends \Oauth\Adapter\AbstractAdapter implements
         if($accessToken != self::ACCESS_TOKEN_FORMAT_JSON
             && $accessToken != self::ACCESS_TOKEN_FORMAT_JSONP
             && $accessToken != self::ACCESS_TOKEN_FORMAT_XML
+            && $accessToken != self::ACCESS_TOKEN_FORMAT_PAIR
         ){
             throw new Exception\InvalidArgumentException(sprintf(
                 'Undefined access token format %s input, accept format are json|jsonp|xml',

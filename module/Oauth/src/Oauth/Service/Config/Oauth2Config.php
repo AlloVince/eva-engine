@@ -27,6 +27,7 @@ class Oauth2Config extends \ZendOAuth\Config\StandardConfig
     const ACCESS_TOKEN_FORMAT_JSON = 'json';
     const ACCESS_TOKEN_FORMAT_JSONP = 'jsonp';
     const ACCESS_TOKEN_FORMAT_XML = 'xml';
+    const ACCESS_TOKEN_FORMAT_PAIR = 'pair';
 
     protected $responseType = 'code';
 
@@ -66,6 +67,7 @@ class Oauth2Config extends \ZendOAuth\Config\StandardConfig
         if($accessToken != self::ACCESS_TOKEN_FORMAT_JSON
             && $accessToken != self::ACCESS_TOKEN_FORMAT_JSONP
             && $accessToken != self::ACCESS_TOKEN_FORMAT_XML
+            && $accessToken != self::ACCESS_TOKEN_FORMAT_PAIR
         ){
             throw new Exception\InvalidArgumentException(sprintf(
                 'Undefined access token format %s input, accept format are json|jsonp|xml',

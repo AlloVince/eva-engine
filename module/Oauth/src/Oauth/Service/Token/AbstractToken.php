@@ -80,6 +80,13 @@ abstract class AbstractToken extends \ZendOAuth\Token\AbstractToken
             break;
             case 'jsonp':
             break;
+            case 'pair':
+            $parts = explode('&', $body);
+            foreach ($parts as $kvpair) {
+                $pair = explode('=', $kvpair);
+                $params[rawurldecode($pair[0])] = rawurldecode($pair[1]);
+            }
+            break;
             default:
             throw new Exception\InvalidArgumentException(sprintf(
                 'Unable to handle access token response by undefined format %',
