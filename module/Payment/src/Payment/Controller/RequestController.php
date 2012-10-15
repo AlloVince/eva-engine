@@ -41,7 +41,7 @@ class RequestController extends ActionController
             'callback' => urlencode($callback),
         ));
         
-        $amount = (int) $amount;
+        $amount = (float) $amount;
         
         if (strtolower($adapter) == "paypalec") {
             $cancel = $helper() . $config['payment']['cancel_url_path'] . '?' . http_build_query(array(

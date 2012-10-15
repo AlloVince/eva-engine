@@ -31,6 +31,8 @@ abstract class AbstractAdapter
     protected $consumerSecret;
 
     protected $options;
+    
+    protected $requestTime;
 
     public function __construct(array $options = array())
     {
@@ -68,7 +70,7 @@ abstract class AbstractAdapter
     
     public function setAmount($amount)
     {
-        $this->amount = (int) $amount;
+        $this->amount = (float) $amount;
         return $this; 
     }
 
@@ -167,12 +169,28 @@ abstract class AbstractAdapter
         return strtolower(array_pop($className));
     }
 
+    public function setRequestTime($requestTime)
+    {
+        $this->requestTime = (int) $requestTime;
+        return $this;
+    }
+
+    public function getRequestTime()
+    {
+        if ($this->requestTime) {
+            return $this->requestTime;
+        }
+    
+        return $this->requestTime = (int) time();
+    }
+
     public function getCallbackUrlParams()
     {
         return array(
             'adapter' => $this->getAdapterKey(),
             'amount' => $this->getAmount(),
             'service' => $this->getService(),
+            'time' => $this->getRequestTime(),
         );
     }
 
@@ -229,21 +247,11 @@ abstract class AbstractAdapter
         $logData = array(
             'id' => $log['id'],
             'logStep' => 'response',
+            'user_id' => $log['user_id'],
         );
         
         $itemModel->setItem($logData)->saveLog();
         
-        if ($userId) {
-            $table = Api::_()->getDbTable('User\DbTable\RolesUsers'); 
-            $role['user_id'] = $userId;
-            $role['role_id'] = 2;
-            $table->where(array(
-                'user_id' => $userId,
-                'role_id' => $role['role_id'],
-            ))->remove();
-            $table->create($role);
-        }
-
         return $log['id'];
     }
 

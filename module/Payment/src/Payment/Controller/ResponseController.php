@@ -16,6 +16,7 @@ class ResponseController extends ActionController
         $callback = $this->params()->fromQuery('callback');
         $amount = $this->params()->fromQuery('amount');
         $secretKey = $this->params()->fromQuery('secretKey');
+        $requestTime = $this->params()->fromQuery('time');
 
         if(!$amount){
             throw new Exception\InvalidArgumentException(sprintf(
@@ -40,13 +41,21 @@ class ResponseController extends ActionController
                 'No payment secretKey found'
             ));
         }
-
+        
+        if(!$requestTime){
+            throw new Exception\InvalidArgumentException(sprintf(
+                'No payment request time found'
+            ));
+        }
+        
         $callback = urldecode($callback);
         
         $adapter = $adapter == 'paypalec' ? 'PaypalEc' : 'AlipayEc';
 
         $pay = new \Payment\Service\Payment($adapter);
-        $authenticate = $pay->setAmount($amount)->getSecretKey();
+        $authenticate = $pay->setAmount($amount)
+            ->setRequestTime($requestTime)
+            ->getSecretKey();
         
         if ($authenticate != $secretKey) {
             throw new Exception\InvalidArgumentException(sprintf(
