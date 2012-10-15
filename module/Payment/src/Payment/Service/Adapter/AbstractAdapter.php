@@ -31,6 +31,8 @@ abstract class AbstractAdapter
     protected $consumerSecret;
 
     protected $options;
+    
+    protected $requestTime;
 
     public function __construct(array $options = array())
     {
@@ -68,7 +70,7 @@ abstract class AbstractAdapter
     
     public function setAmount($amount)
     {
-        $this->amount = (int) $amount;
+        $this->amount = (float) $amount;
         return $this; 
     }
 
@@ -167,12 +169,28 @@ abstract class AbstractAdapter
         return strtolower(array_pop($className));
     }
 
+    public function setRequestTime($requestTime)
+    {
+        $this->requestTime = (int) $requestTime;
+        return $this;
+    }
+
+    public function getRequestTime()
+    {
+        if ($this->requestTime) {
+            return $this->requestTime;
+        }
+    
+        return $this->requestTime = (int) time();
+    }
+
     public function getCallbackUrlParams()
     {
         return array(
             'adapter' => $this->getAdapterKey(),
             'amount' => $this->getAmount(),
             'service' => $this->getService(),
+            'time' => $this->getRequestTime(),
         );
     }
 
@@ -223,55 +241,58 @@ abstract class AbstractAdapter
             ));
             return;
         }
-
+        
+        $userId = $log['user_id'];
+        
         $logData = array(
             'id' => $log['id'],
             'logStep' => 'response',
+            'user_id' => $log['user_id'],
         );
         
         $itemModel->setItem($logData)->saveLog();
-    
+        
         return $log['id'];
     }
 
-    public function makeUrl($url) 
-    {
-        if (!$url) {
-            return $url;
-        }
-        
-        $params = $this->getCallbackUrlParams();
-        $params['secretKey'] = $this->getSecretKey();
+   public function makeUrl($url) 
+   {
+       if (!$url) {
+           return $url;
+       }
 
-        return $url . "&" . http_build_query($params); 
-    }
+       $params = $this->getCallbackUrlParams();
+       $params['secretKey'] = $this->getSecretKey();
 
-    public function setOptions(array $options = array())
-    {
-        if(!$options['account']){
-            throw new Exception\InvalidArgumentException(sprintf('No account found in %s', get_class($this)));
-        }
+       return $url . "&" . http_build_query($params); 
+   }
 
-        $this->setSandbox($options['sandbox'])
-            ->setOrderTitle($options['orderTitle'])
-            ->setAccount($options['account']);
+   public function setOptions(array $options = array())
+   {
+       if(!$options['account']){
+           throw new Exception\InvalidArgumentException(sprintf('No account found in %s', get_class($this)));
+       }
 
-        if (isset($options['consumerKey'])) {
-            $this->setConsumerKey($options['consumerKey']);
-        }
+       $this->setSandbox($options['sandbox'])
+           ->setOrderTitle($options['orderTitle'])
+           ->setAccount($options['account']);
 
-        if (isset($options['consumerSecret'])) {
-            $this->setConsumerSecret($options['consumerSecret']);
-        }
+       if (isset($options['consumerKey'])) {
+           $this->setConsumerKey($options['consumerKey']);
+       }
 
-        $this->options = $options;
-        return $this;
-    }
+       if (isset($options['consumerSecret'])) {
+           $this->setConsumerSecret($options['consumerSecret']);
+       }
 
-    public function getOptions()
-    {
-        return $this->options;
-    }
+       $this->options = $options;
+       return $this;
+   }
+
+   public function getOptions()
+   {
+       return $this->options;
+   }
 
 
 }
