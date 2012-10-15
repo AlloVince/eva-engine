@@ -19,6 +19,7 @@ use Zend\Uri;
  * @category   Zend
  * @package    Zend_OAuth
  */
-class Access extends \ZendOAuth\Token\Access
+class Access extends AbstractToken //\ZendOAuth\Token\Access
 {
+
 }

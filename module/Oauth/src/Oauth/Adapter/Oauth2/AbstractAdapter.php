@@ -2,63 +2,42 @@
     
 namespace Oauth\Adapter\Oauth2;
 
-use Oauth\Adapter\AdapterInterface;
+use Oauth\Adapter\Oauth2\AdapterInterface;
 use Oauth\Exception;
 use ZendOAuth\OAuth as ZendOAuth;
 use Oauth\Service\Consumer;
-use ZendOAuth\Token\Access as AccessToken;
+use Oauth\Service\Token\Access as AccessToken;
 
 
-abstract class AbstractAdapter
+abstract class AbstractAdapter extends \Oauth\Adapter\AbstractAdapter implements AdapterInterface
 {
-    protected $callback;
+    const ACCESS_TOKEN_FORMAT_JSON = 'json';
+    const ACCESS_TOKEN_FORMAT_JSONP = 'jsonp';
+    const ACCESS_TOKEN_FORMAT_XML = 'xml';
 
-    protected $consumerKey;
+    protected $accessTokenFormat = 'json';
 
-    protected $consumerSecret;
+    protected $accessTokenRequestMethod = ZendOAuth::POST;
 
-    protected $consumer;
-
-    protected $options;
-
-    public function getCallback()
+    public function getAccessTokenFormat()
     {
-        return $this->callback;
+        return $this->accessTokenFormat;
     }
 
-    public function setCallback($callback)
+    public function setAccessTokenFormat($accessToken)
     {
-        $this->callback = $callback;
+        if($accessToken != self::ACCESS_TOKEN_FORMAT_JSON
+            && $accessToken != self::ACCESS_TOKEN_FORMAT_JSONP
+            && $accessToken != self::ACCESS_TOKEN_FORMAT_XML
+        ){
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Undefined access token format %s input, accept format are json|jsonp|xml',
+                $accessToken
+            ));
+        }
+
+        $this->accessTokenFormat = $accessToken;
         return $this;
-    }
-
-    public function getConsumerKey()
-    {
-        return $this->consumerKey;
-    }
-
-    public function setConsumerKey($consumerKey)
-    {
-        $this->consumerKey = $consumerKey;
-        return $this;
-    }
-
-    public function getConsumerSecret()
-    {
-        return $this->consumerSecret;
-    }
-
-    public function setConsumerSecret($consumerSecret)
-    {
-        $this->consumerSecret = $consumerSecret;
-        return $this;
-    }
-
-    public function getAdapterKey()
-    {
-        $className = get_class($this);
-        $className = explode('\\', $className);
-        return strtolower(array_pop($className));
     }
 
     public function setOptions(array $options = array())
@@ -71,6 +50,7 @@ abstract class AbstractAdapter
             'consumerSecret' => $this->getConsumerSecret(),
             'authorizeUrl' => $this->authorizeUrl,
             'accessTokenUrl' => $this->accessTokenUrl,
+            'accessTokenFormat' => $this->accessTokenFormat,
 		);
 
         $options = array_merge($defaultOptions, $options);
@@ -90,14 +70,10 @@ abstract class AbstractAdapter
         $this->setConsumerKey($options['consumerKey']);
         $this->setConsumerSecret($options['consumerSecret']);
         $this->setCallback($options['callbackUrl']);
+        $this->setAccessTokenFormat($options['accessTokenFormat']);
 
         $this->options = $options;
         return $this;
-    }
-
-    public function getOptions()
-    {
-        return $this->options;
     }
 
     public function getConsumer()
@@ -111,65 +87,16 @@ abstract class AbstractAdapter
         $consumer->getHttpClient()->setOptions(array(
             'sslverifypeer' => false
         ));
-
         return $this->consumer = $consumer;
-
     }
-
-    public function getHttpClient()
-    {
-        return $this->getConsumer()->getHttpClient(); 
-    }
-
-    public function getRequest()
-    {
-        return $this->getConsumer()->getHttpClient()->getRequest(); 
-    }
-
-    public function getResponse()
-    {
-        return $this->getConsumer()->getHttpClient()->getResponse(); 
-    }
-
-    /**
-     * Redirect to oauth service page
-     */
-    public function getRequestToken()
-	{
-        return $this->getConsumer()->getRequestToken();
-	}
-
-    /**
-     * Redirect to oauth service page
-     */
-    public function getRequestTokenUrl()
-    {
-        return $this->getConsumer()->getRedirectUrl();
-    }
-
-    /**
-    * Redirect to oauth service page
-    */
-    public function getAccessToken($queryData, $token, $httpMethod = null, $request = null)
-    {
-        return $this->getConsumer()->getAccessToken($queryData, $token, $httpMethod, $request);
-    }
-
 
     public function accessTokenToArray(AccessToken $accessToken)
     {
         return array(
             'adapterKey' => $this->getAdapterKey(),
             'token' => $accessToken->getToken(),
-            'tokenSecret' => $accessToken->getTokenSecret(),
+            //'tokenSecret' => $accessToken->getTokenSecret(),
             'version' => 'Oauth2',
         );
-    }
-
-    public function __construct(array $options = array())
-    {
-        if($options){
-            $this->setOptions($options);
-        }
     }
 }

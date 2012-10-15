@@ -10,6 +10,10 @@
 
 namespace Oauth\Service\Token;
 
+use Zend\Http\Response as HTTPResponse;
+use Oauth\Exception;
+use ZendOAuth\Http\Utility as HTTPUtility;
+
 /**
  * @category   Zend
  * @package    Zend_OAuth
@@ -23,4 +27,66 @@ abstract class AbstractToken extends \ZendOAuth\Token\AbstractToken
     const TOKEN_SECRET_PARAM_KEY         = 'state';
     const TOKEN_PARAM_CALLBACK_CONFIRMED = 'oauth_callback_confirmed';
     /**@-*/
+
+    protected $tokenFormat = 'json';
+
+    public function setTokenFormat($tokenFormat)
+    {
+        $this->tokenFormart = $tokenFormat;
+        return $this;
+    }
+
+    public function getTokenFormat()
+    {
+        return $this->tokenFormart;
+    }
+
+    public function __construct(
+        HTTPResponse $response = null,
+        HTTPUtility $utility = null,
+        $format = null
+    ) {
+        if($format !== null){
+            $this->setTokenFormat($format);
+        }
+
+        if ($response !== null) {
+            $this->_response = $response;
+            $params = $this->_parseParameters($response);
+            if (count($params) > 0) {
+                $this->setParams($params);
+            }
+        }
+        if ($utility !== null) {
+            $this->_httpUtility = $utility;
+        } else {
+            $this->_httpUtility = new HTTPUtility;
+        }
+
+    }
+
+    protected function _parseParameters(HTTPResponse $response)
+    {
+        $params = array();
+        $body   = $response->getBody();
+        if (empty($body)) {
+            return;
+        }
+        $tokenFormat = $this->getTokenFormat();
+
+        switch($tokenFormat){
+            case 'json':
+            $params = \Zend\Json\Json::decode($body);
+            break;
+            case 'jsonp':
+            break;
+            default:
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Unable to handle access token response by undefined format %',
+                $tokenFormat
+            ));
+        }
+
+        return (array) $params;
+    }
 }

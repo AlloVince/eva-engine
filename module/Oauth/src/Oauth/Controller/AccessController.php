@@ -29,7 +29,7 @@ class AccessController extends AbstractActionController
         $config = $this->getServiceLocator()->get('config');
         $helper = $this->getEvent()->getApplication()->getServiceManager()->get('viewhelpermanager')->get('serverurl');
         $url = $helper() . $config['oauth']['access_url_path'] . '?' . http_build_query(array(
-            'callback' => urlencode($callback),
+            'callback' => $callback,
             'service' => $adapter,
             'version' => $version
         ));
@@ -37,7 +37,6 @@ class AccessController extends AbstractActionController
         $version = $version ? 'Oauth' . $version : OauthService::VERSION_OAUTH2;
         $options = array(
             'adapter' => $adapter,
-            'storage' => 'Session',
             'version' => $version,
             'callback' => $url,
         );
@@ -53,6 +52,7 @@ class AccessController extends AbstractActionController
         $accessTokenArray = $oauth->getAdapter()->accessTokenToArray($accessToken);
         $oauth->getStorage()->saveAccessToken($accessTokenArray);
         return $this->redirect()->toUrl($callback);
+
         $view = new ViewModel();
         $view = new \Zend\View\Model\JsonModel();
         $view->setTemplate('blank');

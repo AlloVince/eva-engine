@@ -9,13 +9,9 @@ namespace Oauth\Adapter;
  */
 interface AdapterInterface
 {
-    /*
-    public function getOptions();
-
-    public function setOptions();
-
-    public function getRequest();
+    public function getConsumer();
     
-	public function getRequestTokenUrl();
-    */
+    public function getRequestTokenUrl();
+
+    public function getAccessToken($queryData, $token, $httpMethod, $request);
 }
