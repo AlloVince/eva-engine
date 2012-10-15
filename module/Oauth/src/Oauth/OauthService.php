@@ -161,7 +161,7 @@ class OauthService
      {
          $options = $this->getOptions();
 
-         $adapterClass = 'Oauth\Adapter\\' . $oauthVersion . '\\' . ucfirst(strtolower($adapterName));
+         $adapterClass = 'Oauth\Adapter\\' . ucfirst(strtolower($oauthVersion)) . '\\' . ucfirst(strtolower($adapterName));
 
          if(false === class_exists($adapterClass)){
             throw new Exception\InvalidArgumentException(sprintf('Undefined oauth adapter %s by oauth version %s', $adapterName, $oauthVersion));
