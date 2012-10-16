@@ -10,6 +10,7 @@ class LoginController extends RestfulModuleController
 
     public function indexAction()
     {
+
         $request = $this->getRequest();
         if (!$request->isPost()) {
             return;
