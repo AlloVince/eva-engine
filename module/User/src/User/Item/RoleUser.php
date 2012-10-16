@@ -24,7 +24,22 @@ class RoleUser extends AbstractItem
             }
         }
     }
-
+    
+    public function createRoleUser()
+    {
+        if (!$this->user_id || !$this->role_id) {
+            return;
+        }
+        
+        $dataClass = $this->getDataClass();
+        $item['user_id'] = $this->user_id;
+        $dataClass->where(array(
+            'user_id' => $this->user_id,
+            'role_id' => $this->role_id,
+        ))->remove();
+        
+        $dataClass->create($this->toArray());
+    }
 
     public function save()
     {

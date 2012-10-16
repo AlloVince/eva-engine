@@ -33,6 +33,7 @@ class Listener implements ListenerAggregateInterface
     public function attach(EventManagerInterface $events)
     {
         $this->listeners[] = $events->attach('user.model.register.register.post', array($this, 'onRegisterPost'));
+        $this->listeners[] = $events->attach('payment.model.log.logstep.response', array($this, 'onPaymentLogstepResponse'));
     }
 
     /**
@@ -54,5 +55,20 @@ class Listener implements ListenerAggregateInterface
     {
         $codeModel = \Eva\Api::_()->getModel('User\Model\Code');
         $codeModel->createActiveCode();
+    }
+
+    public function onPaymentLogstepResponse($e)
+    {
+        $userId = $e->getTarget()->getItem()->user_id;
+        
+        if ($userId) {
+            $roleData['user_id'] = $userId;
+            $roleData['role_id'] = 2;
+            $roleData['status']  = 'active';
+            
+            $itemModel = \Eva\Api::_()->getModel('User\Model\RoleUser');
+            $itemModel->setItem($roleData)->createRoleUser();
+        } 
+        
     }
 }
