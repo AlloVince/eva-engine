@@ -55,6 +55,7 @@ return array(
         'exception_template'       => 'error/index',
         'template_map' => array(
             'layout/layout' => EVA_MODULE_PATH . '/Core/layout/layout.phtml',
+            'layout/blank' => EVA_MODULE_PATH . '/Core/layout/blank.phtml',
             'layout/admin' => EVA_MODULE_PATH . '/Core/layout/admin.phtml',
             'layout/adminblank' => EVA_MODULE_PATH . '/Core/layout/adminblank.phtml',
             'index/index'   => EVA_MODULE_PATH . '/Core/view/index/index.phtml',

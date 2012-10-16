@@ -10,6 +10,7 @@ class CalendarController extends AbstractActionController
 {
     public function indexAction()
     {
+        $this->layout('layout/blank');
         $startDay = $this->params()->fromQuery('start');
         $calendar = new Calendar(array(
             'startDay' => $startDay,
