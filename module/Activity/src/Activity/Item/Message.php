@@ -4,6 +4,10 @@ namespace Activity\Item;
 
 use Eva\Mvc\Item\AbstractItem;
 
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use Activity\Service\TextParser;
+
 class Message extends AbstractItem
 {
     protected $dataSourceClass = 'Activity\DbTable\Messages';
@@ -64,5 +68,12 @@ class Message extends AbstractItem
             $user = \Core\Auth::getLoginUser();
             $this->user_id = $user['id'];
         }
+    }
+
+    public function getContentHtml()
+    {
+        $text = $this->content;
+        $parser = TextParser::factory($text, array(), $this->getServiceLocator());
+        $this->ContentHtml = $parser->toHtml();
     }
 }

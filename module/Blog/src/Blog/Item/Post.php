@@ -37,10 +37,16 @@ class Post extends AbstractItem
             'getUrlName()',
             'getCreateTime()',
             'getUpdateTime()',
+            'getUserId()',
+            'getUserName()',
+            'getEditorId()',
+            'getEditorName()',
         ),
         'save' => array(
             'getUrlName()',
             'getUpdateTime()',
+            'getEditorId()',
+            'getEditorName()',
         ),
     );
 
@@ -62,4 +68,33 @@ class Post extends AbstractItem
     {
         $this->updateTime = \Eva\Date\Date::getNow();
     }
+
+    public function getUserId()
+    {
+        if(!$this->user_id){
+            $user = \Core\Auth::getLoginUser();
+            $this->user_id = $user['id'];
+        }
+    }
+
+    public function getUserName()
+    {
+        if(!$this->user_name){
+            $user = \Core\Auth::getLoginUser();
+            $this->user_name = $user['userName'];
+        }
+    }
+
+    public function getEditorId()
+    {
+        $user = \Core\Auth::getLoginUser();
+        $this->editor_id = $user['id'];
+    }
+
+    public function getEditorName()
+    {
+        $user = \Core\Auth::getLoginUser();
+        $this->editor_name = $user['userName'];
+    }
+
 }

@@ -1,6 +1,7 @@
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
+DROP TABLE IF EXISTS `eva_activity_atindexes`;
 CREATE TABLE IF NOT EXISTS `eva_activity_atindexes` (
   `atuser_id` int(10) NOT NULL,
   `message_id` bigint(30) NOT NULL,
@@ -8,13 +9,17 @@ CREATE TABLE IF NOT EXISTS `eva_activity_atindexes` (
   PRIMARY KEY (`atuser_id`,`message_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+DROP TABLE IF EXISTS `eva_activity_atusers`;
 CREATE TABLE IF NOT EXISTS `eva_activity_atusers` (
   `message_id` int(30) NOT NULL,
   `user_id` int(10) NOT NULL,
+  `messageType` enum('original','comment','forword') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'original',
+  `author_id` int(10) NOT NULL,
   PRIMARY KEY (`message_id`,`user_id`),
   KEY `message_id` (`message_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+DROP TABLE IF EXISTS `eva_activity_followers`;
 CREATE TABLE IF NOT EXISTS `eva_activity_followers` (
   `user_id` int(10) NOT NULL,
   `follower_id` int(10) NOT NULL,
@@ -23,6 +28,7 @@ CREATE TABLE IF NOT EXISTS `eva_activity_followers` (
   PRIMARY KEY (`user_id`,`follower_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+DROP TABLE IF EXISTS `eva_activity_indexes`;
 CREATE TABLE IF NOT EXISTS `eva_activity_indexes` (
   `user_id` int(10) NOT NULL,
   `author_id` int(10) NOT NULL,
@@ -31,6 +37,7 @@ CREATE TABLE IF NOT EXISTS `eva_activity_indexes` (
   PRIMARY KEY (`user_id`,`author_id`,`message_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+DROP TABLE IF EXISTS `eva_activity_messages`;
 CREATE TABLE IF NOT EXISTS `eva_activity_messages` (
   `id` bigint(32) NOT NULL AUTO_INCREMENT,
   `messageHash` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
@@ -51,18 +58,21 @@ CREATE TABLE IF NOT EXISTS `eva_activity_messages` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
+DROP TABLE IF EXISTS `eva_activity_message_file`;
 CREATE TABLE IF NOT EXISTS `eva_activity_message_file` (
   `message_id` bigint(32) NOT NULL,
   `file_id` int(11) NOT NULL,
   PRIMARY KEY (`message_id`,`file_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+DROP TABLE IF EXISTS `eva_activity_message_video`;
 CREATE TABLE IF NOT EXISTS `eva_activity_message_video` (
   `message_id` bigint(32) NOT NULL,
   `video_id` int(10) NOT NULL,
   PRIMARY KEY (`message_id`,`video_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+DROP TABLE IF EXISTS `eva_activity_references`;
 CREATE TABLE IF NOT EXISTS `eva_activity_references` (
   `original_user_id` int(11) NOT NULL,
   `original_message_id` int(11) NOT NULL,
@@ -73,6 +83,7 @@ CREATE TABLE IF NOT EXISTS `eva_activity_references` (
   PRIMARY KEY (`reference_user_id`,`reference_message_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+DROP TABLE IF EXISTS `eva_activity_sources`;
 CREATE TABLE IF NOT EXISTS `eva_activity_sources` (
   `id` int(5) NOT NULL AUTO_INCREMENT,
   `sourceName` varchar(50) COLLATE utf8_unicode_ci NOT NULL,

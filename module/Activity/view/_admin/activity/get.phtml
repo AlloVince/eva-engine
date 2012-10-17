@@ -49,7 +49,7 @@ $form->useSubFormGroup()
                     <div class="control-group <?=$form->isError('content') ? 'error' : '';?>">
                         <?=$form->helper('content', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper('content', 'formTextarea', array('class' => ''))?>        
+                            <?=$form->helper('content', 'formTextarea', array('class' => 'span9', 'rows' => 5))?>        
                             <div class="help-block"><?=$form->helper('content', 'formElementErrors')?></div>
                         </div>
                     </div>
@@ -61,6 +61,14 @@ $form->useSubFormGroup()
             <button class="btn btn-info btn-large">Save</button>
         </div>
     </form>
+</div>
+
+<div class="row">
+    <div class="span10">
+        <div class="slate">
+    <?=$item['ContentHtml']?>
+        </div>
+    </div>
 </div>
 
 

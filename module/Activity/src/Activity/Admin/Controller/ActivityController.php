@@ -47,6 +47,7 @@ class ActivityController extends RestfulModuleController
         $item = $itemModel->getActivity($id, array(
             'self' => array(
                 '*',
+                'getContentHtml()',
             ),
             'join' => array(
             ),

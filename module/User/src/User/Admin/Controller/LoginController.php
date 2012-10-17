@@ -32,9 +32,10 @@ class LoginController extends RestfulModuleController
                     'username' => $item['loginName'],
                     'password' => $item['inputPassword'],
                 ));
+                $config = Api::_()->getConfig();
                 if($authResult->isValid()){
                     $auth->saveLoginUser(array(
-                        'id' => '0',
+                        'id' => $config['superadmin']['id'],
                         'userName' => $item['loginName'],
                         'isSuperAdmin' => true,
                     ));
