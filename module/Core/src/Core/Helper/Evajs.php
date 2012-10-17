@@ -70,7 +70,7 @@ class Evajs extends \Zend\Form\View\Helper\AbstractHelper
             'lang' => 'en',
             'dir' => rtrim($this->view->uri('/', '-b'), '/'),
             'f' => $this->view->uri($this->view->serverUrl(), '-b'),
-            's' => rtrim($this->view->link('/', '-B')),
+            's' => rtrim($this->view->link('/', '-B'), '/'),
             'lang' => $lang,
             'ie' => false,
         ), $jsParams);
