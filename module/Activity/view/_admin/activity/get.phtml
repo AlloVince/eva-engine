@@ -1,0 +1,71 @@
+<?
+$item = $this->item;
+$title = $item['id'] ? 'Edit Activity' : 'Create Activity';
+$title = $this->_($title);
+$method = $item['id'] ? 'put' : 'post';
+$this->headTitle($title, 'SET');
+$this->textDelay('breadcrumbText', $title);
+
+if($this->form){
+	$form = $this->form;
+} else {
+    if($item['id']) {
+        $form = new Activity\Form\MessageEditForm();
+    } else {
+        $form = new Activity\Form\MessageCreateForm();
+    }
+}
+$form->useSubFormGroup()
+     ->setMethod($item['id'] ? 'put' : 'post')
+     ->setView($this)
+     ->setAction($this->uri('/admin/activity/'))
+     ->bind($item)
+     ->prepare();
+
+?>
+
+<div class="row">
+    <form <?=$this->formAttr($form)?>>
+        <?=$form->restful();?>
+        <?=$form->helper('id');?>
+        <div class="span10">
+            <div class="slate">
+                <div class="page-header">
+                    <?if($item['id']):?>
+                    <div class="btn-group pull-right">
+                        <a href="<?=$this->uri('/admin/activity/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/activity/' . $item['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
+                    </div>
+                    <?endif?>
+                    <h2><?=$title?></h2>
+                </div>
+                <fieldset class="">
+                    <div class="control-group <?=$form->isError('messageType') ? 'error' : '';?>">
+                        <?=$form->helper('messageType', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('messageType', 'formSelect', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('messageType', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError('content') ? 'error' : '';?>">
+                        <?=$form->helper('content', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('content', 'formTextarea', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('content', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <?=$form->helper('connect_id', array('class' => ''))?>
+                </fieldset>
+            </div>
+        </div><!--span10 end-->
+        <div class="span10 listing-buttons">
+            <button class="btn btn-info btn-large">Save</button>
+        </div>
+    </form>
+</div>
+
+
+<script>
+    eva.runtime = function(){
+
+    }
+</script>

@@ -61,6 +61,24 @@
                         </ul>
                         </li>
                         <?endif?>
+                        <?if($this->hasmodule('Activity')):?>
+                        <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="collapse" data-target="#user-dropdown" href="#"><i class="icon-user"></i> <?=$this->_('Activity')?> <b class="caret"></b></a>
+                        <ul id="user-dropdown" class="collapse">
+                            <li data-highlight-url="/admin/activity/(\d+)*$"><a href="<?=$this->uri('/admin/activity/')?>"><?=$this->_('Activity Management')?></a></li>
+                            <li data-highlight-url="/admin/activity/create"><a href="<?=$this->uri('/admin/activity/create')?>"><?=$this->_('Create Activity')?></a></li>
+                        </ul>
+                        </li>
+                        <?endif?>
+                        <?if($this->hasmodule('Event')):?>
+                        <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="collapse" data-target="#user-dropdown" href="#"><i class="icon-user"></i> <?=$this->_('Event')?> <b class="caret"></b></a>
+                        <ul id="user-dropdown" class="collapse">
+                            <li data-highlight-url="/admin/event/(\d+)*$"><a href="<?=$this->uri('/admin/event/')?>"><?=$this->_('Event Management')?></a></li>
+                            <li data-highlight-url="/admin/event/create"><a href="<?=$this->uri('/admin/event/create')?>"><?=$this->_('Create Event')?></a></li>
+                        </ul>
+                        </li>
+                        <?endif?>
                         <?if($this->hasmodule('User')):?>
                         <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="collapse" data-target="#user-dropdown" href="#"><i class="icon-user"></i> <?=$this->_('User')?> <b class="caret"></b></a>

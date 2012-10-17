@@ -5,6 +5,8 @@ return array(
         'User',
         'Blog',
         'File',
+        'Event',
+        'Activity',
         'Scaffold',
         'Engine',
         //'ZendDeveloperTools',
