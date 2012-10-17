@@ -68,9 +68,9 @@ class Evajs extends \Zend\Form\View\Helper\AbstractHelper
             'debug' => false,
             'version' => 1,
             'lang' => 'en',
-            'dir' => $this->view->uri('/', '-b'),
-            'f' => $this->view->uri($this->view->serverUrl() . '/', '-b'),
-            's' => $this->view->link('/', '-B'),
+            'dir' => rtrim($this->view->uri('/', '-b'), '/'),
+            'f' => $this->view->uri($this->view->serverUrl(), '-b'),
+            's' => rtrim($this->view->link('/', '-B')),
             'lang' => $lang,
             'ie' => false,
         ), $jsParams);
