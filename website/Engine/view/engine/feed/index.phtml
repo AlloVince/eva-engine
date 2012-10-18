@@ -1,0 +1,52 @@
+<? 
+$title = $this->_('Feed');
+$this->headTitle($title, 'SET');
+if($this->form){
+	$form = $this->form;
+} else {
+    $form = new Activity\Form\MessageCreateForm();
+}
+$item = $this->item;
+$form->useSubFormGroup()
+     ->setMethod($item['id'] ? 'put' : 'post')
+     ->setView($this)
+     ->setAction($this->uri('/activity/'))
+     ->bind($item)
+     ->prepare();
+?>
+<div class="container">
+
+    <header class="page-header">
+    <h2 class=""><?=$title?></h2>
+    </header>
+    <form id="activity-form" <?=$this->formAttr($form)?>>
+        <?=$form->restful();?>
+        <?=$form->helper('id');?>
+
+        <div class="span10 well">
+            <fieldset class="">
+                <?=$form->helper('messageType', 'formHidden', array('class' => ''))?>        
+                <?=$form->helper('content', 'formTextarea', array('class' => 'span10', 'rows' => 5))?>        
+                <div class="help-block"><?=$form->helper('content', 'formElementErrors')?></div>
+                <?=$form->helper('connect_id', array('class' => ''))?>
+                <?=$form->helper(array('MessageFile', 'file_id'), array('class' => ''))?>
+                <h6 class="pull-right">320 characters remaining</h6>
+                <button class="btn btn-info" type="submit">Post New Message</button><a class="btn dropdown-toggle" data-toggle="dropdown" href="#fileupload-modal">Image</a>
+            </fieldset>
+        </div><!--span10 end-->
+    </form>
+</div>
+
+<?=$this->widget('File', 'file/index')?>
+
+<script>
+    var modal = $("#fileupload-modal");
+    modal.addClass('dropdown-menu');
+    //modal.hide();
+    var uploader = $('#singlefileupload');
+    var form = $("#activity-form");
+    uploader.bind('fileuploaddone', function (e, data) {
+            var file = data.result;
+            form.find('input[name="MessageFile[file_id]"]').val(file.id);
+    });
+</script>

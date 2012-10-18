@@ -14,21 +14,23 @@ $form->setView($this)
 ->setAction($this->uri('/api/file/'));
 ?>
 
+<!--
 <form <?=$this->formAttr($form)?> enctype="multipart/form-data" class="hide">
     <?=$form->restful();?>
     <fieldset class="">
         <div class="input-append <?=$form->isError('upload') ? 'error' : '';?>">
             <?=$form->helper('upload', 'label', array('class' => 'control-label'))?>
-            <?=$form->helper('upload', array('name' => 'upload[]', 'class' => 'fileuploader', 'multiple', 'data-url' => '/file/upload'))?>
+            <?=$form->helper('upload', array('name' => 'upload[]', 'class' => '', 'multiple', 'data-url' => '/file/upload'))?>
             <button class="btn"><?=$this->_('Upload')?></button>
             <div class="help-block"><?=$form->helper('upload', 'formElementErrors')?></div>
         </div>
     </fieldset>
 </form>
+-->
 
-<form <?=$this->formAttr($form)?> enctype="multipart/form-data" class="fileuploader">
-    <?=$form->restful();?>
-    <div class="modal ">
+<div id="fileupload-modal" class="modal">
+    <form id="singlefileupload" <?=$this->formAttr($form)?> enctype="multipart/form-data">
+        <?=$form->restful();?>
         <div class="modal-header">
             <span class="close" data-dismiss="modal">×</span>
             <h3>Upload Image</h3>
@@ -38,43 +40,138 @@ $form->setView($this)
                 <div class="span12">
                     <div class="span6">
                         <div id="image-preview" class="logowrapper">
-                            <div class="well">
+                            <div class="well" role="presentation">
                                 <p class="help-block">Only image files (jpg|gif|png) allowed.</p>
                                 <p class="help-block">Maximum image size is 5 MB.</p>
                                 <p>You can drag &amp; drop images here from your desktop.</p>
                             </div>
-
+                            <div class="fileupload-loading">
+                            </div>
                         </div>
                     </div>
                     <div class="span6">
-                        <form class="form-horizontal">
-                            <div class="control-group">
-                                <span class="btn fileinput-button">
-                                    <i class="icon-plus icon-white"></i>
-                                    <span><?=$this->_('Select Image')?>...</span>
-                                    <input id="fileupload" type="file" name="upload[]" data-url="/api/file/">
-                                </span>
-                                <button type="submit" class="btn  start">
-                                    <i class="icon-upload icon-white"></i>
-                                    <span><?=$this->_('Start upload')?></span>
-                                </button>
+                        <div class="control-group fileupload-buttonbar">
+                            <span class="btn fileinput-button">
+                                <i class="icon-plus icon-white"></i>
+                                <span><?=$this->_('Select Image')?>...</span>
+                                <input type="file" name="upload[]"  multiple>
+
+                            </span>
+                            <button type="submit" class="btn start">
+                                <i class="icon-upload icon-white"></i>
+                                <span><?=$this->_('Start upload')?></span>
+                            </button>
+                        </div>
+                        <div id="result" class="fileupload-progress fade">
+                            <div id="progress" class="progress progress-striped" style="height:5px;">
+                                <div class="bar" style="width: 0%;"></div>
                             </div>
-                            <div id="result" class="">
-                                <div id="progress" class="progress progress-striped" style="height:5px;">
-                                    <div class="bar" style="width: 0%;"></div>
-                                </div>
-                            </div>
+                            <input id="fileupload-response" type="hidden" />
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <p id="upload-hint"></p>
-            </div>
+        </div>
+        <div class="modal-footer">
+            <p id="upload-hint"></p>
         </div>
     </form>
+</div>
+
+<!-- The template to display files available for upload -->
+<script id="template-upload" type="text/x-tmpl">
+    {% for (var i=0, file; file=o.files[i]; i++) { %}
+    <div class="template-upload">
+        <div class="preview"><span class="fade"></span></div>
+        <div class="name"><span>{%=file.name%}</span></div>
+        <div class="size"><span>{%=o.formatFileSize(file.size)%}</span></div>
+        {% if (file.error) { %}
+            <div class="error" colspan="2"><span class="label label-important">Error</span> {%=file.error%}</div>
+        {% } else if (o.files.valid && !i) { %}
+            <div>
+                <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar" style="width:0%;"></div></div>
+            </div>
+            <div class="start">{% if (!o.options.autoUpload) { %}
+                <button class="btn btn-primary">
+                    <i class="icon-upload icon-white"></i>
+                    <span>Start</span>
+                </button>
+            {% } %}</div>
+        {% } else { %}
+            <div colspan="2"></div>
+        {% } %}
+        <div class="cancel">{% if (!i) { %}
+            <button class="btn btn-warning">
+                <i class="icon-ban-circle icon-white"></i>
+                <span>Cancel</span>
+            </button>
+        {% } %}</div>
+    </div>
+{% } %}
+</script>
+
+<script id="template-download" type="text/x-tmpl">
+</script>
 
 <script>
+var evaUpload = function(){
+
+    var uploader = $("#singlefileupload");
+    uploader.fileupload();
+    uploader.fileupload(
+        'option',
+        'redirect',
+        window.location.href.replace(
+            /\/[^\/]*$/,
+            '/cors/result.html?%s'
+        )
+    );
+
+    uploader.fileupload('option', {
+            url : '/api/file/',
+            dataType: 'json',
+            autoUpload: true,
+            acceptFileTypes:  /(\.|\/)(gif|jpe?g|png)$/i,
+            maxNumberOfFiles : 1,
+            maxFileSize: 5000000,
+            /*
+            progressall: function (e, data) {
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+                    $('#progress .bar').css(
+                        'width',
+                        progress + '%'
+                    );
+            },
+            */
+            done: function (e, data) {
+                    $.each(data.result, function (index, file) {
+                            //console.log(file);
+                            //console.log(data);
+                            $('#progress .bar').css('width', '100%');
+                            $('<p/>').text(file.name + ' uploaded').appendTo($("#upload-hint"));
+                            $('#image-preview').html('<img src="' + file.thumbnail_url + '" alt="' + file.name + '" width="300" class="img-polaroid" />');
+                    });
+
+            }
+    });
+
+    uploader.find(".fileupload-buttonbar .fileinput-button").removeAttr("disabled");
+
+    // Upload server status check for browsers with CORS support:
+    /*
+    if ($.support.cors) {
+        $.ajax({
+            url: '//jquery-file-upload.appspot.com/',
+            type: 'HEAD'
+        }).fail(function () {
+            $('<span class="alert alert-error"/>')
+                .text('Upload server currently unavailable - ' +
+                        new Date())
+                .appendTo('#fileupload');
+        });
+    }
+    */
+}
 eva.runtime = function(){
         var libs = [
         "/lib/js/jstemplates/tmpl.js", 
@@ -86,30 +183,9 @@ eva.runtime = function(){
         "/lib/js/upload/js/jquery.fileupload-ui.js" 
         ];
 
+        eva.loadcss(eva.s(["/lib/js/upload/css/jquery.fileupload-ui.css"]));
         eva.loader(eva.s(libs), function(){
-                $('#fileupload').fileupload({
-                        dataType: 'json',
-                        //autoUpload: false,
-                        acceptFileTypes:  /(\.|\/)(gif|jpe?g|png)$/i,
-                        maxNumberOfFiles : 1,
-                        progressall: function (e, data) {
-                                var progress = parseInt(data.loaded / data.total * 100, 10);
-                                $('#progress .bar').css(
-                                    'width',
-                                    progress + '%'
-                                );
-                        },
-                        done: function (e, data) {
-                                $.each(data.result, function (index, file) {
-                                        //console.log(file);
-                                        //console.log(data);
-                                        $('#progress .bar').css('width', '100%');
-                                        $('<p/>').text(file.name + ' uploaded').appendTo($("#upload-hint"));
-                                        $('#image-preview').html('<img src="' + file.thumbnail_url + '" alt="' + file.name + '" width="300" class="img-polaroid" />');
-                                });
-
-                        }
-                });
+            evaUpload();
         });
 }
 </script>

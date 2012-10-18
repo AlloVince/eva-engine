@@ -18,6 +18,7 @@
     <?=$this->evajs()?>
     <script src="<?=$this->link('/lib/js/labjs/labjs.min.js')?>"></script>
     <script src="<?=$this->link('/lib/js/jquery/jquery.min.js')?>"></script>
+    <!--<script src="<?=$this->link('/lib/js/bootstrap/bootstrap.min.js')?>"></script>-->
     <script src="<?=$this->link('/eva/js/core.js')?>"></script>
     <script src="<?=$this->link('/eva/js/ui.js')?>"></script>
     <script src="<?=$this->link('/src/admin/js/init.js')?>"></script>
@@ -34,6 +35,9 @@
         <?if($this->hasModule('User')):?>
         <li data-highlight-url="/register/*"><a href="/register/"><?=$this->_('Register')?></a></li>
         <li data-highlight-url="/login/*"><a href="/login/"><?=$this->_('Login')?></a></li>
+        <?endif?>
+        <?if($this->hasModule('Activity')):?>
+        <li data-highlight-url="/feed/?"><a href="/feed/"><?=$this->_('Feed')?></a></li>
         <?endif?>
 	</ul>
     <ul class="nav pull-right">

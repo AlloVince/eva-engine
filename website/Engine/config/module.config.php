@@ -79,6 +79,20 @@ return array(
                 ),
                 'priority' => 2,
             ),
+            'feed' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/feed/[:action/]',
+                    'constraints' => array(
+                        'action'     => '[a-zA-Z]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'FeedController',
+                        'action' => 'index',
+                    ),
+                ),
+                'priority' => 2,
+            ),
         ),
     ),
     'controllers' => array(
@@ -87,6 +101,7 @@ return array(
             'IndexController' => 'Engine\Controller\IndexController',
             'LoginController' => 'Engine\Controller\LoginController',
             'UserController' => 'Engine\Controller\UserController',
+            'FeedController' => 'Engine\Controller\FeedController',
         ),
     ),
 );
