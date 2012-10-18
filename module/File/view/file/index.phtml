@@ -28,8 +28,6 @@ $form->setView($this)
 </form>
 -->
 
-        
-
 
 <div id="fileupload-modal" class="popover bottom show">
     <div class="arrow"></div>
@@ -38,29 +36,30 @@ $form->setView($this)
         <form id="singlefileupload" <?=$this->formAttr($form)?> enctype="multipart/form-data">
             <?=$form->restful();?>
             <div class="control-group fileupload-buttonbar centeralign clearfix">
-                <span class="btn fileinput-button">
+                <span class="btn fileinput-button btn-block">
                     <i class="icon-plus icon-white"></i>
                     <span><?=$this->_('Select Image')?>...</span>
-                    <input type="file" name="upload[]"  multiple>
+                    <input type="file" name="upload[]"  accept="image/png, image/gif, image/jpg, image/jpeg">
                 </span>
-                <!--
-                <button type="submit" class="btn start">
+                <button type="submit" class="btn start btn-block">
                     <i class="icon-upload icon-white"></i>
                     <span><?=$this->_('Start upload')?></span>
                 </button>
-                -->
             </div>
-            <div id="result" class="fileupload-progress">
-                <div id="progress" class="progress progress-striped" style="height:5px;">
+            <div id="result" class="fileupload-progress hide">
+                <div id="progress" class="progress progress-striped" style="height:5px;"  role="progressbar" aria-valuemin="0" aria-valuemax="100">
                     <div class="bar" style="width: 0%;"></div>
                 </div>
+                <div class="progress-extended">&nbsp;</div>
                 <input id="fileupload-response" type="hidden" />
             </div>
             <div id="image-preview" class="logowrapper">
-                <div class="well" role="presentation">
+                <div class="files" role="presentation">
+                    <!--
                     <p class="help-block">Only image files (jpg|gif|png) allowed.</p>
                     <p class="help-block">Maximum image size is 5 MB.</p>
                     <p class="help-block">You can drag &amp; drop images here from your desktop.</p>
+                    -->
                 </div>
                 <div class="fileupload-loading">
                 </div>
@@ -69,84 +68,131 @@ $form->setView($this)
         </form>
     </div>
 
-    <!-- The template to display files available for upload -->
-    <script id="template-upload" type="text/x-tmpl">
-        {% for (var i=0, file; file=o.files[i]; i++) { %}
-            <div class="template-upload">
-                <div class="preview"><span class="fade"></span></div>
-                <div class="name"><span>{%=file.name%}</span></div>
-                <div class="size"><span>{%=o.formatFileSize(file.size)%}</span></div>
-                {% if (file.error) { %}
-                    <div class="error" colspan="2"><span class="label label-important">Error</span> {%=file.error%}</div>
-                    {% } else if (o.files.valid && !i) { %}
-                    <div>
-                        <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar" style="width:0%;"></div></div>
-        </div>
-        <div class="start">{% if (!o.options.autoUpload) { %}
-            <button class="btn btn-primary">
-                <i class="icon-upload icon-white"></i>
-                <span>Start</span>
-            </button>
-            {% } %}</div>
-        {% } else { %}
-        <div colspan="2"></div>
+<!-- The template to display files available for upload -->
+<script id="template-upload" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+<div class="template-upload fade">
+    {% if (file.error) { %}
+        <div class="alert error">{%=file.error%}</div>
+        <span class="cancel"><button class="btn btn-block"><i class="icon-ban-circle icon-white"></i><span>Cancel</span></span>
+    {% } else { %}
+    <div class="preview thumbnail"><span class="fade"></span></div>
+    <div class="name"><span>{%=file.name%}</span></div>
+    <div class="size"><span>{%=o.formatFileSize(file.size)%}</span></div>
+    <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="height:5px;"><div class="bar" style="width:0%;"></div></div>
+    <span class="cancel"><button class="btn btn-block"><i class="icon-ban-circle icon-white"></i><span>Cancel</button></span>
+    <span class="start">
+        {% if (!o.options.autoUpload) { %}
+            <button class="btn btn-block"><i class="icon-upload icon-white"></i><span>Start</span></button>
         {% } %}
-        <div class="cancel">{% if (!i) { %}
-            <button class="btn btn-warning">
-                <i class="icon-ban-circle icon-white"></i>
-                <span>Cancel</span>
-            </button>
-            {% } %}</div>
+    </span>
+    {% } %}
+</div>
+{% } %}
+</script>
+
+
+<!-- The template to display files available for download -->
+<script id="template-download" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+<div class="template-download fade">
+    {% if (file.error) { %}
+        <div class="alert error">{%=file.error%}</div>
+        <span class="cancel"><button class="btn btn-block"><i class="icon-ban-circle icon-white"></i><span>Cancel</span></span>
+    {% } else { %}
+    <div class="preview thumbnail"><img src="{%=file.thumbnail_url%}"></div>
+    <div class="name"><span>{%=file.name%}</span></div>
+    <div class="size"><span>{%=o.formatFileSize(file.size)%}</span></div>
+    <div class="delete">
+    <button class="btn btn-block" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}">
+        <i class="icon-trash icon-white"></i>
+        <span>Delete</span>
+    </button>
     </div>
     {% } %}
+</div>
+{% } %}
 </script>
 
-<script id="template-download" type="text/x-tmpl">
-</script>
+
+
 
 <script>
-    var evaUpload = function(){
+var evaUpload = function(){
 
-        var uploader = $("#singlefileupload");
-        uploader.fileupload();
-        uploader.fileupload(
-            'option',
-            'redirect',
-            window.location.href.replace(
-                /\/[^\/]*$/,
-                '/cors/result.html?%s'
-            )
-        );
+    var uploader = $("#singlefileupload");
+    uploader.fileupload();
+    uploader.fileupload(
+        'option',
+        'redirect',
+        window.location.href.replace(
+            /\/[^\/]*$/,
+            '/cors/result.html?%s'
+        )
+    );
 
-        uploader.fileupload('option', {
-            url : '/api/file/',
-            dataType: 'json',
-            autoUpload: true,
-            acceptFileTypes:  /(\.|\/)(gif|jpe?g|png)$/i,
-            maxNumberOfFiles : 1,
-            maxFileSize: 5000000,
-            /*
-            progressall: function (e, data) {
-                    var progress = parseInt(data.loaded / data.total * 100, 10);
-                    $('#progress .bar').css(
-                        'width',
-                        progress + '%'
-                    );
-            },
-            */
-            done: function (e, data) {
-                    $.each(data.result, function (index, file) {
-                            //console.log(file);
-                            //console.log(data);
-                            //$('#progress .bar').css('width', '100%');
-                            //$('<p/>').text(file.name + ' uploaded').appendTo($("#upload-hint"));
-                            $('#image-preview').html('<img src="' + file.thumbnail_url + '" alt="' + file.name + '" class="img-polaroid" style="max-width:250px;max-height:150px;" />');
-                    });
-
+    uploader.bind('fileuploadfailed', function (e, data) {
+            eva.p(data);
+    });
+    uploader.bind('fileuploadadded', function (e, data) {
+            if(!data.files.valid) {
+                    uploader.find('.files .cancel').click();
             }
     });
+    uploader.bind('fileuploadchange', function (e, data) {
+            uploader.find('.files').empty();
+    });
+    uploader.fileupload('option', {
+        url : '/api/file/',
+        dataType: 'json',
+        autoUpload: false,
+        acceptFileTypes:  /(\.|\/)(gif|jpe?g|png)$/i,
+        maxNumberOfFiles : 1,
+        fileInput : uploader.find("input:file"),
+        maxFileSize: 5000000,
+        previewMaxWidth : 200,
+        previewMaxHeight : 200,
+            process: [
+                {
+                    action: 'load',
+                    fileTypes: /^image\/(gif|jpeg|png)$/,
+                    maxFileSize: 20000000 // 20MB
+                },
+                {
+                    action: 'resize',
+                    maxWidth: 1440,
+                    maxHeight: 900
+                },
+                {
+                    action: 'save'
+                }
+            ]
 
-    uploader.find(".fileupload-buttonbar .fileinput-button").removeAttr("disabled");
+        /*
+        progressall: function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $('#progress .bar').css(
+                    'width',
+                    progress + '%'
+                );
+        },
+        */
+        /*
+        done: function (e, data) {
+                $.each(data.result, function (index, file) {
+                        //console.log(file);
+                        //console.log(data);
+                        //$('#progress .bar').css('width', '100%');
+                        //$('<p/>').text(file.name + ' uploaded').appendTo($("#upload-hint"));
+                        $('#image-preview').html('<img src="' + file.thumbnail_url + '" alt="' + file.name + '" class="img-polaroid" style="max-width:200px;max-height:200px;" />');
+                });
+
+        }
+        */
+    });
+
+    //Fix firefox input disable attr issue
+    uploader.find("input:file").removeAttr('disabled');
 
     // Upload server status check for browsers with CORS support:
     /*
