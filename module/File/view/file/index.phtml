@@ -1,0 +1,115 @@
+<?
+$title = $this->_('File Upload');
+$this->headTitle($title, 'SET');
+$this->textDelay('breadcrumbText', $title);
+
+if($this->form){
+	$form = $this->form;
+} else {
+    $form = new File\Form\UploadForm();
+}
+
+$form->setView($this)
+->setMethod('post')
+->setAction($this->uri('/api/file/'));
+?>
+
+<form <?=$this->formAttr($form)?> enctype="multipart/form-data" class="hide">
+    <?=$form->restful();?>
+    <fieldset class="">
+        <div class="input-append <?=$form->isError('upload') ? 'error' : '';?>">
+            <?=$form->helper('upload', 'label', array('class' => 'control-label'))?>
+            <?=$form->helper('upload', array('name' => 'upload[]', 'class' => 'fileuploader', 'multiple', 'data-url' => '/file/upload'))?>
+            <button class="btn"><?=$this->_('Upload')?></button>
+            <div class="help-block"><?=$form->helper('upload', 'formElementErrors')?></div>
+        </div>
+    </fieldset>
+</form>
+
+<form <?=$this->formAttr($form)?> enctype="multipart/form-data" class="fileuploader">
+    <?=$form->restful();?>
+    <div class="modal ">
+        <div class="modal-header">
+            <span class="close" data-dismiss="modal">×</span>
+            <h3>Upload Image</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="span6">
+                        <div id="image-preview" class="logowrapper">
+                            <div class="well">
+                                <p class="help-block">Only image files (jpg|gif|png) allowed.</p>
+                                <p class="help-block">Maximum image size is 5 MB.</p>
+                                <p>You can drag &amp; drop images here from your desktop.</p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="span6">
+                        <form class="form-horizontal">
+                            <div class="control-group">
+                                <span class="btn fileinput-button">
+                                    <i class="icon-plus icon-white"></i>
+                                    <span><?=$this->_('Select Image')?>...</span>
+                                    <input id="fileupload" type="file" name="upload[]" data-url="/api/file/">
+                                </span>
+                                <button type="submit" class="btn  start">
+                                    <i class="icon-upload icon-white"></i>
+                                    <span><?=$this->_('Start upload')?></span>
+                                </button>
+                            </div>
+                            <div id="result" class="">
+                                <div id="progress" class="progress progress-striped" style="height:5px;">
+                                    <div class="bar" style="width: 0%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <p id="upload-hint"></p>
+            </div>
+        </div>
+    </form>
+
+<script>
+eva.runtime = function(){
+        var libs = [
+        "/lib/js/jstemplates/tmpl.js", 
+        "/lib/js/loadimage/load-image.js", 
+        "/lib/js/upload/js/vendor/jquery.ui.widget.js", 
+        "/lib/js/upload/js/jquery.iframe-transport.js",
+        "/lib/js/upload/js/jquery.fileupload.js", 
+        "/lib/js/upload/js/jquery.fileupload-fp.js", 
+        "/lib/js/upload/js/jquery.fileupload-ui.js" 
+        ];
+
+        eva.loader(eva.s(libs), function(){
+                $('#fileupload').fileupload({
+                        dataType: 'json',
+                        //autoUpload: false,
+                        acceptFileTypes:  /(\.|\/)(gif|jpe?g|png)$/i,
+                        maxNumberOfFiles : 1,
+                        progressall: function (e, data) {
+                                var progress = parseInt(data.loaded / data.total * 100, 10);
+                                $('#progress .bar').css(
+                                    'width',
+                                    progress + '%'
+                                );
+                        },
+                        done: function (e, data) {
+                                $.each(data.result, function (index, file) {
+                                        //console.log(file);
+                                        //console.log(data);
+                                        $('#progress .bar').css('width', '100%');
+                                        $('<p/>').text(file.name + ' uploaded').appendTo($("#upload-hint"));
+                                        $('#image-preview').html('<img src="' + file.thumbnail_url + '" alt="' + file.name + '" width="300" class="img-polaroid" />');
+                                });
+
+                        }
+                });
+        });
+}
+</script>

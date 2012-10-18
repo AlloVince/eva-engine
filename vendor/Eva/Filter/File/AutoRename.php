@@ -166,7 +166,8 @@ class AutoRename extends \Zend\Filter\AbstractFilter
      */ 
     protected function getExtension($fileFullName)
     {
-        return strtolower(end(explode(".", $fileFullName)));
+        $filenameArray = explode(".", $fileFullName);
+        return strtolower(end($filenameArray));
     }
 
     /**

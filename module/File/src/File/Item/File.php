@@ -111,7 +111,8 @@ class File extends AbstractItem
     {
         $file = $this->getModel()->getUploadFile();
         if($file['name']) {
-            return $this->fileExtension = strtolower(end(explode(".", $file['name'])));
+            $filenameArray = explode(".", $file['name']);
+            return $this->fileExtension = strtolower(end($filenameArray));
         }
     }
 

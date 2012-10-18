@@ -8,7 +8,7 @@ use Zend\File\Transfer\Exception;
 
 class Transfer extends \Zend\File\Transfer\Transfer
 {
-    public function setAdapter($adapter, $direction = false)
+    public function setAdapter($adapter, $direction = false, $options = array())
     {
         $direction = (integer) $direction;
         $this->adapter[$direction] = $adapter;

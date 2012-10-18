@@ -21,7 +21,7 @@
 				"/lib/js/upload/js/jquery.fileupload-fp.js", 
 				"/lib/js/upload/js/jquery.fileupload-ui.js", 
 				"/lib/js/upload/js/locale.js", 
-				"/lib/js/upload/js/main.js", 
+				"/lib/js/upload/js/main.js" 
 			],
 			pathTinymce : "/lib/js/tiny_mce/jquery.tinymce.js"
 		},

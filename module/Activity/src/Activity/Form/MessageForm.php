@@ -37,9 +37,10 @@ class MessageForm extends \Eva\Form\Form
         ),
         'messageType' => array (
             'name' => 'messageType',
-            'type' => 'select',
+            'type' => 'hidden',
             'options' => array (
                 'label' => 'Message Type',
+                /*
                 'value_options' => array (
                     array (
                         'label' => 'Original',
@@ -54,6 +55,7 @@ class MessageForm extends \Eva\Form\Form
                         'value' => 'forword',
                     ),
                 ),
+                */
             ),
             'attributes' => array (
                 'value' => 'original',
