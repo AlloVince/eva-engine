@@ -28,44 +28,51 @@ $form->setView($this)
 </form>
 -->
 
-<div id="fileupload-modal" class="modal">
-        <div class="modal-body">
-            <span class="close" data-dismiss="modal">×</span>
+<div id="fileupload-modal" class="modal hide">
     <form id="singlefileupload" <?=$this->formAttr($form)?> enctype="multipart/form-data">
         <?=$form->restful();?>
-        <div class="control-group fileupload-buttonbar centeralign clearfix">
-            <span class="btn fileinput-button">
-                <i class="icon-plus icon-white"></i>
-                <span><?=$this->_('Upload Image')?>...</span>
-                <input type="file" name="upload[]"  multiple>
-            </span>
-            <!--
-            <button type="submit" class="btn start">
-                <i class="icon-upload icon-white"></i>
-                <span><?=$this->_('Start upload')?></span>
-            </button>
-            -->
-        </div>
-        <div id="result" class="fileupload-progress">
-            <div id="progress" class="progress progress-striped" style="height:5px;">
-                <div class="bar" style="width: 0%;"></div>
-            </div>
-            <input id="fileupload-response" type="hidden" />
-        </div>
-        <div id="image-preview" class="logowrapper">
-            <div class="well" role="presentation">
-                <p class="help-block">Only image files (jpg|gif|png) allowed.</p>
-                <p class="help-block">Maximum image size is 5 MB.</p>
-                <p class="help-block">You can drag &amp; drop images here from your desktop.</p>
-            </div>
-            <div class="fileupload-loading">
-            </div>
-        </div>
-    </div>
-    <!--<p id="upload-hint"></p>-->
-</form>
-</div>
+        <div class="modal-body">
+            <span class="close" data-dismiss="modal">×</span>
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="span6">
+                        <div id="image-preview" class="logowrapper">
+                            <div class="well" role="presentation">
+                                <p class="help-block">Only image files (jpg|gif|png) allowed.</p>
+                                <p class="help-block">Maximum image size is 5 MB.</p>
+                                <p>You can drag &amp; drop images here from your desktop.</p>
+                            </div>
+                            <div class="fileupload-loading">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span6">
+                        <div class="control-group fileupload-buttonbar">
+                            <span class="btn fileinput-button">
+                                <i class="icon-plus icon-white"></i>
+                                <span><?=$this->_('Select Image')?>...</span>
+                                <input type="file" name="upload[]"  multiple>
 
+                            </span>
+                            <button type="submit" class="btn start">
+                                <i class="icon-upload icon-white"></i>
+                                <span><?=$this->_('Start upload')?></span>
+                            </button>
+                        </div>
+                        <div id="result" class="fileupload-progress fade">
+                            <div id="progress" class="progress progress-striped" style="height:5px;">
+                                <div class="bar" style="width: 0%;"></div>
+                            </div>
+                            <input id="fileupload-response" type="hidden" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p id="upload-hint"></p>
+        </div>
+    </form>
 </div>
 
 <!-- The template to display files available for upload -->
@@ -76,48 +83,48 @@ $form->setView($this)
         <div class="name"><span>{%=file.name%}</span></div>
         <div class="size"><span>{%=o.formatFileSize(file.size)%}</span></div>
         {% if (file.error) { %}
-        <div class="error" colspan="2"><span class="label label-important">Error</span> {%=file.error%}</div>
+            <div class="error" colspan="2"><span class="label label-important">Error</span> {%=file.error%}</div>
         {% } else if (o.files.valid && !i) { %}
-        <div>
-            <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar" style="width:0%;"></div></div>
-        </div>
-        <div class="start">{% if (!o.options.autoUpload) { %}
-            <button class="btn btn-primary">
-                <i class="icon-upload icon-white"></i>
-                <span>Start</span>
-            </button>
+            <div>
+                <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar" style="width:0%;"></div></div>
+            </div>
+            <div class="start">{% if (!o.options.autoUpload) { %}
+                <button class="btn btn-primary">
+                    <i class="icon-upload icon-white"></i>
+                    <span>Start</span>
+                </button>
             {% } %}</div>
         {% } else { %}
-        <div colspan="2"></div>
+            <div colspan="2"></div>
         {% } %}
         <div class="cancel">{% if (!i) { %}
             <button class="btn btn-warning">
                 <i class="icon-ban-circle icon-white"></i>
                 <span>Cancel</span>
             </button>
-            {% } %}</div>
+        {% } %}</div>
     </div>
-    {% } %}
+{% } %}
 </script>
 
 <script id="template-download" type="text/x-tmpl">
 </script>
 
 <script>
-    var evaUpload = function(){
+var evaUpload = function(){
 
-        var uploader = $("#singlefileupload");
-        uploader.fileupload();
-        uploader.fileupload(
-            'option',
-            'redirect',
-            window.location.href.replace(
-                /\/[^\/]*$/,
-                '/cors/result.html?%s'
-            )
-        );
+    var uploader = $("#singlefileupload");
+    uploader.fileupload();
+    uploader.fileupload(
+        'option',
+        'redirect',
+        window.location.href.replace(
+            /\/[^\/]*$/,
+            '/cors/result.html?%s'
+        )
+    );
 
-        uploader.fileupload('option', {
+    uploader.fileupload('option', {
             url : '/api/file/',
             dataType: 'json',
             autoUpload: true,
@@ -137,9 +144,9 @@ $form->setView($this)
                     $.each(data.result, function (index, file) {
                             //console.log(file);
                             //console.log(data);
-                            //$('#progress .bar').css('width', '100%');
-                            //$('<p/>').text(file.name + ' uploaded').appendTo($("#upload-hint"));
-                            $('#image-preview').html('<img src="' + file.thumbnail_url + '" alt="' + file.name + '" class="img-polaroid" style="max-width:250px;max-height:150px;" />');
+                            $('#progress .bar').css('width', '100%');
+                            $('<p/>').text(file.name + ' uploaded').appendTo($("#upload-hint"));
+                            $('#image-preview').html('<img src="' + file.thumbnail_url + '" alt="' + file.name + '" width="300" class="img-polaroid" />');
                     });
 
             }

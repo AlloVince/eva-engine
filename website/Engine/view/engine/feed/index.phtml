@@ -31,7 +31,7 @@ $form->useSubFormGroup()
                 <?=$form->helper('connect_id', array('class' => ''))?>
                 <?=$form->helper(array('MessageFile', 'file_id'), array('class' => ''))?>
                 <h6 class="pull-right">320 characters remaining</h6>
-                <button class="btn btn-info" type="submit">Post New Message</button><a class="btn dropdown-toggle" data-toggle="dropdown" href="#fileupload-modal">Image</a>
+                <button class="btn btn-info" type="submit">Post New Message</button> <a id="img" class="btn" data-toggle="dropdown" href="#fileupload-modal"><i class="icon-picture"></i></a>
             </fieldset>
         </div><!--span10 end-->
     </form>
@@ -39,14 +39,37 @@ $form->useSubFormGroup()
 
 <?=$this->widget('File', 'file/index')?>
 
+<style>
+    #fileupload-modal {
+        position:absolute;
+        margin:0;
+        width:250px;
+    }
+</style>
 <script>
+
     var modal = $("#fileupload-modal");
-    modal.addClass('dropdown-menu');
-    //modal.hide();
+    eva.loader(eva.s('/static/eva/js/eva.jquery.evaTip.js'), function(){
+        modal.hide();
+        $('#img').on('click', function() {
+            $(this).evaTip("show", {
+                'tip' : modal,
+                'offsetX' : -140,
+                'offsetY' : 30,
+                'direction' : 'bottom'			
+            });
+        });
+
+        modal.find(".close").on("click", function(){
+                modal.hide();
+        });
+    });
+
     var uploader = $('#singlefileupload');
     var form = $("#activity-form");
     uploader.bind('fileuploaddone', function (e, data) {
             var file = data.result;
             form.find('input[name="MessageFile[file_id]"]').val(file.id);
+            modal.find(".close").hide();
     });
 </script>
