@@ -30,8 +30,8 @@ class Module
         $view         = $locator->get('Zend\View\View');
         $jsonStrategy = $locator->get('ViewJsonStrategy');
         $view->getEventManager()->attach($jsonStrategy, 100);
-    }
 
+    }
 
     public function getAutoloaderConfig()
     {

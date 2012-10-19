@@ -113,9 +113,6 @@ $form->setView($this)
 {% } %}
 </script>
 
-
-
-
 <script>
 var evaUpload = function(){
 
@@ -132,16 +129,6 @@ var evaUpload = function(){
         previewMaxHeight : 200    
     });
 
-    /*
-    uploader.fileupload(
-        'option',
-        'redirect',
-        window.location.href.replace(
-            /\/[^\/]*$/,
-            '/cors/result.html?%s'
-        )
-    );
-    */
 
     uploader.bind('fileuploadfailed', function (e, data) {
             //eva.p(data);
@@ -154,38 +141,6 @@ var evaUpload = function(){
     uploader.bind('fileuploadchange', function (e, data) {
             //uploader.find('.files').empty();
     });
-
-    /*
-    uploader.fileupload('option', {
-        url : '/api/file/',
-        dataType: 'json',
-        autoUpload: false,
-        acceptFileTypes:  /(\.|\/)(gif|jpe?g|png)$/i,
-        maxNumberOfFiles : 1,
-        fileInput : uploader.find("input:file"),
-        maxFileSize: 5000000,
-        previewMaxWidth : 200,
-        previewMaxHeight : 200,
-
-        progressall: function (e, data) {
-                var progress = parseInt(data.loaded / data.total * 100, 10);
-                $('#progress .bar').css(
-                    'width',
-                    progress + '%'
-                );
-        },
-        done: function (e, data) {
-                $.each(data.result, function (index, file) {
-                        //console.log(file);
-                        //console.log(data);
-                        //$('#progress .bar').css('width', '100%');
-                        //$('<p/>').text(file.name + ' uploaded').appendTo($("#upload-hint"));
-                        $('#image-preview').html('<img src="' + file.thumbnail_url + '" alt="' + file.name + '" class="img-polaroid" style="max-width:200px;max-height:200px;" />');
-                });
-
-        }
-    });
-    */
 
     //Fix firefox input disable attr issue
     uploader.find("input:file").removeAttr('disabled');

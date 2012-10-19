@@ -41,6 +41,10 @@ class FileController extends RestfulModuleController
 
     public function restPostFile()
     {
+        $this->getServiceLocator()->get('Application')->getEventManager()->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER, function($event){
+            $event->getResponse()->getHeaders()->addHeaderLine('Content-Type', 'text/plain');
+        }, -10000);
+
         $postData = $this->params()->fromPost();
         $form = new Form\UploadForm();
         $form->bind($postData);
@@ -86,6 +90,11 @@ class FileController extends RestfulModuleController
 
     public function restDeleteFile()
     {
+        //Fix ie
+        $this->getServiceLocator()->get('Application')->getEventManager()->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER, function($event){
+            $event->getResponse()->getHeaders()->addHeaderLine('Content-Type', 'text/plain');
+        }, -10000);
+
         $id = $this->params('id');
         $itemModel = Api::_()->getModel('File\Model\File');
         $itemModel->setItem(array(
