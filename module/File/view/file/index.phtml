@@ -31,7 +31,7 @@ $form->setView($this)
 
 <div id="fileupload-modal" class="popover bottom show">
     <div class="arrow"></div>
-    <h3 class="popover-title">Upload Image<span class="close">×</span> </h3>
+    <h3 class="popover-title"><?=$this->_('Upload Image');?><span class="close">×</span> </h3>
     <div class="popover-content">
         <form id="singlefileupload" <?=$this->formAttr($form)?> enctype="multipart/form-data">
             <?=$form->restful();?>
@@ -53,8 +53,8 @@ $form->setView($this)
                 <div class="progress-extended">&nbsp;</div>
                 <input id="fileupload-response" type="hidden" />
             </div>
-            <div id="image-preview" class="logowrapper">
-                <div class="files" role="presentation">
+            <div id="image-preview" class="logowrapper" role="presentation">
+                <div class="files">
                     <!--
                     <p class="help-block">Only image files (jpg|gif|png) allowed.</p>
                     <p class="help-block">Maximum image size is 5 MB.</p>
@@ -74,19 +74,18 @@ $form->setView($this)
 <div class="template-upload fade">
     {% if (file.error) { %}
         <div class="alert error">{%=file.error%}</div>
-        <span class="cancel"><button class="btn btn-block"><i class="icon-ban-circle icon-white"></i><span>Cancel</span></span>
     {% } else { %}
     <div class="preview thumbnail"><span class="fade"></span></div>
     <div class="name"><span>{%=file.name%}</span></div>
     <div class="size"><span>{%=o.formatFileSize(file.size)%}</span></div>
     <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="height:5px;"><div class="bar" style="width:0%;"></div></div>
-    <span class="cancel"><button class="btn btn-block"><i class="icon-ban-circle icon-white"></i><span>Cancel</button></span>
-    <span class="start">
+    <span class="start hide">
         {% if (!o.options.autoUpload) { %}
-            <button class="btn btn-block"><i class="icon-upload icon-white"></i><span>Start</span></button>
+            <button class="btn btn-block"><i class="icon-upload"></i><?=$this->_('Start');?></button>
         {% } %}
     </span>
     {% } %}
+    <span class="cancel"><button class="btn btn-block"><i class="icon-ban-circle"></i><?=$this->_('Cancel');?></button></span>
 </div>
 {% } %}
 </script>
@@ -98,16 +97,16 @@ $form->setView($this)
 <div class="template-download fade">
     {% if (file.error) { %}
         <div class="alert error">{%=file.error%}</div>
-        <span class="cancel"><button class="btn btn-block"><i class="icon-ban-circle icon-white"></i><span>Cancel</span></span>
+        <span class="cancel"><button class="btn btn-block"><i class="icon-ban-circle"></i><?=$this->_('Cancel');?></span>
     {% } else { %}
     <div class="preview thumbnail"><img src="{%=file.thumbnail_url%}"></div>
     <div class="name"><span>{%=file.name%}</span></div>
     <div class="size"><span>{%=o.formatFileSize(file.size)%}</span></div>
     <div class="delete">
-    <button class="btn btn-block" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}">
+        <button class="btn btn-block" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}">
         <i class="icon-trash icon-white"></i>
-        <span>Delete</span>
-    </button>
+        <?=$this->_('Delete');?>
+        </button>
     </div>
     {% } %}
 </div>
@@ -121,7 +120,19 @@ $form->setView($this)
 var evaUpload = function(){
 
     var uploader = $("#singlefileupload");
-    uploader.fileupload();
+    uploader.fileupload({
+        url : '/api/file/',
+        dataType: 'json',
+        autoUpload: false,
+        acceptFileTypes:  /(\.|\/)(gif|jpe?g|png)$/i,
+        maxNumberOfFiles : 1,
+        fileInput : uploader.find("input:file"),
+        maxFileSize: 5000000,
+        previewMaxWidth : 200,
+        previewMaxHeight : 200    
+    });
+
+    /*
     uploader.fileupload(
         'option',
         'redirect',
@@ -130,18 +141,21 @@ var evaUpload = function(){
             '/cors/result.html?%s'
         )
     );
+    */
 
     uploader.bind('fileuploadfailed', function (e, data) {
-            eva.p(data);
+            //eva.p(data);
     });
     uploader.bind('fileuploadadded', function (e, data) {
             if(!data.files.valid) {
-                    uploader.find('.files .cancel').click();
+                    //uploader.find('.files .cancel').click();
             }
     });
     uploader.bind('fileuploadchange', function (e, data) {
-            uploader.find('.files').empty();
+            //uploader.find('.files').empty();
     });
+
+    /*
     uploader.fileupload('option', {
         url : '/api/file/',
         dataType: 'json',
@@ -152,23 +166,7 @@ var evaUpload = function(){
         maxFileSize: 5000000,
         previewMaxWidth : 200,
         previewMaxHeight : 200,
-            process: [
-                {
-                    action: 'load',
-                    fileTypes: /^image\/(gif|jpeg|png)$/,
-                    maxFileSize: 20000000 // 20MB
-                },
-                {
-                    action: 'resize',
-                    maxWidth: 1440,
-                    maxHeight: 900
-                },
-                {
-                    action: 'save'
-                }
-            ]
 
-        /*
         progressall: function (e, data) {
                 var progress = parseInt(data.loaded / data.total * 100, 10);
                 $('#progress .bar').css(
@@ -176,8 +174,6 @@ var evaUpload = function(){
                     progress + '%'
                 );
         },
-        */
-        /*
         done: function (e, data) {
                 $.each(data.result, function (index, file) {
                         //console.log(file);
@@ -188,26 +184,11 @@ var evaUpload = function(){
                 });
 
         }
-        */
     });
+    */
 
     //Fix firefox input disable attr issue
     uploader.find("input:file").removeAttr('disabled');
-
-    // Upload server status check for browsers with CORS support:
-    /*
-    if ($.support.cors) {
-        $.ajax({
-            url: '//jquery-file-upload.appspot.com/',
-            type: 'HEAD'
-        }).fail(function () {
-            $('<span class="alert alert-error"/>')
-                .text('Upload server currently unavailable - ' +
-                        new Date())
-                .appendTo('#fileupload');
-        });
-    }
-    */
 }
 eva.runtime = function(){
         var libs = [
@@ -226,3 +207,5 @@ eva.runtime = function(){
         });
 }
 </script>
+
+<!--[if gte IE 8]><script src="<?=$this->link("/lib/js/upload/js/cors/jquery.xdr-transport.js")?>"></script><![endif]-->

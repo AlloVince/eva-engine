@@ -70,6 +70,8 @@ class FileController extends RestfulModuleController
                         'size' => (int)$item['fileSize'],
                         'url' => $item['Url'],
                         'thumbnail_url' => $item['Thumb'],
+                        'delete_type' => 'DELETE',
+                        'delete_url' => '/api/file/' . $item['id']
                     );
                     $response = array(
                         $file
@@ -80,6 +82,16 @@ class FileController extends RestfulModuleController
         }
 
         return new JsonModel($response);
+    }
+
+    public function restDeleteFile()
+    {
+        $id = $this->params('id');
+        $itemModel = Api::_()->getModel('File\Model\File');
+        $itemModel->setItem(array(
+            'id' => $id
+        ))->removeFile();
+        return new JsonModel();
     }
 
 }
