@@ -9,7 +9,6 @@ class Activity extends AbstractModel
 {
     protected $itemClass = 'Activity\Item\Message';
 
-
     public function getActivity($idOrUrlName = null, array $map = array())
     {
         $this->trigger('get.precache');

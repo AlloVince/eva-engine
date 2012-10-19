@@ -659,7 +659,17 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
             $relItem[] = $rightItem;
         }
 
-        //p(@sprintf('joinManyToMany Joined Class %s : joinColumn %s => %s joined %s => %s', get_class($relItem), $joinColumn, $relItem->$joinColumn , $referencedColumn, $this->$referencedColumn));
+        /*
+        p(@sprintf('joinManyToMany %s :: %s <=> %s :: %s :: %s <=> %s :: %s', 
+            get_class($relItem), //left table
+            $referencedLeftColumn, //middle left column
+            $joinLeftColumn,  //left column
+            get_class($middleItem), //middle table
+            $joinRightColumn, //middle right column
+            $referencedRightColumn, //right column
+            get_class($rightItem)
+        ));
+        */
         return $relItem;
     }
 

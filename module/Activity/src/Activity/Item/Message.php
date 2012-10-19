@@ -15,23 +15,25 @@ class Message extends AbstractItem
     protected $relationships = array(
         'File' => array(
             'targetEntity' => 'File\Item\File',
-            'relationship' => 'OneToOne',
-            'joinColumn' => 'file_id',
-            'referencedColumn' => 'id',
-        ),
-        'Categories' => array(
-            'targetEntity' => 'Activity\Item\Category',
             'relationship' => 'ManyToMany',
-            'mappedBy' => 'Categories',
+            'mappedBy' => 'File',
             'joinColumns' => array(
-                'joinColumn' => 'post_id',
+                'joinColumn' => 'message_id',
                 'referencedColumn' => 'id',
             ),
-            'inversedBy' => 'Activity\Item\CategoryActivity',
-            'inversedMappedBy' => 'CategoryActivity',
+            'inversedBy' => 'Activity\Item\MessageFile',
+            'inversedMappedBy' => 'MessageFile',
             'inverseJoinColumns' => array(
-                'joinColumn' => 'category_id',
+                'joinColumn' => 'file_id',
                 'referencedColumn' => 'id',
+            ),
+        ),
+        'MessageFile' => array(
+            'targetEntity' => 'Activity\Item\MessageFile',
+            'relationship' => 'OneToMany',
+            'joinColumn' => 'message_id',
+            'referencedColumn' => 'id',
+            'joinParameters' => array(
             ),
         ),
     );
