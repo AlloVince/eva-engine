@@ -1,0 +1,69 @@
+<?
+$item = $this->item;
+$title = 'New Message';
+$title = $this->_($title);
+$this->headTitle($title, 'SET');
+
+if($this->form){
+	$form = $this->form;
+} else {
+    $form = new Message\Form\MessageForm();
+}
+$form->useSubFormGroup()
+     ->setMethod('post')
+     ->setView($this)
+     ->setAction($this->uri('/message/messages/'))
+     ->bind($item)
+     ->prepare();
+?>
+
+<input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
+<div id="category-create-succeed" class="alert alert-success hide">
+    <a href="#" data-dismiss="alert" class="close">x</a>
+    <h4 class="alert-heading"><?=$this->_('New Category Created')?></h4>
+</div>
+
+<div id="category-edit-succeed" class="alert alert-success hide">
+    <a href="#" data-dismiss="alert" class="close">x</a>
+    <h4 class="alert-heading"><?=$this->_('Category Edit Succeed')?></h4>
+</div>
+
+<div id="category-edit-failed" class="alert alert-error hide">
+    <a href="#" data-dismiss="alert" class="close">x</a>
+    <h4 class="alert-heading"><?=$this->_('Category Edit Failed')?></h4>
+</div>
+
+<div class="container">
+
+    <form <?=$this->formAttr($form)?>>
+        <?=$form->restful();?>
+        <div class="span5">
+            <div class="slate">
+                <div class="page-header">
+                    <h2><?=$title?></h2>
+                </div>
+                <fieldset class="">
+                    <div class="control-group <?=$form->isError(array('Conversation', 'recipient_id')) ? 'error' : '';?>">
+                        <?=$form->helper(array('Conversation', 'recipient_id'), 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper(array('Conversation', 'recipient_id'), array('class' => 'span4'))?>        
+                            <div class="help-block"><?=$form->helper(array('Conversation', 'recipient_id'), 'formElementErrors')?></div>
+                        </div>
+                    </div>
+
+                    <div class="control-group <?=$form->isError('body') ? 'error' : '';?>">
+                        <div class="controls">
+                            <?=$form->helper('body', 'formTextarea', array('class' => 'span4'))?>        
+                            <div class="help-block"><?=$form->helper('body', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="listing-buttons">
+                <button class="btn btn-info btn-large"><?=$this->_('Send')?></button>
+            </div>
+        </div><!--span5 end-->
+        
+       
+    </form>
+</div>

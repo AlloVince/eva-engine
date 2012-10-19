@@ -1,0 +1,30 @@
+<?
+$title = 'Inbox';
+$title = $this->_($title);
+$this->headTitle($title, 'SET');
+$items = $this->items;
+?>
+
+<div class="container">
+
+	<header class="page-header">
+    <h2 class=""><?=$title?></h2>
+	</header>
+
+	<?if($this->items):?>
+	<?foreach($this->items as $key=>$item):?>
+	<div id="item_<?=$item['id'] ?>" class="table">
+        <h3><a href="<?=$this->Uri('/message/messages/' . $item['User']['id'])?>" class="title"><?=$item['User']['userName'] ?></a></h3>
+        <p><?=$this->datetime($item['messageTime'])?></p>
+		<p><?=$item['Conversation']['Message']['body'];?></p>
+	</div>
+	<?endforeach;?>
+	<?else:?>
+    <p><?=$this->_('No Message found')?></p>
+	<?endif;?>
+
+    <?if($this->paginator):?>
+    <?=$this->paginator->setPath('/message/messages/')->setBaseQuery($this->query);?>
+    <?=$this->widget('Core', 'widgets/paginator', $this->vars())?>
+    <?endif;?>
+</div>

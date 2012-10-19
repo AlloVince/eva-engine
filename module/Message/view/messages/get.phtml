@@ -1,0 +1,69 @@
+<?
+$title = $this->user['userName'];
+$title = $this->_($title);
+$this->headTitle($title, 'SET');
+$items = $this->items;
+$message = $this->item;
+
+if($this->form){
+	$form = $this->form;
+} else {
+    $form = new Message\Form\MessageReplyForm();
+}
+$form->useSubFormGroup()
+     ->setMethod('post')
+     ->setView($this)
+     ->setAction($this->uri('/message/messages/'))
+     ->bind($message)
+     ->prepare();
+?>
+
+<div class="container">
+
+	<header class="page-header">
+    <h2 class=""><?=$title?></h2>
+	</header>
+
+	<?if($this->items):?>
+	<?foreach($this->items as $key=>$item):?>
+    <div id="item_<?=$item['id'] ?>" class="table">
+        <h3><?=$item['Sender']['userName']?> <?=$this->_('to')?> <?=$item['Recipient']['userName']?> :</h3>
+        <p><?=$this->datetime($item['createTime'])?></p>
+		<p><?=$item['Message']['body'];?></p>
+	</div>
+	<?endforeach;?>
+	<?else:?>
+    <p><?=$this->_('No Message found')?></p>
+	<?endif;?>
+
+    <?if($this->paginator):?>
+    <?=$this->paginator->setPath('/message/messages/' . $this->user['id'])->setBaseQuery($this->query);?>
+    <?=$this->widget('Core', 'widgets/paginator', $this->vars())?>
+    <?endif;?>
+</div>
+
+<div class="container">
+
+    <form <?=$this->formAttr($form)?>>
+        <?=$form->restful();?>
+        <div class="span5">
+            <div class="slate">
+                <fieldset class="">
+                    <?=$form->helper(array('Conversation', 'recipient_id'), array('class' => 'span4'))?>        
+
+                    <div class="control-group <?=$form->isError('body') ? 'error' : '';?>">
+                        <div class="controls">
+                            <?=$form->helper('body', 'formTextarea', array('class' => 'span4'))?>        
+                            <div class="help-block"><?=$form->helper('body', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="listing-buttons">
+                <button class="btn btn-info btn-large"><?=$this->_('Send')?></button>
+            </div>
+        </div><!--span5 end-->
+        
+       
+    </form>
+</div>
