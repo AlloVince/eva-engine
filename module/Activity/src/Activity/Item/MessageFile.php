@@ -17,7 +17,7 @@ class MessageFile extends AbstractItem
     {
         $messageItem = $this->getModel()->getItem();
         $messageId = $messageItem->id;
-        if(!$messageId) {
+        if(!$messageId || !$this->file_id) {
             return;
         }
 

@@ -41,10 +41,12 @@ $form->setView($this)
                     <span><?=$this->_('Select Image')?>...</span>
                     <input type="file" name="upload[]"  accept="image/png, image/gif, image/jpg, image/jpeg">
                 </span>
+                <!--
                 <button type="submit" class="btn start btn-block">
                     <i class="icon-upload icon-white"></i>
                     <span><?=$this->_('Start upload')?></span>
                 </button>
+                -->
             </div>
             <div id="result" class="fileupload-progress hide">
                 <div id="progress" class="progress progress-striped" style="height:5px;"  role="progressbar" aria-valuemin="0" aria-valuemax="100">
@@ -79,9 +81,9 @@ $form->setView($this)
     <div class="name"><span>{%=file.name%}</span></div>
     <div class="size"><span>{%=o.formatFileSize(file.size)%}</span></div>
     <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="height:5px;"><div class="bar" style="width:0%;"></div></div>
-    <span class="start hide">
+    <span class="start">
         {% if (!o.options.autoUpload) { %}
-            <button class="btn btn-block"><i class="icon-upload"></i><?=$this->_('Start');?></button>
+            <button class="btn btn-block"><i class="icon-upload"></i><?=$this->_('Start Upload');?></button>
         {% } %}
     </span>
     {% } %}
@@ -120,7 +122,7 @@ var evaUpload = function(){
     uploader.fileupload({
         url : '/api/file/',
         dataType: 'json',
-        autoUpload: false,
+        autoUpload: true,
         acceptFileTypes:  /(\.|\/)(gif|jpe?g|png)$/i,
         maxNumberOfFiles : 1,
         fileInput : uploader.find("input:file"),
