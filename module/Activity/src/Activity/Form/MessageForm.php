@@ -140,7 +140,8 @@ class MessageForm extends \Eva\Form\Form
                 'stringLength' => array (
                     'name' => 'StringLength',
                     'options' => array (
-                        'max' => '280',
+                        'max' => '140',
+                        'encoding' => 'UTF-8',
                     ),
                 ),
             ),

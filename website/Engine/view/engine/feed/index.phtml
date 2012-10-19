@@ -7,6 +7,7 @@ if($this->form){
     $form = new Activity\Form\MessageCreateForm();
 }
 $item = $this->item;
+$items = $items;
 $form->useSubFormGroup()
      ->setMethod($item['id'] ? 'put' : 'post')
      ->setView($this)
@@ -30,11 +31,26 @@ $form->useSubFormGroup()
                 <div class="help-block"><?=$form->helper('content', 'formElementErrors')?></div>
                 <?=$form->helper('connect_id', array('class' => ''))?>
                 <?=$form->helper(array('MessageFile', 'file_id'), array('class' => ''))?>
-                <h6 class="pull-right">320 characters remaining</h6>
+                <h6 class="input-limit-message pull-right"><span class="input-limit">140</span> characters remaining</h6>
                 <button class="btn btn-info" type="submit">Post New Message</button> <a id="img" class="btn" data-toggle="dropdown" href="#fileupload-modal"><i class="icon-picture"></i></a>
             </fieldset>
         </div><!--span10 end-->
     </form>
+
+    <?foreach($items as $item):?>
+    <div class="span8">
+        <p><?=$item['ContentHtml']?></p>
+        <?if($item['File']):?>
+        <p><a href="<?=$item['File'][0]['Thumb']?>"><img src="<?=$this->thumb($item['File'][0]['Thumb'], array('w_200'))?>" alt="" class="img-polaroid" /></a></p>
+        <?endif?>
+        <div>
+            <span class="badge badge-success">Posted <?=$item['createTime']?></span>
+            <div class="pull-right"><span class="label">comment</span></div>
+        </div> 
+        <hr>
+    </div>
+    <?endforeach?>
+
 </div>
 
 <?=$this->widget('File', 'file/index')?>
@@ -68,7 +84,7 @@ $form->useSubFormGroup()
     var uploader = $('#singlefileupload');
     var form = $("#activity-form");
     uploader.bind('fileuploaddone', function (e, data) {
-            var file = data.result;
+            var file = data.result[0];
             form.find('input[name="MessageFile[file_id]"]').val(file.id);
             modal.find(".close").hide();
     });

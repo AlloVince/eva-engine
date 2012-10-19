@@ -9,4 +9,15 @@ class MessageCreateForm extends MessageForm
             'MessageVideo' => 'Activity\Form\MessageVideoForm',
         ),
     );
+
+    protected $mergeFilters = array(
+        'content' => array(
+            'required' => true,
+        ),
+    );
+
+    public function prepareData($data)
+    {
+        return $data;
+    }
 }
