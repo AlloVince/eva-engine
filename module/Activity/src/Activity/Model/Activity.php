@@ -112,13 +112,11 @@ class Activity extends AbstractModel
             }
         }
 
-        /*
         if($item->hasLoadedRelationships()){
             foreach($item->getLoadedRelationships() as $key => $relItem){
                 $relItem->create();
             }
         }
-        */
         $this->trigger('create');
     
         $this->trigger('create.post');

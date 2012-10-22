@@ -2,6 +2,199 @@
 @import "../../../eva/css/src/type/wiki.less";
 @linkColor : #0099FF;
 
+@golden : #AC9217;
+@orange:#E1500D;
+@green:#7DBC49;
+@brown:#BBA87E;
+
+.vlist-creater(@itemOuterHeight:170px, @itemInnerHeight:120px){
+	.item {
+		clear:both;
+		position:relative;
+		height:@itemInnerHeight;
+		padding:(@itemOuterHeight - @itemInnerHeight)/2 0;
+		text-align:left;	
+	}
+	.item-inline{
+		.inline-block();
+		height:@itemInnerHeight;
+	}
+	.item-absolute{
+		height:@itemInnerHeight;
+		position:absolute;
+		top:(@itemOuterHeight - @itemInnerHeight)/2;
+	}
+}
+
+
 a {
 	color:@linkColor;
+}
+
+
+.activity-box {
+	.activity-box-wrap {
+		background:#FFF;
+		.border-radius-bottom(5px);
+		.box-shadow(0 1px 1px #999);
+	}
+	textarea {
+		margin:0;
+		padding-left:0;
+		padding-right:0;
+		width:100%;
+	}
+
+	.buttons {
+		margin:0;
+	}
+
+	.activity-box-func {
+		float:left;
+		line-height:40px;
+		font-size:13px;
+		color:#333;
+		margin-left:10px;
+	}
+
+	.activity-box-buttons {
+		text-align:right;
+	}
+}
+
+
+
+.activity-list {
+	.vlist-creater(90px, 70px);
+	.item {
+		height:auto;
+		.clearfix();
+		margin-bottom:20px;
+	}	
+	.item-inline{
+		min-height:100px;
+		height:auto;
+	}
+	.item-userface {
+		left:5px;
+		top:10px;
+	}
+	.item-text {
+		margin:0 0 0 100px;
+		position:relative;
+		background:#FFF;
+		.border-radius(5px);
+		border:1px solid #D8D8D8;
+		-webkit-filter: drop-shadow(0 1px 5px rgba(0,0,0,.5));
+		-moz-filter: drop-shadow(0 1px 5px rgba(0,0,0,.5));
+		-ms-filter: drop-shadow(0 1px 5px rgba(0,0,0,.5));
+		-o-filter: drop-shadow(0 1px 5px rgba(0,0,0,.5));
+		filter: drop-shadow(0 1px 5px rgba(0,0,0,.5));
+
+		font-size:13px;
+	}
+
+	.item-title {
+		margin-bottom:5px;
+		.item-user {
+			font-weight:bold;
+		}
+	}
+
+	.item-text:after {
+		content:"";
+		position:absolute;
+		border-style:solid;
+		display:block; 
+		width:0;
+		top:15px;
+		left:-10px;
+		bottom:auto;
+		border-width:0 10px 10px 0;
+		border-color:transparent #FFF;
+	}
+
+	.item-image {
+		margin:10px 0 10px;
+	}
+
+	.item-action {
+		height:20px;
+		color:#999;
+		a {
+			color:#999;
+		}
+
+		a:hover {
+			color:@orange;
+		}
+	}
+
+	.item-content {
+		margin:10px 15px;
+		position:relative;
+	}
+
+	.item-sub-wrap {
+		background:#F8F8F8;
+		padding:10px 15px;
+		border-top:1px solid #D8D8D8;
+		.border-radius-bottom(5px);
+	}
+
+	.item-sub-title {
+		color:@orange;
+		font-weight:bold;
+	}
+
+	.item-sub {
+		clear:both;
+		position:relative;
+		height:35px;
+		padding:5px 0;
+		text-align:left;	
+		.clearfix();
+	}
+
+	.item-sub-user {
+		font-weight:bold;
+		color:#333;
+	}
+
+	.item-sub-id {
+		margin-left:10px;
+		font-weight:normal;
+		color:#999;
+	}
+
+	.item-sub-userface {
+		left:0;
+		top:8px;
+	}
+
+	.item-sub-content {
+		margin-left:40px;
+	}
+
+
+	.item-sub-form {
+		position:relative;
+	}
+
+	.item-sub-submit {
+		position:absolute;
+		right:0;
+		top:0;
+	}
+
+	.item-sub-textarea {
+		margin-right:100px;
+
+		textarea {
+			width:100%;
+			overflow:auto;
+			height:30px;
+		}
+	}
+
 }
