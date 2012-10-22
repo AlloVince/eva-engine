@@ -698,9 +698,14 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         );
         $primaryKey = $dataClass->getPrimaryKey();
         if($dataClass->create($data)){
-            $this->$primaryKey = $dataClass->getLastInsertValue();
+            if(is_string($primaryKey)){
+                $this->$primaryKey = $dataClass->getLastInsertValue();
+            }
         }
-        return $this->$primaryKey;
+        
+        if(is_string($primaryKey)){
+            return $this->$primaryKey;
+        }
     }
 
     public function save()

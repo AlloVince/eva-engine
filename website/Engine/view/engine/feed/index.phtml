@@ -26,10 +26,10 @@ $form->useSubFormGroup()
 
         <div class="span10 well">
             <fieldset class="">
-                <?=$form->helper('messageType', 'formHidden', array('class' => ''))?>        
+                <?=$form->helper('messageType', 'formText', array('class' => ''))?>        
                 <?=$form->helper('content', 'formTextarea', array('class' => 'span10', 'rows' => 5))?>        
                 <div class="help-block"><?=$form->helper('content', 'formElementErrors')?></div>
-                <?=$form->helper('connect_id', array('class' => ''))?>
+                <?=$form->helper('reference_id', 'formText', array('class' => ''))?>
                 <?=$form->helper(array('MessageFile', 'file_id'), array('class' => ''))?>
                 <h6 class="input-limit-message pull-right"><span class="input-limit">140</span> characters remaining</h6>
                 <button class="btn btn-info" type="submit">Post New Message</button> <a id="img" class="btn" data-toggle="dropdown" href="#fileupload-modal"><i class="icon-picture"></i></a>

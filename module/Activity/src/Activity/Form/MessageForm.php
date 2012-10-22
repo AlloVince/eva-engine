@@ -71,8 +71,8 @@ class MessageForm extends \Eva\Form\Form
                 'value' => '',
             ),
         ),
-        'connect_id' => array (
-            'name' => 'connect_id',
+        'reference_id' => array (
+            'name' => 'reference_id',
             'type' => 'hidden',
             'options' => array (
                 'label' => 'Connect_id',
@@ -146,8 +146,8 @@ class MessageForm extends \Eva\Form\Form
                 ),
             ),
         ),
-        'connect_id' => array (
-            'name' => 'connect_id',
+        'reference_id' => array (
+            'name' => 'reference_id',
             'required' => false,
             'filters' => array (
             ),

@@ -75,11 +75,50 @@ class Activity extends AbstractModel
 
         $itemId = $item->create();
 
+        $referenceItem = $this->getItem('Activity\Item\Reference');
+        $connectActivity = array();
+        if($item->reference_id && $item->messageType != 'original'){
+            $activityModel = clone $this;
+            $connectActivity = $activityModel->getActivity($item->reference_id);
+            if($connectActivity){
+                $item->reference_id = $connectActivity->id;
+                $item->reference_user_id = $connectActivity->user_id;
+            }
+
+            if($connectActivity->root_user_id) {
+                $item->root_user_id = $connectActivity->root_user_id;
+                $item->root_id = $connectActivity->root_id;
+            } else {
+                $item->root_user_id = $connectActivity->user_id;
+                $item->root_id = $connectActivity->id;
+            }
+        }
+
+        $parser = $item->getParser();
+        $userNames = $parser->getUserNames();
+        if($userNames){
+            $userModel = \Eva\Api::_()->getModel('User\Model\User');
+            $atuserItem = $this->getItem('Activity\Item\Atuser');
+            foreach($userNames as $userName){
+                $user = $userModel->getUser($userName);
+                $atuserItem->user_id = $user->id;
+                $atuserItem->message_id = $itemId;
+                $atuserItem->messageType = $item->messageType;
+                $atuserItem->author_id = $item->user_id;
+                if($item->root_user_id){
+                    $atuserItem->root_user_id = $item->root_user_id;
+                }
+                $atuserItem->create();
+            }
+        }
+
+        /*
         if($item->hasLoadedRelationships()){
             foreach($item->getLoadedRelationships() as $key => $relItem){
                 $relItem->create();
             }
         }
+        */
         $this->trigger('create');
     
         $this->trigger('create.post');

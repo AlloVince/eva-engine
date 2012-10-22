@@ -101,8 +101,14 @@ class User extends AbstractModel
                 'id' => $userIdOrName,
             ));
         } elseif(is_string($userIdOrName)) {
+            $user = $this->getItem()->getDataClass()->columns(array('id'))->where(array(
+                'userName' => $userIdOrName
+            ))->find('one');
+            if(!$user){
+                return array();
+            }
             $this->setItem(array(
-                'userName' => $userIdOrName,
+                'id' => $user['id'],
             ));
         }
         $this->trigger('get.pre');

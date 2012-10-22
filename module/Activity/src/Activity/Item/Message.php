@@ -50,6 +50,13 @@ class Message extends AbstractItem
         ),
     );
 
+    private $parser;
+
+    public function getParser()
+    {
+        return $this->parser = TextParser::factory($this->content, array(), $this->getServiceLocator());
+    }
+
     public function getMessageHash()
     {
         if(!$this->messageHash){
@@ -74,8 +81,8 @@ class Message extends AbstractItem
 
     public function getContentHtml()
     {
-        $text = $this->content;
-        $parser = TextParser::factory($text, array(), $this->getServiceLocator());
+        //$text = $this->content;
+        $parser = $this->getParser();
         $this->ContentHtml = $parser->toHtml();
     }
 }

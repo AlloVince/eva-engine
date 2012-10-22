@@ -117,14 +117,18 @@ class TextParser
         return $this;
     }
 
-    public function getUsers()
+    public function getUserNames()
     {
         $text = trim($this->getText());
         if(!$text){
             return $this->users;
         }
 
-
+        $matches = array();
+        preg_match_all('/@([^\s]+)/', $text, $matches);
+        if(isset($matches[1]) && $matches[1]){
+            $this->users = array_unique($matches[1]);
+        }
         return $this->users;
     }
 
