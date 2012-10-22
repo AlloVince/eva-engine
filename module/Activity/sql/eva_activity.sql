@@ -129,13 +129,12 @@ DROP TABLE IF EXISTS `eva_activity_references`;
 CREATE TABLE IF NOT EXISTS `eva_activity_references` (
   `root_user_id` int(10) NOT NULL DEFAULT '0',
   `root_message_id` bigint(32) NOT NULL DEFAULT '0',
-  `original_user_id` int(11) NOT NULL,
-  `original_message_id` int(11) NOT NULL,
-  `reference_user_id` int(11) NOT NULL,
-  `reference_message_id` int(11) NOT NULL,
-  `referenceType` enum('comment','forword') COLLATE utf8_unicode_ci NOT NULL,
-  `referenceTime` datetime NOT NULL,
-  PRIMARY KEY (`reference_user_id`,`reference_message_id`)
+  `user_id` int(11) NOT NULL,
+  `message_id` bigint(32) NOT NULL,
+  `reference_user_id` int(10) NOT NULL,
+  `reference_message_id` bigint(32) NOT NULL,
+  `messageType` enum('comment','forword') COLLATE utf8_unicode_ci NOT NULL,
+  `createTime` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS `eva_activity_sources`;
