@@ -303,4 +303,15 @@ abstract class AbstractModel implements ServiceLocatorAwareInterface
         $this->trigger('remove.post');
         return true;
     }
+
+    public function __clone()
+    {
+        $itemClass = $this->getItemClass();
+        if($this->serviceLocator->has($itemClass)){
+            $item = clone $this->serviceLocator->get($itemClass);
+            $item->setDataSource(array());
+            $this->item = $item;
+        }
+    }
+
 }

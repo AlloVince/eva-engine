@@ -142,7 +142,7 @@ class TextParser
         $options = $this->getOptions();
         $urlTarget = $options['urlTarget'] ? ' target="' .  $options['urlTarget']. '"'  : '';
 
-        $text = preg_replace('@(https?://([-\w\.]+)+(/([\w/_\.]*(\?\S+)?(#\S+)?)?)?)@',
+        $text = preg_replace('@(https?://([-\w\.]+)+(/([\w/_\.-]*(\?\S+)?(#\S+)?)?)?)@',
         '<a href="$1" ' . $urlTarget . '>$1</a>', $text);
 
         $userUrl = sprintf($options['userUrl'], '$1');

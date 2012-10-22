@@ -9,6 +9,25 @@ class Activity extends AbstractModel
 {
     protected $itemClass = 'Activity\Item\Message';
 
+    public function getUserActivityList($userId)
+    {
+        $indexItem = $this->getItem('Activity\Item\Index');
+        $indexItem->collections(array(
+            'user_id' => $userId,
+            'order' => 'iddesc',
+        ));
+        $messageIdArray = array();
+        foreach($indexItem as $index){
+            $messageIdArray[] = $index['message_id'];
+        }
+        $this->setItemList(array(
+            'idArray' => $messageIdArray
+        ));
+        return $this;
+    }
+
+    //public function get
+
     public function getActivity($idOrUrlName = null, array $map = array())
     {
         $this->trigger('get.precache');
@@ -27,6 +46,7 @@ class Activity extends AbstractModel
                 ));
             }
         }
+
         $this->trigger('get.pre');
 
         $item = $this->getItem();
@@ -73,9 +93,6 @@ class Activity extends AbstractModel
         
         $this->trigger('create.pre');
 
-        $itemId = $item->create();
-
-        $referenceItem = $this->getItem('Activity\Item\Reference');
         $connectActivity = array();
         if($item->reference_id && $item->messageType != 'original'){
             $activityModel = clone $this;
@@ -83,15 +100,31 @@ class Activity extends AbstractModel
             if($connectActivity){
                 $item->reference_id = $connectActivity->id;
                 $item->reference_user_id = $connectActivity->user_id;
+                if($connectActivity->root_user_id) {
+                    $item->root_user_id = $connectActivity->root_user_id;
+                    $item->root_id = $connectActivity->root_id;
+                } else {
+                    $item->root_user_id = $connectActivity->user_id;
+                    $item->root_id = $connectActivity->id;
+                }
             }
+        }
 
-            if($connectActivity->root_user_id) {
-                $item->root_user_id = $connectActivity->root_user_id;
-                $item->root_id = $connectActivity->root_id;
-            } else {
-                $item->root_user_id = $connectActivity->user_id;
-                $item->root_id = $connectActivity->id;
+        $itemId = $item->create();
+
+        $referenceItem = $this->getItem('Activity\Item\Reference');
+        if($connectActivity){
+            $referenceItem->user_id = $item->user_id;
+            $referenceItem->message_id = $item->id;
+            $referenceItem->reference_user_id = $item->reference_user_id;
+            $referenceItem->reference_message_id = $item->reference_id;
+            $referenceItem->messageType = $item->messageType;
+            $referenceItem->createTime = $item->createTime;
+            if($item->root_user_id){
+                $referenceItem->root_user_id = $item->root_user_id;
+                $referenceItem->root_message_id = $item->root_id;
             }
+            $referenceItem->create();
         }
 
         $parser = $item->getParser();
@@ -101,6 +134,9 @@ class Activity extends AbstractModel
             $atuserItem = $this->getItem('Activity\Item\Atuser');
             foreach($userNames as $userName){
                 $user = $userModel->getUser($userName);
+                if(!$user) {
+                    continue;
+                }
                 $atuserItem->user_id = $user->id;
                 $atuserItem->message_id = $itemId;
                 $atuserItem->messageType = $item->messageType;

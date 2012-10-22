@@ -25,6 +25,10 @@ class Messages extends TableGateway
             });
         }
 
+        if($params->idArray){
+            $this->where(array('id' => $params->idArray));
+        }
+
         if($params->user_id){
             $this->where(array('user_id' => $params->user_id));
         }

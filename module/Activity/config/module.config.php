@@ -1,8 +1,8 @@
 <?php
 return array(
     'activity' => array(
-        'userUrl' => '/activity/%s',
-        'sharpUrl' => '/feed/%s',
+        'userUrl' => '/user/%s',
+        'sharpUrl' => '/feed/?q=%s',
         'urlTarget' => '_blank',
     ),
 );

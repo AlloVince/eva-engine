@@ -15,8 +15,12 @@ class FeedController extends RestfulModuleController
             'order' => 'iddesc'
         );
 
+        $user = \Core\Auth::getLoginUser();
+        if(!$user){
+            return $this->getResponse()->setStatusCode(401);
+        }
         $itemModel = Api::_()->getModel('Activity\Model\Activity');
-        $items = $itemModel->setItemList($query)->getActivityList(array(
+        $items = $itemModel->getUserActivityList($user['id'])->getActivityList(array(
             'self' => array(
                 '*',
                 'getContentHtml()',
@@ -30,6 +34,7 @@ class FeedController extends RestfulModuleController
                 )
             ),
         ));
+
         //p($items, 1);
         return array(
             'items' => $items,
