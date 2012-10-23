@@ -3,6 +3,7 @@
 namespace User;
 
 use Core\Auth;
+use Zend\Mvc\MvcEvent;
 
 class Module
 {
@@ -11,6 +12,8 @@ class Module
         $serviceManager = $e->getApplication()->getServiceManager();
         $serviceManager->setInvokableClass('User\Event\Listener', 'User\Event\Listener');
         $e->getApplication()->getEventManager()->attach($serviceManager->get('User\Event\Listener'));
+
+        $e->getApplication()->getEventManager()->attach(MvcEvent::EVENT_RENDER, array($this, 'setUserToView'), 100);
     }
 
     public function getAutoloaderConfig()
@@ -29,6 +32,11 @@ class Module
         return include __DIR__ . '/config/module.config.php';
     }
 
+    public function setUserToView($e)
+    {
+        $user = Auth::getLoginUser();
+        $e->getViewModel()->setVariable('loginUser', $user);
+    }
 
     public static function authority($e)
     {
