@@ -26,6 +26,12 @@ return array(
         'format' => 'F j, Y, g:i a', //'Y年m月d日 H:i',
     ),
 
+    'controllers' => array(
+        'invokables' => array(
+            'ErrorController' => 'Core\Controller\ErrorController'
+        ),
+    ),
+
     'service_manager' => array(
         'factories' => array(
             'Zend\Db\Adapter\Adapter' => 'Zend\Db\Adapter\AdapterServiceFactory',

@@ -1,0 +1,115 @@
+<?
+$title = $this->_('Message List');
+$this->headTitle($title, 'SET');
+$this->textDelay('breadcrumbText', $title);
+if($this->form){
+	$form = $this->form;
+} else {
+    $form = new Activity\Form\MessageSearchForm();
+}
+
+$form
+->setView($this)
+->setMethod('get')
+->setAction($this->uri('/admin/activity/'))
+->bind($this->query)
+->prepare();
+
+$lableMap = array(
+    'active' => 'label-success',
+    'pending' => 'label-warning',
+    'deleted' => 'label-inverse',
+);
+
+?>
+<div class="row">
+    <div class="span10">
+        <div class="slate">
+            <form <?=$this->formAttr($form)?> class="form-inline">
+                <?=$form->helper('keyword', array('class' => 'input-large', 'placeholder' => 'Keyword...'))?>
+                <button class="btn" type="submit"><?=$this->_('Filter Messages')?></button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="span10 listing-buttons">
+        <div class="btn-group pull-right">
+            <a href="<?=$this->uri('/admin/activity/create')?>" class="btn btn-info"><?=$this->_('Add New Message')?></a>
+        </div>
+        <form action="<?=$this->uri('/admin/activity/multi/')?>" method="post" class="pull-left" data-multiform="post">
+            <input type="hidden" name="id" class="multiform-container-main" value="" />
+            <input type="hidden" name="order" class="multiform-container" value="" />
+            <div class="btn-group">
+                <span class="btn"><input type="checkbox" class="multiform-checker" /></span>
+                <span data-toggle="dropdown" class="btn dropdown-toggle">
+                    <?=$this->_('Status')?>
+                    <span class="caret"></span>
+                </span>
+                <ul class="dropdown-menu">
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/activity/multi/status/published')?>"><?=$this->_('Published')?></a></li>
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/activity/multi/status/draft')?>"><?=$this->_('Draft')?></a></li>
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/activity/multi/status/pending')?>"><?=$this->_('Pending')?></a></li>
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/activity/multi/status/deleted')?>"><?=$this->_('Deleted')?></a></li>
+                </ul>
+                <a href="#" class="btn multiform-submiter" data-multiform-action="<?=$this->uri('/admin/activity/multi/reorder')?>"><?=$this->_('Re-Order')?></a>
+            </div>
+        </form>
+    </div>
+
+    <div class="span10">
+        <div class="slate">
+            <div class="page-header">
+                <h2><?=$title?></h2>
+            </div>
+
+            <table class="orders-table table">
+                <thead>
+                    <tr>
+                        <th class="span1">
+                        </th>
+                        <th><?=$this->_('Message')?></th>
+                        <th class="span1"><?=$this->_('User')?></th>
+                        <th class="actions"><?=$this->_('Actions')?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?if($this->items):?>
+                    <?foreach($this->items as $key=>$item):?>
+                    <tr class="">
+                        <td>
+                            <input name="id" type="checkbox" class="multiform-item-checkbox"  data-multiform="post" data-multiform-itemid="<?=$item['id'] ?>" value="<?=$item['id'] ?>" />
+                        </td>	
+                        <td>
+                            <a href="<?=$this->uri('/admin/activity/' . $item['id'])?>" class="title"><?=$item['id'] ?></a>
+                            <span class="label <?=$lableMap[$item['status']]?>"><?=$this->_($item['status'])?></span>
+                            <p>
+                            <?=$item['content']?>
+                            </p>
+                        </td>
+                        <td>
+                            <input name="order" tabindex="<?=$key+1 ?>" type="text" class="span1 multiform-item-input" size="2" maxlength="3"  data-multiform="post" data-multiform-itemid="<?=$item['id'] ?>" value="<?=$item['orderNumber'] ? $item['orderNumber'] : "0" ?>" />
+                        </td>
+                        <td class="actions">
+                            <a href="<?=$this->uri('/admin/activity/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/activity/', array('page' => $this->page)))); ?>" class="btn btn-small btn-danger"><?=$this->_('Delete')?></a>
+                            <a href="<?=$this->uri('/pages/' . $item['urlName'])?>" class="btn btn-small"><?=$this->_('View')?></a>
+                            <a href="<?=$this->uri('/admin/activity/' . $item['id'])?>" class="btn btn-small"><?=$this->_('Edit')?></a>
+                        </td>
+                    </tr>
+                    <?endforeach;?>
+                    <?endif;?>
+                </tbody>
+            </table>
+        </div>
+    </div><!--span10 end-->
+
+    <div class="span10">
+        <?if($this->paginator):?>
+        <?=$this->paginator->setPath('/admin/activity/')->setBaseQuery($this->query);?>
+        <?=$this->widget('Core', 'widgets/paginator', $this->vars())?>
+        <?endif;?>
+    </div>
+
+</div>

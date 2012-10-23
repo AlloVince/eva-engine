@@ -81,6 +81,7 @@ class ModuleRoute implements \Zend\Mvc\Router\Http\RouteInterface
             return null;
         }
 
+        //p($request);
         $uri  = $request->getUri();
         $path = $uri->getPath();
 
