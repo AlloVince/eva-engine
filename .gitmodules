@@ -22,3 +22,6 @@
 [submodule "vendor/ZendOAuth"]
 	path = vendor/ZendOAuth
 	url = git://github.com/zendframework/ZendOAuth.git
+[submodule "vendor/Zend"]
+	path = vendor/Zend
+	url = git://github.com/AlloVince/zf2.git
