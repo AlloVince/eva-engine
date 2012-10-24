@@ -9,4 +9,9 @@ namespace Video\Service\Adapter;
  */
 interface AdapterInterface
 {
+    public function isValid();
+
+    public function getSwfUrl();
+
+    public function getRemoteId();
 }

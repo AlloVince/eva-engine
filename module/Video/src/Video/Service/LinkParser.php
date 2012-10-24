@@ -38,6 +38,7 @@ class LinkParser
         'video.sina.com.cn' => 'Sina',
         'www.letv.com' => 'Letv',
         'www.youtube.com' => 'Youtube',
+        'youtu.be' => 'Youtube',
     );
 
     protected $options;

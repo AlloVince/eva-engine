@@ -1,0 +1,6 @@
+<?
+$video = $this->video;
+$playerSize = $video->getPlayerSize();
+?>
+<embed src="<?=$this->escapeHtmlAttr($video->getSwfUrl())?>" quality="high" width="<?=$playerSize['width']?>" height="<?=$playerSize['height']?>" align="middle" allowScriptAccess="always" allowFullScreen="true" mode="transparent" type="application/x-shockwave-flash"></embed>
+<img src="<?=$video->getThumbnail()?>">
