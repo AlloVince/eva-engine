@@ -609,7 +609,9 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     {
         $joinColumn = $relationship['joinColumn'];
         $referencedColumn = $relationship['referencedColumn'];
-        $relItem->$joinColumn = $this->$referencedColumn;
+        if($this->$referencedColumn) {
+            $relItem->$joinColumn = $this->$referencedColumn;
+        }
         //p(sprintf('%s joinOneToOne with %s : joinColumn %s => %s joined %s => %s', get_class($this), get_class($relItem), $joinColumn, $relItem->$joinColumn , $referencedColumn, $this->$referencedColumn));
         return $this;
     }
@@ -633,7 +635,9 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     {
         $joinColumn = $relationship['joinColumn'];
         $referencedColumn = $relationship['referencedColumn'];
-        $relItem->$joinColumn = $this->$referencedColumn;
+        if($this->$referencedColumn) {
+            $relItem->$joinColumn = $this->$referencedColumn;
+        }
         //p(sprintf('joinManyToOne Joined Class %s : joinColumn %s => %s joined %s => %s', get_class($relItem), $joinColumn, $relItem->$joinColumn , $referencedColumn, $this->$referencedColumn));
         return $this;
     }

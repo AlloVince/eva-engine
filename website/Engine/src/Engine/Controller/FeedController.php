@@ -46,6 +46,7 @@ class FeedController extends RestfulModuleController
         $activityList = $itemModel->combineList($activityList, $userList, 'User', array('user_id' => 'id'));
         $items = $itemModel->combineList($activityList, $forwardActivityList, 'ForwardActivity', array('reference_id' => 'id'));
 
+
         return array(
             'items' => $items,
             'query' => $query,

@@ -64,9 +64,9 @@ $form->useSubFormGroup()
                         </div>
                         <?endif?>
                         <div class="item-action">
-                            <p class="pull-right"><a href="javascript:;" class="item-func comment" data-activity-comment="<?=$subItem['id']?>"><i class="icon-comment"></i> Comments (<span class="highlight"><?=$subItem['commentedCount']?></span>)</a></p>
+                            <p class="pull-right"><a href="<?=$this->uri('/feed/' . $subItem['messageHash'])?>" class="" data-activity-comment="<?=$subItem['id']?>"><i class="icon-comment"></i> Comments (<span class="highlight"><?=$subItem['commentedCount']?></span>)</a></p>
                             <p class="pull-left">
-                            <a href="<?=$this->uri('/feed/' . $subItem['messageHash'])?>" class="item-id"><time class="agotime" data-jstime="<?=$this->datetime()->jsTime($subItem['createTime'])?>" datetime="<?=$this->datetime()->isoTime($subItem['createTime'])?>"><?=$this->datetime($subItem['createTime'])?></time></a>
+                            <a href="<?=$this->uri('/feed/' . $subItem['messageHash'])?>"><time class="agotime" data-jstime="<?=$this->datetime()->jsTime($subItem['createTime'])?>" datetime="<?=$this->datetime()->isoTime($subItem['createTime'])?>"><?=$this->datetime($subItem['createTime'])?></time></a>
                             </p>
                         </div>
                     </div>
@@ -81,7 +81,7 @@ $form->useSubFormGroup()
                     </div>
                 </div>
 
-                <div class="item-sub-wrap fade">
+                <div class="item-sub-wrap">
                 </div>
             </div>
         </div>
@@ -138,6 +138,14 @@ $(".item-func.reference").live('click', function(){
     textarea.val(textarea.val() + $(this).attr('data-activity-text'));
     form.find('input[name="reference_id"]').val($(this).attr('data-activity-reference'));
     form.find('input[name="messageType"]').val('forward');
+});
+
+$(".item-func.comment").live('click', function(){
+        var item = $(this).parentsUntil('.item').parent();
+        var idUrl = item.find('.item-id').attr('href');
+        item.find('.item-sub-wrap').load(idUrl + ' .item-sub-wrap', function(){
+            $(this).show();
+        });
 });
 
 var maxMessage = 140;
