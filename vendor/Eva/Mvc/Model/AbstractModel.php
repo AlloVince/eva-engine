@@ -304,6 +304,38 @@ abstract class AbstractModel implements ServiceLocatorAwareInterface
         return true;
     }
 
+    public function combineList(array $primaryList, array $foreignList, $fillByName, array $keyMap)
+    {
+        if(!$primaryList || !$foreignList){
+            return $primaryList;
+        }
+
+        if(!isset($primaryList[0])){
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Primary list must be Two-dimensional array list'
+            ));
+        }
+
+        if(!isset($foreignList[0])){
+            throw new Exception\InvalidArgumentException(sprintf(
+               'Foreign list must be Two-dimensional array list'
+            ));
+        }
+
+        list($primaryKey) = array_keys($keyMap);
+        list($foreignKey) = array_values($keyMap);
+
+        foreach($primaryList as $key => $item){
+            foreach($foreignList as $foreignItem){
+                if($item[$primaryKey] == $foreignItem[$foreignKey]) {
+                    $primaryList[$key][$fillByName] = $foreignItem;
+                }
+            }
+        }
+
+        return $primaryList;
+    }
+
     public function __clone()
     {
         $itemClass = $this->getItemClass();

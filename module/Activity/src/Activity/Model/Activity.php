@@ -9,6 +9,37 @@ class Activity extends AbstractModel
 {
     protected $itemClass = 'Activity\Item\Message';
 
+    protected $userList;
+
+    public function setUserList($userList)
+    {
+        $this->userList = $userList;
+        return $this;
+    }
+
+    public function getUserList(array $map = array())
+    {
+        if($this->userList){
+            return $this->userList;
+        }
+
+        $itemList = $this->getItemList();
+        $idArray = array();
+
+        if(!$itemList){
+            return array();
+        }
+
+        foreach($itemList as $item){
+            $idArray[] = $item['id'];
+        }
+        $userModel = Api::_()->getModel('User\Model\User');
+        $userList = $userModel->setItemList(array(
+            'id' => $idArray
+        ))->getUserList($map);
+        return $this->userList = $userList;
+    }
+
     public function getUserActivityList($userId)
     {
         $indexItem = $this->getItem('Activity\Item\Index');

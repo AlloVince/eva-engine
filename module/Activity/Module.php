@@ -3,6 +3,10 @@ namespace Activity;
 
 class Module
 {
+    protected $dependModules = array(
+        'User'
+    );
+
     public function onBootstrap($e)
     {
         $app = $e->getParam('application');

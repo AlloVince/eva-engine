@@ -13,16 +13,16 @@ class Users extends TableGateway
 
     public function setParameters(Parameters $params)
     {
-        if($params->page){
-            $this->enableCount();
-        }
-
         if($params->keyword){
             $keyword = $params->keyword;
             $this->where(function($where) use ($keyword){
                 $where->like('userName', "%$keyword%");
                 return $where;
             });
+        }
+
+        if($params->id){
+            $this->where(array('id' => $params->id));
         }
 
         if($params->status){
@@ -42,6 +42,7 @@ class Users extends TableGateway
         }
 
         if($params->page){
+            $this->enableCount();
             $this->page($params->page);
         }
 

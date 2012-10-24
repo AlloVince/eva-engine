@@ -727,6 +727,40 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         return true;
     }
 
+    public function fill(AbstractItem $fillItemList, $fillByName, array $keyMap)
+    {
+        if(!$this->dataSource || !$fillItemList->getDataSource()){
+            return $this;
+        }
+
+        if(!isset($this[0])){
+            throw new Exception\InvalidArgumentException(sprintf(
+                '%s must be a item list', get_class($this)
+            ));
+        }
+
+        if(!isset($fillItemList[0])){
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Filled item %s must be a list', get_class($fillItemList)
+            ));
+        }
+
+
+        list($primaryKey) = array_keys($keyMap);
+        list($foreignKey) = array_values($keyMap);
+
+        foreach($this as $key => $item){
+            foreach($fillItemList as $fillItem){
+                if($item->$primaryKey == $fillItem->$foreignKey) {
+                    $this[$key][$fillByName] = $fillItem;
+                }
+            }
+        }
+
+        return $this;
+    }
+
+
     protected function getPrimaryArray()
     {
         $dataClass = $this->getDataClass();

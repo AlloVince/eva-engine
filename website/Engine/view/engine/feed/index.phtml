@@ -44,10 +44,10 @@ $form->useSubFormGroup()
     <div class="activity-list vlist">
         <?foreach($items as $item):?>
         <div class="item">
-            <a href="<?=$this->uri('/user/' . $item['user_id'])?>" title="" class="item-absolute item-userface"><img src="http://placehold.it/60&amp;text=USER-<?=$item['user_id']?>" alt="" class="img-rounded" width="60" height="60" /></a>
+            <a href="<?=$this->uri('/user/' . $item['user_id'])?>" title="" class="item-absolute item-userface"><img src="<?=$this->gravatar($item['User']['email'])?>" alt="" class="img-rounded" width="60" height="60" /></a>
             <div class="item-inline item-text span6">
                 <div class="item-content">
-                    <div class="item-title"><a href="<?=$this->uri('/user/' . $item['user_id'])?>" class="item-user">Sophia</a> Said:</div>
+                    <div class="item-title"><a href="<?=$this->uri('/user/' . $item['user_id'])?>" class="item-user"><?=$item['User']['userName']?></a> Said:</div>
                     <p><?=$item['ContentHtml']?></p>
                     <?if($item['File']):?>
                     <div class="item-image">
@@ -63,11 +63,10 @@ $form->useSubFormGroup()
                     </div>
                 </div>
 
-                <div class="item-sub-wrap">
+                <div class="item-sub-wrap hide">
                     <div class="item-sub-title">
-                        12 Comments in Total
+                        <?=$item['commentedCount']?> Comments in Total
                     </div>
-
                     <div class="item-sub-form">
                         <form <?=$this->formAttr($form)?> class="">
                             <?=$form->helper('messageType', 'formHidden', array('class' => '', 'value' => 'comment'))?>        
@@ -83,8 +82,6 @@ $form->useSubFormGroup()
                             </fieldset>
                         </form>
                     </div>
-
-                    <?for($j = 0; $j < 1; $j++):?>
                     <div class="item-sub">
                         <a href="" title="" class="item-absolute item-sub-userface"><img src="http://placehold.it/30" alt="" class="img-rounded" width="30" height="30" /></a>
                         <div class="item-sub-content">
@@ -92,8 +89,6 @@ $form->useSubFormGroup()
                             Hello world. 你好 <a href="#">Test</a>
                         </div>
                     </div>
-                    <?endfor?>
-
                 </div>
             </div>
         </div>

@@ -37,7 +37,6 @@ class User extends AbstractModel
             }
         }
         $this->trigger('create');
-
     
         $this->trigger('create.post');
 

@@ -24,7 +24,7 @@ class FeedController extends RestfulModuleController
             'id' => array(2, 1)
         ))->find('all');
 
-        $items = $itemModel->getUserActivityList($user['id'])->getActivityList(array(
+        $activityList = $itemModel->getUserActivityList($user['id'])->getActivityList(array(
             'self' => array(
                 '*',
                 'getContentHtml()',
@@ -35,16 +35,17 @@ class FeedController extends RestfulModuleController
                         '*',
                         'getThumb()',
                     )
-                )
+                ),
             ),
         ));
+        $userList = $itemModel->getUserList()->toArray();
 
-        //p($items, 1);
+        $items = $itemModel->combineList($activityList, $userList, 'User', array('user_id' => 'id'));
+
         return array(
             'items' => $items,
             'query' => $query,
         );
-
     }
 
     public function getAction()
