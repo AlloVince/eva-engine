@@ -12,7 +12,6 @@ $form->useSubFormGroup()
      ->setMethod($item['id'] ? 'put' : 'post')
      ->setView($this)
      ->setAction($this->uri('/activity/'))
-     ->bind($item)
      ->prepare();
 ?>
 <div class="container">

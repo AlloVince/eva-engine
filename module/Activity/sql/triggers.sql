@@ -71,10 +71,10 @@ DELIMITER //
 CREATE TRIGGER `references_insert` AFTER INSERT ON `eva_activity_references`
  FOR EACH ROW 
  BEGIN
- UPDATE `eva_activity_messages` SET `commentedCount` = `commentedCount` + 1 WHERE `eva_activity_messages`.`id` = NEW.`root_message_id` AND NEW.`messageType` = 'comment' AND NEW.`root_message_id` = NEW.`reference_message_id`;
- UPDATE `eva_activity_messages` SET `commentedCount` = `commentedCount` + 1 WHERE (`eva_activity_messages`.`id` = NEW.`root_message_id` OR `eva_activity_messages`.`id` = NEW.`reference_message_id`) AND NEW.`messageType` = 'comment' AND NEW.`root_message_id` != NEW.`reference_message_id`;
+ UPDATE `eva_activity_messages` SET `commentedCount` = `commentedCount` + 1 WHERE `eva_activity_messages`.`id` = NEW.`reference_message_id` AND NEW.`messageType` = 'comment';
  UPDATE `eva_activity_messages` SET `transferredCount` = `transferredCount` + 1 WHERE `eva_activity_messages`.`id` = NEW.`root_message_id` AND NEW.`messageType` = 'forward' AND NEW.`root_message_id` = NEW.`reference_message_id`;
  UPDATE `eva_activity_messages` SET `transferredCount` = `transferredCount` + 1 WHERE (`eva_activity_messages`.`id` = NEW.`root_message_id` OR `eva_activity_messages`.`id` = NEW.`reference_message_id`) AND NEW.`messageType` = 'forward' AND NEW.`root_message_id` != NEW.`reference_message_id`;
  END
 //
 DELIMITER ;
+

@@ -4,7 +4,9 @@ namespace Activity;
 class Module
 {
     protected $dependModules = array(
-        'User'
+        'User',
+        'File',
+        'Video',
     );
 
     public function onBootstrap($e)

@@ -81,7 +81,7 @@ $form->useSubFormGroup()
                     </div>
                 </div>
 
-                <div class="item-sub-wrap">
+                <div class="item-sub-ajax">
                 </div>
             </div>
         </div>
@@ -143,7 +143,7 @@ $(".item-func.reference").live('click', function(){
 $(".item-func.comment").live('click', function(){
         var item = $(this).parentsUntil('.item').parent();
         var idUrl = item.find('.item-id').attr('href');
-        item.find('.item-sub-wrap').load(idUrl + ' .item-sub-wrap', function(){
+        item.find('.item-sub-ajax').load(idUrl + ' .item-sub-wrap', function(){
             $(this).show();
         });
 });

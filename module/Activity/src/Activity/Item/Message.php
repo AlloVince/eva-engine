@@ -102,4 +102,8 @@ class Message extends AbstractItem
         $parser = $this->getParser();
         $this->ContentHtml = $parser->toHtml();
     }
+
+    public function getVideo()
+    {
+    }
 }
