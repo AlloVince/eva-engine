@@ -1,0 +1,138 @@
+<? 
+$title = $this->_('Feed');
+$this->headTitle($title, 'SET');
+if($this->form){
+	$form = $this->form;
+} else {
+    $form = new Activity\Form\MessageCreateForm();
+}
+$item = $this->item;
+$items = $this->items;
+$form->useSubFormGroup()
+     ->setMethod($item['id'] ? 'put' : 'post')
+     ->setView($this)
+     ->setAction($this->uri('/activity/'))
+     ->bind($item)
+     ->prepare();
+?>
+<div class="container">
+
+    <div class="activity-list vlist">
+        <div class="item">
+            <a href="<?=$this->uri('/user/' . $item['user_id'])?>" title="" class="item-absolute item-userface"><img src="http://placehold.it/60&amp;text=USER-<?=$item['user_id']?>" alt="" class="img-rounded" width="60" height="60" /></a>
+            <div class="item-inline item-text span6">
+                <div class="item-content">
+                    <div class="item-title"><a href="<?=$this->uri('/user/' . $item['user_id'])?>" class="item-user">Sophia</a> Said:</div>
+                    <p><?=$item['ContentHtml']?></p>
+                    <?if($item['File']):?>
+                    <div class="item-image">
+                        <p><a href="<?=$item['File'][0]['Thumb']?>"><img src="<?=$this->thumb($item['File'][0]['Thumb'], array('w_200'))?>" alt="" class="img-polaroid" /></a></p>
+                    </div>
+                    <?endif?>
+                    <div class="item-action">
+                        <p class="pull-right"><a href="javascript:;" class="item-func comment" data-activity-comment="<?=$item['id']?>"><i class="icon-comment"></i> Comments (<span class="highlight"><?=$item['commentedCount']?></span>)</a></p>
+                        <p class="pull-right"><a href="#activity-form" class="item-func reference" data-activity-reference="<?=$item['id']?>" data-activity-text="@Sophia"><i class="icon-share-alt"></i> RT (<span class="highlight"><?=$item['transferredCount']?></span>)</a></p>
+                        <p class="pull-left">
+                        <a href="<?=$this->uri('/feed/' . $item['messageHash'])?>" class="item-id"><time class="agotime" data-jstime="<?=$this->datetime()->jsTime($item['createTime'])?>" datetime="<?=$this->datetime()->isoTime($item['createTime'])?>"><?=$this->datetime($item['createTime'])?></time></a>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="item-sub-wrap">
+                    <div class="item-sub-title">
+                        12 Comments in Total
+                    </div>
+
+                    <div class="item-sub-form">
+                        <form <?=$this->formAttr($form)?> class="">
+                            <?=$form->helper('messageType', 'formHidden', array('class' => '', 'value' => 'comment'))?>        
+                            <?=$form->helper('reference_id', 'formHidden', array('class' => '', 'value' => $item['id']))?>
+                            <?=$form->helper(array('MessageFile', 'file_id'), array('class' => ''))?>
+                            <fieldset class="form">
+                                <div class="item-sub-textarea">
+                                    <?=$form->helper('content', 'formTextarea', array('placeholder' => 'Add Comment'))?>        
+                                </div>
+                                <div class="item-absolute item-sub-submit">
+                                    <button type="submit" class="btn btn-light-brown btn-large">Submit</button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+
+                    <?for($j = 0; $j < 1; $j++):?>
+                    <div class="item-sub">
+                        <a href="" title="" class="item-absolute item-sub-userface"><img src="http://placehold.it/30" alt="" class="img-rounded" width="30" height="30" /></a>
+                        <div class="item-sub-content">
+                            <div class="item-sub-title"><a href="#" class="item-sub-user">Sophia</a><a href="" class="item-sub-id"><time class="agotime" data-jstime="Fri Apr 6 11:44:17 UTC+0800 2012" datetime="2012-04-06T03:44:17+00:00">6个月前</time></a></div>
+                            Hello world. 你好 <a href="#">Test</a>
+                        </div>
+                    </div>
+                    <?endfor?>
+
+                </div>
+            </div>
+        </div>
+    </div><!--activity-list end-->
+
+</div>
+
+<?=$this->widget('File', 'file/index')?>
+
+<style>
+    #fileupload-modal {
+            position:absolute;
+            margin:0;
+            width:250px;
+    }
+</style>
+<script>
+
+var modal = $("#fileupload-modal");
+modal.hide();
+eva.loader(eva.s('/static/eva/js/eva.jquery.evaTip.js'), function(){
+    modal.hide();
+    $('#activity-box-image-button').on('click', function() {
+        $(this).evaTip("show", {
+            'tip' : modal,
+            'offsetX' : -75,
+            'offsetY' : 30,
+            'direction' : 'bottom'			
+        });
+        return false;
+    });
+
+    modal.find(".close").on("click", function(){
+            modal.hide();
+    });
+});
+
+var uploader = $('#singlefileupload');
+var form = $("#activity-form");
+var textarea = form.find('textarea');
+uploader.bind('fileuploaddone', function (e, data) {
+        var file = data.result[0];
+        form.find('input[name="MessageFile[file_id]"]').val(file.id);
+        modal.find(".close").hide();
+});
+
+$(".activity-box-text").live('click', function(){
+        textarea.val(textarea.val() + $(this).attr('data-activity-text'));
+        return false;
+});
+
+$(".item-func.reference").live('click', function(){
+    textarea.val(textarea.val() + $(this).attr('data-activity-text'));
+    form.find('input[name="reference_id"]').val($(this).attr('data-activity-reference'));
+    form.find('input[name="messageType"]').val('forword');
+});
+
+var maxMessage = 140;
+var countHandler = $('.activity-box-count');
+var messageLetterCount = function(){
+        countHandler.html(maxMessage - textarea.val().length);
+}
+
+textarea.live('keyup', function(){
+    messageLetterCount();
+});
+</script>

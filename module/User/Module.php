@@ -4,6 +4,7 @@ namespace User;
 
 use Core\Auth;
 use Zend\Mvc\MvcEvent;
+use Zend\View\Model\ViewModel as PhpViewViewModel;
 
 class Module
 {
@@ -35,7 +36,11 @@ class Module
     public function setUserToView($e)
     {
         $user = Auth::getLoginUser();
-        $e->getViewModel()->setVariable('loginUser', $user);
+        $viewModel = $e->getViewModel();
+        //Json/Feed ViewModel
+        if(!$viewModel->terminate()){
+            $viewModel->setVariable('loginUser', $user);
+        }
     }
 
     public static function authority($e)

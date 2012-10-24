@@ -37,7 +37,7 @@
                     <ul class="nav">
                         <li data-highlight-url="^/$"><a href="/"><?=$this->_('Home')?></a></li>
                         <?if($this->hasModule('Blog')):?>
-                        <li data-highlight-url="/(blog|pages)/*"><a href="/blog/"><?=$this->_('Blog')?></a></li>
+                        <li data-highlight-url="/(blog|pages)/*"><a href="/pages/"><?=$this->_('Blog')?></a></li>
                         <?endif?>
                         <?if($this->hasModule('Activity') && $this->loginUser):?>
                         <li data-highlight-url="/feed/?"><a href="/feed/"><?=$this->_('Feed')?></a></li>

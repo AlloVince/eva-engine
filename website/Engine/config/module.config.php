@@ -7,33 +7,8 @@ return array(
     ),
     'router' => array(
         'routes' => array(
-            'blog' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/blog[/]',
-                    'defaults' => array(
-                        'controller' => 'PagesController',
-                        'action' => 'index',
-                    ),
-                ),
-                'priority' => 2,
-            ),
-            'pages' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/pages[/:id]',
-                    'constraints' => array(
-                        'id'     => '[a-zA-Z][a-zA-Z0-9_-]+',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'PagesController',
-                        'action' => 'get',
-                    ),
-                ),
-                'priority' => 2,
-            ),
-            'index' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
+            'home' => array(
+                'type' => 'Literal',
                 'options' => array(
                     'route'    => '/',
                     'defaults' => array(
@@ -43,8 +18,62 @@ return array(
                 ),
                 'priority' => 2,
             ),
+            'blog' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/pages[/]',
+                    'defaults' => array(
+                        'controller' => 'PagesController',
+                        'action' => 'index'
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'post' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '[/][:id][/]',
+                            'constraints' => array(
+                                'id' => '[a-zA-Z0-9_-]+'
+                            ),
+                            'defaults' => array(
+                                'action' => 'get'
+                            )
+                        )
+                    ),
+                ),
+                'priority' => 2,
+            ),
+
+            'feed' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/feed[/]',
+                    'defaults' => array(
+                        'controller' => 'FeedController',
+                        'action' => 'index'
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'tweet' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '[/][:id][/]',
+                            'constraints' => array(
+                                'id' => '[a-zA-Z0-9_-]+'
+                            ),
+                            'defaults' => array(
+                                'action' => 'get'
+                            )
+                        )
+                    ),
+                ),
+                'priority' => 2,
+            ),
+
             'register' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'type' => 'Segment',
                 'options' => array(
                     'route' => '/register[/]',
                     'defaults' => array(
@@ -54,19 +83,9 @@ return array(
                 ),
                 'priority' => 2,
             ),
-            'pricing' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/pricing[/]',
-                    'defaults' => array(
-                        'controller' => 'UserController',
-                        'action' => 'pricing',
-                    ),
-                ),
-                'priority' => 2,
-            ),
+
             'login' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'type' => 'Segment',
                 'options' => array(
                     'route' => '/login/[:action/]',
                     'constraints' => array(
@@ -79,16 +98,15 @@ return array(
                 ),
                 'priority' => 2,
             ),
-            'feed' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
+
+            //For test
+            'pricing' => array(
+                'type' => 'Segment',
                 'options' => array(
-                    'route' => '/feed/[:action/]',
-                    'constraints' => array(
-                        'action'     => '[a-zA-Z]+',
-                    ),
+                    'route' => '/pricing[/]',
                     'defaults' => array(
-                        'controller' => 'FeedController',
-                        'action' => 'index',
+                        'controller' => 'UserController',
+                        'action' => 'pricing',
                     ),
                 ),
                 'priority' => 2,

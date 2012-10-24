@@ -21,7 +21,8 @@ class Activity extends AbstractModel
             $messageIdArray[] = $index['message_id'];
         }
         $this->setItemList(array(
-            'idArray' => $messageIdArray
+            'id' => $messageIdArray,
+            'order' => 'idarray'
         ));
         return $this;
     }
@@ -36,7 +37,7 @@ class Activity extends AbstractModel
             $this->setItem(array(
                 'id' => $idOrUrlName,
             ));
-        } elseif(is_string($postIdOrUrlName)) {
+        } elseif(is_string($idOrUrlName)) {
             $item = $this->getItem()->getDataClass()->columns(array('id'))->where(array(
                 'messageHash' => $idOrUrlName
             ))->find('one');

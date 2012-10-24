@@ -49,7 +49,10 @@ abstract class RestfulController extends \Zend\Mvc\Controller\AbstractRestfulCon
         $request = $this->getRequest();
         $method = strtolower($request->getMethod());
         if(!$moduleName || !$controllerName || !$method){
-            throw new \Eva\Core\Exception\RestfulException('Restful route argument not exist');
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Restful route argument not exist, ModuleName : %s , ControllerName : %s, Method : %s',
+                $moduleName, $controllerName, $method
+            ));
         }
 
         switch($method) {
