@@ -19,11 +19,13 @@ class ActivityController extends RestfulModuleController
         $form = new Form\MessageCreateForm();
         $form->useSubFormGroup()
              ->bind($postData);
+
+        $callback = $this->params()->fromPost('callback', '/feed/');
         if ($form->isValid()) {
             $postData = $form->getData();
             $itemModel = Api::_()->getModel('Activity\Model\Activity');
             $postId = $itemModel->setItem($postData)->createActivity();
-            $this->redirect()->toUrl('/feed/');
+            $this->redirect()->toUrl($callback);
 
         } else {
             

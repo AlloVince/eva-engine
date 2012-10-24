@@ -26,17 +26,21 @@ class Activity extends AbstractModel
         $itemList = $this->getItemList();
         $idArray = array();
 
-        if(!$itemList){
-            return array();
+        foreach($itemList as $item){
+            $idArray[] = $item['user_id'];
         }
 
-        foreach($itemList as $item){
-            $idArray[] = $item['id'];
-        }
         $userModel = Api::_()->getModel('User\Model\User');
-        $userList = $userModel->setItemList(array(
-            'id' => $idArray
-        ))->getUserList($map);
+        if(!$idArray){
+            $userModel->setItemList(array(
+                'noResult' => true
+            ));
+        } else {
+            $userModel->setItemList(array(
+                'id' => $idArray
+            ));
+        }
+        $userList = $userModel->getUserList($map);
         return $this->userList = $userList;
     }
 
@@ -51,14 +55,73 @@ class Activity extends AbstractModel
         foreach($indexItem as $index){
             $messageIdArray[] = $index['message_id'];
         }
-        $this->setItemList(array(
-            'id' => $messageIdArray,
-            'order' => 'idarray'
-        ));
+        if(!$messageIdArray){
+            $this->setItemList(array(
+                'noResult' => true
+            ));
+        } else {
+            $this->setItemList(array(
+                'id' => $messageIdArray,
+                'order' => 'idarray'
+            ));
+        }
         return $this;
     }
 
-    //public function get
+    public function getForwardActivityList()
+    {
+        $itemList = $this->getItemList();
+        $idArray = array();
+
+        if(!$itemList){
+            return array();
+        }
+
+        foreach($itemList as $item){
+            if(!$item['reference_id']){
+                continue;
+            }
+            $idArray[] = $item['reference_id'];
+        }
+        if($idArray){
+            $this->setItemList(array(
+                'id' => $idArray
+            ));
+        } else {
+            $this->setItemList(array(
+                'noResult' => true
+            ));
+        }
+        return $this;
+    }
+
+    public function getCommentActivityList()
+    {
+        $itemList = $this->getItemList();
+        $idArray = array();
+
+        if(!$itemList){
+            return array();
+        }
+
+        foreach($itemList as $item){
+            if(!$item['reference_id']){
+                continue;
+            }
+            $idArray[] = $item['reference_id'];
+        }
+        if($idArray){
+            $this->setItemList(array(
+                'id' => $idArray
+            ));
+        } else {
+            $this->setItemList(array(
+                'noResult' => true
+            ));
+        }
+        return $this;
+    }
+
 
     public function getActivity($idOrUrlName = null, array $map = array())
     {

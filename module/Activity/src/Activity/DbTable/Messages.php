@@ -18,6 +18,10 @@ class Messages extends TableGateway
             $this->enableCount();
         }
 
+        if($params->noResult) {
+            $this->setNoResult(true);
+        }
+
         if($params->keyword){
             $keyword = $params->keyword;
             $this->where(function($where) use ($keyword){
@@ -27,7 +31,11 @@ class Messages extends TableGateway
         }
 
         if($params->id){
-            $this->where(array('id' => $params->id));
+            if(is_array($params->id)){
+                $this->where(array('id' => array_unique($params->id)));
+            } else {
+                $this->where(array('id' => $params->id));
+            }
         }
 
         if($params->user_id){
@@ -44,8 +52,7 @@ class Messages extends TableGateway
             if($order){
                 if($params->order == 'idarray') {
                     if($params->id && is_array($params->id)){
-
-                        $idArray = $params->id;
+                        $idArray = array_unique($params->id);
                         $order = sprintf($order, implode(',', array_fill(0, count($idArray), Expression::PLACEHOLDER)));
                         $this->order(array(new Expression($order, $idArray)));
 

@@ -47,6 +47,7 @@ class TableGateway extends AbstractTableGateway  implements ServiceLocatorAwareI
     */
     protected $serviceLocator;
 
+    protected $noResult = false;
 
     /**
     * Set the service locator.
@@ -68,6 +69,17 @@ class TableGateway extends AbstractTableGateway  implements ServiceLocatorAwareI
     public function getServiceLocator()
     {
         return $this->serviceLocator;
+    }
+
+    public function getNoResult()
+    {
+        return $this->noResult;
+    }
+
+    public function setNoResult($noResult)
+    {
+        $this->noResult = $noResult;
+        return $this;
     }
 
     public function getSelect()
@@ -136,6 +148,7 @@ class TableGateway extends AbstractTableGateway  implements ServiceLocatorAwareI
         $this->selectOptions = array(); 
         $this->enableCount = false;
         $this->autoLimit = true;
+        $this->noResult = false;
         return $this;
     }
 
@@ -223,6 +236,11 @@ class TableGateway extends AbstractTableGateway  implements ServiceLocatorAwareI
 
     public function find($findCondition = null, array $findOptions = array())
     {
+        if($this->getNoResult()){
+            $this->reset();
+            return array(); 
+        }
+
         //Maybe call find without select condition
         if (!$this->isInitialized) {
             $this->initialize();

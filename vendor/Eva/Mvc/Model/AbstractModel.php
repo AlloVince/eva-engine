@@ -329,6 +329,8 @@ abstract class AbstractModel implements ServiceLocatorAwareInterface
             foreach($foreignList as $foreignItem){
                 if($item[$primaryKey] == $foreignItem[$foreignKey]) {
                     $primaryList[$key][$fillByName] = $foreignItem;
+                } else {
+                    $primaryList[$key][$fillByName] = null;
                 }
             }
         }

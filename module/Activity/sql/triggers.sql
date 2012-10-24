@@ -3,11 +3,11 @@
 #CREATE TRIGGER `messages_insert` AFTER INSERT ON `eva_activity_messages`
 # FOR EACH ROW 
 # BEGIN
-# DELETE FROM `eva_activity_indexes` WHERE `eva_activity_indexes`.`message_id` = NEW.`id` AND (NEW.`messageType` = 'original' OR NEW.`messageType` = 'forword');
-# INSERT INTO `eva_activity_indexes` (`user_id` ,`author_id` ,`message_id` ,`messageTime`) SELECT NEW.`user_id` AS `user_id`, NEW.`user_id` AS `author_id`, `id`, NEW.`createTime` AS `createTime` FROM `eva_activity_messages` WHERE `eva_activity_messages`.`id` = NEW.`id` AND (NEW.`messageType` = 'original' OR NEW.`messageType` = 'forword');
-# INSERT INTO `eva_activity_indexes` (`user_id` ,`author_id` ,`message_id` ,`messageTime`) SELECT `follower_id`, NEW.`user_id` AS `author_id`, NEW.`id` AS `id`, NEW.`createTime` AS `createTime` FROM `eva_activity_followers` WHERE `eva_activity_followers`.`user_id` = NEW.`user_id` AND (NEW.`messageType` = 'original' OR NEW.`messageType` = 'forword');
-# DELETE FROM `eva_activity_atindexes` WHERE `eva_activity_atindexes`.`message_id` = NEW.`id` AND (NEW.`messageType` = 'original' OR NEW.`messageType` = 'forword');
-# INSERT INTO `eva_activity_atindexes` (`atuser_id`, `message_id`, `messageTime`) SELECT `user_id`, NEW.`id` AS `message_id`, NEW.`createTime` AS `createTime` FROM `eva_activity_atusers` WHERE `eva_activity_atusers`.`message_id` = NEW.`id` AND (NEW.`messageType` = 'original' OR NEW.`messageType` = 'forword');
+# DELETE FROM `eva_activity_indexes` WHERE `eva_activity_indexes`.`message_id` = NEW.`id` AND (NEW.`messageType` = 'original' OR NEW.`messageType` = 'forward');
+# INSERT INTO `eva_activity_indexes` (`user_id` ,`author_id` ,`message_id` ,`messageTime`) SELECT NEW.`user_id` AS `user_id`, NEW.`user_id` AS `author_id`, `id`, NEW.`createTime` AS `createTime` FROM `eva_activity_messages` WHERE `eva_activity_messages`.`id` = NEW.`id` AND (NEW.`messageType` = 'original' OR NEW.`messageType` = 'forward');
+# INSERT INTO `eva_activity_indexes` (`user_id` ,`author_id` ,`message_id` ,`messageTime`) SELECT `follower_id`, NEW.`user_id` AS `author_id`, NEW.`id` AS `id`, NEW.`createTime` AS `createTime` FROM `eva_activity_followers` WHERE `eva_activity_followers`.`user_id` = NEW.`user_id` AND (NEW.`messageType` = 'original' OR NEW.`messageType` = 'forward');
+# DELETE FROM `eva_activity_atindexes` WHERE `eva_activity_atindexes`.`message_id` = NEW.`id` AND (NEW.`messageType` = 'original' OR NEW.`messageType` = 'forward');
+# INSERT INTO `eva_activity_atindexes` (`atuser_id`, `message_id`, `messageTime`) SELECT `user_id`, NEW.`id` AS `message_id`, NEW.`createTime` AS `createTime` FROM `eva_activity_atusers` WHERE `eva_activity_atusers`.`message_id` = NEW.`id` AND (NEW.`messageType` = 'original' OR NEW.`messageType` = 'forward');
 # END
 #//
 #DELIMITER ;
@@ -17,9 +17,9 @@ DELIMITER //
 CREATE TRIGGER `messages_insert` AFTER INSERT ON `eva_activity_messages`
  FOR EACH ROW 
  BEGIN
- DELETE FROM `eva_activity_indexes` WHERE `eva_activity_indexes`.`message_id` = NEW.`id` AND (NEW.`messageType` = 'original' OR NEW.`messageType` = 'forword');
- INSERT INTO `eva_activity_indexes` (`user_id` ,`author_id` ,`message_id` ,`messageTime`) SELECT NEW.`user_id` AS `user_id`, NEW.`user_id` AS `author_id`, `id`, NEW.`createTime` AS `createTime` FROM `eva_activity_messages` WHERE `eva_activity_messages`.`id` = NEW.`id` AND (NEW.`messageType` = 'original' OR NEW.`messageType` = 'forword');
- INSERT INTO `eva_activity_indexes` (`user_id` ,`author_id` ,`message_id` ,`messageTime`) SELECT `follower_id`, NEW.`user_id` AS `author_id`, NEW.`id` AS `id`, NEW.`createTime` AS `createTime` FROM `eva_activity_followers` WHERE `eva_activity_followers`.`user_id` = NEW.`user_id` AND (NEW.`messageType` = 'original' OR NEW.`messageType` = 'forword');
+ DELETE FROM `eva_activity_indexes` WHERE `eva_activity_indexes`.`message_id` = NEW.`id` AND (NEW.`messageType` = 'original' OR NEW.`messageType` = 'forward');
+ INSERT INTO `eva_activity_indexes` (`user_id` ,`author_id` ,`message_id` ,`messageTime`) SELECT NEW.`user_id` AS `user_id`, NEW.`user_id` AS `author_id`, `id`, NEW.`createTime` AS `createTime` FROM `eva_activity_messages` WHERE `eva_activity_messages`.`id` = NEW.`id` AND (NEW.`messageType` = 'original' OR NEW.`messageType` = 'forward');
+ INSERT INTO `eva_activity_indexes` (`user_id` ,`author_id` ,`message_id` ,`messageTime`) SELECT `follower_id`, NEW.`user_id` AS `author_id`, NEW.`id` AS `id`, NEW.`createTime` AS `createTime` FROM `eva_activity_followers` WHERE `eva_activity_followers`.`user_id` = NEW.`user_id` AND (NEW.`messageType` = 'original' OR NEW.`messageType` = 'forward');
  END
 //
 DELIMITER ;
@@ -73,8 +73,8 @@ CREATE TRIGGER `references_insert` AFTER INSERT ON `eva_activity_references`
  BEGIN
  UPDATE `eva_activity_messages` SET `commentedCount` = `commentedCount` + 1 WHERE `eva_activity_messages`.`id` = NEW.`root_message_id` AND NEW.`messageType` = 'comment' AND NEW.`root_message_id` = NEW.`reference_message_id`;
  UPDATE `eva_activity_messages` SET `commentedCount` = `commentedCount` + 1 WHERE (`eva_activity_messages`.`id` = NEW.`root_message_id` OR `eva_activity_messages`.`id` = NEW.`reference_message_id`) AND NEW.`messageType` = 'comment' AND NEW.`root_message_id` != NEW.`reference_message_id`;
- UPDATE `eva_activity_messages` SET `transferredCount` = `transferredCount` + 1 WHERE `eva_activity_messages`.`id` = NEW.`root_message_id` AND NEW.`messageType` = 'forword' AND NEW.`root_message_id` = NEW.`reference_message_id`;
- UPDATE `eva_activity_messages` SET `transferredCount` = `transferredCount` + 1 WHERE (`eva_activity_messages`.`id` = NEW.`root_message_id` OR `eva_activity_messages`.`id` = NEW.`reference_message_id`) AND NEW.`messageType` = 'forword' AND NEW.`root_message_id` != NEW.`reference_message_id`;
+ UPDATE `eva_activity_messages` SET `transferredCount` = `transferredCount` + 1 WHERE `eva_activity_messages`.`id` = NEW.`root_message_id` AND NEW.`messageType` = 'forward' AND NEW.`root_message_id` = NEW.`reference_message_id`;
+ UPDATE `eva_activity_messages` SET `transferredCount` = `transferredCount` + 1 WHERE (`eva_activity_messages`.`id` = NEW.`root_message_id` OR `eva_activity_messages`.`id` = NEW.`reference_message_id`) AND NEW.`messageType` = 'forward' AND NEW.`root_message_id` != NEW.`reference_message_id`;
  END
 //
 DELIMITER ;

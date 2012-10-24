@@ -51,8 +51,8 @@ class MessageForm extends \Eva\Form\Form
                         'value' => 'comment',
                     ),
                     array (
-                        'label' => 'Forword',
-                        'value' => 'forword',
+                        'label' => 'Forward',
+                        'value' => 'forward',
                     ),
                 ),
                 */
@@ -114,7 +114,7 @@ class MessageForm extends \Eva\Form\Form
                         'haystack' => array (
                             'original',
                             'comment',
-                            'forword',
+                            'forward',
                         ),
                     ),
                 ),

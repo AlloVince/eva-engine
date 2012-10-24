@@ -36,6 +36,23 @@ class Message extends AbstractItem
             'joinParameters' => array(
             ),
         ),
+        'ForwardActivity' => array(
+            'targetEntity' => 'Activity\Item\Message',
+            'relationship' => 'OneToOne',
+            'joinColumn' => 'id',
+            'referencedColumn' => 'reference_id',
+            'joinParameters' => array(
+                'messageType' => 'forward'
+            ),
+        ),
+        'User' => array(
+            'targetEntity' => 'User\Item\User',
+            'relationship' => 'OneToOne',
+            'joinColumn' => 'id',
+            'referencedColumn' => 'user_id',
+            'joinParameters' => array(
+            ),
+        ),
     );
 
     protected $map = array(
