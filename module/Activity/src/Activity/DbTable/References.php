@@ -18,6 +18,30 @@ class References extends TableGateway
     {
         if($params->page){
             $this->enableCount();
+            $this->page($params->page);
+        }
+
+        if($params->message_id){
+            $this->where(array('message_id' => $params->message_id));
+        }
+
+        if($params->reference_message_id){
+            $this->where(array('reference_message_id' => $params->reference_message_id));
+        }
+
+        if($params->messageType){
+            $this->where(array('messageType' => $params->messageType));
+        }
+
+        $orders = array(
+            'iddesc' => 'message_id ASC',
+            'iddesc' => 'message_id DESC',
+        );
+        if($params->order){
+            $order = $orders[$params->order];
+            if($order){
+                $this->order($order);
+            }
         }
 
         return $this;

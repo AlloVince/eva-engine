@@ -97,26 +97,26 @@ class Activity extends AbstractModel
 
     public function getCommentActivityList()
     {
-        $itemList = $this->getItemList();
-        $idArray = array();
+        $item = $this->getItem();
+        $referenceItem = $this->getItem('Activity\Item\Reference');
+        $referenceList = $referenceItem->collections(array(
+            'reference_message_id' => $item->id,
+            'messageType' => 'comment',
+            'order' => 'iddesc',
+        ));
 
-        if(!$itemList){
-            return array();
+        $messageIdArray = array();
+        foreach($referenceList as $reference){
+            $messageIdArray[] = $reference['message_id'];
         }
-
-        foreach($itemList as $item){
-            if(!$item['reference_id']){
-                continue;
-            }
-            $idArray[] = $item['reference_id'];
-        }
-        if($idArray){
+        if(!$messageIdArray){
             $this->setItemList(array(
-                'id' => $idArray
+                'noResult' => true
             ));
         } else {
             $this->setItemList(array(
-                'noResult' => true
+                'id' => $messageIdArray,
+                'order' => 'idarray'
             ));
         }
         return $this;
