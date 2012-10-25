@@ -1,12 +1,6 @@
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
-
 DROP TABLE IF EXISTS `eva_activity_atindexes`;
 CREATE TABLE IF NOT EXISTS `eva_activity_atindexes` (
   `atuser_id` int(10) NOT NULL,
@@ -19,7 +13,7 @@ DROP TABLE IF EXISTS `eva_activity_atusers`;
 CREATE TABLE IF NOT EXISTS `eva_activity_atusers` (
   `message_id` int(30) NOT NULL,
   `user_id` int(10) NOT NULL,
-  `messageType` enum('original','comment','forward') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'original',
+  `messageType` enum('original','comment','forword') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'original',
   `author_id` int(10) NOT NULL,
   `root_user_id` int(10) NOT NULL,
   PRIMARY KEY (`message_id`,`user_id`),
@@ -134,8 +128,19 @@ CREATE TABLE IF NOT EXISTS `eva_activity_references` (
   `reference_user_id` int(10) NOT NULL,
   `reference_message_id` bigint(32) NOT NULL,
   `messageType` enum('comment','forward') COLLATE utf8_unicode_ci NOT NULL,
-  `createTime` datetime NOT NULL
+  `createTime` datetime NOT NULL,
+  KEY `reference_message_id` (`reference_message_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+DROP TRIGGER IF EXISTS `references_insert`;
+DELIMITER //
+CREATE TRIGGER `references_insert` AFTER INSERT ON `eva_activity_references`
+ FOR EACH ROW BEGIN
+ UPDATE `eva_activity_messages` SET `commentedCount` = `commentedCount` + 1 WHERE `eva_activity_messages`.`id` = NEW.`reference_message_id` AND NEW.`messageType` = 'comment';
+ UPDATE `eva_activity_messages` SET `transferredCount` = `transferredCount` + 1 WHERE `eva_activity_messages`.`id` = NEW.`root_message_id` AND NEW.`messageType` = 'forward' AND NEW.`root_message_id` = NEW.`reference_message_id`;
+ UPDATE `eva_activity_messages` SET `transferredCount` = `transferredCount` + 1 WHERE (`eva_activity_messages`.`id` = NEW.`root_message_id` OR `eva_activity_messages`.`id` = NEW.`reference_message_id`) AND NEW.`messageType` = 'forward' AND NEW.`root_message_id` != NEW.`reference_message_id`;
+ END
+//
+DELIMITER ;
 
 DROP TABLE IF EXISTS `eva_activity_sources`;
 CREATE TABLE IF NOT EXISTS `eva_activity_sources` (
@@ -144,7 +149,3 @@ CREATE TABLE IF NOT EXISTS `eva_activity_sources` (
   `sourceUrl` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
