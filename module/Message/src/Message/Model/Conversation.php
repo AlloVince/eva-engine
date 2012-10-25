@@ -54,16 +54,14 @@ class Conversation extends AbstractModel
         return $itemId;
     }
 
-    public function saveConversation($data = null)
+    public function removeConversation()
     {
-        if($data) {
-            $this->setItem($data);
-        }
 
         $item = $this->getItem();
-        
-        $item->save();
 
-        return $item->id;
+        $item->remove();
+
+        return true;
+    
     }
 }

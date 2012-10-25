@@ -27,7 +27,11 @@ class Indexes extends TableGateway
         if($params->page){
             $this->page($params->page);
         }
- 
+        
+        if ($params->noLimit) {
+            $this->disableLimit();
+        }
+
         $orders = array(
             'timeasc' => 'messageTime ASC',
             'timedesc' => 'messageTime DESC',
