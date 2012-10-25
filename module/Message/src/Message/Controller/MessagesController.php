@@ -15,9 +15,35 @@ class MessagesController extends RestfulModuleController
     );
     
     protected $addResources = array(
-        'new'
+        'new',
+        'unreadcount',
     );
-    
+
+    public function restGetMessagesUnreadcount()
+    {
+        $mine = \Core\Auth::getLoginUser(); 
+        
+        $count = 0;
+
+        if ($mine) {
+            $query = array(
+                'author_id' => $mine['id'],
+                'noLimit' => true,
+            );
+            
+            $itemModel = Api::_()->getModel('Message\Model\Index');
+            $items = $itemModel->setItemList($query)->getIndexList();
+      
+            if ($items) {
+                foreach ($items as $item) {
+                    $count += $item->messageCount;
+                }
+            }
+        }
+        
+        return $count;
+    }
+
     public function restGetMessagesNew()
     {
     }
@@ -35,7 +61,7 @@ class MessagesController extends RestfulModuleController
                 'items' => array(),
             );
         }
-        
+
         $user = \Core\Auth::getLoginUser(); 
 
         if ($user['id'] != $query['author_id']) {
@@ -133,6 +159,8 @@ class MessagesController extends RestfulModuleController
 
     public function restPostMessages()
     {
+        $callback = $this->params()->fromQuery('callback');
+        
         $postData = $this->params()->fromPost();
         $form = new Form\MessageForm();
         $form->useSubFormGroup()
@@ -152,8 +180,12 @@ class MessagesController extends RestfulModuleController
             $itemModel = Api::_()->getModel('Message\Model\Message');
             $messageId = $itemModel->setItem($messageData)->createMessage();
             $this->flashMessenger()->addMessage('message-create-succeed');
-            $this->redirect()->toUrl('/message/messages/' . $recipient['id']);
-
+            
+            if ($callback) {
+                $this->redirect()->toUrl($callback);
+            } else {
+                $this->redirect()->toUrl('/message/messages/' . $recipient['id']);
+            }
         } else {
             
         }
@@ -161,32 +193,6 @@ class MessagesController extends RestfulModuleController
         return array(
             'form' => $form,
             'message' => $messageData,
-        );
-    }
-
-    public function restPutMessages()
-    {
-        $postData = $this->params()->fromPost();
-        $form = new Form\PostEditForm();
-        $form->useSubFormGroup()
-             ->bind($postData);
-
-        $flashMesseger = array();
-
-        if ($form->isValid()) {
-            $postData = $form->getData();
-            $itemModel = Api::_()->getModel('Blog\Model\Post');
-            $postId = $itemModel->setItem($postData)->savePost();
-
-            $this->flashMessenger()->addMessage('post-edit-succeed');
-            $this->redirect()->toUrl('/admin/blog/' . $postData['id']);
-
-        } else {
-        }
-
-        return array(
-            'form' => $form,
-            'item' => $postData,
         );
     }
 
@@ -200,11 +206,13 @@ class MessagesController extends RestfulModuleController
         if ($form->isValid()) {
 
             $postData = $form->getData();
-            $itemModel = Api::_()->getModel('Blog\Model\Post');
-            $itemModel->setItem($postData)->removePost();
+            $itemModel = Api::_()->getModel('Message\Model\Conversation');
+            $itemModel->setItem($postData)->removeConversation();
 
             if($callback){
                 $this->redirect()->toUrl($callback);
+            } else {
+                $this->redirect()->toUrl('/message/messages/');
             }
 
         } else {
