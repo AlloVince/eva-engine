@@ -9,12 +9,11 @@ use Message\Form,
 class MessagesController extends RestfulModuleController
 {
     protected $renders = array(
-        'restPutMessages' => 'messages/get',    
-        'restPostMessages' => 'messages/get',    
-        'restDeleteMessages' => 'remove/get',    
+        'restGetMessagesRemove' => 'messages/delete',    
     );
     
     protected $addResources = array(
+        'remove',
         'new',
         'unreadcount',
     );
@@ -46,6 +45,23 @@ class MessagesController extends RestfulModuleController
 
     public function restGetMessagesNew()
     {
+    }
+    
+    public function restGetMessagesRemove()
+    {
+        $id = $this->params('id');
+        $itemModel = Api::_()->getModel('Message\Model\Conversation');
+        $item = $itemModel->getConversation($id)->toArray();
+
+        $user = \Core\Auth::getLoginUser(); 
+        if ($user['id'] != $item['author_id']) {
+            exit; 
+        }
+
+        return array(
+            'callback' => $this->params()->fromQuery('callback'),
+            'item' => $item,
+        ); 
     }
 
     public function restIndexMessages()
@@ -155,70 +171,5 @@ class MessagesController extends RestfulModuleController
             'query' => $query,
             'paginator' => $paginator,
         );
-    }
-
-    public function restPostMessages()
-    {
-        $callback = $this->params()->fromQuery('callback');
-        
-        $postData = $this->params()->fromPost();
-        $form = new Form\MessageForm();
-        $form->useSubFormGroup()
-            ->bind($postData);
-
-        if ($form->isValid()) {
-            $messageData = $form->getData();
-
-            $userModel = Api::_()->getModel('User\Model\User');
-            $recipient = $userModel->getUser($messageData['Conversation']['recipient_id']); 
-            $sender = \Core\Auth::getLoginUser();
-
-            if (!isset($recipient['id']) || !isset($sender['id']) || $recipient['id'] == $sender['id']) {
-                exit;
-            }
-            
-            $itemModel = Api::_()->getModel('Message\Model\Message');
-            $messageId = $itemModel->setItem($messageData)->createMessage();
-            $this->flashMessenger()->addMessage('message-create-succeed');
-            
-            if ($callback) {
-                $this->redirect()->toUrl($callback);
-            } else {
-                $this->redirect()->toUrl('/message/messages/' . $recipient['id']);
-            }
-        } else {
-            
-        }
-
-        return array(
-            'form' => $form,
-            'message' => $messageData,
-        );
-    }
-
-    public function restDeleteMessages()
-    {
-        $postData = $this->params()->fromPost();
-        $callback = $this->params()->fromPost('callback');
-
-        $form = new Form\PostDeleteForm();
-        $form->bind($postData);
-        if ($form->isValid()) {
-
-            $postData = $form->getData();
-            $itemModel = Api::_()->getModel('Message\Model\Conversation');
-            $itemModel->setItem($postData)->removeConversation();
-
-            if($callback){
-                $this->redirect()->toUrl($callback);
-            } else {
-                $this->redirect()->toUrl('/message/messages/');
-            }
-
-        } else {
-            return array(
-                'post' => $postData,
-            );
-        }
     }
 }
