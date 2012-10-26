@@ -545,7 +545,9 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         $originalDataSource = $this->getDataSource();
         if($dataSource){
             foreach($dataSource as $key => $value){
-                if($value !== null){
+                if($value === null){
+                    $originalDataSource[$key] = null;
+                } else {
                     $originalDataSource[$key] = $value;            
                 }
             }

@@ -407,6 +407,11 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
 
     protected function initElement(array $element)
     {
+        //Element not correct
+        if(!isset($element['name'])) {
+            return;
+        }
+
         $element = $this->autoElementId($element);
         if(isset($element['type']) && false === strpos($element['type'], '\\')){
             $element['type'] = 'Zend\Form\Element\\' . ucfirst($element['type']);
@@ -638,6 +643,9 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
 
         //TODO:form collection fix
         $idPrefix = $idPrefix ? $idPrefix : $this->getIdPrefix();
+        if(!isset($element['name'])){
+            return $element;
+        }
         $elementId = isset($element['attributes']['id']) ? $element['attributes']['id'] : $element['name'];
         $elementId = $idPrefix . '-' . $elementId;
         $elementId = str_replace(array('\\', '_', '[', ']'), '-', strtolower($elementId));

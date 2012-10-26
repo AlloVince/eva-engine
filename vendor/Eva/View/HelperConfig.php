@@ -43,6 +43,7 @@ class HelperConfig implements ConfigInterface
          'flashMessenger' => 'Eva\View\Helper\FlashMessenger',
          'gravatar' => 'Eva\View\Helper\Gravatar',
          'subText' => 'Eva\View\Helper\SubText',
+         'callback' => 'Eva\View\Helper\Callback',
      );
 
     /**
