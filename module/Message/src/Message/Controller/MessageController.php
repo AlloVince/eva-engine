@@ -34,12 +34,16 @@ class MessageController extends RestfulModuleController
             if (!isset($recipient['id']) || !isset($sender['id']) || $recipient['id'] == $sender['id']) {
                 exit;
             }
-            
+
+            if (!is_numeric($messageData['Conversation']['recipient_id'])) {
+                $messageData['Conversation']['recipient_id'] = $recipient['id'];
+            }
+
             $itemModel = Api::_()->getModel('Message\Model\Message');
             $messageId = $itemModel->setItem($messageData)->createMessage();
             $this->flashMessenger()->addMessage('message-create-succeed');
             
-            $this->redirect()->toUrl($callback . $recipient['id']);
+            $this->redirect()->toUrl($callback);
         } else {
             
         }
