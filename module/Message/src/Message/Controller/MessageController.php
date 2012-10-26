@@ -39,7 +39,7 @@ class MessageController extends RestfulModuleController
             $messageId = $itemModel->setItem($messageData)->createMessage();
             $this->flashMessenger()->addMessage('message-create-succeed');
             
-            $this->redirect()->toUrl($callback . $recipient['id']);
+            $this->redirect()->toUrl($callback);
         } else {
             
         }
