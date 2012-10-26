@@ -15,6 +15,11 @@ class Posts extends TableGateway
     {
         if($params->page){
             $this->enableCount();
+            $this->page($params->page);
+        }
+
+        if($params->user_id){
+            $this->where(array('user_id' => $params->user_id));
         }
 
         if($params->keyword){
@@ -37,10 +42,6 @@ class Posts extends TableGateway
             $this->limit((int) $params->rows);
         }
 
-        if($params->page){
-            $this->page($params->page);
-        }
- 
         if ($params->category) {
             $cateModel = \Eva\Api::_()->getModel('Blog\Model\Category');
             $categoryinfo = $cateModel->setItemParams($params->category)->getCategory();
