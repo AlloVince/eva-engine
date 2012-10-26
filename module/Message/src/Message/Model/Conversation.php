@@ -8,6 +8,22 @@ use Eva\Api,
 class Conversation extends AbstractModel
 {
     protected $itemTableName = 'Message\DbTable\Conversations';
+    
+    public function getConversation($id, array $map = array())
+    {
+        $this->setItem(array(
+            'id' => $id,
+        ));
+
+        $item = $this->getItem();
+        if($map){
+            $item = $item->toArray($map);
+        } else {
+            $item = $item->self(array('*'));
+        }
+
+        return $item;
+    }
 
     public function getConversationList(array $map = array())
     {
@@ -18,18 +34,18 @@ class Conversation extends AbstractModel
 
         return $item;
     }
-    
+
     public function markAsRead($items = array())
     {
         if (!$items) {
             return;
         }
-        
+
         foreach ($items as $item) {
             if ($item->readFlag == 1) {
                 continue;
             }
-            
+
             $item->readFlag = 1;
             $item->save();
         }
@@ -42,7 +58,7 @@ class Conversation extends AbstractModel
         }
 
         $item = $this->getItem();
-        
+
         $itemId = $item->create();
 
         if($item->hasLoadedRelationships()){
