@@ -6,6 +6,7 @@ return array(
         'Blog',
         'File',
         'Event',
+        'Video',
         'Activity',
         'Scaffold',
         'Engine',
