@@ -23,7 +23,30 @@ class PagesController extends RestfulModuleController
 
         $query['status'] = 'published';
         $itemModel = Api::_()->getModel('Blog\Model\Post');
-        $items = $itemModel->setItemList($query)->getPostList();
+        $items = $itemModel->setItemList($query)->getPostList(array(
+            'self' => array(
+                '*',
+            ),
+            'join' => array(
+                'Text' => array(
+                    'self' => array(
+                        '*',
+                        'getContentHtml()',
+                    ),
+                ),
+            ),
+            'proxy' => array(
+                'File\Item\File::PostCover' => array(
+                    'self' => array(
+                        '*',
+                        'getThumb()',
+                    ),
+                )
+            ),
+        ));
+        $userList = $itemModel->getUserList()->toArray();
+        $items = $itemModel->combineList($items, $userList, 'User', array('user_id' => 'id'));
+
         $paginator = $itemModel->getPaginator();
 
         //$this->pagecapture();
