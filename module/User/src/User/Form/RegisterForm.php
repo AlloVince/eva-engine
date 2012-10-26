@@ -74,7 +74,7 @@ class RegisterForm extends UserForm
             ),
         ),
         'screenName' => array (
-            'required' => true,
+            'required' => false,
             'filters' => array(
                 'stripTags' => array (
                     'name' => 'StripTags',
