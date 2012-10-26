@@ -42,6 +42,7 @@ class HelperConfig implements ConfigInterface
          'googleAnalytics' => 'Eva\View\Helper\GoogleAnalytics',
          'flashMessenger' => 'Eva\View\Helper\FlashMessenger',
          'gravatar' => 'Eva\View\Helper\Gravatar',
+         'subText' => 'Eva\View\Helper\SubText',
      );
 
     /**
