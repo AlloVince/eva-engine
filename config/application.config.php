@@ -8,6 +8,7 @@ return array(
         'Event',
         'Video',
         'Activity',
+        'Message',
         'Scaffold',
         'Engine',
         //'ZendDeveloperTools',

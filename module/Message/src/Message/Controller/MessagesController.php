@@ -4,14 +4,15 @@ namespace Message\Controller;
 use Message\Form,
     Eva\Api,
     Eva\Mvc\Controller\RestfulModuleController,
-    Eva\View\Model\ViewModel;
+    Eva\View\Model\ViewModel,
+    Zend\View\Model\JsonModel;
 
 class MessagesController extends RestfulModuleController
 {
     protected $renders = array(
         'restGetMessagesRemove' => 'messages/delete',    
     );
-    
+
     protected $addResources = array(
         'remove',
         'new',
@@ -21,7 +22,7 @@ class MessagesController extends RestfulModuleController
     public function restGetMessagesUnreadcount()
     {
         $mine = \Core\Auth::getLoginUser(); 
-        
+
         $count = 0;
 
         if ($mine) {
@@ -29,24 +30,27 @@ class MessagesController extends RestfulModuleController
                 'author_id' => $mine['id'],
                 'noLimit' => true,
             );
-            
+
             $itemModel = Api::_()->getModel('Message\Model\Index');
             $items = $itemModel->setItemList($query)->getIndexList();
-      
+
             if ($items) {
                 foreach ($items as $item) {
                     $count += $item->messageCount;
                 }
             }
         }
-        
-        return $count;
+
+        $this->changeviewmodel('Json');
+        return new JsonModel(array(
+            'count' => $count,
+        ));
     }
 
     public function restGetMessagesNew()
     {
     }
-    
+
     public function restGetMessagesRemove()
     {
         $id = $this->params('id');
@@ -134,12 +138,12 @@ class MessagesController extends RestfulModuleController
                 'items' => array(),
             );
         }
-        
+
         if (!isset($query['author_id'])) {
             $author = \Core\Auth::getLoginUser();
             $query['author_id'] = $author['id']; 
         }
-            
+
         $query['user_id'] = $user['id'];
 
         $itemModel = Api::_()->getModel('Message\Model\Conversation');
@@ -163,7 +167,7 @@ class MessagesController extends RestfulModuleController
             ),
         ));
         $paginator = $itemModel->getPaginator();
-        
+
         return array(
             'user' => $user,
             'items' => $items,

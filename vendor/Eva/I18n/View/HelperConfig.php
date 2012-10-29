@@ -30,8 +30,10 @@ class HelperConfig implements ConfigInterface
         'dateformat'      => 'Zend\I18n\View\Helper\DateFormat',
         'numberformat'    => 'Zend\I18n\View\Helper\NumberFormat',
         'translate'       => 'Eva\I18n\View\Helper\Translate',
-        '_'       => 'Eva\I18n\View\Helper\Translate',
+        '_'               => 'Eva\I18n\View\Helper\Translate',
         'translateplural' => 'Zend\I18n\View\Helper\TranslatePlural',
+        'locale'          => 'Eva\I18n\View\Helper\Locale',
+
     );
 
     protected $aliases = array(

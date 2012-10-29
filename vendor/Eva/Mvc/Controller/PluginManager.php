@@ -38,5 +38,6 @@ class PluginManager extends \Zend\Mvc\Controller\PluginManager
         'pagecapture'     => 'Eva\Mvc\Controller\Plugin\PageCapture',
         'cookie'          => 'Eva\Mvc\Controller\Plugin\Cookie',
         'viewhelper'      => 'Eva\Mvc\Controller\Plugin\ViewHelper',
+        'changeviewmodel' => 'Eva\Mvc\Controller\Plugin\ChangeViewModel',
     );
 }
