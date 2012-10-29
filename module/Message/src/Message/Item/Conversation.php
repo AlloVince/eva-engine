@@ -58,6 +58,11 @@ class Conversation extends AbstractItem
             $item['recipient_id'] = $recipientId;
             $item['createTime'] = $this->getCreateTime();
             $item['message_id'] = $messageId;
+            
+            if ($author == $senderId) {
+                $item['readFlag'] = 1;
+            }
+            
             $dataClass->create($item);
         }   
     }

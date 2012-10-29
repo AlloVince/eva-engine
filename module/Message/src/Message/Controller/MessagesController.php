@@ -36,7 +36,7 @@ class MessagesController extends RestfulModuleController
 
             if ($items) {
                 foreach ($items as $item) {
-                    $count += $item->messageCount;
+                    $count += $item->unreadCount;
                 }
             }
         }
