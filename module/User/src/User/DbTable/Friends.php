@@ -3,6 +3,7 @@
 namespace User\DbTable;
 
 use Eva\Db\TableGateway\TableGateway;
+use Zend\Stdlib\Parameters;
 
 class Friends extends TableGateway
 {
@@ -21,6 +22,10 @@ class Friends extends TableGateway
 
         if($params->to_user_id){
             $this->where(array('to_user_id' => $params->to_user_id));
+        }
+
+        if($params->relationshipStatus){
+            $this->where(array('relationshipStatus' => $params->relationshipStatus));
         }
 
         if($params->page){

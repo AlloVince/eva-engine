@@ -12,6 +12,8 @@ class Friend extends AbstractItem
         'User' => array(
             'targetEntity' => 'User\Item\User',
             'relationship' => 'OneToOne',
+            'joinColumn' => 'id',
+            'referencedColumn' => 'to_user_id',
         ),
     );
 

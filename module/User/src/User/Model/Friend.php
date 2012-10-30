@@ -75,8 +75,8 @@ class Friend extends AbstractModel
             $friendItem->self(array('*'));
 
             if(!$friendItem->relationshipStatus){
-                $friendItem->from_user_id = $fromId;
-                $friendItem->to_user_id = $toId;
+                $friendItem->from_user_id = $toId;
+                $friendItem->to_user_id = $fromId;
                 $friendItem->getApprovalTime();
                 $friendItem->relationshipStatus = 'approved';
                 $friendItem->create();
@@ -85,8 +85,8 @@ class Friend extends AbstractModel
 
             //Already have relationship, update to approved
             if($friendItem->relationshipStatus != 'approved'){
-                $friendItem->from_user_id = $fromId;
-                $friendItem->to_user_id = $toId;
+                $friendItem->from_user_id = $toId;
+                $friendItem->to_user_id = $fromId;
                 $friendItem->getApprovalTime();
                 $friendItem->relationshipStatus = 'approved';
                 $friendItem->save();
@@ -99,9 +99,46 @@ class Friend extends AbstractModel
         return true;
     }
 
-    public function getFriendList()
+    public function removeFriend()
     {
+        $this->trigger('remove.pre');
 
+        $item = $this->getItem();
+
+        $fromId = $item->from_user_id;
+        $toId = $item->to_user_id;
+
+        $item->remove();
+
+        $item->from_user_id = $toId;
+        $item->to_user_id = $fromId;
+        $item->remove();
+
+        $this->trigger('remove');
+
+        $this->trigger('remove.post');
+
+        return true;
+    }
+
+
+    public function getFriendList(array $itemListParameters = array(), $map = null)
+    {
+        $this->trigger('list.precache');
+
+        $this->trigger('list.pre');
+
+        $item = $this->getItemList();
+        if($map){
+            $item = $item->toArray($map);
+        }
+
+        $this->trigger('get');
+
+        $this->trigger('list.post');
+        $this->trigger('list.postcache');
+
+        return $item;
     }
 
 }

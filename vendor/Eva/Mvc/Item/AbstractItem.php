@@ -609,6 +609,13 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
 
     protected function joinOneToOne($key, $relItem, $relationship)
     {
+        if(!isset($relationship['joinColumn'])){
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Undefined join column when join %s and %s',
+                get_class($this),
+                get_class($relItem)
+            ));
+        }
         $joinColumn = $relationship['joinColumn'];
         $referencedColumn = $relationship['referencedColumn'];
         if($this->$referencedColumn) {
