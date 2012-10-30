@@ -10,8 +10,14 @@ use Eva\Api;
 class FollowController extends RestfulModuleController
 {
     protected $renders = array(
-        'restPostFollow' => 'blank'
+        'restPostFollow' => 'blank',
+        'restDeleteFollow' => 'blank',
     );
+
+    public function restIndexFollow()
+    {
+    
+    }
 
     public function restPostFollow()
     {
@@ -20,11 +26,36 @@ class FollowController extends RestfulModuleController
         $form->useSubFormGroup()
              ->bind($postData);
 
-        $callback = $this->params()->fromPost('callback', '/feed/');
+        $callback = $this->params()->fromPost('callback');
+        $callback = $callback ? $callback : '/feed/';
+
         if ($form->isValid()) {
             $postData = $form->getData();
             $itemModel = Api::_()->getModel('Activity\Model\Follow');
             $postId = $itemModel->setItem($postData)->followUser();
+            $this->redirect()->toUrl($callback);
+        } else {
+            
+        }
+        return array(
+            'form' => $form,
+            'post' => $postData,
+        );
+    }
+
+    public function restDeleteFollow()
+    {
+        $postData = $this->params()->fromPost();
+        $form = new Form\FollowForm();
+        $form->useSubFormGroup()
+             ->bind($postData);
+
+        $callback = $this->params()->fromPost('callback');
+        $callback = $callback ? $callback : '/feed/';
+        if ($form->isValid()) {
+            $postData = $form->getData();
+            $itemModel = Api::_()->getModel('Activity\Model\Follow');
+            $postId = $itemModel->setItem($postData)->unfollowUser();
             $this->redirect()->toUrl($callback);
         } else {
             

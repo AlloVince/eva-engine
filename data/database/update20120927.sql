@@ -22,3 +22,10 @@ ALTER TABLE `eva_file_files_connections` ADD `orderNumber` INT( 5 ) NOT NULL DEF
 
 
 ALTER TABLE `eva_user_users` ADD `mobile` VARCHAR( 20 ) NULL AFTER `email` ;
+
+
+
+
+
+ALTER TABLE `eva_user_friends` CHANGE `relationShipStatus` `relationshipStatus` ENUM( 'pending', 'refused', 'active', 'blocked' ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'pending';
+ALTER TABLE `eva_user_friends` CHANGE `relationshipStatus` `relationshipStatus` ENUM( 'pending', 'refused', 'approved', 'blocked' ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'pending';

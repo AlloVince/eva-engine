@@ -63,12 +63,20 @@ class FollowForm extends \Eva\Form\Form
         ),
         'follower_id' => array (
             'name' => 'follower_id',
-            'required' => false,
+            'required' => true,
             'filters' => array (
             ),
             'validators' => array (
             ),
         ),
     );
+
+    public function beforeBind($data)
+    {
+        $user = \Core\Auth::getLoginUser();
+        $data['follower_id'] = $user['id'];
+        return $data;
+    }
+
 }
 

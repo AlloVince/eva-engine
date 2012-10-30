@@ -18,6 +18,15 @@ class Followers extends TableGateway
     {
         if($params->page){
             $this->enableCount();
+            $this->page($params->page);
+        }
+
+        if($params->user_id){
+            $this->where(array('user_id' => $params->user_id));
+        }
+
+        if($params->follower_id){
+            $this->where(array('follower_id' => $params->follower_id));
         }
 
         return $this;

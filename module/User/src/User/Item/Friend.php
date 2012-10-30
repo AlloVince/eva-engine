@@ -14,4 +14,39 @@ class Friend extends AbstractItem
             'relationship' => 'OneToOne',
         ),
     );
+
+    protected $map = array(
+        'create' => array(
+            'getRequestTime()',
+        ),
+    );
+
+
+    public function getRequestTime()
+    {
+        if(!$this->requestTime) {
+            return $this->requestTime = \Eva\Date\Date::getNow();
+        }
+    }
+
+    public function getApprovalTime()
+    {
+        if(!$this->approvalTime) {
+            return $this->approvalTime = \Eva\Date\Date::getNow();
+        }
+    }
+
+    public function getRefusedTime()
+    {
+        if(!$this->refusedTime) {
+            return $this->refusedTime = \Eva\Date\Date::getNow();
+        }
+    }
+
+    public function getBlockedTime()
+    {
+        if(!$this->blockedTime) {
+            return $this->blockedTime = \Eva\Date\Date::getNow();
+        }
+    }
 }

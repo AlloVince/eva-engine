@@ -15,7 +15,6 @@ class Follower extends AbstractItem
         ),
     );
 
-
     public function getFollowerId()
     {
         if(!$this->follower_id){
