@@ -51,4 +51,5 @@ class Friend extends AbstractItem
             return $this->blockedTime = \Eva\Date\Date::getNow();
         }
     }
+
 }

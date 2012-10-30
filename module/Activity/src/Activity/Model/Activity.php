@@ -44,13 +44,18 @@ class Activity extends AbstractModel
         return $this->userList = $userList;
     }
 
-    public function getUserActivityList($userId)
+    public function getUserActivityList($userId, $onlySelf = false)
     {
         $indexItem = $this->getItem('Activity\Item\Index');
-        $indexItem->collections(array(
+        $itemQueryParams = array(
             'user_id' => $userId,
             'order' => 'iddesc',
-        ));
+        );
+        if($onlySelf){
+            $itemQueryParams['author_id'] = $userId;
+        }
+
+        $indexItem->collections($itemQueryParams);
         $messageIdArray = array();
         foreach($indexItem as $index){
             $messageIdArray[] = $index['message_id'];

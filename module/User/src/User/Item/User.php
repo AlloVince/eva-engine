@@ -70,6 +70,17 @@ class User extends AbstractItem
             'joinParameters' => array(
             ),
         ),
+        'FriendsCount' => array(
+            'targetEntity' => 'User\Item\Friend',
+            'relationship' => 'OneToMany',
+            'joinColumn' => 'from_user_id',
+            'referencedColumn' => 'id',
+            'asCount' => true,
+            'countKey' => 'friendsCount',
+            'joinParameters' => array(
+                'count' => true,
+            ),
+        ),
         'MyFriends' => array(
             'targetEntity' => 'User\Item\User',
             'relationship' => 'ManyToMany',

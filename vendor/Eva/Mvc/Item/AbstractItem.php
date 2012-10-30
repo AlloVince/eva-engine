@@ -35,6 +35,8 @@ use Iterator;
 abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwareInterface
 {
 
+    const DEFAULT_COUNT_KEY = 'eva_item_count';
+
     /**
      * @var null|int
      */
@@ -466,6 +468,26 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         return $self;
     }
 
+    public function dataCount($params = null, $countKey = self::DEFAULT_COUNT_KEY)
+    {
+        $dataClass = $this->getDataClass();
+        $this->setDataSource(array());
+        if($params && method_exists($dataClass, 'setParameters')){
+            if(is_array($params)){
+                $params = new \Zend\Stdlib\Parameters($params);
+            } elseif($params instanceof \Zend\Stdlib\Parameters){
+                $params = $params;
+            } else {
+                throw new Exception\InvalidArgumentException(sprintf(
+                    'Item collection require array or Zend\Stdlib\Parameters input'
+                ));
+            }
+            $dataClass->setParameters($params);
+        }
+
+        $this->$countKey = $dataClass->find('count');
+        return $this;
+    }
 
     public function collections($params = null)
     {
@@ -636,8 +658,17 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         if(isset($relationship['joinParameters']) && is_array($relationship['joinParameters'])){
             $params = array_merge($params, $relationship['joinParameters']);
         }
+
         //p(sprintf('joinOneToMany Joined Class %s : joinColumn %s => %s joined %s => %s', get_class($relItem), $joinColumn, $relItem->$joinColumn , $referencedColumn, $this->$referencedColumn));
-        return $relItem->collections($params);
+        if(isset($relationship['asCount']) && $relationship['asCount']){
+            $countKey = self::DEFAULT_COUNT_KEY;
+            if(isset($relationship['countKey']) && $relationship['countKey']){
+                $countKey = $relationship['countKey'];
+            }
+            return $relItem->dataCount($params, $countKey);
+        } else {
+            return $relItem->collections($params);
+        }
     }
 
     protected function joinManyToOne($key, $relItem, $relationship)
