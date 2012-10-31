@@ -92,7 +92,6 @@ abstract class AbstractToken extends \ZendOAuth\Token\AbstractToken
         }
 
         $tokenFormat = $this->getTokenFormat();
-        p($body);
 
         switch($tokenFormat){
             case 'json':

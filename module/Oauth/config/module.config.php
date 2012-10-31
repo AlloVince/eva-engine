@@ -84,14 +84,15 @@ return array(
             'msn' => array(
                 'enable' => 1,
                 'scope' => '',
-                'requestScheme' => '',
-                'consumer_key' => '',
                 'consumer_secret' => ''
             ),
             'google' => array(
                 'enable' => 1,
                 'scope' => '',
-                'requestScheme' => '',
+                'consumer_secret' => ''
+            ),
+            'github' => array(
+                'enable' => 1,
                 'consumer_key' => '',
                 'consumer_secret' => ''
             ),

@@ -20,6 +20,8 @@ abstract class AbstractAdapter extends \Oauth\Adapter\AbstractAdapter implements
 
     protected $accessTokenRequestMethod = ZendOAuth::POST;
 
+    protected $defaultOptions = array();
+
     public function getAccessTokenFormat()
     {
         return $this->accessTokenFormat;
@@ -55,7 +57,7 @@ abstract class AbstractAdapter extends \Oauth\Adapter\AbstractAdapter implements
             'accessTokenFormat' => $this->accessTokenFormat,
 		);
 
-        $options = array_merge($defaultOptions, $options);
+        $options = array_merge($defaultOptions, $this->defaultOptions, $options);
 
         if(!$options['consumerKey']){
             throw new Exception\InvalidArgumentException(sprintf('No consumer key found in %s', get_class($this)));
