@@ -81,7 +81,20 @@ return array(
                 'consumer_key' => '',
                 'consumer_secret' => ''
             ),
-
+            'msn' => array(
+                'enable' => 1,
+                'scope' => '',
+                'requestScheme' => '',
+                'consumer_key' => '',
+                'consumer_secret' => ''
+            ),
+            'google' => array(
+                'enable' => 1,
+                'scope' => '',
+                'requestScheme' => '',
+                'consumer_key' => '',
+                'consumer_secret' => ''
+            ),
         )
     ),
 );
