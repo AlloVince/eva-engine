@@ -71,6 +71,12 @@ class LoginController extends RestfulModuleController
 
     public function oauthAction()
     {
+        $oauth = new \Oauth\OauthService();
+        $accessToken = $oauth->getStorage()->getAccessToken();
+
+        $viewModel = new ViewModel();
+        $viewModel->setTemplate('engine/login/index');
+        return $viewModel;
     }
 
 }

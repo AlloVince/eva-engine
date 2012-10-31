@@ -65,6 +65,24 @@ abstract class AbstractToken extends \ZendOAuth\Token\AbstractToken
 
     }
 
+    /**
+     * Sets the value for a parameter (e.g. token secret or other) and run
+     * a simple filter to remove any trailing newlines.
+     *
+     * @param  string $key
+     * @param  string $value
+     * @return \ZendOAuth\Token\AbstractToken
+     */
+    public function setParam($key, $value)
+    {
+        if(is_string($value)){
+            $this->_params[$key] = trim($value, "\n");
+        } else {
+            $this->_params[$key] = $value;
+        }
+        return $this;
+    }
+
     protected function _parseParameters(HTTPResponse $response)
     {
         $params = array();
@@ -72,7 +90,9 @@ abstract class AbstractToken extends \ZendOAuth\Token\AbstractToken
         if (empty($body)) {
             return;
         }
+
         $tokenFormat = $this->getTokenFormat();
+        p($body);
 
         switch($tokenFormat){
             case 'json':
