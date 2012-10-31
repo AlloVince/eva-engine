@@ -11,7 +11,7 @@ class OauthController extends AbstractActionController
     public function indexAction()
     {
         $adapter = $this->params()->fromQuery('service');
-        $callback = $this->params()->fromQuery('callback');
+        $callback = $this->params()->fromQuery('r');
         $version = (int) $this->params()->fromQuery('version');
 
         if(!$adapter){
@@ -30,7 +30,7 @@ class OauthController extends AbstractActionController
         $helper = $this->getEvent()->getApplication()->getServiceManager()->get('viewhelpermanager')->get('serverurl');
 
         $url = $helper() . $config['oauth']['access_url_path'] . '?' . http_build_query(array(
-            'callback' => $callback,
+            'r' => $callback,
             'service' => $adapter,
             'version' => $version
         ));
