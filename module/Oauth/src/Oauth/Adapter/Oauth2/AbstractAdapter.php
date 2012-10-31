@@ -97,7 +97,8 @@ abstract class AbstractAdapter extends \Oauth\Adapter\AbstractAdapter implements
         return array(
             'adapterKey' => $this->getAdapterKey(),
             'token' => $accessToken->getToken(),
-            //'tokenSecret' => $accessToken->getTokenSecret(),
+            'expireTime' => $accessToken->getExpiredTime(),
+            'refreshToken' => $accessToken->getRefreshToken(),
             'version' => 'Oauth2',
         );
     }

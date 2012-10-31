@@ -21,5 +21,31 @@ use Zend\Uri;
  */
 class Access extends AbstractToken //\ZendOAuth\Token\Access
 {
+    const TOKEN_PARAM_KEY  = 'access_token';
+    const EXPIRED_KEY = 'expires_in';
+    const REFRESH_TOKEN_KEY = 'refresh_token';
+
+    /**
+     * Gets the value for a Token.
+     *
+     * @return string
+     */
+    public function getToken()
+    {
+        return $this->getParam(self::TOKEN_PARAM_KEY);
+    }
+
+    public function getExpiredTime()
+    {
+        $expiredTime = $this->getParam(self::EXPIRED_KEY);
+        if($expiredTime && is_numeric($expiredTime)){
+            return gmdate('Y-m-d H:i:s', time() + $expiredTime);
+        }
+    }
+
+    public function getRefreshToken()
+    {
+        return $this->getParam(self::REFRESH_TOKEN_KEY);
+    }
 
 }
