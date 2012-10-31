@@ -51,9 +51,6 @@ class AccessController extends AbstractActionController
 
         $accessTokenArray = $oauth->getAdapter()->accessTokenToArray($accessToken);
         $oauth->getStorage()->saveAccessToken($accessTokenArray);
-        p($accessTokenArray);
-        p($accessToken);
-        exit;
         return $this->redirect()->toUrl($callback);
 
         $view = new ViewModel();
