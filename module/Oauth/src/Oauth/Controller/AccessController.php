@@ -45,7 +45,7 @@ class AccessController extends AbstractActionController
         $query = $this->params()->fromQuery();
         $requestToken = $oauth->getStorage()->getRequestToken();
         $accessToken = $oauth->getAdapter()->getAccessToken($query, $requestToken);
-        
+
         //$request = $oauth->getAdapter()->getRequest();
         //$response = $oauth->getAdapter()->getResponse();
 
