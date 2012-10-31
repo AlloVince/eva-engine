@@ -8,6 +8,10 @@ use ZendOAuth\Token\Access as AccessToken;
 
 class Douban extends AbstractAdapter
 {
+    protected $websiteName = '豆瓣';
+
+    protected $websiteProfileUrl = '';
+
     protected $requestTokenUrl = "https://www.douban.com/service/auth/request_token";
 
     protected $authorizeUrl = "https://www.douban.com/service/auth/authorize";

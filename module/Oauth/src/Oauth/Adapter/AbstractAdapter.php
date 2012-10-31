@@ -21,6 +21,29 @@ abstract class AbstractAdapter implements AdapterInterface
 
     protected $options;
 
+    protected $websiteName;
+
+    protected $websiteProfileUrl;
+
+    protected $accessToken;
+
+    public function getWebsiteName()
+    {
+        return $this->websiteName;
+    }
+
+    public function setWebsiteName($websiteName)
+    {
+        $this->websiteName = $websiteName;
+        return $this;
+    }
+
+    public function getWebsiteProfileUrl()
+    {
+        $accessToken = $this->getAccessToken();
+        return sprintf($this->websiteProfileUrl, $accessToken->getParam('remoteUserId'));
+    }
+
     public function getCallback()
     {
         return $this->callback;
@@ -147,16 +170,25 @@ abstract class AbstractAdapter implements AdapterInterface
         return $this->getConsumer()->getRedirectUrl();
     }
 
+    public function setAccessToken($accessToken)
+    {
+        $this->accessToken = $accessToken;
+        return $this;
+    }
+
     /**
     * Redirect to oauth service page
     */
-    public function getAccessToken($queryData, $token, $httpMethod = null, $request = null)
+    public function getAccessToken($queryData = null, $token = null, $httpMethod = null, $request = null)
     {
-        return $this->getConsumer()->getAccessToken($queryData, $token, $httpMethod, $request);
+        if($this->accessToken){
+            return $this->accessToken;
+        }
+        return $this->accessToken = $this->getConsumer()->getAccessToken($queryData, $token, $httpMethod, $request);
     }
 
 
-    public function __construct(array $options = array())
+    public function __construct($options = array())
     {
         if($options){
             $this->setOptions($options);

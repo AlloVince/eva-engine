@@ -104,4 +104,12 @@ abstract class AbstractAdapter extends \Oauth\Adapter\AbstractAdapter implements
             'version' => 'Oauth2',
         );
     }
+
+    public function arrayToAccessToken(array $accessTokenArray)
+    {
+        $accessToken = new AccessToken();
+        $accessToken->setToken($accessTokenArray['token']);
+        $accessToken->setTokenSecret($accessTokenArray['tokenSecret']);
+        return $accessToken;
+    }
 }

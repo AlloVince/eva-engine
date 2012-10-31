@@ -10,7 +10,6 @@ class LoginController extends RestfulModuleController
 
     public function indexAction()
     {
-
         $request = $this->getRequest();
         if (!$request->isPost()) {
             return;
@@ -72,10 +71,15 @@ class LoginController extends RestfulModuleController
     public function oauthAction()
     {
         $oauth = new \Oauth\OauthService();
-        $accessToken = $oauth->getStorage()->getAccessToken();
+        $oauth->initByAccessToken();
+        $accessToken = $oauth->getAdapter()->getAccessToken();
+        p($accessToken->getHttpClient());
 
         $viewModel = new ViewModel();
-        $viewModel->setTemplate('engine/login/index');
+        $viewModel->setTemplate('engine/user/register');
+        $viewModel->setVariables(array(
+            'token' => $accessToken,
+        ));
         return $viewModel;
     }
 

@@ -62,7 +62,7 @@ class OauthService
 
          if(!$callback){
              throw new Exception\InvalidArgumentException(sprintf(
-                'No oauth callback url found'
+                 'No oauth callback url found'
              ));
          }
 
@@ -73,7 +73,7 @@ class OauthService
          $adapter = strtolower($options['adapter']);
          $version = strtolower($version);
 
-         
+
          $config = $serviceLocator->get('Config');
          $options = array(
              'enable' => true,
@@ -86,7 +86,7 @@ class OauthService
 
          if(!$options['enable']){
              throw new Exception\RuntimeException(sprintf(
-                'Oauth service %s not enabled by config', get_class($this)
+                 'Oauth service %s not enabled by config', get_class($this)
              ));
          }
 
@@ -103,32 +103,62 @@ class OauthService
          return $oauth;
      }
 
-    /**
-    * @var ServiceLocatorInterface
-    */
-    protected $serviceLocator;
+     public function initByAccessToken(array $accessTokenArray = array())
+     {
+         if(!$accessTokenArray) {
+            $accessTokenArray = $this->getStorage()->getAccessToken();
+         }
 
-    /**
-    * Set the service locator.
-    *
-    * @param ServiceLocatorInterface $serviceLocator
-    * @return AbstractHelper
-    */
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-        return $this;
-    }
+         if(!$accessTokenArray){
+             throw new Exception\InvalidArgumentException(sprintf(
+                 'No access token input when init token service'
+             )); 
+         }
 
-    /**
+         $defaultAccessToken = array(
+             'adapterKey' => '',
+             'version' => '',
+             'token' => '',
+             'tokenSecret' => '',
+             'remoteUserId' => '',
+             'remoteUserName' => '',
+             'user_id' => '',
+         );
+         $accessTokenArray = array_merge($defaultAccessToken, $accessTokenArray);
+
+         $this->setOauthVersion($accessTokenArray['version']);
+         $adapter = $this->initAdapter($accessTokenArray['adapterKey'], $accessTokenArray['version']);
+         $accessToken = $adapter->arrayToAccessToken($accessTokenArray);
+         $adapter->setAccessToken($accessToken);
+         return $this;
+     }
+
+     /**
+     * @var ServiceLocatorInterface
+     */
+     protected $serviceLocator;
+
+     /**
+     * Set the service locator.
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     * @return AbstractHelper
+     */
+     public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+     {
+         $this->serviceLocator = $serviceLocator;
+         return $this;
+     }
+
+     /**
      * Get the service locator.
      *
      * @return \Zend\ServiceManager\ServiceLocatorInterface
      */
-    public function getServiceLocator()
-    {
-        return $this->serviceLocator;
-    }
+     public function getServiceLocator()
+     {
+         return $this->serviceLocator;
+     }
 
      public function getOptions()
      {
@@ -137,21 +167,22 @@ class OauthService
 
      public function setOptions($options)
      {
-        $this->options = $options;
-        return $this;
+         $this->options = $options;
+         return $this;
      }
 
      public function getOauthVersion()
      {
-        return $this->oauthVersion;
+         return $this->oauthVersion;
      }
 
      public function setOauthVersion($version)
      {
-         if(!$version == self::VERSION_OAUTH2 && !$version == self::VERSION_OAUTH1){
+         if(!$version == self::VERSION_OAUTH2 && !$version == self::VERSION_OAUTH1) {
              throw new Exception\InvalidArgumentException(sprintf(
-                'Undefined oauth version. Oauth version only allow : %s or %s'
-                , self::VERSION_OAUTH2, self::VERSION_OAUTH1)); 
+                 'Undefined oauth version. Oauth version only allow : %s or %s'
+                 , self::VERSION_OAUTH2, self::VERSION_OAUTH1
+             )); 
          }
          $this->oauthVersion = $version;
          return $this;
@@ -164,9 +195,9 @@ class OauthService
          $adapterClass = 'Oauth\Adapter\\' . ucfirst(strtolower($oauthVersion)) . '\\' . ucfirst(strtolower($adapterName));
 
          if(false === class_exists($adapterClass)){
-            throw new Exception\InvalidArgumentException(sprintf('Undefined oauth adapter %s by oauth version %s', $adapterName, $oauthVersion));
+             throw new Exception\InvalidArgumentException(sprintf('Undefined oauth adapter %s by oauth version %s', $adapterName, $oauthVersion));
          }
-        
+
          return $this->adapter = new $adapterClass($options);
      }
 
@@ -186,49 +217,49 @@ class OauthService
      *
      * @return Adapter\AdapterInterface|null
      */
-    public function getAdapter()
-    {
-        return $this->adapter;
-    }
+     public function getAdapter()
+     {
+         return $this->adapter;
+     }
 
-    /**
+     /**
      * Sets the authentication adapter
      *
      * @param  Adapter\AdapterInterface $adapter
      * @return AuthenticationService Provides a fluent interface
      */
-    public function setAdapter(Adapter\AdapterInterface $adapter)
-    {
-        $this->adapter = $adapter;
-        return $this;
-    }
+     public function setAdapter(Adapter\AdapterInterface $adapter)
+     {
+         $this->adapter = $adapter;
+         return $this;
+     }
 
-    /**
+     /**
      * Returns the persistent storage handler
      *
      * Session storage is used by default unless a different storage adapter has been set.
      *
      * @return Storage\StorageInterface
      */
-    public function getStorage()
-    {
-        if (null === $this->storage) {
-            $this->setStorage(new Storage\Session());
-        }
+     public function getStorage()
+     {
+         if (null === $this->storage) {
+             $this->setStorage(new Storage\Session());
+         }
 
-        return $this->storage;
-    }
+         return $this->storage;
+     }
 
-    /**
+     /**
      * Sets the persistent storage handler
      *
      * @param  Storage\StorageInterface $storage
      * @return AuthenticationService Provides a fluent interface
      */
-    public function setStorage(Storage\StorageInterface $storage)
-    {
-        $this->storage = $storage;
-        return $this;
-    }
+     public function setStorage(Storage\StorageInterface $storage)
+     {
+         $this->storage = $storage;
+         return $this;
+     }
 
-}
+ }

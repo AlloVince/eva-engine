@@ -48,4 +48,19 @@ class Access extends AbstractToken //\ZendOAuth\Token\Access
         return $this->getParam(self::REFRESH_TOKEN_KEY);
     }
 
+    /**
+     * Get OAuth client
+     *
+     * @param  array $oauthOptions
+     * @param  null|string $uri
+     * @param  null|array|\Traversable $config
+     * @param  bool $excludeCustomParamsFromHeader
+     * @return Client
+     */
+    public function getHttpClient(array $oauthOptions = array(), $uri = null, $config = null, $excludeCustomParamsFromHeader = true)
+    {
+        $client = new Client($oauthOptions, $uri, $config, $excludeCustomParamsFromHeader);
+        $client->setToken($this);
+        return $client;
+    }
 }

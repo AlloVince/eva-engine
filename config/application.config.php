@@ -7,6 +7,8 @@ return array(
         'File',
         'Event',
         'Video',
+        'Oauth',
+        'Payment',
         'Activity',
         'Message',
         'Scaffold',
