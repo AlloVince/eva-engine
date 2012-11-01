@@ -26,6 +26,10 @@ abstract class AbstractAdapter implements AdapterInterface
     protected $websiteProfileUrl;
 
     protected $accessToken;
+    
+    protected $defaultOptions = array();
+
+    protected $httpClientOptions = array();
 
     public function getWebsiteName()
     {
@@ -84,40 +88,6 @@ abstract class AbstractAdapter implements AdapterInterface
         return strtolower(array_pop($className));
     }
 
-    public function setOptions(array $options = array())
-    {
-		$defaultOptions = array(
-            'requestScheme' => ZendOAuth::REQUEST_SCHEME_HEADER,
-            'version' => '2.0', 
-            'callbackUrl' =>  $this->getCallback(),
-            'consumerKey' => $this->getConsumerKey(),
-            'consumerSecret' => $this->getConsumerSecret(),
-            'authorizeUrl' => $this->authorizeUrl,
-            'accessTokenUrl' => $this->accessTokenUrl,
-		);
-
-        $options = array_merge($defaultOptions, $options);
-
-        if(!$options['consumerKey']){
-            throw new Exception\InvalidArgumentException(sprintf('No consumer key found in %s', get_class($this)));
-        }
-
-        if(!$options['consumerSecret']){
-            throw new Exception\InvalidArgumentException(sprintf('No consumer secret found in %s', get_class($this)));
-        }
-
-        if(!$options['callbackUrl']){
-            throw new Exception\InvalidArgumentException(sprintf('No callback url found in %s', get_class($this)));
-        }
-
-        $this->setConsumerKey($options['consumerKey']);
-        $this->setConsumerSecret($options['consumerSecret']);
-        $this->setCallback($options['callbackUrl']);
-
-        $this->options = $options;
-        return $this;
-    }
-
     public function getOptions()
     {
         return $this->options;
@@ -139,9 +109,15 @@ abstract class AbstractAdapter implements AdapterInterface
 
     }
 
-    public function getHttpClient()
+    public function getConsumerHttpClient()
     {
         return $this->getConsumer()->getHttpClient(); 
+    }
+
+    public function getHttpClient()
+    {
+        $oauthOptions = array();
+        return $this->getAccessToken()->getHttpClient($oauthOptions);
     }
 
     public function getRequest()

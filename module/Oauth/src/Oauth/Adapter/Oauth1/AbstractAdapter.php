@@ -61,15 +61,6 @@ abstract class AbstractAdapter extends \Oauth\Adapter\AbstractAdapter implements
         return $this->consumer = $consumer;
     }
 
-    /**
-    * Redirect to oauth service page
-    */
-    public function getAccessToken($queryData, $token, $httpMethod = null, $request = null)
-    {
-        return $this->getConsumer()->getAccessToken($queryData, $token, $httpMethod, $request);
-    }
-
-
     public function accessTokenToArray(AccessToken $accessToken)
     {
         return array(
@@ -78,5 +69,14 @@ abstract class AbstractAdapter extends \Oauth\Adapter\AbstractAdapter implements
             'tokenSecret' => $accessToken->getTokenSecret(),
             'version' => 'Oauth1',
         );
+    }
+
+
+    public function arrayToAccessToken(array $accessTokenArray)
+    {
+        $accessToken = new AccessToken();
+        $accessToken->setToken($accessTokenArray['token']);
+        $accessToken->setTokenSecret($accessTokenArray['tokenSecret']);
+        return $accessToken;
     }
 }

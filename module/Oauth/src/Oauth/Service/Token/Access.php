@@ -10,7 +10,7 @@
 
 namespace Oauth\Service\Token;
 
-use ZendOAuth\Client;
+use Oauth\Service\Client;
 use ZendOAuth\Exception;
 use ZendOAuth\Config\ConfigInterface as Config;
 use Zend\Uri;
@@ -49,6 +49,54 @@ class Access extends AbstractToken //\ZendOAuth\Token\Access
     }
 
     /**
+     * Cast to HTTP header
+     *
+     * @param  string $url
+     * @param  Config $config
+     * @param  null|array $customParams
+     * @param  null|string $realm
+     * @return string
+     * @throws Exception\InvalidArgumentException
+     */
+    public function toHeader(
+        $url, Config $config, array $customParams = null, $realm = null
+    ) {
+        $uri = Uri\UriFactory::factory($url);
+        if (!$uri->isValid()
+            || !in_array($uri->getScheme(), array('http', 'https'))
+        ) {
+            throw new Exception\InvalidArgumentException(
+                '\'' . $url . '\' is not a valid URI'
+            );
+        }
+        $params = $this->_httpUtility->assembleParams($url, $config, $customParams);
+        return $this->_httpUtility->toAuthorizationHeader($params, $realm);
+    }
+
+    /**
+     * Cast to HTTP query string
+     *
+     * @param  mixed $url
+     * @param  ZendOAuth\Config $config
+     * @param  null|array $params
+     * @return string
+     * @throws Exception\InvalidArgumentException
+     */
+    public function toQueryString($url, Config $config, array $params = null)
+    {
+        $uri = Uri\UriFactory::factory($url);
+        if (!$uri->isValid()
+            || !in_array($uri->getScheme(), array('http', 'https'))
+        ) {
+            throw new Exception\InvalidArgumentException(
+                '\'' . $url . '\' is not a valid URI'
+            );
+        }
+        $params = $this->_httpUtility->assembleParams($url, $config, $params);
+        return $this->_httpUtility->toEncodedQueryString($params);
+    }
+
+    /**
      * Get OAuth client
      *
      * @param  array $oauthOptions
@@ -61,6 +109,9 @@ class Access extends AbstractToken //\ZendOAuth\Token\Access
     {
         $client = new Client($oauthOptions, $uri, $config, $excludeCustomParamsFromHeader);
         $client->setToken($this);
+        $client->setOptions(array(
+            'sslverifypeer' => false
+        ));
         return $client;
     }
 }
