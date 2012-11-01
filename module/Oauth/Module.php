@@ -8,7 +8,7 @@ class Module
         return array(
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
-                    'ZendOAuth' => EVA_LIB_PATH . '/ZendOAuth/library/ZendOAuth',
+                    'ZendOAuth' => __DIR__ . '/../../vendor/ZendOAuth/library/ZendOAuth',
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
                 ),
             ),

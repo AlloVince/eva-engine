@@ -10,7 +10,6 @@ use ZendOAuth\OAuth as ZendOAuth;
 class Douban extends AbstractAdapter
 {
     protected $websiteName = 'Douban';
-
     protected $websiteProfileUrl = 'http://douban.com/people/%s/';
 
     protected $authorizeUrl = "https://www.douban.com/service/auth2/auth";

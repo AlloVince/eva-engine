@@ -7,6 +7,9 @@ use Oauth\Service\Token\Access as AccessToken;
 
 class Facebook extends AbstractAdapter
 {
+    protected $websiteName = 'Facebook';
+    protected $websiteProfileUrl = 'http://www.facebook.com/%s/';
+
     protected $accessTokenFormat = 'pair';
 
     protected $authorizeUrl = "https://www.facebook.com/dialog/oauth";

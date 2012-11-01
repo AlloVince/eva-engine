@@ -57,9 +57,9 @@ $form
                 <h4 class="">Login by</h4>
                 </header>
                 <div class="btn-group btn-group-vertical">
-                    <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/', 'service' => 'twitter', 'version' => 1))?>" class="btn btn-small">Twitter</a>
-                    <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/', 'service' => 'twitter'))?>" class="btn btn-small">Twitter 2.0</a>
-                    <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/', 'service' => 'facebook',))?>" class="btn btn-small">Facebook</a>
+                    <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'twitter', 'version' => 1))?>" class="btn btn-small">Twitter</a>
+                    <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'twitter'))?>" class="btn btn-small">Twitter 2.0</a>
+                    <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'facebook',))?>" class="btn btn-small">Facebook</a>
                     <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'google',))?>" class="btn btn-small">Google</a>
                     <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'msn',))?>" class="btn btn-small">Msn</a>
                     <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'github',))?>" class="btn btn-small">Github</a>
