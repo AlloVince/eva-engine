@@ -20,7 +20,7 @@ class Facebook extends AbstractAdapter
         $token = parent::accessTokenToArray($accessToken);
         $expiredTime = $accessToken->getParam('expires');
         if($expiredTime) {
-            $token['expiredTime'] =  gmdate('Y-m-d H:i:s', time() + $expiredTime);
+            $token['expireTime'] =  gmdate('Y-m-d H:i:s', time() + $expiredTime);
         }
         return $token;
     }
