@@ -27,7 +27,6 @@ class Register extends AbstractModel
             }
         }
         $this->trigger('register');
-
     
         $this->trigger('register.post');
 

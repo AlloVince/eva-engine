@@ -45,7 +45,9 @@ abstract class AbstractAdapter implements AdapterInterface
     public function getWebsiteProfileUrl()
     {
         $accessToken = $this->getAccessToken();
-        return sprintf($this->websiteProfileUrl, $accessToken->getParam('remoteUserId'));
+        if($remoteUserId = $accessToken->getParam('remoteUserId')) {
+            return sprintf($this->websiteProfileUrl, $remoteUserId);
+        }
     }
 
     public function getCallback()

@@ -15,7 +15,13 @@ class UserController extends RestfulModuleController
         if ($request->isPost()) {
             
             $item = $request->getPost();
-            $form = new \User\Form\RegisterForm();
+
+            $oauth = new \Oauth\OauthService();
+            $oauth->setServiceLocator($this->getServiceLocator());
+            $oauth->initByAccessToken();
+            $accessToken = $oauth->getAdapter()->getAccessToken();
+
+            $form = $accessToken ? new \User\Form\QuickRegisterForm : new \User\Form\RegisterForm();
             $form->bind($item);
             if ($form->isValid()) {
                 $callback = $this->params()->fromPost('callback');
@@ -28,6 +34,7 @@ class UserController extends RestfulModuleController
             } else {
             }
             return array(
+                'token' => $accessToken,
                 'form' => $form,
                 'item' => $item,
             );

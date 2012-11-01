@@ -12,6 +12,8 @@ namespace Oauth\Event;
 
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
+use Eva\Api;
+use Oauth\OauthService;
 
 /**
  * @category   Zend
@@ -32,6 +34,7 @@ class Listener implements ListenerAggregateInterface
      */
     public function attach(EventManagerInterface $events)
     {
+        $this->listeners[] = $events->attach('user.model.register.register.post', array($this, 'onRegisterPost'));
     }
 
     /**
@@ -49,8 +52,15 @@ class Listener implements ListenerAggregateInterface
         }
     }
 
-    public function onUserCreateActiveCode($e)
+    public function onRegisterPost($e)
     {
         $userModel     = $e->getTarget();
+        $userItem = $userModel->getItem();
+        $itemModel = Api::_()->getModel('Oauth\Model\Accesstoken');
+        $itemModel->setUser($userItem);
+
+        $oauth = new OauthService();
+        $accessToken = $oauth->getStorage()->getAccessToken();
+        $itemModel->setItem($accessToken)->bindToken();
     }
 }

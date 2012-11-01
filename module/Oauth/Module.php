@@ -3,6 +3,14 @@ namespace Oauth;
 
 class Module
 {
+
+    public function onBootstrap($e)
+    {
+        $serviceManager = $e->getApplication()->getServiceManager();
+        $serviceManager->setInvokableClass('Oauth\Event\Listener', 'Oauth\Event\Listener');
+        $e->getApplication()->getEventManager()->attach($serviceManager->get('Oauth\Event\Listener'));
+    }
+
     public function getAutoloaderConfig()
     {
         return array(

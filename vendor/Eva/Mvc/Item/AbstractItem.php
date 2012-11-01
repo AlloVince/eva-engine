@@ -596,6 +596,20 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     }
 
 
+    public function selfExist()
+    {
+        $dataClass = $this->getDataClass();
+        $columns = array_keys($this->getPrimaryArray());
+        $dataClass->columns($columns);
+        $where = $this->getPrimaryArray();
+        $dataSource = $dataClass->where($where)->find('one');
+
+        //Not find in DB
+        if(!$dataSource){
+            return false;
+        }
+        return true;
+    }
 
     public function join($key)
     { 
