@@ -78,7 +78,7 @@ class LoginController extends RestfulModuleController
         $websiteName = $oauth->getAdapter()->getWebsiteName();
         $profileUrl =  $oauth->getAdapter()->getWebsiteProfileUrl();
 
-        $itemModel = Api::_()->getModel('Oauth\Model\AccessToken');
+        $itemModel = Api::_()->getModel('Oauth\Model\Accesstoken');
         $itemModel->setItem($accessTokenArray)->login();
         $loginResult = $itemModel->getLoginResult();
         if($loginResult && $loginResult->isValid()) {

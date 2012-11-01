@@ -122,4 +122,8 @@ return array(
             'FeedController' => 'Engine\Controller\FeedController',
         ),
     ),
+
+    'oauth' => array(
+        'login_url_path' => '/home/'
+    ),
 );

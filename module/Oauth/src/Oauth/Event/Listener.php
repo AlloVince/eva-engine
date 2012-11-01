@@ -64,7 +64,9 @@ class Listener implements ListenerAggregateInterface
 
         $oauth = new OauthService();
         $accessToken = $oauth->getStorage()->getAccessToken();
-        $itemModel->setItem($accessToken)->bindToken();
+        if($accessToken) {
+            $itemModel->setItem($accessToken)->bindToken();
+        }
     }
 
     public function onLoginPost($e)
@@ -81,7 +83,9 @@ class Listener implements ListenerAggregateInterface
 
             $oauth = new OauthService();
             $accessToken = $oauth->getStorage()->getAccessToken();
-            $itemModel->setItem($accessToken)->bindToken();
+            if($accessToken) {
+                $itemModel->setItem($accessToken)->bindToken();
+            }
         }
     }
 
