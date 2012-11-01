@@ -37,6 +37,7 @@ class Listener implements ListenerAggregateInterface
     {
         $this->listeners[] = $events->attach('user.model.register.register.post', array($this, 'onRegisterPost'));
         $this->listeners[] = $events->attach('user.model.login.login.post', array($this, 'onLoginPost'));
+        $this->listeners[] = $events->attach('oauth.model.accesstoken.bind.post', array($this, 'onBindPost'));
     }
 
     /**
@@ -82,6 +83,11 @@ class Listener implements ListenerAggregateInterface
             $accessToken = $oauth->getStorage()->getAccessToken();
             $itemModel->setItem($accessToken)->bindToken();
         }
+    }
 
+    public function onBindPost($e)
+    {
+        $oauth = new OauthService();
+        $accessToken = $oauth->getStorage()->clearAccessToken();
     }
 }

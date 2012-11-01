@@ -80,6 +80,14 @@ class LoginController extends RestfulModuleController
 
         $itemModel = Api::_()->getModel('Oauth\Model\AccessToken');
         $itemModel->setItem($accessTokenArray)->login();
+        $loginResult = $itemModel->getLoginResult();
+        p($loginResult);
+        if($loginResult && $loginResult->isValid()) {
+            $config = $this->getServiceLocator()->get('Config');
+            $callback = $config['oauth']['login_url_path'];
+            $callback = $callback ? $callback : '/';
+            return $this->redirect()->toUrl($callback);
+        }
 
         /*
         $client = $oauth->getAdapter()->getHttpClient();

@@ -71,13 +71,13 @@ class Accesstoken extends AbstractModel
             $item = $loginItem;
             $userModel = Api::_()->getModel('User\Model\Login');
             $this->loginResult = $userModel->loginById($item->user_id);
+        } else {
+            $this->loginResult = new Result(Result::FAILURE_IDENTITY_NOT_FOUND, $loginItem->user_id, array(
+                Result::FAILURE_IDENTITY_NOT_FOUND => 'A record with the supplied identity could not be found.'
+            )); 
         }
 
         $this->trigger('login');
-
-        $this->loginResult = new Result(Result::FAILURE_IDENTITY_NOT_FOUND, $loginItem->user_id, array(
-            Result::FAILURE_IDENTITY_NOT_FOUND => 'A record with the supplied identity could not be found.'
-        )); 
 
         $this->trigger('login.post');
 
