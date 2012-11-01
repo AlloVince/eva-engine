@@ -36,7 +36,7 @@ abstract class AbstractAdapter extends \Oauth\Adapter\AbstractAdapter implements
         }
 
         if(!$options['callbackUrl']){
-            throw new Exception\InvalidArgumentException(sprintf('No callback url found in %s', get_class($this)));
+            //throw new Exception\InvalidArgumentException(sprintf('No callback url found in %s', get_class($this)));
         }
 
         $this->setConsumerKey($options['consumerKey']);
@@ -59,6 +59,17 @@ abstract class AbstractAdapter extends \Oauth\Adapter\AbstractAdapter implements
             'sslverifypeer' => false
         ));
         return $this->consumer = $consumer;
+    }
+
+    public function getHttpClient(array $oauthOptions = array(), $uri = null, $config = null, $excludeCustomParamsFromHeader = true)
+    {
+        $consumer = $this->getConsumer();
+        $defaultOptions = array(
+            'consumerKey' => $consumer->getConsumerKey(),
+            'consumerSecret' => $consumer->getConsumerSecret(),
+        );
+        $oauthOptions = array_merge($defaultOptions, $this->httpClientOptions, $oauthOptions);
+        return $this->getAccessToken()->getHttpClient($oauthOptions, $uri, $config, $excludeCustomParamsFromHeader);
     }
 
     public function accessTokenToArray(AccessToken $accessToken)

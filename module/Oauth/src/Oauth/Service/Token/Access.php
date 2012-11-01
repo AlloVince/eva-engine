@@ -19,7 +19,7 @@ use Zend\Uri;
  * @category   Zend
  * @package    Zend_OAuth
  */
-class Access extends AbstractToken //\ZendOAuth\Token\Access
+class Access extends AbstractToken
 {
     const TOKEN_PARAM_KEY  = 'access_token';
     const EXPIRED_KEY = 'expires_in';

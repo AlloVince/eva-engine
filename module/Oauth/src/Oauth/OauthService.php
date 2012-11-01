@@ -103,7 +103,7 @@ class OauthService
          return $oauth;
      }
 
-     public function initByAccessToken(array $accessTokenArray = array())
+     public function initByAccessToken(array $accessTokenArray = array(), array $options = array())
      {
          if(!$accessTokenArray) {
             $accessTokenArray = $this->getStorage()->getAccessToken();
@@ -125,9 +125,36 @@ class OauthService
              'user_id' => '',
          );
          $accessTokenArray = array_merge($defaultAccessToken, $accessTokenArray);
+         $version = strtolower($accessTokenArray['version']);
+         $adapter = $accessTokenArray['adapterKey'];
 
-         $this->setOauthVersion($accessTokenArray['version']);
-         $adapter = $this->initAdapter($accessTokenArray['adapterKey'], $accessTokenArray['version']);
+         if($serviceLocator = $this->getServiceLocator()){
+             $config = $serviceLocator->get('Config');
+             $defaultOptions = array(
+                 'enable' => true,
+                 'consumer_key' => '',
+                 'consumer_secret' => '',
+             );
+             if(isset($config['oauth'][$version][$adapter])){
+                 $options = array_merge($defaultOptions, $config['oauth'][$version][$adapter], $options);
+             }
+             if(!$options['enable']){
+                 throw new Exception\RuntimeException(sprintf(
+                     'Oauth service %s not enabled by config', get_class($this)
+                 ));
+             }
+             $options['consumerKey'] = $options['consumer_key'];
+             $options['consumerSecret'] = $options['consumer_secret'];
+             if(!isset($options['callbackUrl']) || !$options['callbackUrl']) {
+                 $options['callbackUrl'] = 'http://www.example.com/';
+             }
+             unset($options['consumer_key']);
+             unset($options['consumer_secret']);
+             $this->setOptions($options);
+         }
+
+         $this->setOauthVersion($version);
+         $adapter = $this->initAdapter($adapter, $version);
          $accessToken = $adapter->arrayToAccessToken($accessTokenArray);
          $adapter->setAccessToken($accessToken);
          return $this;

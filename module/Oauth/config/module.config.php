@@ -36,6 +36,11 @@ return array(
                 'consumer_key' => '',
                 'consumer_secret' => ''
             ),
+            'douban' => array(
+                'enable' => 1,
+                'consumer_key' => '',
+                'consumer_secret' => ''
+            ),
             'qihoo' => array(
                 'enable' => 1,
                 'consumer_key' => '',

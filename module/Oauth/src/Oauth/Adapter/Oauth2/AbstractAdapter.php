@@ -20,8 +20,6 @@ abstract class AbstractAdapter extends \Oauth\Adapter\AbstractAdapter implements
 
     protected $accessTokenRequestMethod = ZendOAuth::POST;
 
-
-
     public function getAccessTokenFormat()
     {
         return $this->accessTokenFormat;
@@ -119,6 +117,9 @@ abstract class AbstractAdapter extends \Oauth\Adapter\AbstractAdapter implements
         $accessToken = new AccessToken();
         $accessToken->setToken($accessTokenArray['token']);
         $accessToken->setTokenSecret($accessTokenArray['tokenSecret']);
+        foreach($accessTokenArray as $key => $value) {
+            $accessToken->setParam($key, $value);
+        }
         return $accessToken;
     }
 }

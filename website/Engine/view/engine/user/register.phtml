@@ -40,10 +40,25 @@ $form
             <div class="controls">
                 <?=$form->helper('email', array('class' => ''))?>        
                 <div class="help-block"><?=$form->helper('email', 'formElementErrors')?></div>
+                <?if($token):?>
+                <div class="help-block">
+                    Email will bind with your
+                    <?if($this->websiteName):?>
+                        <?if($this->profileUrl):?>
+                        <a href="<?=$this->profileUrl?>"><?=$this->websiteName?></a>
+                        <?else:?>
+                        <?=$this->websiteName?>
+                        <?endif?>
+                        Accout.
+                    <?else:?>
+                        3rd website account.
+                    <?endif?>
+                </div>
+                <?endif?>
             </div>
         </div>
         <div class="form-actions">
-            <button type="submit" class="btn btn-info btn-large"><?=$this->_('Register');?></button>
+            <button type="submit" class="btn btn-info btn-large"><?=$this->_('Register');?></button> or <a href="<?=$this->uri('/login/')?>">Bind to other account</a>.
         </div>
     </form>
     <?else:?>
@@ -88,7 +103,7 @@ $form
             </div>
         </div>
         <div class="form-actions">
-            <button type="submit" class="btn btn-info btn-large"><?=$this->_('Register');?></button>
+            <button type="submit" class="btn btn-info btn-large"><?=$this->_('Register');?></button> or <a href="<?=$this->uri('/login/')?>">Login</a>
         </div>
     </form>
     <?endif?>
