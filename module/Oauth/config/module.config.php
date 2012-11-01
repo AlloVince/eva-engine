@@ -3,6 +3,7 @@ return array(
     'oauth' => array(
         'request_url_path' => '/oauth/',
         'access_url_path' => '/oauth/access/',
+        'login_url_path' => '/',
         'oauth1' => array(
             'twitter' => array(
                 'enable' => 1,

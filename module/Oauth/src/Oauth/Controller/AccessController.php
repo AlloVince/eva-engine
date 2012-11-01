@@ -51,11 +51,14 @@ class AccessController extends AbstractActionController
 
         $accessTokenArray = $oauth->getAdapter()->accessTokenToArray($accessToken);
         $oauth->getStorage()->saveAccessToken($accessTokenArray);
+        $oauth->getStorage()->clearRequestToken();
         return $this->redirect()->toUrl($callback);
 
+        /*
         $view = new ViewModel();
         $view = new \Zend\View\Model\JsonModel();
         $view->setTemplate('blank');
         return $view;
+        */
     }
 }

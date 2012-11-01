@@ -3,11 +3,14 @@
 namespace Oauth\Model;
 
 use Eva\Api,
-    Eva\Mvc\Model\AbstractModel;
+    Eva\Mvc\Model\AbstractModel,
+    Zend\Authentication\Result;
 
 class Accesstoken extends AbstractModel
 {
     protected $user;
+    
+    protected $loginResult;
 
     public function getUser()
     {
@@ -18,6 +21,11 @@ class Accesstoken extends AbstractModel
     {
         $this->user = $user;
         return $this;
+    }
+
+    public function getLoginResult()
+    {
+        return $this->loginResult;
     }
 
     public function bindToken(array $data = array())
@@ -48,8 +56,36 @@ class Accesstoken extends AbstractModel
     
         $this->trigger('bind.post');
 
-        return $item->id;
+        return $item;
     }
+
+    public function login()
+    {
+        $item = $this->getItem();
+        
+        $this->trigger('login.pre');
+
+        $loginItem = clone $item;
+        $loginItem->self(array('*'));
+        if($loginItem->user_id){
+            $item = $loginItem;
+            $userModel = Api::_()->getModel('User\Model\Login');
+            $this->loginResult = $userModel->loginById($item->user_id);
+        }
+
+        $this->trigger('login');
+
+        $this->loginResult = new Result(Result::FAILURE_IDENTITY_NOT_FOUND, $loginItem->user_id, array(
+            Result::FAILURE_IDENTITY_NOT_FOUND => 'A record with the supplied identity could not be found.'
+        )); 
+
+        $this->trigger('login.post');
+
+        return $this->loginResult; 
+    }
+
+
+
 
     public function unbindToken()
     {

@@ -73,9 +73,13 @@ class LoginController extends RestfulModuleController
         $oauth = new \Oauth\OauthService();
         $oauth->setServiceLocator($this->getServiceLocator());
         $oauth->initByAccessToken();
+        $accessTokenArray = $oauth->getStorage()->getAccessToken();
         $accessToken = $oauth->getAdapter()->getAccessToken();
         $websiteName = $oauth->getAdapter()->getWebsiteName();
         $profileUrl =  $oauth->getAdapter()->getWebsiteProfileUrl();
+
+        $itemModel = Api::_()->getModel('Oauth\Model\AccessToken');
+        $itemModel->setItem($accessTokenArray)->login();
 
         /*
         $client = $oauth->getAdapter()->getHttpClient();

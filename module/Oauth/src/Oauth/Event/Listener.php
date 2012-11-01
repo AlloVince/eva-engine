@@ -14,6 +14,7 @@ use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 use Eva\Api;
 use Oauth\OauthService;
+use Zend\Authentication\Result;
 
 /**
  * @category   Zend
@@ -35,6 +36,7 @@ class Listener implements ListenerAggregateInterface
     public function attach(EventManagerInterface $events)
     {
         $this->listeners[] = $events->attach('user.model.register.register.post', array($this, 'onRegisterPost'));
+        $this->listeners[] = $events->attach('user.model.login.login.post', array($this, 'onLoginPost'));
     }
 
     /**
@@ -54,13 +56,32 @@ class Listener implements ListenerAggregateInterface
 
     public function onRegisterPost($e)
     {
-        $userModel     = $e->getTarget();
-        $userItem = $userModel->getItem();
+        $registerModel     = $e->getTarget();
+        $userItem = $registerModel->getItem();
         $itemModel = Api::_()->getModel('Oauth\Model\Accesstoken');
         $itemModel->setUser($userItem);
 
         $oauth = new OauthService();
         $accessToken = $oauth->getStorage()->getAccessToken();
         $itemModel->setItem($accessToken)->bindToken();
+    }
+
+    public function onLoginPost($e)
+    {
+        $loginModel     = $e->getTarget();
+        $loginResult = $loginModel->getLoginResult();
+        if($loginResult && $loginResult->isValid()){
+            $userId = $loginResult->getIdentity();
+
+            $itemModel = Api::_()->getModel('Oauth\Model\Accesstoken');
+            $itemModel->setUser(array(
+                'id' => $userId,
+            ));
+
+            $oauth = new OauthService();
+            $accessToken = $oauth->getStorage()->getAccessToken();
+            $itemModel->setItem($accessToken)->bindToken();
+        }
+
     }
 }
