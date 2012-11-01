@@ -20,6 +20,8 @@ abstract class AbstractAdapter extends \Oauth\Adapter\AbstractAdapter implements
 
     protected $accessTokenRequestMethod = ZendOAuth::POST;
 
+
+
     public function getAccessTokenFormat()
     {
         return $this->accessTokenFormat;
@@ -90,6 +92,15 @@ abstract class AbstractAdapter extends \Oauth\Adapter\AbstractAdapter implements
             'sslverifypeer' => false
         ));
         return $this->consumer = $consumer;
+    }
+
+    public function getHttpClient(array $oauthOptions = array(), $uri = null, $config = null, $excludeCustomParamsFromHeader = true)
+    {
+        $defaultHttpClientOptions = array(
+            'requestScheme' => ZendOAuth::REQUEST_SCHEME_QUERYSTRING,
+        );
+        $oauthOptions = array_merge($defaultHttpClientOptions, $this->httpClientOptions, $oauthOptions);
+        return $this->getAccessToken()->getHttpClient($oauthOptions, $uri, $config, $excludeCustomParamsFromHeader);
     }
 
     public function accessTokenToArray(AccessToken $accessToken)

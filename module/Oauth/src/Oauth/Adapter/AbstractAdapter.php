@@ -114,10 +114,10 @@ abstract class AbstractAdapter implements AdapterInterface
         return $this->getConsumer()->getHttpClient(); 
     }
 
-    public function getHttpClient()
+    public function getHttpClient(array $oauthOptions = array(), $uri = null, $config = null, $excludeCustomParamsFromHeader = true)
     {
-        $oauthOptions = array();
-        return $this->getAccessToken()->getHttpClient($oauthOptions);
+        $oauthOptions = array_merge($this->httpClientOptions, $oauthOptions);
+        return $this->getAccessToken()->getHttpClient($oauthOptions, $uri, $config, $excludeCustomParamsFromHeader);
     }
 
     public function getRequest()

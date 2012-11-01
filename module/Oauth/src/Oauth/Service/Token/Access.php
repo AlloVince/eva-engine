@@ -26,6 +26,18 @@ class Access extends AbstractToken //\ZendOAuth\Token\Access
     const REFRESH_TOKEN_KEY = 'refresh_token';
 
     /**
+     * Sets the value for a Token.
+     *
+     * @param  string $token
+     * @return \ZendOAuth\Token\AbstractToken
+     */
+    public function setToken($token)
+    {
+        $this->setParam(self::TOKEN_PARAM_KEY, $token);
+        return $this;
+    }
+
+    /**
      * Gets the value for a Token.
      *
      * @return string

@@ -12,7 +12,7 @@ namespace Oauth\Service\Token;
 
 use Zend\Http\Response as HTTPResponse;
 use Oauth\Exception;
-use ZendOAuth\Http\Utility as HTTPUtility;
+use Oauth\Service\Http\Utility as HTTPUtility;
 
 /**
  * @category   Zend
