@@ -23,6 +23,15 @@ class PostSearchForm extends PostForm
                 'value' => 1,
             ),
         ),
+        'user_id' =>     array(
+            'name' => 'user_id',
+            'type' => 'hidden',
+            'options' => array(
+                'label' => 'User Id',
+            ),
+            'attributes' => array(
+            ),
+        ),
         'order' =>     array(
             'name' => 'order',
             'type' => 'text',
@@ -48,6 +57,7 @@ class PostSearchForm extends PostForm
                 'value' => '',
             ),
         ),
+
         'category' => array(
             'name' => 'category',
             'type' => 'select',

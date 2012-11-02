@@ -4,7 +4,8 @@ namespace Blog\Controller;
 use Blog\Form,
     Eva\Api,
     Eva\Mvc\Controller\RestfulModuleController,
-    Eva\View\Model\ViewModel;
+    Eva\View\Model\ViewModel,
+    Zend\View\Model\JsonModel;
 
 class BlogController extends RestfulModuleController
 {
@@ -13,6 +14,36 @@ class BlogController extends RestfulModuleController
         'restPostBlog' => 'blank',    
         'restDeleteBlog' => 'blank',    
     );
+
+    public function indexAction()
+    {
+        $this->changeViewModel('json');
+        $query = $this->getRequest()->getQuery();
+        $form = new Form\PostSearchForm();
+        $form->bind($query);
+        if($form->isValid()){
+            $query = $form->getData();
+        } else {
+            return new JsonModel(array(
+                'form' => $form,
+                'items' => array(),
+            ));
+        }
+
+        $itemModel = Api::_()->getModel('Blog\Model\Post');
+        $items = $itemModel->setItemList($query)->getPostList()->toArray();
+        $paginator = $itemModel->getPaginator();
+
+        if(Api::_()->isModuleLoaded('User')){
+            $userList = array();
+            $userList = $itemModel->getUserList()->toArray();
+            $items = $itemModel->combineList($items, $userList, 'User', array('user_id' => 'id'));
+        }
+
+        return new JsonModel(array(
+            'items' => $items,
+        ));
+    }
 
     public function restPostBlog()
     {
