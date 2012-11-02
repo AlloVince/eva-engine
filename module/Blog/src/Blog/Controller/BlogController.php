@@ -31,8 +31,17 @@ class BlogController extends RestfulModuleController
         }
 
         $itemModel = Api::_()->getModel('Blog\Model\Post');
-        $items = $itemModel->setItemList($query)->getPostList()->toArray();
+        $items = $itemModel->setItemList($query)->getPostList(array(
+            'join' => array(
+                'Text' => array(
+                    'self' => array(
+                        '*'
+                    )
+                ),
+            )
+        ));
         $paginator = $itemModel->getPaginator();
+        $paginator = $paginator ? $paginator->toArray() : null;
 
         if(Api::_()->isModuleLoaded('User')){
             $userList = array();
@@ -42,6 +51,7 @@ class BlogController extends RestfulModuleController
 
         return new JsonModel(array(
             'items' => $items,
+            'paginator' => $paginator,
         ));
     }
 
