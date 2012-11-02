@@ -22,9 +22,8 @@ class Accesstoken extends AbstractItem
 
     public function getUserId()
     {
-        if(!$this->user_id){
-            $user = $this->getModel()->getUser();
-            return $this->user_id = $user['id'];
-        }
+        //Maybe here will change bind user, so not need to check user_id already exist
+        $user = $this->getModel()->getUser();
+        return $this->user_id = $user['id'];
     }
 }

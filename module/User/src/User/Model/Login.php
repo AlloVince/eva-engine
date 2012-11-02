@@ -99,11 +99,6 @@ class Login extends AbstractModel
         )); 
     }
 
-    public function loginByOauth()
-    {
-    
-    }
-
     public function loginByToken($tokenString)
     {
         if($tokenString) {

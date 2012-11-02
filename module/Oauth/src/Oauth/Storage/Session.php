@@ -142,6 +142,12 @@ class Session implements StorageInterface
         return $this->read();
     }
 
+    public function clearRequestToken()
+    {
+        $this->member = 'requestToken';
+        unset($this->session->{$this->member});
+    }
+
     public function saveAccessToken($accessToken)
     {
         $this->member = 'accessToken';
@@ -153,4 +159,11 @@ class Session implements StorageInterface
         $this->member = 'accessToken';
         return $this->read();
     }
+
+    public function clearAccessToken()
+    {
+        $this->member = 'accessToken';
+        unset($this->session->{$this->member});
+    }
+
 }
