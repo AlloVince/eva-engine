@@ -111,6 +111,32 @@ return array(
                 ),
                 'priority' => 2,
             ),
+            'contacts' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/contacts[/]',
+                    'defaults' => array(
+                        'controller' => 'UserController',
+                        'action' => 'contacts',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'service' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '[:id][/]',
+                            'constraints' => array(
+                                'id' => '[a-zA-Z0-9_-]+'
+                            ),
+                            'defaults' => array(
+                                'action' => 'export'
+                            ),
+                        ),
+                    ),
+                ),
+                'priority' => 2,
+            ),
         ),
     ),
     'controllers' => array(

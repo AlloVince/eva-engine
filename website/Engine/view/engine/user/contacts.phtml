@@ -1,0 +1,24 @@
+<? 
+$title = $this->_('Find Friends');
+$this->headTitle($title, 'SET');
+$roleKey = $this->item['Roles'] ? $this->item['Roles'][0]['roleKey'] : null;
+?>
+<div class="container">
+
+	<header class="page-header">
+    <h2 class=""><?=$title?></h2>
+	</header>
+
+            <div class="well">
+
+                <header class="page-header">
+                <h4 class=""><?=$this->_('Find your friends with')?>:</h4>
+                </header>
+                <div class="btn-group btn-group-vertical">
+                    <a href="<?=$this->uri('/contacts/google', array('r' => $this->serverUrl() . '/contacts/google'))?>" class="btn btn-small">Gmail</a>
+                    <a href="<?=$this->uri('/contacts/msn', array('r' => $this->serverUrl() . '/contacts/msn'))?>" class="btn btn-small">Msn/Hotmail</a>
+                </div>
+            </div>
+
+
+</div>

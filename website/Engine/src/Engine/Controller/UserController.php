@@ -71,4 +71,66 @@ class UserController extends RestfulModuleController
             'item' => $item,
         );
     }
+
+    public function contactsAction()
+    {
+    }
+
+    public function exportAction()
+    {
+   /*     $user = Auth::getLoginUser();
+
+        if(isset($user['isSuperAdmin']) || !$user){
+            exit;;
+        } 
+    */    
+        $adapter = $this->getEvent()->getRouteMatch()->getParam('id');
+        $callback = $this->params()->fromQuery('r');
+        $version = (int) $this->params()->fromQuery('version');
+        
+        if(!$adapter){
+            throw new \Oauth\Exception\InvalidArgumentException(sprintf(
+                'No oauth service key found'
+            ));
+        }
+
+        $oauth = new \Oauth\OauthService();
+        $oauth->setServiceLocator($this->getServiceLocator());
+
+        try {
+            $oauth->initByAccessToken();
+            $accessTokenClass = $oauth->getAdapter()->getAccessToken();
+
+            $accessToken = $accessTokenClass->access_token;
+            $adapterKey = $accessTokenClass->adapterKey;
+            $expireTime = $accessTokenClass->expireTime;
+            
+            if ($adapterKey != $adapter) {
+                throw new \Oauth\Exception\InvalidArgumentException(sprintf(
+                    'Oauth service key not match'
+                )); 
+            }
+
+            $export = new \Contacts\ContactsExport($adapterKey, false, array(
+                'accessToken' => $accessToken,
+            ));
+
+            $contacts = $export->getContacts();
+
+        } catch (\Oauth\Exception\InvalidArgumentException $e) {
+            $config = $this->getServiceLocator()->get('config');
+            $helper = $this->getEvent()->getApplication()->getServiceManager()->get('viewhelpermanager')->get('serverurl');
+
+            $url = $helper() . $config['oauth']['request_url_path'] . '?' . http_build_query(array(
+                'r' => $callback,
+                'service' => $adapter,
+                'version' => $version
+            ));
+            return $this->redirect()->toUrl($url);
+        }
+p($contacts);exit;
+        return array(
+            'items' => $contacts,
+        );
+    }
 }
