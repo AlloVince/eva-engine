@@ -7,6 +7,8 @@ use Oauth\Adapter\Oauth1\AbstractAdapter;
 
 class Twitter extends AbstractAdapter
 {
+    protected $websiteName = 'Twitter';
+
     protected $requestTokenUrl = "https://api.twitter.com/oauth/request_token";
 
     protected $authorizeUrl = "https://api.twitter.com/oauth/authorize";
