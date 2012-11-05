@@ -22,7 +22,14 @@ class Users extends TableGateway
         }
 
         if($params->id){
+            if(is_array($params->id)){
+                $params->id = array_unique($params->id);
+            }
             $this->where(array('id' => $params->id));
+        }
+
+        if($params->columns) {
+            $this->columns($params->columns);
         }
 
         if($params->status){

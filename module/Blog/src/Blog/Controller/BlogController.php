@@ -45,7 +45,17 @@ class BlogController extends RestfulModuleController
 
         if(Api::_()->isModuleLoaded('User')){
             $userList = array();
-            $userList = $itemModel->getUserList()->toArray();
+            $userList = $itemModel->getUserList(array(
+                'columns' => array(
+                    'id',
+                    'userName',
+                    'email',
+                ),
+            ))->toArray(array(
+                'self' => array(
+                    'getEmailHash()',
+                ),
+            ));
             $items = $itemModel->combineList($items, $userList, 'User', array('user_id' => 'id'));
         }
 

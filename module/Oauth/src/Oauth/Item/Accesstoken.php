@@ -11,6 +11,19 @@ class Accesstoken extends AbstractItem
     protected $relationships = array(
     );
 
+    protected $inverseRelationships = array(
+        'Oauth' => array(
+            'targetEntity' => 'Oauth\Item\Accesstoken',
+            'relationship' => 'OneToMany',
+            'joinColumn' => 'user_id',
+            'referencedColumn' => 'id',
+            'joinParameters' => array(
+                'columns' => array('user_id', 'appType', 'token', 'tokenSecret'),
+                'limit' => false,
+            ),
+        ),
+    );
+
     protected $map = array(
         'create' => array(
             'getUserId()',

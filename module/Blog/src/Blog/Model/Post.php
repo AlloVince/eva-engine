@@ -17,7 +17,7 @@ class Post extends AbstractModel
         return $this;
     }
 
-    public function getUserList(array $map = array())
+    public function getUserList($itemParams = array(), array $map = array())
     {
         if($this->userList){
             return $this->userList;
@@ -36,14 +36,11 @@ class Post extends AbstractModel
 
         $userModel = Api::_()->getModel('User\Model\User');
         if(!$idArray){
-            $userModel->setItemList(array(
-                'noResult' => true
-            ));
+            $itemParams['noResult'] = true;
         } else {
-            $userModel->setItemList(array(
-                'id' => $idArray
-            ));
+            $itemParams['id'] = $idArray;
         }
+        $userModel->setItemList($itemParams);
         $userList = $userModel->getUserList($map);
         return $this->userList = $userList;
     }
