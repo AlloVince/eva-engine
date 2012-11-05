@@ -101,6 +101,15 @@ class ChangePasswordForm extends \Eva\Form\Form
                         'max' => '16',
                     ),
                 ),
+                'callback' => array(
+                    'name' => 'Callback',
+                    'options' => array(
+                        'callback' => array('User\Form\ChangePasswordForm', 'verifyPassword'),
+                        'messages' => array(
+                            \Zend\Validator\Callback::INVALID_VALUE => 'Password not match',
+                        ),
+                    ),
+                ),
             ),
         ),
         'inputPassword' => array (
@@ -130,9 +139,48 @@ class ChangePasswordForm extends \Eva\Form\Form
                     'options' => array (
                         'field' => 'inputPassword',
                     ),
+
                 ),
             ),
         ),
     );
 
+    public function prepareData($data)
+    {
+        $data['password'] = $data['inputPassword'];
+        $data['oldPassword'] = $data['verifyPassword'];
+        unset($data['verifyPassword'], $data['inputPassword'], $data['repeatPassword']);
+
+        $userModel = \Eva\Api::_()->getModel('User\Model\User');
+        $user = $userModel->getUser($data['id']);
+        $salt = $user->salt;
+
+        $bcrypt = new \Zend\Crypt\Password\Bcrypt();
+        $bcrypt->setSalt($salt);
+        $data['password'] = $bcrypt->create($data['password']);
+        $data['oldPassword'] = $user->password;
+        $data['lastPasswordChangeTime'] = \Eva\Date\Date::getNow();
+        return $data;
+    }
+
+    public function beforeBind($data)
+    {
+        return $data;
+    }
+
+    public static function verifyPassword($password, $data)
+    {
+        $userModel = \Eva\Api::_()->getModel('User\Model\User');
+        $user = $userModel->getUser($data['id']);
+        $salt = $user->salt;
+
+        $bcrypt = new \Zend\Crypt\Password\Bcrypt();
+        $bcrypt->setSalt($salt);
+        $verifyPassword = $bcrypt->create($password);
+
+        if($verifyPassword === $user->password){
+            return true;
+        }
+        return false;
+    }
 }

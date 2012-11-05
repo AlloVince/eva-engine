@@ -48,8 +48,6 @@ class ResponseController extends ActionController
             ));
         }
         
-        $callback = urldecode($callback);
-        
         $adapter = $adapter == 'paypalec' ? 'PaypalEc' : 'AlipayEc';
 
         $pay = new \Payment\Service\Payment($adapter);

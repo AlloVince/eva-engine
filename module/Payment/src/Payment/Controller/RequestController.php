@@ -38,14 +38,14 @@ class RequestController extends ActionController
         $helper = $this->getEvent()->getApplication()->getServiceManager()->get('viewhelpermanager')->get('serverurl');
 
         $url = $helper() . $config['payment']['return_url_path'] . '?' . http_build_query(array(
-            'callback' => urlencode($callback),
+            'callback' => $callback,
         ));
         
         $amount = (float) $amount;
         
         if (strtolower($adapter) == "paypalec") {
             $cancel = $helper() . $config['payment']['cancel_url_path'] . '?' . http_build_query(array(
-                'callback' => urlencode($callback),
+                'callback' =>$callback,
             ));
             $this->paypal($amount, $url, $cancel);
         } else {
