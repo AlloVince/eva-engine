@@ -19,7 +19,7 @@ namespace Contacts;
  * @copyright  Copyright (c) 2012 AlloVince (http://avnpc.com/)
  * @license    http://framework.zend.com/license/new-bsd     New BSD Licens
  */
-class ContactsExport
+class ContactsImport
 {
     /**
      * Array holding all directions
@@ -57,14 +57,14 @@ class ContactsExport
         }
           
         if ($adapter[0] != '\\') {
-            $adapter = '\Contacts\Export\\' . ucfirst($adapter);
+            $adapter = '\Contacts\Import\\' . ucfirst($adapter);
         }
         
         $direction = (integer) $direction;
         $this->adapter[$direction] = new $adapter($options);
-        if (!$this->adapter[$direction] instanceof Export\AbstractAdapter) {
+        if (!$this->adapter[$direction] instanceof Import\AbstractAdapter) {
             throw new Exception\InvalidArgumentException(
-                'Adapter ' . $adapter . ' does not extend Contacts\Export\AbstractAdapter'
+                'Adapter ' . $adapter . ' does not extend Contacts\Import\AbstractAdapter'
             );
         }
 

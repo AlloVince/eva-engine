@@ -120,21 +120,6 @@ return array(
                         'action' => 'contacts',
                     ),
                 ),
-                'may_terminate' => true,
-                'child_routes' => array(
-                    'service' => array(
-                        'type' => 'Segment',
-                        'options' => array(
-                            'route' => '[:id][/]',
-                            'constraints' => array(
-                                'id' => '[a-zA-Z0-9_-]+'
-                            ),
-                            'defaults' => array(
-                                'action' => 'export'
-                            ),
-                        ),
-                    ),
-                ),
                 'priority' => 2,
             ),
         ),

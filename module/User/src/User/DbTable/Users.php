@@ -43,6 +43,14 @@ class Users extends TableGateway
         if($params->onlineStatus){
             $this->where(array('onlineStatus' => $params->onlineStatus));
         }
+        
+        if($params->emails){
+            $emails = $params->emails;
+            $this->where(function($where) use ($emails){
+                $where->in('email', $emails);
+                return $where;
+            });
+        }
 
         if ($params->rows) {
             $this->limit((int) $params->rows);
@@ -68,7 +76,7 @@ class Users extends TableGateway
                 $this->order($order);
             }
         }
-        
+
         return $this;
     }
 }

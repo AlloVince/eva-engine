@@ -46,7 +46,7 @@ class UserController extends RestfulModuleController
         $user = Auth::getLoginUser();
     
         if(isset($user['isSuperAdmin']) || !$user){
-            exit;;
+            exit;
         } 
         
         $itemModel = Api::_()->getModel('User\Model\User');

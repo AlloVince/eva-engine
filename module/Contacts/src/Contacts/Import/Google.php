@@ -1,8 +1,8 @@
 <?php
     
-namespace Contacts\Export;
+namespace Contacts\Import;
 
-use Contacts\Export\AbstractAdapter;
+use Contacts\Import\AbstractAdapter;
 
 class Google extends AbstractAdapter
 {

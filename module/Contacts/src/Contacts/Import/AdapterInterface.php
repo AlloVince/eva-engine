@@ -1,6 +1,6 @@
 <?php
 
-namespace Contacts\Export;
+namespace Contacts\Import;
 
 /**
  * @category   Zend
