@@ -9,32 +9,11 @@ use User\Form,
 
 class FriendController extends RestfulModuleController
 {
-    public function isfriendAction()
-    {
-        $this->changeViewModel('json');
-
-        $user = \Core\Auth::getLoginUser();
-        if(!$user) {
-            return new JsonModel(array(
-                'item' => null
-            ));
-        }
-        $selectQuery = array(
-            'from_user_id' => $this->params()->fromQuery('user_id'),
-            'to_user_id' => $user['id'],
-        );
-        $itemModel = Api::_()->getModel('User\Model\Friend');
-        $item = $itemModel->setItemList($selectQuery)->getFriendList()->toArray();
-        return new JsonModel(array(
-            'item' => $item,
-        ));
-    }
-
     public function indexAction()
     {
         $this->changeViewModel('json');
         $selectQuery = array(
-            'from_user_id' => $this->params()->fromQuery('user_id'),
+            'from_user_id' => $this->params()->fromQuery('user_id', 1),
             'relationshiopStatus' => 'approved',
             'page' => $this->params()->fromQuery('page', 1),
             'rows' => $this->params()->fromQuery('rows', 16),
