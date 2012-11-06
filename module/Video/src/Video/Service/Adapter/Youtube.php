@@ -35,22 +35,27 @@ class Youtube extends AbstractAdapter implements AdapterInterface
 
         $urlHandler = parse_url($url);
         $host = strtolower($urlHandler['host']);
+        $remoteId = '';
         switch($host){
             case 'www.youtube.com':
-            if(false === preg_match('#^http://www.youtube.com/watch?v=(\w+)#', $url, $matches)){
-                return false;
+            case 'youtube.com':
+            if(isset($urlHandler['query'])) {
+                parse_str($urlHandler['query'], $query);
+                $remoteId = isset($query['v']) ? $query['v'] : '';
             }
+
             break;
             case 'youtu.be':
-            if(false === preg_match('#^http://youtu.be/(\w+)#', $url, $matches)){
+            if(false === preg_match('#^https?://youtu.be/(\w+)#', $url, $matches)){
                 return false;
             }
+            $remoteId = $matches[1];
             break;
             default:
             return false;
         }
 
-        $this->remoteId = $matches[1];
+        $this->remoteId = $remoteId;
         return $this->isValid = true;
     }
 
