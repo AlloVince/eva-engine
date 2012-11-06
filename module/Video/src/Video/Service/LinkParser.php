@@ -61,9 +61,7 @@ class LinkParser
 
         $adapters = $video->getAdapters();
         if(!isset($adapters[$host])){
-            throw new Exception\BadMethodCallException(sprintf(
-                'No video adapter found by host %s', $host
-            ));
+            return $video;
         }
 
         $adapterName = $adapters[$host];
@@ -75,6 +73,14 @@ class LinkParser
         $video->setAdapter(new $adapterClass($url));
 
         return $video;
+    }
+
+    public function isValid()
+    {
+        if($this->getAdapter()){
+            return $this->getAdapter()->isValid();
+        }
+        return false;
     }
 
     public function getUrl()

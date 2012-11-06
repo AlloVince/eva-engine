@@ -41,6 +41,16 @@ abstract class AbstractAdapter
         );
     }
 
+    public function getPlayerWidth()
+    {
+        return $this->playerWidth;
+    }
+
+    public function getPlayerHeight()
+    {
+        return $this->playerHeight;
+    }
+
     public function __construct($url)
     {
         $this->setUrl($url);

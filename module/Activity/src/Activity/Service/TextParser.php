@@ -14,6 +14,8 @@ namespace Activity\Service;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
+use Video\Service\LinkParser;
+
 /**
 * @category   Activity
 * @package    Activity
@@ -21,6 +23,14 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 class TextParser
 {
     protected $users = array();
+
+    protected $links = array();
+
+    protected $videos = array();
+
+    protected $html;
+
+    protected $isParsed = false;
 
     protected $options;
 
@@ -132,11 +142,65 @@ class TextParser
         return $this->users;
     }
 
-    public function toHtml()
+    public function getLinks()
     {
+        return $this->links;
+    }
+
+    public function getVideos()
+    {
+        $this->parse();
+        if(!$this->links){
+            return $this->videos;
+        }
+
+        $videos = array();
+        foreach($this->links as $url) {
+            $video = LinkParser::factory($url);
+            if($video->isValid()){
+                $videos[] = array(
+                    'url' => $video->toString(),
+                    'swf' => $video->getSwfUrl(),
+                    'thumbnail' => $video->getThumbnail(),
+                    'width' => $video->getPlayerWidth(),
+                    'height' => $video->getPlayerHeight(),
+                    'remoteId' => $video->getRemoteId(),
+                );
+            }
+        }
+
+        return $this->videos = $videos;
+    }
+
+    public function getVideo()
+    {
+        $videos = $this->getVideos();
+        if($videos){
+            return $videos[0];
+        }
+    }
+
+    public function getHtml()
+    {
+        $this->parse();
+        return $this->html;
+    }
+
+    public function parse()
+    {
+        if(true === $this->isParsed) {
+            return $this->html;
+        }
+
         $text = trim($this->getText());
         if(!$text){
+            $this->isParsed = true;
             return '';
+        }
+
+        preg_match_all('@(https?://([-\w\.]+)+(/([\w/_\.-]*(\?\S+)?(#\S+)?)?)?)@', $text, $matches);
+        if($matches && isset($matches[0][0])){
+            $this->links = $matches[0];
         }
 
         $options = $this->getOptions();
@@ -155,6 +219,7 @@ class TextParser
         $text = preg_replace('/\s+#(\w+)/',
         ' <a href="' . $sharpUrl . '" ' . $urlTarget . '>#$1</a>', $text);
 
-        return $text;
+        $this->isParsed = true;
+        return $this->html = $text;
     }
 }

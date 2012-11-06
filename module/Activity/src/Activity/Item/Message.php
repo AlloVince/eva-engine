@@ -100,10 +100,12 @@ class Message extends AbstractItem
     {
         //$text = $this->content;
         $parser = $this->getParser();
-        $this->ContentHtml = $parser->toHtml();
+        $this->ContentHtml = $parser->getHtml();
     }
 
     public function getVideo()
     {
+        $parser = $this->getParser();
+        $this->Video = $parser->getVideo();
     }
 }
