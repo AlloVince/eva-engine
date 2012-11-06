@@ -170,25 +170,11 @@ class TableGateway extends AbstractTableGateway  implements ServiceLocatorAwareI
                 ));
             }
 
-            $argumentsCount = count($arguments);
             $select = $this->getSelect();
             call_user_func_array(array($select, $method), $arguments);
-            $this->selectOptions[$method] = $arguments;
-            /*
-            switch($argumentsCount){
-                case 1 : 
-                    $select->$method($arguments[0]);
-                    $this->selectOptions[$method] = $arguments[0];
-                    break;
-                case 2 : 
-                    $select->$method($arguments[0], $arguments[1]);
-                    $this->selectOptions[$method] = $arguments;
-                    break;
-                default :
-                    $select->$method();
-                    $this->selectOptions[$method] = true;
-            }
-            */
+
+            //Cache select options here
+            $this->selectOptions[$method] = isset($arguments[0]) ? $arguments[0] : null;
 
             //Where maybe have multi columns
             if($method == 'where'){

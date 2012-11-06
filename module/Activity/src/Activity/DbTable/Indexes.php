@@ -30,7 +30,7 @@ class Indexes extends TableGateway
         }
 
         if ($params->rows) {
-            $this->limit((int) $params->rows);
+            $this->limit($params->rows);
         }
 
         if($params->page){

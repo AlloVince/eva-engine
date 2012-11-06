@@ -11,6 +11,13 @@ class Activity extends AbstractModel
 
     protected $userList;
 
+    protected $userActivityPaginator;
+
+    public function getUserActivityPaginator()
+    {
+        return $this->userActivityPaginator;
+    }
+
     public function setUserList($userList)
     {
         $this->userList = $userList;
@@ -44,18 +51,25 @@ class Activity extends AbstractModel
         return $this->userList = $userList;
     }
 
-    public function getUserActivityList($userId, $onlySelf = false)
+    public function getUserActivityList($params, $onlySelf = false)
     {
         $indexItem = $this->getItem('Activity\Item\Index');
-        $itemQueryParams = array(
-            'user_id' => $userId,
+
+        $defaultParams = array(
+            'user_id' => '',
             'order' => 'iddesc',
+            'page' => 1,
+            'rows' => 20,
         );
+
+        $itemQueryParams = array_merge($defaultParams, $params);
         if($onlySelf){
             $itemQueryParams['author_id'] = $userId;
         }
 
         $indexItem->collections($itemQueryParams);
+        $this->userActivityPaginator = $indexItem->getPaginator();
+
         $messageIdArray = array();
         foreach($indexItem as $index){
             $messageIdArray[] = $index['message_id'];
@@ -67,7 +81,8 @@ class Activity extends AbstractModel
         } else {
             $this->setItemList(array(
                 'id' => $messageIdArray,
-                'order' => 'idarray'
+                'order' => 'idarray',
+                'noLimit' => true,
             ));
         }
         return $this;

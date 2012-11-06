@@ -42,6 +42,10 @@ class Messages extends TableGateway
             $this->where(array('user_id' => $params->user_id));
         }
 
+        if($params->noLimit) {
+            $this->disableLimit();
+        }
+
         $orders = array(
             'idasc' => 'id ASC',
             'iddesc' => 'id DESC',
