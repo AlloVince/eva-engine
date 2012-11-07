@@ -3,32 +3,80 @@ $title = $this->_('Find Friends');
 $this->headTitle($title, 'SET');
 $contacts = $this->contacts;
 $count = $this->count;
+
+$form = new Activity\Form\FollowForm();
+$form
+->setView($this)
+->useSubFormGroup()
+->setMethod('post')
+->setAction($this->uri('/activity/follow/'))
+->prepare();
 ?>
 <div class="container">
 
 	<header class="page-header">
     <h2 class=""><?=$title?></h2>
 	</header>
-
+    <?if($this->id == "invite"):?> 
             <div class="well">
-
                 <header class="page-header">
-                <h4 class=""><?=$this->_("$count friends on site")?>:</h4>
+                <h4 class=""><?=$this->_("$count friends out site")?>:</h4>
                 </header>
                 
                 <?if($contacts):?> 
                 <form action="<?=$this->uri('/contacts/invite/',array('r' => '/findfriends/invite/?service=' . $this->service, 'service' => $this->service))?>" method="post">
                     <?foreach($contacts as $item):?>
-                    <input name="email[]" type="checkbox" class="multiform-item-checkbox" value="<?=$item['email'] ?>" /> <?=$item['email']?>(<?=isset($item['name']) ? $item['name'] : null?>) 
+                        <div> 
+                        <input name="email[]" type="checkbox" class="multiform-item-checkbox" value="<?=$item['email'] ?>" /> <?=$item['email']?>(<?=isset($item['name']) ? $item['name'] : null?>) 
+                        </div>
                     <?endforeach;?>
                     <input type="submit" value="Invite" />
                 </form>
                 <?endif;?>
 
+            </div>
+    <?else:?>
+                <header class="page-header">
+                    <h4 class=""><?=$this->_("$count friends on site")?>:</h4>
+                </header> 
+                <div class="user-list vlist">
+                                <?foreach($contacts as $item):?>
+                                <div class="item">
+                                    <div class="item-absolute item-userface">
+                                        <a href="<?=$this->uri('/user/' . $item['userName'])?>" title="" class="userface"><img src="<?=$this->gravatar($item['email'])?>" alt="" class="img-rounded" width="60" height="60" /></a>
+                                    </div>
+                                    <div class="item-inline item-text">
+                                        <div class="item-title">
+                                            <h2><a href="<?=$this->uri('/user/' . $item['userName'])?>" class="item-user"><?=$item['userName']?></a></h2>
+                                        </div>
+                                    </div>
+                                    <div class="item-absolute item-action">
+
+                                        <?if(isset($item['Follow']) && $item['Follow']):?>
+                                        <form <?=$this->formAttr($unfollowForm)?>>
+                                            <?=$unfollowForm->restful();?>
+                                            <?=$unfollowForm->helper('user_id', 'formHidden', array('class' => '', 'value' => $item['id']))?>
+                                            <?=$unfollowForm->helper('follower_id', array('class' => ''))?>
+                                            <?=$this->callback()?>
+                                            <button class="btn btn-small item-action-main">Unfollow</button>
+                                        </form>
+                                        <?else:?>
+                                        <form <?=$this->formAttr($form)?>>
+                                            <?=$form->restful();?>
+                                            <?=$form->helper('user_id', 'formHidden', array('class' => '', 'value' => $item['id']))?>
+                                            <?=$form->helper('follower_id', array('class' => ''))?>
+                                            <?=$this->callback()?>
+                                            <button class="btn btn-small item-action-main">Follow</button>
+                                        </form>
+                                        <?endif?>
+
+
+                                    </div>
+                                </div>
+                                <?endforeach?>
+                            </div><!--activity-list end--> 
                 <div class="btn-group btn-group-vertical">
                     <a href="<?=$this->uri('/findfriends/invite/', array('service' => $this->service))?>" class="btn btn-small">Invite</a>
                 </div>
-            </div>
-
-
+    <?endif;?>
 </div>

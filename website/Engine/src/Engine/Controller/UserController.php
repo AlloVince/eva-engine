@@ -98,7 +98,7 @@ class UserController extends RestfulModuleController
             'cacheConfig' => $config['cache']['contacts_import'],
         ));
         $contacts = $import->getStorage()->loadContacts();
-
+        
         $itemModel = \Eva\Api::_()->getModel('Contacts\Model\Contacts');
         $itemModel->setUser($user);
         $itemModel->setService($adapter);
@@ -113,9 +113,10 @@ class UserController extends RestfulModuleController
         }
 
         return array(
-            'count' => $count,
+            'id'       => $id,
+            'count'    => $count,
             'contacts' => $contacts,
-            'service' => $adapter,
+            'service'  => $adapter,
         );
     }
 }

@@ -38,7 +38,7 @@ class Contacts extends AbstractModel
         if (!$contacts) {
             return array();
         }
-
+        
         $userModel = Api::_()->getModel('User\Model\User');
         $mine = $this->getUser();
         $mine = $userModel->getUser($mine['id']);
@@ -85,16 +85,10 @@ class Contacts extends AbstractModel
         }
         $onSiteContacts = $onSiteFriends;
 
-        $selectQuery = array(
-            'from_user_id' => $mine['id'],
-            'relationshiopStatus' => 'approved',
-            'rows' => 1000,
-        );
-
-        $itemModel = Api::_()->getModel('User\Model\Friend');
-        $items = $itemModel->setItemList($selectQuery)->getFriendList();
-        $friends = $items->toArray();
-
+        $itemModel = Api::_()->getModel('Activity\Model\Follow');
+        $friends = $itemModel->setUserList($items)->setItemList(array(
+            'follower_id' => $mine['id']
+        ))->getFollowList()->toArray();
         if (!$friends) {
             return array(
                 'contactsCount' => count($contacts),
@@ -104,26 +98,23 @@ class Contacts extends AbstractModel
                 'onSiteContacts' => $onSiteContacts,
             );   
         }
-
         $onSiteFriends = array();
         foreach ($friends as $friend) {
-            if (isset($onSiteContacts[$friend['to_user_id']])) {
-                $onSiteFriends = $onSiteContacts[$friend['to_user_id']];
-                unset($onSiteContacts[$friend['to_user_id']]);
+            if (isset($onSiteContacts[$friend['user_id']])) {
+                $onSiteFriends = $onSiteContacts[$friend['user_id']];
+                unset($onSiteContacts[$friend['user_id']]);
             } 
         }
 
-        if (!$friends) {
-            return array(
-                'contactsCount' => count($contacts),
-                'outSiteContactsCount' => count($outSiteContacts),
-                'onSiteContactsCount' => count($onSiteContacts),
-                'onSiteFriendsCount' => $onSiteFriendsCount,
-                'outSiteContacts' => $outSiteContacts,
-                'onSiteContacts' => $onSiteContacts,
-                'onSiteFriends' => $onSiteFriends,
-                $service => $contacts,
-            );   
-        }
+        return array(
+            'contactsCount' => count($contacts),
+            'outSiteContactsCount' => count($outSiteContacts),
+            'onSiteContactsCount' => count($onSiteContacts),
+            'onSiteFriendsCount' => count($onSiteFriends),
+            'outSiteContacts' => $outSiteContacts,
+            'onSiteContacts' => $onSiteContacts,
+            'onSiteFriends' => $onSiteFriends,
+            $service => $contacts,
+        );   
     }
 }

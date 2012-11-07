@@ -32,7 +32,6 @@ class InviteController extends AbstractActionController
         $inviteModel->setRegUrl($url);
         
         foreach ($emails as $email) {
-            $email = "ctqh@easthv.com";
             $params['to'] = array('email' => $email);
             $inviteModel->sendInvite($params);
             $this->removeContacts($service, $email);
