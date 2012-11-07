@@ -63,15 +63,17 @@ class Contacts extends AbstractModel
             $emails[] = $user['email'];  
         }
 
+        $emails = array_unique($emails);
+
         $selectQuery = array(
             'emails' => $emails,
             'rows' => 1000,
         );
         $items = $userModel->setItemList($selectQuery)->getUserList(); 
         $onSiteContacts = $items->toArray();
-
+        
         $res = array(
-            'contactsCount'        => 0,
+            'contactsCount'        => count($emails),
             'outSiteContactsCount' => 0,
             'onSiteContactsCount'  => 0,
             'onSiteFriendsCount'   => 0,
@@ -82,7 +84,6 @@ class Contacts extends AbstractModel
         );
 
         if (!$onSiteContacts) {
-            $res['contactsCount']        = count($contacts);
             $res['outSiteContactsCount'] = count($outSiteContacts);
             $res['outSiteContacts']      = $outSiteContacts;
             return $res;
@@ -100,7 +101,6 @@ class Contacts extends AbstractModel
             'follower_id' => $mine['id']
         ))->getFollowList()->toArray();
         if (!$friends) {
-            $res['contactsCount']        = count($contacts);
             $res['outSiteContactsCount'] = count($outSiteContacts);
             $res['onSiteContactsCount']  = count($onSiteContacts);
             $res['outSiteContacts']      = $outSiteContacts;
@@ -116,7 +116,7 @@ class Contacts extends AbstractModel
         }
 
         return array(
-            'contactsCount'        => count($contacts),
+            'contactsCount'        => count($emails),
             'outSiteContactsCount' => count($outSiteContacts),
             'onSiteContactsCount'  => count($onSiteContacts),
             'onSiteFriendsCount'   => count($onSiteFriends),
