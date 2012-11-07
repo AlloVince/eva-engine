@@ -28,6 +28,10 @@ class ContactsImport
      */
     protected $adapter = array();
     
+    protected $storage;
+    
+    protected $adapterName;
+    
     /**
      * Creates a file processing handler
      *
@@ -38,7 +42,10 @@ class ContactsImport
      */
     public function __construct($adapter = 'Google', $direction = false, $options = array())
     {
+        $this->adapterName = $adapter;
         $this->setAdapter($adapter, $direction, $options);
+        $storage = isset($options['storage']) ? $options['storage'] : 'cache';
+        $storage = $this->initStorage($storage, $options['cacheConfig']);
     }
 
     /**
@@ -88,7 +95,44 @@ class ContactsImport
         $direction = (integer) $direction;
         return $this->adapter[$direction];
     }
-    
+
+    public function initStorage($storageName, $config)
+    {
+        $storageClass = 'Contacts\Storage\\' . ucfirst(strtolower($storageName));
+        if(false === class_exists($storageClass)){
+            throw new Exception\InvalidArgumentException(sprintf('Undefined oauth storage %s', $storageName));
+        }
+        return $this->storage = new $storageClass($this->adapterName, $config);
+    }
+
+    /**
+     * Returns the persistent storage handler
+     *
+     * Session storage is used by default unless a different storage adapter has been set.
+     *
+     * @return Storage\StorageInterface
+     */
+    public function getStorage()
+    {
+        if (null === $this->storage) {
+            $this->setStorage(new Storage\Cache());
+        }
+
+        return $this->storage;
+    }
+
+    /**
+     * Sets the persistent storage handler
+     *
+     * @param  Storage\StorageInterface $storage
+     * @return AuthenticationService Provides a fluent interface
+     */
+    public function setStorage(Storage\StorageInterface $storage)
+    {
+        $this->storage = $storage;
+        return $this;
+    }
+
     /**
      * Calls all methods from the adapter
      *
@@ -103,7 +147,7 @@ class ContactsImport
         } else {
             $direction = 0;
         }
-        
+
         if (method_exists($this->adapter[$direction], $method)) {
             return call_user_func_array(array($this->adapter[$direction], $method), $options);
         }

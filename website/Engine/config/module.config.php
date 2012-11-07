@@ -111,13 +111,28 @@ return array(
                 ),
                 'priority' => 2,
             ),
-            'contacts' => array(
+            'findfriends' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/contacts[/]',
+                    'route' => '/findfriends[/]',
                     'defaults' => array(
                         'controller' => 'UserController',
                         'action' => 'contacts',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'step' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '[/][:id][/]',
+                            'constraints' => array(
+                                'id' => 'add|invite'
+                            ),
+                            'defaults' => array(
+                                'action' => 'invite'
+                            )
+                        )
                     ),
                 ),
                 'priority' => 2,

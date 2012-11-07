@@ -76,61 +76,46 @@ class UserController extends RestfulModuleController
     {
     }
 
-    public function exportAction()
+    public function inviteAction()
     {
-   /*     $user = Auth::getLoginUser();
-
-        if(isset($user['isSuperAdmin']) || !$user){
-            exit;;
-        } 
-    */    
-        $adapter = $this->getEvent()->getRouteMatch()->getParam('id');
-        $callback = $this->params()->fromQuery('r');
-        $version = (int) $this->params()->fromQuery('version');
+        $id = $this->getEvent()->getRouteMatch()->getParam('id');
+        $adapter = $this->params()->fromQuery('service');
         
+        $user = Auth::getLoginUser();
+    
+        if(isset($user['isSuperAdmin']) || !$user){
+            exit;
+        } 
+
         if(!$adapter){
-            throw new \Oauth\Exception\InvalidArgumentException(sprintf(
-                'No oauth service key found'
+            throw new \Contacts\Exception\InvalidArgumentException(sprintf(
+                'No contacts service key found'
             ));
         }
+        
+        $config = $this->getServiceLocator()->get('config');
+        $import = new \Contacts\ContactsImport($adapter, false, array(
+            'cacheConfig' => $config['cache']['contacts_import'],
+        ));
+        $contacts = $import->getStorage()->loadContacts();
 
-        $oauth = new \Oauth\OauthService();
-        $oauth->setServiceLocator($this->getServiceLocator());
-
-        try {
-            $oauth->initByAccessToken();
-            $accessTokenClass = $oauth->getAdapter()->getAccessToken();
-
-            $accessToken = $accessTokenClass->access_token;
-            $adapterKey = $accessTokenClass->adapterKey;
-            $expireTime = $accessTokenClass->expireTime;
-            
-            if ($adapterKey != $adapter) {
-                throw new \Oauth\Exception\InvalidArgumentException(sprintf(
-                    'Oauth service key not match'
-                )); 
-            }
-
-            $export = new \Contacts\ContactsExport($adapterKey, false, array(
-                'accessToken' => $accessToken,
-            ));
-
-            $contacts = $export->getContacts();
-
-        } catch (\Oauth\Exception\InvalidArgumentException $e) {
-            $config = $this->getServiceLocator()->get('config');
-            $helper = $this->getEvent()->getApplication()->getServiceManager()->get('viewhelpermanager')->get('serverurl');
-
-            $url = $helper() . $config['oauth']['request_url_path'] . '?' . http_build_query(array(
-                'r' => $callback,
-                'service' => $adapter,
-                'version' => $version
-            ));
-            return $this->redirect()->toUrl($url);
+        $itemModel = \Eva\Api::_()->getModel('Contacts\Model\Contacts');
+        $itemModel->setUser($user);
+        $itemModel->setService($adapter);
+        $contacts = $itemModel->getUserContactsInfo($contacts);
+        
+        if ($id == 'add') {
+            $count = isset($contacts['onSiteContactsCount']) ? $contacts['onSiteContactsCount'] : 0;
+            $contacts = isset($contacts['onSiteContacts']) ? $contacts['onSiteContacts'] : array();
+        } else {
+            $count = isset($contacts['outSiteContactsCount']) ? $contacts['outSiteContactsCount'] : 0;
+            $contacts = isset($contacts['outSiteContacts']) ? $contacts['outSiteContacts'] : array();
         }
-p($contacts);exit;
+
         return array(
-            'items' => $contacts,
+            'count' => $count,
+            'contacts' => $contacts,
+            'service' => $adapter,
         );
     }
 }

@@ -1,0 +1,34 @@
+<? 
+$title = $this->_('Find Friends');
+$this->headTitle($title, 'SET');
+$contacts = $this->contacts;
+$count = $this->count;
+?>
+<div class="container">
+
+	<header class="page-header">
+    <h2 class=""><?=$title?></h2>
+	</header>
+
+            <div class="well">
+
+                <header class="page-header">
+                <h4 class=""><?=$this->_("$count friends on site")?>:</h4>
+                </header>
+                
+                <?if($contacts):?> 
+                <form action="<?=$this->uri('/contacts/invite/',array('r' => '/findfriends/invite/?service=' . $this->service))?>" method="post">
+                    <?foreach($contacts as $item):?>
+                    <input name="email[]" type="checkbox" class="multiform-item-checkbox" value="<?=$item['email'] ?>" /> <?=$item['email']?>(<?=$item['name']?>) 
+                    <?endforeach;?>
+                    <input type="submit" value="Invite" />
+                </form>
+                <?endif;?>
+
+                <div class="btn-group btn-group-vertical">
+                    <a href="<?=$this->uri('/findfriends/invite/', array('service' => $this->service))?>" class="btn btn-small">Invite</a>
+                </div>
+            </div>
+
+
+</div>

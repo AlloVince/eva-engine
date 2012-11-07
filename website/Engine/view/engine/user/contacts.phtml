@@ -1,7 +1,6 @@
 <? 
 $title = $this->_('Find Friends');
 $this->headTitle($title, 'SET');
-$roleKey = $this->item['Roles'] ? $this->item['Roles'][0]['roleKey'] : null;
 ?>
 <div class="container">
 
@@ -15,8 +14,8 @@ $roleKey = $this->item['Roles'] ? $this->item['Roles'][0]['roleKey'] : null;
                 <h4 class=""><?=$this->_('Find your friends with')?>:</h4>
                 </header>
                 <div class="btn-group btn-group-vertical">
-                    <a href="<?=$this->uri('/contacts/import/', array('r' => $this->serverUrl() . '/contacts/','service' => 'google'))?>" class="btn btn-small">Gmail</a>
-                    <a href="<?=$this->uri('/contacts/import/', array('r' => $this->serverUrl() . '/contacts/', 'service' => 'msn'))?>" class="btn btn-small">Msn/Hotmail</a>
+                    <a href="<?=$this->uri('/contacts/import/', array('r' => $this->serverUrl() . '/findfriends/add/?service=google','service' => 'google'))?>" class="btn btn-small">Gmail</a>
+                    <a href="<?=$this->uri('/contacts/import/', array('r' => $this->serverUrl() . '/findfriends/add/?service=msn', 'service' => 'msn'))?>" class="btn btn-small">Msn/Hotmail</a>
                 </div>
             </div>
 

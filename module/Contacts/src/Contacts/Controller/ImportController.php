@@ -28,48 +28,36 @@ class ImportController extends AbstractActionController
         
         $config = $this->getServiceLocator()->get('config');
         $helper = $this->getEvent()->getApplication()->getServiceManager()->get('viewhelpermanager')->get('serverurl');
-        $url = $helper() . $config['contacts']['import_url_path'] . '?' . http_build_query(array(
+        $importUrl = $helper() . $config['contacts']['import_url_path'] . '?' . http_build_query(array(
             'r' => $callback,
             'service' => $adapter,
         ));
+        
+        $import = new \Contacts\ContactsImport($adapter, false, array(
+            'cacheConfig' => $config['cache']['contacts_import'],
+        ));
+        $contacts = $import->getStorage()->loadContacts();
+        
+        if ($contacts) {
+            return $this->redirect()->toUrl($callback);
+        }
 
         $oauth = new \Oauth\OauthService();
-        $oauth->setServiceLocator($this->getServiceLocator());
+        $accessTokenArray = $oauth->getStorage()->getAccessToken();
 
-        try {
-            $oauth->initByAccessToken();
-            $accessTokenClass = $oauth->getAdapter()->getAccessToken();
-
-            $accessToken = $accessTokenClass->access_token;
-            $adapterKey = $accessTokenClass->adapterKey;
-            $expireTime = $accessTokenClass->expireTime;
-
-            if ($adapterKey != $adapter) {
-                throw new \Oauth\Exception\InvalidArgumentException(sprintf(
-                    'Oauth service key not match'
-                )); 
-            }
-
-            $import = new \Contacts\ContactsImport($adapterKey, false, array(
-                'accessToken' => $accessToken,
-                'cacheConfig' => $config['cache']['contacts_import'],
-            ));
-
-            $contacts = $import->getContacts();
-         //   if (!isset($contacts[$adapter])) {
-                $contacts = $import->getUserContactsInfo($contacts);
-          //  }
-            $import->saveContacts($contacts);
-
-        } catch (\Oauth\Exception\InvalidArgumentException $e) {
+        if (!$accessTokenArray || (isset($accessTokenArray['adapterKey']) && $accessTokenArray['adapterKey'] != $adapter)) {
             $url = $helper() . $config['oauth']['request_url_path'] . '?' . http_build_query(array(
-                'r' => $callback,
+                'r' => $importUrl,
                 'service' => $adapter,
                 'version' => $version
             ));
             return $this->redirect()->toUrl($url);
         }
         
+        $import->setAccessToken($accessTokenArray['token']);
+        $contacts = $import->getContacts();
+        $import->getStorage()->saveContacts($contacts);
+
         return $this->redirect()->toUrl($callback);
     }
 }
