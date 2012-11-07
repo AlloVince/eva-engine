@@ -17,9 +17,9 @@ $count = $this->count;
                 </header>
                 
                 <?if($contacts):?> 
-                <form action="<?=$this->uri('/contacts/invite/',array('r' => '/findfriends/invite/?service=' . $this->service))?>" method="post">
+                <form action="<?=$this->uri('/contacts/invite/',array('r' => '/findfriends/invite/?service=' . $this->service, 'service' => $this->service))?>" method="post">
                     <?foreach($contacts as $item):?>
-                    <input name="email[]" type="checkbox" class="multiform-item-checkbox" value="<?=$item['email'] ?>" /> <?=$item['email']?>(<?=$item['name']?>) 
+                    <input name="email[]" type="checkbox" class="multiform-item-checkbox" value="<?=$item['email'] ?>" /> <?=$item['email']?>(<?=isset($item['name']) ? $item['name'] : null?>) 
                     <?endforeach;?>
                     <input type="submit" value="Invite" />
                 </form>
