@@ -70,12 +70,22 @@ class Contacts extends AbstractModel
         $items = $userModel->setItemList($selectQuery)->getUserList(); 
         $onSiteContacts = $items->toArray();
 
+        $res = array(
+            'contactsCount'        => 0,
+            'outSiteContactsCount' => 0,
+            'onSiteContactsCount'  => 0,
+            'onSiteFriendsCount'   => 0,
+            'outSiteContacts'      => array(),
+            'onSiteContacts'       => array(),
+            'onSiteFriends'        => array(),
+            $service => $contacts,
+        );
+
         if (!$onSiteContacts) {
-            return array(
-                'contactsCount' => count($contacts),
-                'outSiteContactsCount' => count($outSiteContacts),
-                'outSiteContacts' => $outSiteContacts,
-            );
+            $res['contactsCount']        = count($contacts);
+            $res['outSiteContactsCount'] = count($outSiteContacts);
+            $res['outSiteContacts']      = $outSiteContacts;
+            return $res;
         }
 
         $onSiteFriends = array();
@@ -90,13 +100,12 @@ class Contacts extends AbstractModel
             'follower_id' => $mine['id']
         ))->getFollowList()->toArray();
         if (!$friends) {
-            return array(
-                'contactsCount' => count($contacts),
-                'outSiteContactsCount' => count($outSiteContacts),
-                'onSiteContactsCount' => count($onSiteContacts),
-                'outSiteContacts' => $outSiteContacts,
-                'onSiteContacts' => $onSiteContacts,
-            );   
+            $res['contactsCount']        = count($contacts);
+            $res['outSiteContactsCount'] = count($outSiteContacts);
+            $res['onSiteContactsCount']  = count($onSiteContacts);
+            $res['outSiteContacts']      = $outSiteContacts;
+            $res['onSiteContacts']      = $onSiteContacts;
+            return $res;
         }
         $onSiteFriends = array();
         foreach ($friends as $friend) {
