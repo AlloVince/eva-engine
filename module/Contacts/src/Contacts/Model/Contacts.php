@@ -104,26 +104,26 @@ class Contacts extends AbstractModel
             $res['outSiteContactsCount'] = count($outSiteContacts);
             $res['onSiteContactsCount']  = count($onSiteContacts);
             $res['outSiteContacts']      = $outSiteContacts;
-            $res['onSiteContacts']      = $onSiteContacts;
+            $res['onSiteContacts']       = $onSiteContacts;
             return $res;
         }
         $onSiteFriends = array();
         foreach ($friends as $friend) {
             if (isset($onSiteContacts[$friend['user_id']])) {
-                $onSiteFriends = $onSiteContacts[$friend['user_id']];
+                $onSiteFriends[] = $onSiteContacts[$friend['user_id']];
                 unset($onSiteContacts[$friend['user_id']]);
             } 
         }
 
         return array(
-            'contactsCount' => count($contacts),
+            'contactsCount'        => count($contacts),
             'outSiteContactsCount' => count($outSiteContacts),
-            'onSiteContactsCount' => count($onSiteContacts),
-            'onSiteFriendsCount' => count($onSiteFriends),
-            'outSiteContacts' => $outSiteContacts,
-            'onSiteContacts' => $onSiteContacts,
-            'onSiteFriends' => $onSiteFriends,
-            $service => $contacts,
+            'onSiteContactsCount'  => count($onSiteContacts),
+            'onSiteFriendsCount'   => count($onSiteFriends),
+            'outSiteContacts'      => $outSiteContacts,
+            'onSiteContacts'       => $onSiteContacts,
+            'onSiteFriends'        => $onSiteFriends,
+            $service               => $contacts,
         );   
     }
 }
