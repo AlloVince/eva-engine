@@ -33,8 +33,8 @@ class AlipayEc extends AbstractAdapter
         }
         
         $logId = $this->saveRequestLog();
-        $returnUrl = $this->makeUrl($this->getCallback()); 
-        $notifyUrl = $this->makeUrl($this->getNotify()); 
+        $returnUrl = $this->makeUrl($this->getCallback(), 'response'); 
+        $notifyUrl = $this->makeUrl($this->getNotify(), 'response'); 
         
         $parameter = array(
 			"service" => $this->options['accountType'],

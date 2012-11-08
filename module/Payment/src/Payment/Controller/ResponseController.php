@@ -17,7 +17,9 @@ class ResponseController extends ActionController
         $amount = $this->params()->fromQuery('amount');
         $secretKey = $this->params()->fromQuery('secretKey');
         $requestTime = $this->params()->fromQuery('time');
-
+        $signed = $this->params()->fromQuery('signed');
+        $responseData = $this->params()->fromPost();
+        
         if(!$amount){
             throw new Exception\InvalidArgumentException(sprintf(
                 'No payment amount found'
@@ -48,24 +50,64 @@ class ResponseController extends ActionController
             ));
         }
         
+        if(!$signed){
+            throw new Exception\InvalidArgumentException(sprintf(
+                'No payment request time found'
+            ));
+        }
+        
+        if (!$this->authenticate($this->params()->fromQuery())) {
+           throw new Exception\InvalidArgumentException(sprintf(
+                'Signed not match'
+            )); 
+            return; 
+        }
+        
+        $adapter = $adapter == 'paypalec' ? 'PaypalEc' : 'AlipayEc';
+        $pay = new \Payment\Service\Payment($adapter);
+        $pay->setStep('response');
+        $pay->saveResponseLog($secretKey, $responseData);
+        
+        if($callback){
+            $this->redirect()->toUrl($callback);
+        }
+    }
+
+    public function authenticate($params)
+    {
+        $adapter     = $params['adapter'];
+        $callback    = $params['callback'];
+        $amount      = $params['amount'];
+        $secretKey   = $params['secretKey'];
+        $requestTime = $params['time'];
+        $signed      = $params['signed'];
+
+        $itemModel = \Eva\Api::_()->getModel('Payment\Model\Log');
+        $log = $itemModel->getLog($secretKey, array(
+            'self' => array(
+                '*',
+                'unserializeRequestData()',
+                'unserializeResponseData()',
+            ),
+        ));
+        
+        if (!$log) {
+            return false;
+        }
+
         $adapter = $adapter == 'paypalec' ? 'PaypalEc' : 'AlipayEc';
 
         $pay = new \Payment\Service\Payment($adapter);
         $authenticate = $pay->setAmount($amount)
             ->setRequestTime($requestTime)
-            ->getSecretKey();
-        
-        if ($authenticate != $secretKey) {
-            throw new Exception\InvalidArgumentException(sprintf(
-                'SecretKey not match'
-            )); 
-            return;
-        }
-    
-        $pay->saveResponseLog($secretKey);
+            ->setlogData($log['requestData'])
+            ->setStep('response')
+            ->getSigned();
 
-        if($callback){
-            $this->redirect()->toUrl($callback);
-        }
+        if ($authenticate !== $signed) {
+            return false;    
+        }    
+    
+        return true;
     }
 }

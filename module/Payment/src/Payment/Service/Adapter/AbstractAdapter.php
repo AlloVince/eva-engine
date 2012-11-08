@@ -33,6 +33,12 @@ abstract class AbstractAdapter
     protected $options;
     
     protected $requestTime;
+    
+    protected $logData;
+    
+    protected $step;
+    
+    protected $serverSecret = "axcftksda!bn!";
 
     public function __construct(array $options = array())
     {
@@ -129,6 +135,28 @@ abstract class AbstractAdapter
         return $this;
     }
 
+    public function getLogData()
+    {
+        return $this->logData;
+    }
+
+    public function setLogData($logData)
+    {
+        $this->logData = $logData;
+        return $this;
+    }
+
+    public function getStep()
+    {
+        return $this->step;
+    }
+
+    public function setStep($step)
+    {
+        $this->step = $step;
+        return $this;
+    }
+
     public function getCancel()
     {
         return $this->cancel;
@@ -197,9 +225,19 @@ abstract class AbstractAdapter
     public function getSecretKey()
     {
         $params = $this->getCallbackUrlParams();
+        $params['requestData'] = $this->getLogData();
         return md5(serialize($params));
     } 
-    
+
+    public function getSigned()
+    {
+        $params = $this->getCallbackUrlParams();
+        $params['requestData'] = $this->getLogData();
+        $params['step'] = $this->getStep();
+        $params['secretKey'] = $this->getSecretKey();
+        return md5(serialize($params) . $this->serverSecret);
+    }
+
     public function saveRequestLog()
     {
         $itemModel = Api::_()->getModel('Payment\Model\Log');
@@ -212,24 +250,28 @@ abstract class AbstractAdapter
         if(isset($user['isSuperAdmin'])){
         }
 
-        $logData = array(
+        $log = array(
             'amount' => $this->getAmount(),
             'logStep' => 'request',
             'service' => $this->getService(),
             'adapter' => $this->getAdapterKey(),
             'secretKey' => $this->getSecretKey(),
         );
+        
+        if ($this->getLogData()) {
+            $log['requestData'] = serialize($this->logData);
+        }
 
         if ($user) {
-            $logData['user_id'] = $user['id'];
-        } 
-
-        $logId = $itemModel->setItem($logData)->createLog(); 
+            $log['user_id'] = $user['id'];
+        }
+        
+        $logId = $itemModel->setItem($log)->createLog(); 
     
         return $logId;
    }
 
-   public function saveResponseLog($secretKey)
+   public function saveResponseLog($secretKey, $responseData = array())
     {
         $itemModel = Api::_()->getModel('Payment\Model\Log');
         
@@ -242,27 +284,38 @@ abstract class AbstractAdapter
             return;
         }
         
+        if ($log['step'] == 'response' || $log['step'] == 'cancel') {
+            return $log['id'];
+        }
+
         $userId = $log['user_id'];
-        
+
         $logData = array(
             'id' => $log['id'],
-            'logStep' => 'response',
+            'logStep' => $this->getStep(),
             'user_id' => $log['user_id'],
         );
+        
+        if ($responseData) {
+            $logData['responseData'] = serialize($responseData);
+        }
         
         $itemModel->setItem($logData)->saveLog();
         
         return $log['id'];
     }
 
-   public function makeUrl($url) 
+   public function makeUrl($url, $step) 
    {
        if (!$url) {
            return $url;
        }
+       
+       $this->setStep($step);
 
        $params = $this->getCallbackUrlParams();
        $params['secretKey'] = $this->getSecretKey();
+       $params['signed'] = $this->getsigned();
 
        return $url . "&" . http_build_query($params); 
    }

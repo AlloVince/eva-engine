@@ -31,9 +31,9 @@ class PaypalEc extends AbstractAdapter
 
         $logId = $this->saveRequestLog();
         
-        $url = $this->makeUrl($this->getCallback());
+        $url = $this->makeUrl($this->getCallback(), 'response');
         $notifyUrl = $url;
-        $cancelUrl = $this->makeUrl($this->getCancel());
+        $cancelUrl = $this->makeUrl($this->getCancel(), 'cancel');
 
         $paypal->add_field('charset', 'utf-8');
 		$paypal->add_field('business', $this->getAccount());

@@ -62,7 +62,6 @@ class Log extends AbstractModel
         }
 
         $item = $this->getItem();
-        
         $item->save();
         
         if ($item->logStep == "response") {
