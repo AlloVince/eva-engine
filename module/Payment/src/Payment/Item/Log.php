@@ -31,4 +31,18 @@ class Log extends AbstractItem
     {
         $this->responseTime = \Eva\Date\Date::getNow();
     }
+
+    public function unserializeRequestData()
+    {
+        if ($this->requestData) {
+            return $this->requestData = unserialize($this->requestData);
+        }
+    }
+
+    public function unserializeResponseData()
+    {
+        if ($this->responseData) {
+            return $this->responseData = unserialize($this->responseData);
+        }
+    }
 }

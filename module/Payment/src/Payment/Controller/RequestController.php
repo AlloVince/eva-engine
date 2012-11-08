@@ -15,6 +15,7 @@ class RequestController extends ActionController
         $adapter = $this->params()->fromQuery('adapter');
         $callback = $this->params()->fromQuery('callback');
         $amount = $this->params()->fromQuery('amount');
+        $data = $this->params()->fromQuery('data');
 
         if(!$amount){
             throw new Exception\InvalidArgumentException(sprintf(
@@ -43,17 +44,22 @@ class RequestController extends ActionController
         
         $amount = (float) $amount;
         
+        $data = array(
+            'test' => 'haha',
+            'test11' => 'haha',
+        );
+
         if (strtolower($adapter) == "paypalec") {
             $cancel = $helper() . $config['payment']['cancel_url_path'] . '?' . http_build_query(array(
                 'callback' =>$callback,
             ));
-            $this->paypal($amount, $url, $cancel);
+            $this->paypal($amount, $url, $data, $cancel);
         } else {
-            $this->alipay($amount, $url);
+            $this->alipay($amount, $url, $data);
         }
     }
 
-    public function paypal($amount, $callback, $cancel = null)
+    public function paypal($amount, $callback, $data = array(), $cancel = null)
     {
         $config = \Eva\Api::_()->getModuleConfig('Payment');
         $options = $config['payment']['paypal']; 
@@ -63,10 +69,11 @@ class RequestController extends ActionController
         return $pay->setAmount($amount)
             ->setCallback($callback)
             ->setCancel($cancel)
+            ->setLogData($data)
             ->sendRequest();
     }
 
-    public function alipay($amount, $callback)
+    public function alipay($amount, $callback, $data = array())
     {
         $config = \Eva\Api::_()->getModuleConfig('Payment');
         $options = $config['payment']['alipay']; 
@@ -79,6 +86,7 @@ class RequestController extends ActionController
             ->setOrderId($orderId)
             ->setNotify($notify)
             ->setCallback($callback)
+            ->setLogData($data)
             ->sendRequest();
 
         return $this->redirect()->toUrl($link); 
