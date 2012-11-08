@@ -799,11 +799,18 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
         $this->init();
         $this->afterInit();
 
-        /*
         if(Api::_()->getServiceManager()->has('translator')){
-            Api::_()->getServiceManager()->get('translator')->setLocale('zh');
-            \Zend\Validator\AbstractValidator::setDefaultTranslator(Api::_()->getServiceManager()->get('translator'));
+            $translator = \Zend\I18n\Translator\Translator::factory(array(
+                'locale' => Api::_()->getServiceManager()->get('translator')->getLocale(),
+                'translation_file_patterns' => array(
+                    'zf' => array(
+                        'type' => 'PhpArray',
+                        'base_dir' => EVA_LIB_PATH . '/Zend/resources/languages/',
+                        'pattern' => '%s/Zend_Validate.php'
+                    ),
+                ),
+            ));
+            \Zend\Validator\AbstractValidator::setDefaultTranslator($translator);
         }
-        */
     }
 }

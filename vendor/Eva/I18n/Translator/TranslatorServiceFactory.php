@@ -35,6 +35,9 @@ class TranslatorServiceFactory implements FactoryInterface
         if(isset($config['translator']['locale'])){
             $translator->setFallbackLocale($config['translator']['locale']);
         }
+
+        //\Zend\Validator\AbstractValidator::setDefaultTranslator($translator);
+
         return $translator;
     }
 }
