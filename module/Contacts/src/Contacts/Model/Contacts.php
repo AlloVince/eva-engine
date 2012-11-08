@@ -215,7 +215,7 @@ class Contacts extends AbstractModel
         $onSiteContacts = $onSiteFriends; 
 
         $itemModel = Api::_()->getModel('Activity\Model\Follow');
-        $friends = $itemModel->setUserList($items)->setItemList(array(
+        $friends = $itemModel->setItemList(array(
             'follower_id' => $mine['id']
         ))->getFollowList()->toArray();
         if (!$friends) {
