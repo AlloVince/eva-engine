@@ -207,6 +207,29 @@ class Contacts extends AbstractModel
         if (!$onSiteContacts) {
             return $res;
         }
+        
+        $onSiteFriends = array();
+        foreach ($onSiteContacts as $key=>$user) {
+            $onSiteFriends[$user['id']] = $user;
+        }
+        $onSiteContacts = $onSiteFriends; 
+
+        $itemModel = Api::_()->getModel('Activity\Model\Follow');
+        $friends = $itemModel->setUserList($items)->setItemList(array(
+            'follower_id' => $mine['id']
+        ))->getFollowList()->toArray();
+        if (!$friends) {
+            $res['onSiteContactsCount']  = count($onSiteContacts);
+            $res['onSiteContacts']       = $onSiteContacts;
+            return $res;
+        }
+        $onSiteFriends = array();
+        foreach ($friends as $friend) {
+            if (isset($onSiteContacts[$friend['user_id']])) {
+                $onSiteFriends[] = $onSiteContacts[$friend['user_id']];
+                unset($onSiteContacts[$friend['user_id']]);
+            } 
+        }
 
         $res['onSiteContactsCount']  = count($onSiteContacts);
         $res['onSiteContacts']       = $onSiteContacts;
@@ -237,7 +260,7 @@ class Contacts extends AbstractModel
         $inString = strrev(substr(strrev($inString), 2));
         $inString .= ')';
         $selectString = "SELECT `$table`.* FROM `$table` WHERE LOWER(SHA2(LOWER(CONCAT(`$table`.`email`, '$msnConsumerKey')), 256)) $inString LIMIT 1000";
-        
+
         return $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE)->toArray();
     }
 }
