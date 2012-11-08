@@ -196,7 +196,6 @@ class Contacts extends AbstractModel
 
         $res['contactsCount'] = count($emails);
 
-        $emails = array('8f94893970aa2d9e6c02bea9b6036b5059ea320d','dasd');
         $selectQuery = array(
             'emailMsnHashes' => $emails,
             'msnConsumerKey' => $config['oauth']['oauth2']['msn']['consumer_key'],
