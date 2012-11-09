@@ -40,7 +40,7 @@ class Module
     public function language($e)
     {
         $cookie = $e->getRequest()->getHeaders()->get('cookie');
-        $language = $cookie->lang;
+        $language = isset($cookie->lang) ? $cookie->lang : '';
         $config = $e->getApplication()->getConfig();
         if(!$language){
             if(isset($config['translator']['auto_switch']) && $config['translator']['auto_switch']){
