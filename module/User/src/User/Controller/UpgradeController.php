@@ -26,7 +26,8 @@ class UpgradeController extends ActionController
         $adapter = $this->params()->fromQuery('adapter');
         $callback = $this->params()->fromQuery('callback');
         $plan = $this->params()->fromQuery('plan');
-       
+        $plan = strtolower($plan);
+
         $config = \Eva\Api::_()->getModuleConfig('User');
         
         if(!isset($config['upgrade']['plans'][$plan])){
