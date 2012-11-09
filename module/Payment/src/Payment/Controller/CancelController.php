@@ -65,6 +65,7 @@ class CancelController extends ActionController
         
         $adapter = $adapter == 'paypalec' ? 'PaypalEc' : 'AlipayEc';
         $pay = new \Payment\Service\Payment($adapter);
+        $pay->setServiceLocator($this->getServiceLocator());
         $pay->setStep('cancel');
         $pay->saveResponseLog($secretKey, $responseData);
         
@@ -98,6 +99,7 @@ class CancelController extends ActionController
         $adapter = $adapter == 'paypalec' ? 'PaypalEc' : 'AlipayEc';
 
         $pay = new \Payment\Service\Payment($adapter);
+        $pay->setServiceLocator($this->getServiceLocator());
         $authenticate = $pay->setAmount($amount)
             ->setRequestTime($requestTime)
             ->setlogData($log['requestData'])

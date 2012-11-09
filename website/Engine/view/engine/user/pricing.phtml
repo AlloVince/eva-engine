@@ -23,8 +23,8 @@ $roleKey = $this->item['Roles'] ? $this->item['Roles'][0]['roleKey'] : null;
                 <h4 class=""><?=$this->_('Pay 1 update to Professional')?></h4>
                 </header>
                 <div class="btn-group btn-group-vertical">
-                    <a href="<?=$this->uri('/payment/request/', array('callback' => $this->serverUrl() . '/pricing/', 'adapter' => 'paypalec', 'amount' => 1))?>" class="btn btn-small">Payapl</a>
-                    <a href="<?=$this->uri('/payment/request/', array('callback' => $this->serverUrl() . '/pricing/', 'adapter' => 'alipayec', 'amount' => 1))?>" class="btn btn-small">Alipay</a>
+                    <a href="<?=$this->uri('/user/upgrade/', array('callback' => $this->serverUrl() . '/pricing/', 'adapter' => 'paypalec', 'plan' => 'small'))?>" class="btn btn-small">Payapl</a>
+                    <a href="<?=$this->uri('/user/upgrade/', array('callback' => $this->serverUrl() . '/pricing/', 'adapter' => 'alipayec', 'plan' => 'small'))?>" class="btn btn-small">Alipay</a>
                 </div>
                 <?endif;?>
             </div>

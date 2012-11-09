@@ -1,8 +1,10 @@
 <?php
 return array(
     'payment' => array(
-        'return_url_path' => '/payment/response',
-        'cancel_url_path' => '/payment/cancel',
+        'request_url_path' => '/payment/request',
+        'return_url_path'  => '/payment/response',
+        'cancel_url_path'  => '/payment/cancel',
+        'paymentSecretKey' => '',
     ),
     'view_manager' => array(
         'template_map' => array(

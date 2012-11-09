@@ -60,14 +60,11 @@ class Listener implements ListenerAggregateInterface
     public function onPaymentLogstepResponse($e)
     {
         $userId = $e->getTarget()->getItem()->user_id;
+        $data = $e->getTarget()->getItem()->unserializeRequestData();
         
-        if ($userId) {
-            $roleData['user_id'] = $userId;
-            $roleData['role_id'] = 2;
-            $roleData['status']  = 'active';
-            
+        if ($userId && isset($data['roleKey']) && isset($data['days'])) {
             $itemModel = \Eva\Api::_()->getModel('User\Model\RoleUser');
-            $itemModel->setItem($roleData)->createRoleUser();
+            $itemModel->upgradeRoleUser($userId, $data['roleKey'], $data['days']);
         } 
         
     }

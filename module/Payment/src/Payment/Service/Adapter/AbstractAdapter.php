@@ -5,6 +5,8 @@ namespace Payment\Service\Adapter;
 use Payment\Service\Exception;
 use Eva\Api;
 use Core\Auth;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 abstract class AbstractAdapter
 {
@@ -37,8 +39,32 @@ abstract class AbstractAdapter
     protected $logData;
     
     protected $step;
+
+    protected $serverSecret;
+
+    protected $serviceLocator;
+
+    public function getServerSecret()
+    {
+        if (!$this->serverSecret) {
+            $serviceLocator = $this->getServiceLocator();
+            $config = $serviceLocator->get('config');
+            $this->serverSecret = $config['payment']['paymentSecretKey'];
+        }
+        
+        return $this->serverSecret;
+    }
     
-    protected $serverSecret = "axcftksda!bn!";
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+        return $this;
+    }
+
+    public function getServiceLocator()
+    {
+        return $this->serviceLocator;
+    }
 
     public function __construct(array $options = array())
     {
@@ -46,23 +72,23 @@ abstract class AbstractAdapter
             $this->setOptions($options);
         }
     }
-    
+
     public function getSandbox()
     {
         return $this->sandbox;
     }
-    
+
     public function setSandbox($sandbox)
     {
         $this->sandbox = $sandbox;
         return $this; 
     }
-    
+
     public function getService()
     {
         return $this->service;
     }
-    
+
     public function setService($service)
     {
         $this->service = $service;
@@ -73,7 +99,7 @@ abstract class AbstractAdapter
     {
         return $this->amount;
     }
-    
+
     public function setAmount($amount)
     {
         $this->amount = (float) $amount;
@@ -208,7 +234,7 @@ abstract class AbstractAdapter
         if ($this->requestTime) {
             return $this->requestTime;
         }
-    
+
         return $this->requestTime = (int) time();
     }
 
@@ -235,13 +261,13 @@ abstract class AbstractAdapter
         $params['requestData'] = $this->getLogData();
         $params['step'] = $this->getStep();
         $params['secretKey'] = $this->getSecretKey();
-        return md5(serialize($params) . $this->serverSecret);
+        return md5(serialize($params) . $this->getServerSecret());
     }
 
     public function saveRequestLog()
     {
         $itemModel = Api::_()->getModel('Payment\Model\Log');
-        
+
         $user = Auth::getLoginUser();
 
         if (!$user) {
@@ -257,7 +283,7 @@ abstract class AbstractAdapter
             'adapter' => $this->getAdapterKey(),
             'secretKey' => $this->getSecretKey(),
         );
-        
+
         if ($this->getLogData()) {
             $log['requestData'] = serialize($this->logData);
         }
@@ -265,16 +291,16 @@ abstract class AbstractAdapter
         if ($user) {
             $log['user_id'] = $user['id'];
         }
-        
-        $logId = $itemModel->setItem($log)->createLog(); 
-    
-        return $logId;
-   }
 
-   public function saveResponseLog($secretKey, $responseData = array())
+        $logId = $itemModel->setItem($log)->createLog(); 
+
+        return $logId;
+    }
+
+    public function saveResponseLog($secretKey, $responseData = array())
     {
         $itemModel = Api::_()->getModel('Payment\Model\Log');
-        
+
         $log = $itemModel->getLog($secretKey);
 
         if(!$log){
@@ -283,69 +309,64 @@ abstract class AbstractAdapter
             ));
             return;
         }
-        
-        if ($log['step'] == 'response' || $log['step'] == 'cancel') {
+
+        if ($log['logStep'] == 'response' || $log['logStep'] == 'cancel') {
             return $log['id'];
         }
 
         $userId = $log['user_id'];
 
-        $logData = array(
-            'id' => $log['id'],
-            'logStep' => $this->getStep(),
-            'user_id' => $log['user_id'],
-        );
-        
+        $log['logStep'] = $this->getStep();
         if ($responseData) {
-            $logData['responseData'] = serialize($responseData);
+            $log['responseData'] = serialize($responseData);
         }
-        
-        $itemModel->setItem($logData)->saveLog();
-        
+
+        $itemModel->setItem($log)->saveLog();
+
         return $log['id'];
     }
 
-   public function makeUrl($url, $step) 
-   {
-       if (!$url) {
-           return $url;
-       }
-       
-       $this->setStep($step);
+    public function makeUrl($url, $step) 
+    {
+        if (!$url) {
+            return $url;
+        }
 
-       $params = $this->getCallbackUrlParams();
-       $params['secretKey'] = $this->getSecretKey();
-       $params['signed'] = $this->getsigned();
+        $this->setStep($step);
 
-       return $url . "&" . http_build_query($params); 
-   }
+        $params = $this->getCallbackUrlParams();
+        $params['secretKey'] = $this->getSecretKey();
+        $params['signed'] = $this->getsigned();
 
-   public function setOptions(array $options = array())
-   {
-       if(!$options['account']){
-           throw new Exception\InvalidArgumentException(sprintf('No account found in %s', get_class($this)));
-       }
+        return $url . "&" . http_build_query($params); 
+    }
 
-       $this->setSandbox($options['sandbox'])
-           ->setOrderTitle($options['orderTitle'])
-           ->setAccount($options['account']);
+    public function setOptions(array $options = array())
+    {
+        if(!$options['account']){
+            throw new Exception\InvalidArgumentException(sprintf('No account found in %s', get_class($this)));
+        }
 
-       if (isset($options['consumerKey'])) {
-           $this->setConsumerKey($options['consumerKey']);
-       }
+        $this->setSandbox($options['sandbox'])
+            ->setOrderTitle($options['orderTitle'])
+            ->setAccount($options['account']);
 
-       if (isset($options['consumerSecret'])) {
-           $this->setConsumerSecret($options['consumerSecret']);
-       }
+        if (isset($options['consumerKey'])) {
+            $this->setConsumerKey($options['consumerKey']);
+        }
 
-       $this->options = $options;
-       return $this;
-   }
+        if (isset($options['consumerSecret'])) {
+            $this->setConsumerSecret($options['consumerSecret']);
+        }
 
-   public function getOptions()
-   {
-       return $this->options;
-   }
+        $this->options = $options;
+        return $this;
+    }
+
+    public function getOptions()
+    {
+        return $this->options;
+    }
 
 
 }

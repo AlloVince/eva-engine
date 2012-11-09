@@ -52,7 +52,7 @@ class ResponseController extends ActionController
         
         if(!$signed){
             throw new Exception\InvalidArgumentException(sprintf(
-                'No payment request time found'
+                'No payment signed time found'
             ));
         }
         
@@ -65,6 +65,7 @@ class ResponseController extends ActionController
         
         $adapter = $adapter == 'paypalec' ? 'PaypalEc' : 'AlipayEc';
         $pay = new \Payment\Service\Payment($adapter);
+        $pay->setServiceLocator($this->getServiceLocator());
         $pay->setStep('response');
         $pay->saveResponseLog($secretKey, $responseData);
         
@@ -98,6 +99,7 @@ class ResponseController extends ActionController
         $adapter = $adapter == 'paypalec' ? 'PaypalEc' : 'AlipayEc';
 
         $pay = new \Payment\Service\Payment($adapter);
+        $pay->setServiceLocator($this->getServiceLocator());
         $authenticate = $pay->setAmount($amount)
             ->setRequestTime($requestTime)
             ->setlogData($log['requestData'])
