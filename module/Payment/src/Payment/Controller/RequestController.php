@@ -107,7 +107,7 @@ class RequestController extends ActionController
         }
         $link = $pay->setAmount($amount)
             ->setOrderId($orderId)
-            ->setNotify($notify)
+    //        ->setNotify($notify)
             ->setCallback($callback)
             ->setLogData($data)
             ->sendRequest();
