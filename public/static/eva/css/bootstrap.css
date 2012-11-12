@@ -814,3 +814,6 @@ a.label:hover,a.badge:hover{color:#ffffff;text-decoration:none;cursor:pointer;}
 .visible-desktop{display:inherit !important;}
 @media (min-width:768px) and (max-width:979px){.hidden-desktop{display:inherit !important;} .visible-desktop{display:none !important ;} .visible-tablet{display:inherit !important;} .hidden-tablet{display:none !important;}}@media (max-width:767px){.hidden-desktop{display:inherit !important;} .visible-desktop{display:none !important;} .visible-phone{display:inherit !important;} .hidden-phone{display:none !important;}}.dropdown-menu{min-width:80px;}
 .caret,.dropdown .caret{vertical-align:middle;}
+.btn .caret{margin-top:0;}
+.navbar .nav{line-height:30px;}
+.navbar .divider-vertical{height:50px;}
