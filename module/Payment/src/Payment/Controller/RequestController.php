@@ -93,8 +93,13 @@ class RequestController extends ActionController
         $options = $config['payment']['alipay']; 
 
         $orderId = time();
-        $notify = $callback;
-
+        
+        $config = $this->getServiceLocator()->get('config');
+        $helper = $this->getEvent()->getApplication()->getServiceManager()->get('viewhelpermanager')->get('serverurl');
+        $notify = $helper() . $config['payment']['return_url_path'] . '?' . http_build_query(array(
+            'callback' => 'notify',
+        ));
+        
         $pay = new \Payment\Service\Payment('AlipayEc', false, $options);
         $pay->setServiceLocator($this->getServiceLocator());
         if (isset($data['title'])) {
@@ -102,7 +107,7 @@ class RequestController extends ActionController
         }
         $link = $pay->setAmount($amount)
             ->setOrderId($orderId)
-            ->setNotify($notify)
+    //        ->setNotify($notify)
             ->setCallback($callback)
             ->setLogData($data)
             ->sendRequest();
@@ -143,3 +148,4 @@ class RequestController extends ActionController
         return true;
     }
 }
+        //notify url 

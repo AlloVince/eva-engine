@@ -68,9 +68,13 @@ class ResponseController extends ActionController
         $pay->setServiceLocator($this->getServiceLocator());
         $pay->setStep('response');
         $pay->saveResponseLog($secretKey, $responseData);
-        
+
+        if ($callback == 'notify') {
+            return;
+        }
+
         if($callback){
-            $this->redirect()->toUrl($callback);
+            return $this->redirect()->toUrl($callback);
         }
     }
 
