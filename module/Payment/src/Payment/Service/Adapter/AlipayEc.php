@@ -33,9 +33,12 @@ class AlipayEc extends AbstractAdapter
         }
         
         $logId = $this->saveRequestLog();
+     /*
         $returnUrl = $this->makeUrl($this->getCallback(), 'response'); 
         $notifyUrl = $this->makeUrl($this->getNotify(), 'response'); 
-        
+      */ 
+        $returnUrl = $this->getCallback();
+        $notifyUrl = $this->getNotify();
         $parameter = array(
 			"service" => $this->options['accountType'],
 			"partner" => $this->getConsumerKey(),            
@@ -44,7 +47,8 @@ class AlipayEc extends AbstractAdapter
 			"_input_charset" => 'utf-8',
 			"subject" => $this->getOrderTitle(),                                         
 			"body" => $this->getOrderTitle(),                                         
-			"out_trade_no" => $this->getOrderId(),                      
+		//	"out_trade_no" => $this->getOrderId(),                      
+			"out_trade_no" => $this->getSecretKey(),
 			"logistics_fee"=>'0.00',             
 			"logistics_payment"=>'BUYER_PAY',             
 			"logistics_type"=>'EXPRESS',    		
@@ -53,12 +57,52 @@ class AlipayEc extends AbstractAdapter
 			"quantity" => "1",                 
 			"seller_email" => $this->getAccount()             
 		);
-        
+
+        /*
         include (EVA_ROOT_PATH . '/module/Payment/src/Payment/Service/Vendor/alipay_service.php');
         
         $alipay = new \Payment\Service\Vendor\alipay_service();
         $alipay->alipay_service($parameter,$this->getConsumerSecret(),"MD5");
+        
+        return $link = $alipay->create_url(); */
+        
+        include (EVA_ROOT_PATH . '/module/Payment/src/Payment/Service/Vendor/alipay_service.class.php');
 
-        return $link = $alipay->create_url(); 
+        $config = $this->getAlipayConfig();
+
+        $alipayService = new \Payment\Service\Vendor\AlipayService($config);
+        $html_text = $alipayService->create_partner_trade_by_buyer($parameter);
+        echo $html_text;
+    }
+    
+    public function verify()
+    {
+        $config = $this->getAlipayConfig();
+        include (EVA_ROOT_PATH . '/module/Payment/src/Payment/Service/Vendor/alipay_notify.class.php');
+        $alipayNotify = new \Payment\Service\Vendor\AlipayNotify($config);
+
+        if ($method == "notify") {
+            unset($_POST['callback']);
+            $verify_result = $alipayNotify->verifyNotify();
+        } else {
+            unset($_GET['callback']);
+            $verify_result = $alipayNotify->verifyReturn();
+        }
+    
+        return $verify_result;
+    }
+
+    public function getAlipayConfig()
+    {
+        return array(
+            'partner'       => $this->getConsumerKey(),
+            'key'           => $this->getConsumerSecret(),
+            'seller_email'  => $this->getAccount(),
+            'return_url'    => $this->getCallback(),
+            'notify_url'    => $this->getNotify(),
+            'sign_type'     => 'MD5',
+            'input_charset' => 'utf-8',
+            'transport'     => 'http',
+        );   
     }
 }

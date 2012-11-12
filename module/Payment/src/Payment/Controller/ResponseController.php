@@ -18,14 +18,22 @@ class ResponseController extends ActionController
         $secretKey = $this->params()->fromQuery('secretKey');
         $requestTime = $this->params()->fromQuery('time');
         $signed = $this->params()->fromQuery('signed');
-        $responseData = $this->params()->fromPost();
         
+        $responseData = $this->params()->fromQuery();
+        if (!$responseData) {
+            $responseData = $this->params()->fromPost();
+        }
+
+        if (isset($responseData['notify_id']) && isset($responseData['trade_status'])) {
+            return $this->alipayResponse();
+        }
+
         if(!$amount){
             throw new Exception\InvalidArgumentException(sprintf(
                 'No payment amount found'
             ));
         }
-        
+
         if(!$adapter){
             throw new Exception\InvalidArgumentException(sprintf(
                 'No payment adapter key found'
@@ -37,32 +45,32 @@ class ResponseController extends ActionController
                 'No payment callback found'
             ));
         }
-        
+
         if(!$secretKey){
             throw new Exception\InvalidArgumentException(sprintf(
                 'No payment secretKey found'
             ));
         }
-        
+
         if(!$requestTime){
             throw new Exception\InvalidArgumentException(sprintf(
                 'No payment request time found'
             ));
         }
-        
+
         if(!$signed){
             throw new Exception\InvalidArgumentException(sprintf(
                 'No payment signed time found'
             ));
         }
-        
+
         if (!$this->authenticate($this->params()->fromQuery())) {
-           throw new Exception\InvalidArgumentException(sprintf(
+            throw new Exception\InvalidArgumentException(sprintf(
                 'Signed not match'
             )); 
             return; 
         }
-        
+
         $adapter = $adapter == 'paypalec' ? 'PaypalEc' : 'AlipayEc';
         $pay = new \Payment\Service\Payment($adapter);
         $pay->setServiceLocator($this->getServiceLocator());
@@ -115,5 +123,34 @@ class ResponseController extends ActionController
         }    
     
         return true;
+    }
+
+    public function alipayResponse()
+    {
+        $callback = $this->params()->fromQuery('callback');
+        $responseData = $this->params()->fromQuery();
+        
+        if (!isset($responseData['notify_id'])) {
+            $responseData = $this->params()->fromPost();
+            $method = 'notify';
+        }
+
+        $config = \Eva\Api::_()->getModuleConfig('Payment');
+        $options = $config['payment']['alipay'];         
+        $pay = new \Payment\Service\Payment('AlipayEc', false ,$options);
+        $verify_result = $pay->verify();
+
+        if ($verify_result) {
+            $pay->setStep('response');
+            $pay->saveResponseLog($responseData['out_trade_no'], $responseData); 
+        }
+    
+        if ($callback == 'notify') {
+            return;
+        }
+
+        if($callback){
+            return $this->redirect()->toUrl($callback);
+        }
     }
 }
