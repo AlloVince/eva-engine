@@ -54,5 +54,43 @@ class UserSearchForm extends UserForm
                 'value' => '',
             ),
         ),
+        'city' => array(
+            'name' => 'city',
+            'type' => 'text',
+            'options' => array(
+                'empty_option' => 'Select City'
+            ),
+            'attributes' => array(
+                'value' => '',
+            ),
+        ),
+        'country' => array(
+            'name' => 'country',
+            'type' => 'select',
+            'callback' => 'getCountries',
+            'options' => array(
+                'empty_option' => 'Select Country'
+            ),
+            'attributes' => array(
+                'value' => '',
+            ),
+        ),
+        'industry' => array(
+            'name' => 'industry',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Industry',
+            ),
+        ),
     );
+
+
+    public function getCountries($element)
+    {
+        $translator = \Eva\Api::_()->getServiceManager()->get('translator');
+        $locale = $translator->getLocale();
+        $countries = \Eva\Locale\Data::getList($locale, 'territory');
+        $element['options']['value_options'] = $countries;
+        return $element;
+    }
 }
