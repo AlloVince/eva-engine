@@ -94,7 +94,11 @@ class Mail
     public function __construct(array $config = array())
     {
         $defaultConfig = array(
-            'transports' => array('file'),
+            'transports' => array(
+                'smtp'     => false,
+                'sendmail' => false,
+                'file'     => true,
+            ),
             'message' => array(
             ),
             'di' => array(
@@ -204,8 +208,8 @@ class Mail
                             'name'              => 'sendgrid',
                             'host'              => 'smtp.sendgrid.net',
                             'port' => 25,
-                            'connection_class'  => 'login',
-                            'connection_config' => array(
+                            'connectionClass'  => 'login',
+                            'connectionConfig' => array(
                                 'username' => 'username',
                                 'password' => 'password',
                             ),
@@ -257,7 +261,10 @@ class Mail
         } elseif(is_array($config['transports'])){
             //$transports = array();
             $transportTypes = $config['transports'];
-            foreach($transportTypes as $transportType) {
+            foreach($transportTypes as $transportType => $value) {
+                if (!$value) {
+                    continue;
+                }
                 $transportClass = isset($allowTransports[$transportType]) ? $allowTransports[$transportType] : null;
                 if(!$transportClass){
                     throw new Exception\InvalidArgumentException(sprintf(

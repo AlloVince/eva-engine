@@ -31,9 +31,9 @@ class InviteController extends AbstractActionController
         $inviteModel->setUser($user);
         $inviteModel->setRegUrl($url);
         
+        $params['emails'] = $emails;
+        $inviteModel->sendInvite($params);
         foreach ($emails as $email) {
-            $params['to'] = array('email' => $email);
-            $inviteModel->sendInvite($params);
             $this->removeContacts($service, $email);
         }
 
@@ -45,7 +45,7 @@ class InviteController extends AbstractActionController
         if (!$adapter || !$email) {
             return false;
         }
-        
+
         $config = $this->getServiceLocator()->get('config');
         $import = new \Contacts\ContactsImport($adapter, false, array(
             'cacheConfig' => $config['cache']['contacts_import'],

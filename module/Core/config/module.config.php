@@ -96,15 +96,19 @@ return array(
     ),
 
     'mail' => array(
-        'transports' => array('sendmail'),
+       'transports' => array(
+            'smtp'     => false,
+            'sendmail' => true,
+            'file'     => false,
+        ),
         'di' => array('instance' => array(
             'Zend\Mail\Transport\SmtpOptions' => array(
                 'parameters' => array(
                     'name'              => 'sendgrid',
                     'host'              => 'smtp.sendgrid.net',
                     'port' => 25,
-                    'connection_class'  => 'smtp',
-                    'connection_config' => array(
+                    'connectionClass'  => 'login',
+                    'connectionConfig' => array(
                         'username' => 'sendgridusername',
                         'password' => 'sendgridpassword',
                     ),

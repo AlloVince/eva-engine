@@ -49,9 +49,9 @@ class Invite extends AbstractModel
 
     public function sendInvite($params = array())
     {
-        $to = $params['to'];
+        $emails = $params['emails'];
         
-        if (!$to) {
+        if (!$emails) {
             return array();
         }
 
@@ -67,10 +67,13 @@ class Invite extends AbstractModel
         $subject = isset($params['subject']) ? $params['subject'] : $this->getSubject();
 
         $message = new Message();
-
-        $message->setSubject($subject);
         $message->addFrom($mine['email'], $mine['userName']);
-        $message->addTo($to['email']);
+
+        foreach ($emails as $email) {
+            $message->addBcc($email);
+        }
+        
+        $message->setSubject($subject);
         $message->setBody($body);
 
         $mail = new Mail();
