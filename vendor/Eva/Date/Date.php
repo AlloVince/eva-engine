@@ -36,4 +36,24 @@ class Date
             return gmdate($format, strtotime($startDay) + $seconds);
         }    
     }
+
+    /**
+     * Get a certain date in past by input seconds
+     *
+     * @access public
+     * @param int $seconds  seconds int
+     * @param string $startDate  datetime string
+     * @param string $format date format
+     *
+     * @return string date format
+     */
+    public static function getBefore($seconds = 0, $startDay = null, $format = 'Y-m-d', $timezone = 0)
+    {
+		date_default_timezone_set('UTC');
+        if (!$startDay) {
+            return gmdate($format, time() - $seconds + $timezone * 3600);
+        } else {
+			return gmdate($format, strtotime($startDay) - $seconds);
+		}
+    }
 }
