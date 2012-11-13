@@ -41,7 +41,7 @@ class Contacts extends AbstractModel
         
         $service = $this->service;   
         
-        if ($service = 'msn') {
+        if ($service == 'msn') {
             return $this->getUserMsnContactsInfo($contacts);
         }
         
