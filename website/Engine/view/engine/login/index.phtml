@@ -21,10 +21,10 @@ $form
 
     <div class="row">
         <div class="span8">
-            <header class="page-header">
+            <header class="typo page-header">
             <h2 class=""><?=$title?></h2>
             </header>
-            <form <?=$this->formAttr($form)?> class="form-horizontal">
+            <form <?=$this->formAttr($form)?> class="form form-horizontal">
                 <?=$form->restful();?>
                 <div class="control-group <?=$form->isError('loginName') ? 'error' : '';?>">
                     <?=$form->helper('loginName', 'label', array('class' => 'control-label'))?>
@@ -46,7 +46,7 @@ $form
                     </div>
                 </div>
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-info btn-large"><?=$this->_('Login');?></button>
+                    <button type="submit" class="btn btn-info btn-large"><?=$this->_('Login');?></button> or <a href="<?=$this->uri('/reset/')?>">Reset Password</a>
                 </div>
 
             </form>

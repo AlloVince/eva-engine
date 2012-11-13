@@ -24,4 +24,11 @@ class Text extends AbstractItem
             return $this->ContentHtml = $markdown->transform($this->content);
         }
     }
+
+    public function getPreview()
+    {
+        if(!$this->Preview) {
+            return $this->Preview = strip_tags($this->content);
+        }
+    }
 }

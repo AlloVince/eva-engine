@@ -35,7 +35,8 @@ class BlogController extends RestfulModuleController
             'join' => array(
                 'Text' => array(
                     'self' => array(
-                        '*'
+                        '*',
+                        'getPreview()',
                     )
                 ),
             )
