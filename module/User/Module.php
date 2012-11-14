@@ -62,7 +62,7 @@ class Module
             return true;
         }
 
-        $user = Auth::getLoginUser();
+        $user = Auth::getLoginUser('Auth_Admin');
         if(isset($user['isSuperAdmin'])){
             return true;
         }

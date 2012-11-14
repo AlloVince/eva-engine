@@ -5,6 +5,7 @@ return array(
             'repeat_password' => 1,
             'screen_name' => 1,
             'display_invite' => 1,
+            'default_role' => 'USER',
         ),
         'invite' => array(
             'invite_by' => 'link', // code | link

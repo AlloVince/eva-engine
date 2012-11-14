@@ -100,7 +100,7 @@ class Module
             return;
         }
 
-        $auth = new Auth('Config', 'Session');
+        $auth = new Auth('Config', 'Session', 'Auth_Admin');
         $isAuthed = $auth->getAuthStorage()->read();
         if(!$isAuthed){
             $application = $e->getApplication();

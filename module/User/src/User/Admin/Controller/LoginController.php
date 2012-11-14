@@ -27,7 +27,7 @@ class LoginController extends RestfulModuleController
             $item = $form->getData();
 
             if($item['isSuperAdmin']){
-                $auth = new Auth('Config', 'Session');
+                $auth = new Auth('Config', 'Session', 'Auth_Admin');
                 $authResult = $auth->authenticate(array(
                     'username' => $item['loginName'],
                     'password' => $item['inputPassword'],

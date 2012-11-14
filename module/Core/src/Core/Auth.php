@@ -36,6 +36,7 @@ class Auth
     protected $authResult;
 
     protected $authStorage;
+    protected $authStorageNamespace;
 
     protected $adapterClass;
     protected $storageClass;
@@ -54,12 +55,13 @@ class Auth
         'Session' => 'Zend\Authentication\Storage\Session'
     );
 
-    public static function factory()
+    public static function factory($namespace = null)
     {
         $config = Api::_()->getConfig();
         if(isset($config['authentication']['default_adapter']) && $config['authentication']['default_adapter']
             && isset($config['authentication']['default_storage']) && $config['authentication']['default_storage']) {
-                return new static($config['authentication']['default_adapter'], $config['authentication']['default_storage']);
+                return $namespace ? new static($config['authentication']['default_adapter'], $config['authentication']['default_storage'], $namespace)
+                    : new static($config['authentication']['default_adapter'], $config['authentication']['default_storage']);
         }
 
         throw new Exception\InvalidConfigException(sprintf(
@@ -67,9 +69,9 @@ class Auth
         ));
     }
 
-    public static function getLoginUser()
+    public static function getLoginUser($namespace = null)
     {
-        $auth = self::factory();
+        $auth = self::factory($namespace);
         $user = $auth->getAuthStorage()->read();
         if(!$user){
             return false;
@@ -149,6 +151,17 @@ class Auth
         return $this;
     }
 
+    public function setAuthStorageNamespace($namespace)
+    {
+        $this->authStorageNamespace = $namespace;
+        return $this;
+    }
+
+    public function getAuthStorageNamespace()
+    {
+        return $this->authStorageNamespace;
+    }
+
     public function setDiConfig(DiConfig $diConfig)
     {
         $this->diConfig = $diConfig;
@@ -176,7 +189,7 @@ class Auth
         return $authService->getAdapter()->authenticate();
     }
 
-    public function __construct($adapterName = null, $storageName = null)
+    public function __construct($adapterName = null, $storageName = null, $namespace = self::STORAGE_NAMESPACE)
     {
         $adapterClass = 'Zend\Authentication\Adapter\DbTable';
         if($adapterName){
@@ -200,6 +213,8 @@ class Auth
         }
         $this->storageClass = $storageClass;
 
+        $this->authStorageNamespace = $namespace;
+
         $this->diConfig = array('instance' => array(
             'Zend\Authentication\AuthenticationService' => array(
                 'parameters' => array(
@@ -218,7 +233,7 @@ class Auth
             default:
             $diConfig['instance']['Zend\Authentication\Storage\Session'] = array(
                 'parameters' => array(
-                    'namespace'  => self::STORAGE_NAMESPACE,
+                    'namespace'  => $this->getAuthStorageNamespace(),
                 ),
             );
         }

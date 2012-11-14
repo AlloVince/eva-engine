@@ -13,7 +13,7 @@ class LogoutController extends ActionController
         $model = new ViewModel();
         $this->layout('layout/adminblank');
         $model->setTemplate('core/index');
-        $auth = new Auth('Config', 'Session');
+        $auth = new Auth('Config', 'Session', 'Auth_Admin');
         $auth->getAuthStorage()->clear();
         return $this->redirect()->toUrl('/admin/');
     }

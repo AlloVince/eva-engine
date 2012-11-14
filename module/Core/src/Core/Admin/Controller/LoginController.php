@@ -31,7 +31,7 @@ class LoginController extends ActionController
             return $viewVariables;
         }
 
-        $auth = new Auth('Config', 'Session');
+        $auth = new Auth('Config', 'Session', 'Auth_Admin');
         $authResult = $auth->authenticate(array(
             'username' => $item['loginName'],
             'password' => $item['inputPassword'],
