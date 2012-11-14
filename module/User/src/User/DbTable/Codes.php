@@ -9,6 +9,9 @@ class Codes extends TableGateway
 {
     protected $tableName ='codes';
     protected $primaryKey = 'id';
+    protected $uniqueIndex = array(
+        'code'
+    );
 
 
     public function setParameters(Parameters $params)

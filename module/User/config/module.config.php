@@ -1,5 +1,11 @@
 <?php
 return array(
+    'permission' => array(
+        'admin' => array(
+            'SUPER_ADMIN',
+            'ADMIN',
+        )
+    ),
     'module_user' => array(
         'register' => array(
             'repeat_password' => 1,
@@ -14,6 +20,10 @@ return array(
         ),
         'reset' => array(
             'path' => '/reset/',
+            'code_expired_time' => 0,
+        ),
+        'verify' => array(
+            'verify_email_code_expried_time' => 0,
         ),
         'online_to_offline_time' => 60*15 //15 minites
     ),

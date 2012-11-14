@@ -6,11 +6,14 @@ use Eva\Form\Form;
 class ResetForm extends Form
 {
     protected $baseElements = array(
-        'email' =>     array(
+        'email' => array (
             'name' => 'email',
-            'attributes' => array(
-                'type' => 'email',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Email',
+            ),
+            'attributes' => array (
+                'value' => '',
             ),
         ),
     );
@@ -23,11 +26,15 @@ class ResetForm extends Form
                 array('name' => 'StringTrim'),
             ),
             'validators' => array(
-                array(
-                    'name' => 'NotEmpty',
-                ),
-                array(
+                'emailAddress' => array(
                     'name' => 'EmailAddress',
+                ),
+                'db' => array(
+                    'name' => 'Eva\Validator\Db\RecordExists',
+                    'options' => array(
+                        'field' => 'email',
+                        'table' => 'user_users',
+                    ),
                 ),
             ),
         ),

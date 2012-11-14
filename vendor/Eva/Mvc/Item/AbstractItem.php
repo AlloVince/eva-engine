@@ -257,6 +257,12 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         return $this;
     }
 
+    public function clear()
+    {
+        $this->setDataSource(array());
+        return $this;
+    }
+
     public function hasLoadedRelationships()
     {
         $hasRelationships = false;
@@ -471,7 +477,7 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     public function dataCount($params = null, $countKey = self::DEFAULT_COUNT_KEY)
     {
         $dataClass = $this->getDataClass();
-        $this->setDataSource(array());
+        $this->clear();
         if($params && method_exists($dataClass, 'setParameters')){
             if(is_array($params)){
                 $params = new \Zend\Stdlib\Parameters($params);
@@ -492,7 +498,7 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     public function collections($params = null)
     {
         $dataClass = $this->getDataClass();
-        $this->setDataSource(array());
+        $this->clear();
         if($params && method_exists($dataClass, 'setParameters')){
             if(is_array($params)){
                 $params = new \Zend\Stdlib\Parameters($params);
@@ -509,7 +515,7 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         $items = $dataClass->find('all');
 
         if(!$items){
-            $this->setDataSource(array());
+            $this->clear();
         } else {
             foreach($items as $key => $dataSource){
                 $item = clone $this;
@@ -557,7 +563,7 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
 
             //Not find in DB
             if(!$dataSource){
-                $this->setDataSource(array());
+                $this->clear();
                 return $this;
             }
         }
@@ -578,7 +584,7 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
 
 
         if(!$dataSource){
-            $this->setDataSource(array());
+            $this->clear();
         } else {
             $this->setDataSource((array) $dataSource);
         }
@@ -623,7 +629,7 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         //Important : here must use clone to create many entities
         $relItem = clone $model->getItem($relationship['targetEntity']); 
         //Important : Joined item should have no dataSource
-        $relItem->setDataSource(array());
+        $relItem->clear();
 
         $joinFuncName = 'join' . ucfirst($key);
         if(method_exists($this, $joinFuncName)){
@@ -702,7 +708,7 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         $referencedLeftColumn = $relationship['joinColumns']['referencedColumn'];
 
         $middleItem = clone $relItem->model->getItem($relationship['inversedBy']); 
-        $middleItem->setDataSource(array());
+        $middleItem->clear();
         $params = array(
             $joinLeftColumn => $this->$referencedLeftColumn
         );
@@ -716,7 +722,7 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
 
         foreach($middleItems as $middleItem){
             $rightItem = clone $relItem;
-            $rightItem->setDataSource(array());
+            $rightItem->clear();
             $rightItem->$referencedRightColumn = $middleItem->$joinRightColumn;
 
             $inversedMapKey = isset($relationship['inversedMappedBy']) ? $relationship['inversedMappedBy'] : get_class($middleItem);
@@ -836,6 +842,7 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         if(!$where){
             throw new Exception\InvalidArgumentException(sprintf('Primary Key not set in item %s', get_class($this)));
         }
+        return $where;
     }
 
     protected function uniqueWhere()
@@ -868,7 +875,6 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
                 throw new Exception\InvalidArgumentException(sprintf('Unique Index require string or array in item %s', get_class($this)));
             }
         }
-    
         return $where;
     }
 
