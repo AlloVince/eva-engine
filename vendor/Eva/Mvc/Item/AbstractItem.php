@@ -552,7 +552,7 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
             if(false === $selectAll){
                 $dataClass->columns($columns);
             }
-            $where = $this->getPrimaryArray();
+            $where = $this->autoDetectWhere();
             $dataSource = $dataClass->where($where)->find('one');
 
             //Not find in DB
@@ -599,9 +599,9 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     public function selfExist()
     {
         $dataClass = $this->getDataClass();
-        $columns = array_keys($this->getPrimaryArray());
+        $columns = array_keys($this->autoDetectWhere());
         $dataClass->columns($columns);
-        $where = $this->getPrimaryArray();
+        $where = $this->autoDetectWhere();
         $dataSource = $dataClass->where($where)->find('one');
 
         //Not find in DB
@@ -779,7 +779,7 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         $data = $this->toArray(
             isset($this->map['save']) ? $this->map['save'] : array()
         );
-        $where = $this->getPrimaryArray();
+        $where = $this->primaryWhere();
         $dataClass->where($where)->save($data);
         return true;
     }
@@ -787,7 +787,7 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     public function remove()
     {
         $dataClass = $this->getDataClass();
-        $where = $this->getPrimaryArray();
+        $where = $this->primaryWhere();
         $dataClass->where($where)->remove();
         return true;
     }
@@ -825,24 +825,73 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         return $this;
     }
 
+    protected function autoDetectWhere()
+    {
+        $where = $this->primaryWhere();
+        if($where){
+            return $where;
+        }
 
-    protected function getPrimaryArray()
+        $where = $this->uniqueWhere();
+        if(!$where){
+            throw new Exception\InvalidArgumentException(sprintf('Primary Key not set in item %s', get_class($this)));
+        }
+    }
+
+    protected function uniqueWhere()
+    {
+        $dataClass = $this->getDataClass();
+        $uniqueIndex = $dataClass->getUniqueIndex();
+        if(!$uniqueIndex){
+            return array();
+        }
+
+        $where = array();
+        foreach($uniqueIndex as $uniqueIndexKey){
+            if(is_array($uniqueIndexKey)){
+                $multiWhere = array();
+                foreach($uniqueIndexKey as $multiIndexKey){
+                    if($this->$multiIndexKey){
+                        $multiWhere[$multiIndexKey] = $this->$multiIndexKey;
+                    }
+                    if(count($multiWhere) === count($uniqueIndexKey)){
+                        $where = $multiWhere;
+                        break;
+                    }
+                }
+            } elseif(is_string($uniqueIndexKey)){
+                if($this->$uniqueIndexKey){
+                    $where = array($uniqueIndexKey => $this->$uniqueIndexKey);
+                    break;
+                }
+            } else {
+                throw new Exception\InvalidArgumentException(sprintf('Unique Index require string or array in item %s', get_class($this)));
+            }
+        }
+    
+        return $where;
+    }
+
+    protected function primaryWhere()
     {
         $dataClass = $this->getDataClass();
         $primaryKey = $dataClass->getPrimaryKey();
+        $where = array();
 
         if(is_string($primaryKey)){
             if(!$this->$primaryKey){
-                throw new Exception\InvalidArgumentException(sprintf('Primary Key %s not set in item %s', $primaryKey, get_class($this)));
+                return $where;
             }
             $where = array($primaryKey => $this->$primaryKey);
         } elseif(is_array($primaryKey)) {
-            $where = array();
+            $multiWhere = array();
             foreach($primaryKey as $key){
-                if(!$this->$key){
-                    throw new Exception\InvalidArgumentException(sprintf('Primary Key not set in item %s', get_class($this)));
+                if($this->$key){
+                    $multiWhere[$key] = $this->$key;
                 }
-                $where[$key] = $this->$key;
+            }
+            if(count($primaryKey) === count($multiWhere)){
+                $where = $multiWhere;
             }
         } else {
             throw new Exception\InvalidArgumentException(sprintf('Primary Key not found or not correct in class %s', get_class($dataClass)));

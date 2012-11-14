@@ -10,12 +10,10 @@ class UserCreateForm extends UserForm
         'default' => array(
             'Profile' => 'User\Form\ProfileForm',
             'Account' => 'User\Form\AccountForm',
-            /*
             'RoleUser' => array(
                 'formClass' => 'User\Form\RoleUserForm',
                 'collection' => true,
             ),
-            */
         ),
     );
 

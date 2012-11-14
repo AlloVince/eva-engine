@@ -19,22 +19,34 @@ class ResetController extends RestfulModuleController
     public function restPutReset()
     {
         $this->layout('layout/adminblank');
+        $callback = $this->params()->fromPost('callback');
+        $callback = $callback ? $callback : '/admin/';
+
         $item = $this->getRequest()->getPost();
         $form = new \User\Form\ResetForm();
         $form->bind($item);
 
         if ($form->isValid()) {
+
+            $itemModel = Api::_()->getModel('User\Model\Reset');
+            $itemModel->setItem($form->getData());
+            $codeItem = $itemModel->resetRequest();
+            $userItem = $itemModel->getItem();
+
             $mail = new \Core\Mail();
             $mail->getMessage()
-            ->setSubject("Sending an email from Zend\Mail!")
+            ->setSubject("Reset Password")
             ->setData(array(
-                'foo' => 'bar'
+                'user' => $userItem,
+                'code' => $codeItem,
             ))
+            ->setTo($userItem->email, $userItem->userName)
             ->setTemplatePath(EVA_MODULE_PATH . '/User/view/')
-            ->setTemplate('mail/reset');
+            ->setTemplate('_admin/mail/reset');
             $mail->send();
+            
+            return $this->redirect()->toUrl($callback);
         } else {
-            //$mail->send();
         }
 
         return array(

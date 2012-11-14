@@ -45,7 +45,7 @@ class LoginController extends RestfulModuleController
                 $loginModel = Api::_()->getModel('User\Model\Login');
                 $authResult = $loginModel->loginByPassword($item['loginName'], $item['inputPassword']);
                 if($authResult->isValid()){
-                    $user = Auth::getLoginUser();
+                    $user = Auth::getLoginUser('Auth_Admin');
                     if(!isset($user['Roles']) || !in_array('Admin', $user['Roles'])){
                         $this->getResponse()->setStatusCode(401);
                         $this->flashMessenger()->addMessage('permission-not-enough');

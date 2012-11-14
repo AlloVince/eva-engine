@@ -10,6 +10,10 @@ class Users extends TableGateway
 {
     protected $tableName ='users';
     protected $primaryKey = 'id';
+    protected $uniqueIndex = array(
+        'email',
+        'mobile',
+    );
 
     protected $profileTable;
 

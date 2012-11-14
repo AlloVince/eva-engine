@@ -31,6 +31,7 @@ class TableGateway extends AbstractTableGateway  implements ServiceLocatorAwareI
     protected $table;
     protected $tableName;
     protected $primaryKey;
+    protected $uniqueIndex;
 
     protected $select;
     protected $selectOptions;
@@ -140,6 +141,11 @@ class TableGateway extends AbstractTableGateway  implements ServiceLocatorAwareI
     public function getPrimaryKey()
     {
         return $this->primaryKey;
+    }
+
+    public function getUniqueIndex()
+    {
+        return $this->uniqueIndex;
     }
 
     public function reset()

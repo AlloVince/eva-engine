@@ -1,0 +1,10 @@
+Hello, <?=$this->user['userName']?>
+
+You requested that your password be reset.
+
+If you make the request, please open this link in your browser:
+
+<?=$this->serverUrl('/admin/user/reset/process/?code=' . $this->code['code'])?>
+
+If you didn't make this request then ignore this email, no changes have been made.
+
