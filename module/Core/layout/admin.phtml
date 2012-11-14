@@ -98,6 +98,14 @@
                             <li data-highlight-url="/admin/core/setting/components"><a href="<?=$this->uri('/admin/core/setting/components')?>"><?=$this->_('Page Components')?></a></li>
                         </ul>
                         </li>
+                        <?if($this->hasmodule('Crontab')):?>
+                        <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="collapse" data-target="#crontab-dropdown" href="#"><i class="icon-calendar"></i> <?=$this->_('Crontab')?> <b class="caret"></b></a>
+                        <ul id="crontab-dropdown" class="collapse">
+                            <li data-highlight-url="/admin/crontab/"><a href="<?=$this->uri('/admin/crontab/')?>"><?=$this->_('Crontab Management')?></a></li>
+                        </ul>
+                        </li>
+                        <?endif?>
                         <?if($this->hasmodule('Scaffold')):?>
                         <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="collapse" data-target="#scaffold-dropdown" href="#"><i class="icon-gift"></i> Scaffold <b class="caret"></b></a>
