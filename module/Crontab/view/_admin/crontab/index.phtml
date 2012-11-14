@@ -1,0 +1,14 @@
+<? 
+$title = $this->_('Crontab Edit');
+$this->headTitle($title, 'SET');
+?>
+<header class="page-header">
+<h2 class=""><?=$this->title?></h2>
+</header>
+
+<form action="<?=$this->uri('/admin/crontab/')?>" method="post">
+<textarea name="content" class="span10 editor-code" rows="20" data-ui='{"mode":"xml", "lineNumbers":true, "fontsize":"12px", "lineWrapping":true}'><?=$this->content?></textarea>
+<div class="form-actions">
+    <button class="btn btn-primary" type="submit"><?=$this->_('Save')?></button>
+</div>
+</form>
