@@ -57,7 +57,9 @@ class ImportController extends AbstractActionController
         $import->setAccessToken($accessTokenArray['token']);
         $contacts = $import->getContacts();
         $import->getStorage()->saveContacts($contacts);
-
+        
+        $accessToken = $oauth->getStorage()->clearAccessToken();
+        
         return $this->redirect()->toUrl($callback);
     }
 }

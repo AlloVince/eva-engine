@@ -6,9 +6,16 @@ $this->headTitle($title, 'SET');
 <h2 class=""><?=$this->title?></h2>
 </header>
 
+<?if($this->error):?>
+<div id="system-not-support" class="alert alert-error">
+    <a href="#" data-dismiss="alert" class="close">x</a>
+    <h4 class="alert-heading"><?=$this->_('Need system support crontab')?></h4>
+</div>
+<?else:?>
 <form action="<?=$this->uri('/admin/crontab/')?>" method="post">
 <textarea name="content" class="span10 editor-code" rows="20" data-ui='{"mode":"xml", "lineNumbers":true, "fontsize":"12px", "lineWrapping":true}'><?=$this->content?></textarea>
 <div class="form-actions">
     <button class="btn btn-primary" type="submit"><?=$this->_('Save')?></button>
 </div>
 </form>
+<?endif;?>
