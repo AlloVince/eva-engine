@@ -114,7 +114,8 @@ class Crontab
 
         if ($this->crontabType == "file") {
             $path = realpath($config['crontab']['filePath']);
-            if (!$path || !is_readable($path)) {
+
+            if (!$path || !is_writeable($path)) {
                 throw new \Crontab\Service\Exception\InvalidArgumentException(
                     sprintf(
                         '"%s" don\'t exists or isn\'t readable',
@@ -122,7 +123,13 @@ class Crontab
                     )
                 );
             } 
-            $this->setFilePath($config['crontab']['filePath']);
+            
+            $fullPath = $path . '/' . $config['crontab']['fileName'];
+            if (!file_exists($fullPath)) {
+                file_put_contents($fullPath, '');
+            }
+
+            $this->setFilePath($fullPath);
         }
     }
 }
