@@ -83,14 +83,8 @@ class Role extends AbstractModel
                 'id' => $roleIdOrName,
             ));
         } elseif(is_string($roleIdOrName)) {
-            $role = $this->getItem()->getDataClass()->columns(array('id'))->where(array(
-                'roleKey' => $roleIdOrName
-            ))->find('one');
-            if(!$role){
-                return array();
-            }
             $this->setItem(array(
-                'id' => $role['id'],
+                'roleKey' => $roleIdOrName,
             ));
         }
         $this->trigger('get.pre');
