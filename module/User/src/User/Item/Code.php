@@ -35,18 +35,21 @@ class Code extends AbstractItem
 
     public function getCodeStatus()
     {
-        $this->codeStatus = 'active';
+        return $this->codeStatus = 'active';
     }
 
     public function getCodeSalt()
     {
-        return $this->codeSalt = \Eva\Stdlib\String\Hash::uniqueHash();
+        if(!$this->codeSalt){
+            return $this->codeSalt = \Eva\Stdlib\String\Hash::uniqueHash();
+        }
+        return $this->codeSalt;
     }
 
     public function getCode()
     {
-        if($this->user_id && $this->codeType && $this->codeSalt && $this->salt){
-            return $this->code = md5($this->user_id . '_' . $this->codeType . '_' . $this->codeSalt . '_' . $this->salt);
+        if($this->user_id && $this->codeType && $this->codeSalt){
+            return $this->code = md5($this->user_id . '_' . $this->codeType . '_' . $this->codeSalt);
         }
         throw new \Exception(sprintf(
             'User code generation failed'

@@ -1,0 +1,49 @@
+<?
+$title = 'Admin Reset Password';
+$this->headTitle($title, 'SET');
+
+$item = $this->item;
+if($this->form){
+	$form = $this->form;
+} else {
+    $form = new User\Form\ResetPasswordForm();
+}
+
+$form
+->setView($this)
+->setMethod('put')
+->setAction($this->uri('/admin/user/reset/process/'))
+->bind($item)
+->prepare();
+?>
+
+
+<div class="slate">
+
+    <header class="page-header">
+    <h3>Reset Password</h3>
+    </header>
+    <form <?=$this->formAttr($form)?>>
+        <?=$form->restful();?>
+        <?=$form->helper('code', array('class' => ''))?>
+        <div class="control-group <?=$form->isError('inputPassword') ? 'error' : '';?>">
+            <?=$form->helper('inputPassword', 'label', array('class' => 'control-label'))?>
+            <div class="controls">
+                <?=$form->helper('inputPassword', array('class' => ''))?>        
+                <div class="help-block"><?=$form->helper('inputPassword', 'formElementErrors')?></div>
+            </div>
+        </div>
+        <div class="control-group <?=$form->isError('repeatPassword') ? 'error' : '';?>">
+            <?=$form->helper('repeatPassword', 'label', array('class' => 'control-label'))?>
+            <div class="controls">
+                <?=$form->helper('repeatPassword', array('class' => ''))?>        
+                <div class="help-block"><?=$form->helper('repeatPassword', 'formElementErrors')?></div>
+            </div>
+        </div>
+
+        <div class="form-action">
+            <button class="btn btn-info btn-large">Save</button>
+        </div>
+    </form>
+
+</div>
