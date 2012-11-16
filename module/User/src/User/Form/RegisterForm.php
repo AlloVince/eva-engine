@@ -45,6 +45,16 @@ class RegisterForm extends UserForm
                 'value' => '',
             ),
         ),
+        'code' => array (
+            'name' => 'code',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Invite Code',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
     );
 
     protected $mergeFilters = array(

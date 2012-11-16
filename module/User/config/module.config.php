@@ -7,10 +7,14 @@ return array(
         )
     ),
     'module_user' => array(
+        'events' => array(
+        
+        ),
         'register' => array(
             'repeat_password' => 1,
             'screen_name' => 1,
             'display_invite' => 1,
+            'invite_required' => 0,
             'default_role' => 'USER',
         ),
         'invite' => array(

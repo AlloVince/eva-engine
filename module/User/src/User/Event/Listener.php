@@ -55,6 +55,9 @@ class Listener implements ListenerAggregateInterface
     {
         $codeModel = \Eva\Api::_()->getModel('User\Model\Code');
         $codeModel->createActiveCode();
+
+        $inviteModel = \Eva\Api::_()->getModel('User\Model\Invite');
+        $inviteModel->updateInviteUser();
     }
 
     public function onPaymentLogstepResponse($e)
