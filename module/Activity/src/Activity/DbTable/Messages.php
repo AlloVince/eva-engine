@@ -16,6 +16,7 @@ class Messages extends TableGateway
     {
         if($params->page){
             $this->enableCount();
+            $this->page($params->page);
         }
 
         if($params->noResult) {
