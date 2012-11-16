@@ -137,7 +137,7 @@ class FormClassGenerator
         $enum = explode(',', $enum);
         $enumArray = array();
         foreach($enum as $enumName){
-            $enumArray[] = array(
+            $enumArray[$enumName] = array(
                 'label' => $this->getLabel($enumName),
                 'value' => $enumName,
             );
