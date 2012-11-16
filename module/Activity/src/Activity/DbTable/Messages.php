@@ -22,6 +22,14 @@ class Messages extends TableGateway
             $this->setNoResult(true);
         }
 
+        if($params->hasFile) {
+            $this->where(array('hasFile' => $params->hasFile));
+        }
+
+        if($params->hasVideo) {
+            $this->where(array('hasVideo' => $params->hasVideo));
+        }
+
         if($params->keyword){
             $keyword = $params->keyword;
             $this->where(function($where) use ($keyword){

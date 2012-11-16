@@ -60,6 +60,8 @@ class Message extends AbstractItem
             'getMessageHash()',
             'getCreateTime()',
             'getUserId()',
+            'getHasFile()',
+            'getHasVideo()',
         ),
         'save' => array(
             'getUrlName()',
@@ -107,5 +109,22 @@ class Message extends AbstractItem
     {
         $parser = $this->getParser();
         $this->Video = $parser->getVideo();
+    }
+
+    public function getHasFile()
+    {
+        $dataSource = $this->getModel()->getDataSource();
+        if(isset($dataSource['MessageFile']['file_id']) && $dataSource['MessageFile']['file_id']){
+            return $this->hasFile = 1;    
+        }
+    }
+
+    public function getHasVideo()
+    {
+        $parser = $this->getParser();
+        $video = $parser->getVideo();
+        if($video){
+            return $this->hasVideo = 1;
+        }
     }
 }
