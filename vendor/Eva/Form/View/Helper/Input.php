@@ -53,54 +53,6 @@ class Input extends \Zend\Form\View\Helper\AbstractHelper
         return in_array($elementType, $notElementTypes) ? false : true;
     }
 
-    /*
-    protected function translateElement(ElementInterface $element)
-    {
-        if(!$this->translator){
-            return $element;
-        }
-        $attributes = $element->getAttributes();
-        foreach($attributes as $key => $value){
-            if(isset($attributes['label'])){
-                $attributes['label'] = $this->translator->translate($attributes['label']);
-            }
-
-            if($attributes['type'] == 'select' && isset($attributes['options'])){
-                $elementOptions = $attributes['options'];
-                foreach($elementOptions as $elementOptionsKey => $elementSubOption){
-                    if(!isset($elementSubOption['label'])){
-                        continue;
-                    }
-                    $attributes['options'][$elementOptionsKey]['label'] = $this->translator->translate($elementSubOption['label']);
-                }
-            }
-
-            if($attributes['type'] == 'radio' && isset($attributes['options'])){
-                $elementOptions = $attributes['options'];
-                $translatedOptions = array();
-                foreach($elementOptions as $elementOptionsKey => $elementSubOption){
-                    $translatedKey = $this->translator->translate($elementOptionsKey);
-                    $translatedOptions[$translatedKey] = $elementSubOption;
-                }
-                $attributes['options'] = $translatedOptions;
-            }
-
-            if(isset($attributes['placeholder'])){
-                $attributes['placeholder'] = $this->translator->translate($attributes['placeholder']);
-            }
-        }
-        if($messages = $element->getMessages()){
-            foreach($messages as $key => $message){
-                $messages[$key] = $this->translator->translate($message);
-            }
-            $element->setMessages($messages);
-        }
-        $element->setAttributes($attributes);
-
-        return $element;
-    }
-    */
-
     /**
     * Invoke helper as functor
     *
@@ -128,7 +80,7 @@ class Input extends \Zend\Form\View\Helper\AbstractHelper
         $args = array();
         if(isset($options['args'])){
             if($options['args'] && is_array($options['args'])){
-                foreach($args as $key => $value){
+                foreach($options['args'] as $key => $value){
                     $args[] = $value; 
                 }
             }
