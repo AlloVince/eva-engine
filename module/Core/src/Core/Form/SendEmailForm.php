@@ -67,7 +67,7 @@ class SendEmailForm extends \Eva\Form\Form
             ),
         ),
         'attachment' => array (
-            'name' => 'upload',
+            'name' => 'attachment',
             'type' => 'file',
             'options' => array(
                 'label' => 'Attachment',

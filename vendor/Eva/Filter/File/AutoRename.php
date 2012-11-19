@@ -120,7 +120,7 @@ class AutoRename extends \Zend\Filter\AbstractFilter
      * @return string The new filename which has been set
      * @throws Exception\InvalidArgumentException If the target file already exists.
      */
-    public function getNewName($value, $source = false, $fileinfo)
+    public function getNewName($value, $source = false, $fileinfo = null)
     {
         $rootpath = $this->rootpath;
         $path = $this->getPath();
