@@ -17,6 +17,7 @@ use Zend\Mail\Transport;
 use Zend\Mail\Exception;
 use Zend\Di\Di;
 use Zend\Di\Config as DiConfig;
+use Zend\Mail\Message as ZendMessage;
 
 /**
  * Core Mail
@@ -42,7 +43,7 @@ class Mail
         return $this;
     }
 
-    public function setMessage(Message $message)
+    public function setMessage(ZendMessage $message)
     {
         $this->message = $message;
         return $this;
@@ -60,7 +61,7 @@ class Mail
         }
     }
 
-    public function send(Message $message = null)
+    public function send(ZendMessage $message = null)
     {
         $message = $message ? $message : $this->message;
         if(!$message){
@@ -85,6 +86,11 @@ class Mail
                 implode(",", array_intersect($conflictTransports, $transportTypes))
             ));
         }
+
+        $zendMessage = new ZendMessage();
+        $zendMessage->setBody($message->getBody());
+        $zendMessage->setHeaders($message->getHeaders());
+        $message = $zendMessage;
         foreach($transports as $transportType => $transport){
             $transport->send($message);
         }
@@ -109,58 +115,6 @@ class Mail
                                 'resolver' => array(
                                     'required' => true,
                                     'type'     => 'Zend\View\Resolver\TemplatePathStack',
-                                ),
-                            ),
-                        ),
-                        'Zend\Mail\Message' => array(
-                            'setTo' => array(
-                                'emailOrAddressList' => array(
-                                    'type' => false,
-                                    'required' => true
-                                ),
-                                'name' => array(
-                                    'type' => false,
-                                    'required' => false
-                                ),
-                            ),
-                            'addTo' => array(
-                                'emailOrAddressList' => array(
-                                    'type' => false,
-                                    'required' => true
-                                ),
-                                'name' => array(
-                                    'type' => false,
-                                    'required' => false
-                                ),
-                            ),
-                            'setFrom' => array(
-                                'emailOrAddressList' => array(
-                                    'type' => false,
-                                    'required' => true
-                                ),
-                                'name' => array(
-                                    'type' => false,
-                                    'required' => false
-                                ),
-                            ),
-                            'addFrom' => array(
-                                'emailOrAddressList' => array(
-                                    'type' => false,
-                                    'required' => true
-                                ),
-                                'name' => array(
-                                    'type' => false,
-                                    'required' => false
-                                ),
-                            ),
-                            'setSender' => array(
-                                'emailOrAddressList' => array(
-                                    'type' => false,
-                                    'required' => true
-                                ),
-                                'name' => array(
-                                    'type' => false,
-                                    'required' => false
                                 ),
                             ),
                         ),
@@ -229,10 +183,8 @@ class Mail
         $globalConfig = Api::_()->getConfig();
         if(isset($globalConfig['mail'])){
             $config = Config::mergeArray($defaultConfig, $globalConfig['mail'], $config);
-            //$config = array_merge($defaultConfig, $globalConfig['mail'], $config);
         } else {
             $config = Config::mergeArray($defaultConfig['mail'], $config);
-            //$config = array_merge($defaultConfig['mail'], $config);
         } 
 
         $diConfig = array();
@@ -260,7 +212,6 @@ class Mail
             //\Zend\Di\Display\Console::export($di);
             $this->transports[$transportType] = $transport;
         } elseif(is_array($config['transports'])){
-            //$transports = array();
             $transportTypes = $config['transports'];
             foreach($transportTypes as $transportType => $value) {
                 if (!$value) {
