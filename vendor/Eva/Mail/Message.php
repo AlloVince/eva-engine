@@ -11,8 +11,12 @@
 namespace Eva\Mail;
 
 use Zend\Mail\Exception;
+use Zend\Mail\Headers;
 use Zend\View\Renderer\PhpRenderer;
 use Zend\View\Model\ViewModel;
+use Zend\Mime\Message as MimeMessage;
+use Zend\Mime\Part;
+use Zend\Mime\Mime;
 
 /**
  * @category   Zend
@@ -22,6 +26,8 @@ class Message extends \Zend\Mail\Message
 {
 
     const VIEW_PATH_NAME  = 'defaultPath';
+    const TEXT_MAIL = 'text/plain';
+    const HTML_MAIL = 'text/html';
 
     /**
     * Template of the message
@@ -46,6 +52,23 @@ class Message extends \Zend\Mail\Message
     */
     protected $data;
 
+    protected $attachments = array();
+
+    protected $mailType;
+
+    public function setMailType($mailType)
+    {
+        $this->mailType = $mailType;
+        return $this;
+    }
+
+    public function getMailType()
+    {
+        if(!$this->mailType){
+            return $this->mailType = self::TEXT_MAIL;
+        }
+        return $this->mailType;
+    }
 
     public function setTemplate($template)
     {
@@ -97,6 +120,59 @@ class Message extends \Zend\Mail\Message
         return $this->viewModel;
     }
 
+    public function getAttachments()
+    {
+        return $this->attachments;
+    }
+
+    public function setAttachments(array $attachments)
+    {
+        $this->attachments = $attachments;
+        return $this;
+    }
+
+    public function addAttachment($attachmentOrFilePath, $options = array())
+    {
+        $defaultOptions = array(
+            'encoding' => Mime::ENCODING_BASE64,
+            'disposition' => Mime::DISPOSITION_ATTACHMENT,
+        );
+        $options = array_merge($defaultOptions, $options);
+        if($attachmentOrFilePath instanceof MimeMessage){
+            foreach($options as $key => $value){
+                $attachmentOrFilePath->$key = $value;
+            }
+            return $this->attachments[] = $attachmentOrFilePath;
+        }
+
+        $attachment = fopen($attachmentOrFilePath, 'r');
+        if(!$attachment){
+            throw new Exception\InvalidArgumentException(sprintf('Failed to read attachment %s', $attachmentOrFilePath));
+        }
+
+        $attachment = new Part($attachment);
+        foreach($options as $key => $value){
+            $attachment->$key = $value;
+        }
+        $attachment->filename = $this->getAttachmentFileName($attachmentOrFilePath);
+        return $this->attachments[] = $attachment;
+    }
+
+    protected function getAttachmentFileName($filePath)
+    {
+        $fileArray = explode(DIRECTORY_SEPARATOR, $filePath);
+        $fileName = $fileArray[count($fileArray) - 1];
+        if($fileName){
+            return $fileName;
+        }
+        return 'attachment';
+    }
+
+    protected function getAttachmentMimeType()
+    {
+    
+    }
+
     /**
      * Get the string-serialized message body text
      *
@@ -140,10 +216,29 @@ class Message extends \Zend\Mail\Message
         $viewModel->setTemplate($this->template);
         $viewModel->setVariables($this->data);
 
-        //p($this->view);
-        //$this->view->setTemplate($this->template);
-        //$this->view->setVariables($this->data);
-        //p($view->render($viewModel));
-        return $view->render($viewModel);
+        $attachments = $this->attachments;
+        $template = $view->render($viewModel);
+        if(!$attachments){
+            return $template;
+        }
+
+
+        $messageText = new Part($template);
+        //Auto check email type is html
+        if(false === strpos($template, '<')) {
+            $messageText->type = self::TEXT_MAIL;
+            $this->setMailType(self::TEXT_MAIL);
+        } else {
+            $messageText->type = self::HTML_MAIL;
+            $this->setMailType(self::HTML_MAIL);
+        }
+        $message =  new MimeMessage();
+        $message->addPart($messageText);
+
+        foreach($attachments as $key => $attachment) {
+            $message->addPart($attachment);
+        }
+        $this->setBody($message);
+        return $message->generateMessage(Headers::EOL);
     }
 }

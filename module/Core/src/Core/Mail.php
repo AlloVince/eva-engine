@@ -190,6 +190,7 @@ class Mail
                             'headers' => 'Zend\Mail\Headers',
                             'view' => 'Zend\View\Renderer\PhpRenderer',
                             'viewModel' => 'Zend\View\Model\ViewModel',
+                            'encoding' => 'UTF-8',
                         )
                     ),
                     'Zend\Mail\Transport\FileOptions' => array(
