@@ -92,6 +92,47 @@ class Message extends \Zend\Mail\Message
         return $this->templatePath;
     }
 
+    public function getTemplateText()
+    {
+        if(!$this->template){
+            return '';
+        }
+        $view = $this->view;
+        if(!$view instanceof PhpRenderer){
+            throw new Exception\InvalidArgumentException(sprintf(
+                '%s Mail template expects Zend\View\Renderer\PhpRenderer as view; received "%s"',
+                __METHOD__,
+                gettype($view)
+            )); 
+        }
+
+        $viewModel = $this->viewModel;
+        if(!$viewModel instanceof ViewModel){
+            throw new Exception\InvalidArgumentException(sprintf(
+                '%s Mail template expects Zend\View\Model\ViewModel as view model; received "%s"',
+                __METHOD__,
+                gettype($viewModel)
+            )); 
+        }
+
+        $templatePath = $this->templatePath;
+        if($templatePath){
+            $resolverQueue = $view->resolver()->getIterator();
+            $templatePathStack = $resolverQueue->top();
+            $templatePathStack->setPaths(array(
+                $templatePath
+            ));
+            $view->resolver()->attach($templatePathStack);
+
+        }
+
+        $viewModel->setTemplate($this->template);
+        $viewModel->setVariables($this->data);
+
+        $template = $view->render($viewModel);
+        return $template;
+    }
+
     public function setView($view)
     {
         $this->view = $view;
@@ -145,16 +186,17 @@ class Message extends \Zend\Mail\Message
             return $this->attachments[] = $attachmentOrFilePath;
         }
 
-        $attachment = fopen($attachmentOrFilePath, 'r');
-        if(!$attachment){
+        $attachmentHandler = fopen($attachmentOrFilePath, 'r');
+        if(!$attachmentHandler){
             throw new Exception\InvalidArgumentException(sprintf('Failed to read attachment %s', $attachmentOrFilePath));
         }
 
-        $attachment = new Part($attachment);
+        $attachment = new Part($attachmentHandler);
+        $attachment->filename = $this->getAttachmentFileName($attachmentOrFilePath);
+        $attachment->type = $this->getAttachmentMimeType($attachmentOrFilePath);
         foreach($options as $key => $value){
             $attachment->$key = $value;
         }
-        $attachment->filename = $this->getAttachmentFileName($attachmentOrFilePath);
         return $this->attachments[] = $attachment;
     }
 
@@ -170,56 +212,24 @@ class Message extends \Zend\Mail\Message
 
     protected function getAttachmentMimeType()
     {
-    
+        return 'image/jpg';
     }
 
-    /**
-     * Get the string-serialized message body text
-     *
-     * @return string
-     */
-    public function getBodyText()
+    public function getBody()
     {
-        if(!$this->template){
-            return parent::getBodyText();
+        if(!$this->template && !$this->attachments){
+            return $this->body;
         }
 
-        $view = $this->view;
-        if(!$view instanceof PhpRenderer){
-            throw new Exception\InvalidArgumentException(sprintf(
-                '%s Mail template expects Zend\View\Renderer\PhpRenderer as view; received "%s"',
-                __METHOD__,
-                gettype($view)
-            )); 
+        if($this->template) {
+            $template = $this->getTemplateText();
+        } else {
+            $template = $this->body;
         }
-
-        $viewModel = $this->viewModel;
-        if(!$viewModel instanceof ViewModel){
-            throw new Exception\InvalidArgumentException(sprintf(
-                '%s Mail template expects Zend\View\Model\ViewModel as view model; received "%s"',
-                __METHOD__,
-                gettype($viewModel)
-            )); 
-        }
-
-        $templatePath = $this->templatePath;
-        if($templatePath){
-            $resolverQueue = $view->resolver()->getIterator();
-            $templatePathStack = $resolverQueue->top();
-            $templatePathStack->setPaths(array(
-                $templatePath
-            ));
-            $view->resolver()->attach($templatePathStack);
-        
-        }
-
-        $viewModel->setTemplate($this->template);
-        $viewModel->setVariables($this->data);
 
         $attachments = $this->attachments;
-        $template = $view->render($viewModel);
         if(!$attachments){
-            return $template;
+            return $this->body = $template;
         }
 
 
@@ -232,13 +242,17 @@ class Message extends \Zend\Mail\Message
             $messageText->type = self::HTML_MAIL;
             $this->setMailType(self::HTML_MAIL);
         }
-        $message =  new MimeMessage();
-        $message->addPart($messageText);
+        $messageText->encoding = Mime::ENCODING_QUOTEDPRINTABLE;
 
-        foreach($attachments as $key => $attachment) {
-            $message->addPart($attachment);
-        }
-        $this->setBody($message);
-        return $message->generateMessage(Headers::EOL);
+        array_unshift($attachments, $messageText);
+        $message =  new MimeMessage();
+        $message->setParts($attachments);
+        return $this->body = $message;
+    }
+
+    public function getBodyText()
+    {
+        $body = $this->getBody();
+        return parent::getBodyText();
     }
 }
