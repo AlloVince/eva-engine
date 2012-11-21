@@ -247,12 +247,15 @@ class Message extends \Zend\Mail\Message
         array_unshift($attachments, $messageText);
         $message =  new MimeMessage();
         $message->setParts($attachments);
-        return $this->body = $message;
+        $this->setBody($message);
+        return $this->body;
     }
 
     public function getBodyText()
     {
-        $body = $this->getBody();
+        if(!$this->body){
+            $body = $this->getBody();
+        }
         return parent::getBodyText();
     }
 }
