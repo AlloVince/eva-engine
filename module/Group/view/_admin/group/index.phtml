@@ -1,0 +1,136 @@
+<?
+$title = $this->_('Event List');
+$this->headTitle($title, 'SET');
+$this->textDelay('breadcrumbText', $title);
+if($this->form){
+	$form = $this->form;
+} else {
+    $form = new Event\Form\PostSearchForm();
+}
+
+$form
+->setView($this)
+->setMethod('get')
+->setAction($this->uri('/admin/event/'))
+->bind($this->query)
+->prepare();
+
+$lableMap = array(
+    'draft' => '',
+    'active' => 'label-success',
+    'finished' => 'label-warning',
+    'disputed' => 'label-inverse',
+);
+
+?>
+<div class="row">
+    <div class="span10">
+        <div class="slate">
+            <form <?=$this->formAttr($form)?> class="form-inline">
+                <?=$form->helper('keyword', array('class' => 'input-large', 'placeholder' => 'Keyword...'))?>
+                <?=$form->helper('eventStatus', 'formSelect', array('class' => 'span2'))?>
+                <?=$form->helper('visibility', 'formSelect', array('class' => 'span2'))?>
+                <button class="btn" type="submit"><?=$this->_('Filter Events')?></button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="span10 listing-buttons">
+        <div class="btn-group pull-right">
+            <a href="<?=$this->uri('/admin/event/create')?>" class="btn btn-info"><?=$this->_('Add New Event')?></a>
+        </div>
+        <form action="<?=$this->uri('/admin/event/multi/')?>" method="post" class="pull-left" data-multiform="post">
+            <input type="hidden" name="id" class="multiform-container-main" value="" />
+            <div class="btn-group">
+                <span class="btn"><input type="checkbox" class="multiform-checker" /></span>
+                <span data-toggle="dropdown" class="btn dropdown-toggle">
+                    <?=$this->_('Status')?>
+                    <span class="caret"></span>
+                </span>
+                <ul class="dropdown-menu">
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/event/multi/status/active')?>"><?=$this->_('Active')?></a></li>
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/event/multi/status/finished')?>"><?=$this->_('Finished')?></a></li>
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/event/multi/status/disputed')?>"><?=$this->_('Disputed')?></a></li>
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/event/multi/status/trashed')?>"><?=$this->_('Trashed')?></a></li>
+                </ul>
+            </div>
+        </form>
+    </div>
+
+    <div class="span10">
+        <div class="slate">
+            <div class="page-header">
+                <div class="btn-group pull-right">
+                    <span data-toggle="dropdown" class="btn dropdown-toggle">
+                        <?=$this->_('Order')?> <span class="caret"></span>
+                    </span>
+                    <ul class="dropdown-menu">
+                        <li><a href="<?=$this->uri('/admin/event/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'idasc',),));?>" class=""><i class="icon-arrow-up"></i> <?=$this->_('Id')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/event/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'iddesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Id')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/event/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'titleasc',),));?>" class=""><i class="icon-arrow-up"></i> <?=$this->_('Title')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/event/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'titledesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Title')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/event/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'timeasc',),));?>" class=""><i class="icon-arrow-up"></i> <?=$this->_('Time')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/event/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'timedesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Time')?></a></li>
+                    </ul>
+                </div>
+                <h2><?=$title?></h2>
+            </div>
+
+            <table class="orders-table table">
+                <thead>
+                    <tr>
+                        <th class="span1">
+                        </th>
+                        <th><?=$this->_('Event Title')?></th>
+                        <th class="span1"><?=$this->_('Start Time')?></th>
+                        <th class="span1"><?=$this->_('End Time')?></th>
+                        <th class="actions"><?=$this->_('Actions')?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?if($this->items):?>
+                    <?foreach($this->items as $key=>$item):?>
+                    <tr class="">
+                        <td>
+                            <input name="id" type="checkbox" class="multiform-item-checkbox"  data-multiform="post" data-multiform-itemid="<?=$item['id'] ?>" value="<?=$item['id'] ?>" />
+                        </td>	
+                        <td>
+                            <a href="<?=$this->uri('/admin/event/' . $item['id'])?>" class="title"><?=$item['title'] ?></a>
+                            <span class="label <?=$lableMap[$item['status']]?>"><?=$this->_($item['status'])?></span>
+                            <?if($item['visibility'] == 'private'):?>
+                            <span class="label label-important"><?=$this->_('private')?></span>
+                            <?endif?>
+                            <p>
+                            <span class="meta"><?=$item['user_name'] ?> <?=$item['createTime'];?></span>
+                            </p>
+                        </td>
+                        <td>
+                            <?=$item['startDatetimeUtc'] ?>
+                        </td>
+                        <td>
+                            <?=$item['endDatetimeUtc'] ?>
+                        </td>
+                        <td class="actions">
+                            <a href="<?=$this->uri('/admin/event/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/event/', array('page' => $this->page)))); ?>" class="btn btn-small btn-danger"><?=$this->_('Delete')?></a>
+                            <a href="<?=$this->uri('/event/' . $item['urlName'])?>" class="btn btn-small"><?=$this->_('View')?></a>
+                            <a href="<?=$this->uri('/admin/event/' . $item['id'])?>" class="btn btn-small"><?=$this->_('Edit')?></a>
+                        </td>
+                    </tr>
+                    <?endforeach;?>
+                    <?endif;?>
+                </tbody>
+            </table>
+        </div>
+    </div><!--span10 end-->
+
+    <div class="span10">
+        <?if($this->paginator):?>
+        <?=$this->paginator->setPath('/admin/event/')->setBaseQuery($this->query);?>
+        <?=$this->widget('Core', 'widgets/paginator', $this->vars())?>
+        <?endif;?>
+    </div>
+
+</div>
