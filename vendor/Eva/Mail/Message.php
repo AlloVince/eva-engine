@@ -193,7 +193,7 @@ class Message extends \Zend\Mail\Message
 
         $attachment = new Part($attachmentHandler);
         $attachment->filename = $this->getAttachmentFileName($attachmentOrFilePath);
-        $attachment->type = $this->getAttachmentMimeType($attachmentOrFilePath);
+        //$attachment->type = $this->getAttachmentMimeType($attachmentOrFilePath);
         foreach($options as $key => $value){
             $attachment->$key = $value;
         }
@@ -242,7 +242,7 @@ class Message extends \Zend\Mail\Message
             $messageText->type = self::HTML_MAIL;
             $this->setMailType(self::HTML_MAIL);
         }
-        $messageText->encoding = Mime::ENCODING_QUOTEDPRINTABLE;
+        //$messageText->encoding = Mime::ENCODING_QUOTEDPRINTABLE;
 
         array_unshift($attachments, $messageText);
         $message =  new MimeMessage();

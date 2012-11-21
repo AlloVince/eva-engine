@@ -90,6 +90,7 @@ class Mail
         $zendMessage = new ZendMessage();
         $zendMessage->setBody($message->getBody());
         $zendMessage->setHeaders($message->getHeaders());
+        $zendMessage->setEncoding($message->getEncoding());
         $message = $zendMessage;
         foreach($transports as $transportType => $transport){
             $transport->send($message);
