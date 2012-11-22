@@ -1,12 +1,12 @@
 <?php
-namespace Event\Form;
+namespace Group\Form;
 
-class EventCreateForm extends EventForm
+class GroupCreateForm extends GroupForm
 {
     protected $subFormGroups = array(
         'default' => array(
-            'Text' => 'Event\Form\TextForm',
-            'EventFile' => 'Event\Form\EventFileForm',
+            'Text' => 'Group\Form\TextForm',
+            'GroupFile' => 'Group\Form\GroupFileForm',
         ),
     );
 
@@ -14,17 +14,17 @@ class EventCreateForm extends EventForm
     );
 
     protected $mergeFilters = array(
-        'title' => array(
+        'groupName' => array(
             'required' => true,
         ),
-        'urlName' => array (
+        'groupKey' => array (
             'required' => false,
             'validators' => array (
                 'db' => array(
                     'name' => 'Eva\Validator\Db\NoRecordExists',
                     'options' => array(
-                        'field' => 'urlName',
-                        'table' => 'event_events',
+                        'field' => 'groupKey',
+                        'table' => 'group_groups',
                     ),
                 ),
             ),
@@ -33,8 +33,8 @@ class EventCreateForm extends EventForm
 
     public function prepareData($data)
     {
-        if(isset($data['EventFile'])){
-            $data['EventFile']['event_id'] = $data['id'];
+        if(isset($data['GroupFile'])){
+            $data['GroupFile']['group_id'] = $data['id'];
         }
 
         return $data;

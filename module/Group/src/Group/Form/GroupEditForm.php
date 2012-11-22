@@ -1,15 +1,15 @@
 <?php
-namespace Event\Form;
+namespace Group\Form;
 
 use Eva\Form\Form;
 use Zend\Form\Element;
 
-class EventEditForm extends EventForm
+class GroupEditForm extends GroupForm
 {
     protected $subFormGroups = array(
         'default' => array(
-            'Text' => 'Event\Form\TextForm',
-            'EventFile' => 'Event\Form\EventFileForm',
+            'Text' => 'Group\Form\TextForm',
+            'GroupFile' => 'Group\Form\GroupFileForm',
         ),
     );
 
@@ -17,14 +17,14 @@ class EventEditForm extends EventForm
     );
 
     protected $mergeFilters = array(
-        'urlName' =>     array(
+        'groupKey' =>     array(
             'validators' => array(
                 'db' => array(
                     'name' => 'Eva\Validator\Db\NoRecordExists',
                     'injectdata' => true,
                     'options' => array(
-                        'table' => 'event_events',
-                        'field' => 'urlName',
+                        'table' => 'group_groups',
+                        'field' => 'groupKey',
                         'exclude' => array(
                             'field' => 'id',
                         ),
@@ -40,8 +40,8 @@ class EventEditForm extends EventForm
 
    public function prepareData($data)
     {
-        if(isset($data['EventFile'])){
-            $data['EventFile']['event_id'] = $data['id'];
+        if(isset($data['GroupFile'])){
+            $data['GroupFile']['group_id'] = $data['id'];
         }
 
         return $data;

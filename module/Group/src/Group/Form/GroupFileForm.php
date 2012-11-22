@@ -9,7 +9,7 @@
  * @author    AlloVince
  */
 
-namespace Event\Form;
+namespace Group\Form;
 
 /**
  * Eva Form will automatic combination form Elements & Validators & Filters
@@ -18,7 +18,7 @@ namespace Event\Form;
  * @category   Eva
  * @package    Eva_Form
  */
-class EventFileForm extends \Eva\Form\Form
+class GroupFileForm extends \Eva\Form\Form
 {
     /**
      * Form basic elements
@@ -36,11 +36,11 @@ class EventFileForm extends \Eva\Form\Form
                 'value' => '',
             ),
         ),
-        'event_id' => array (
-            'name' => 'event_id',
+        'group_id' => array (
+            'name' => 'group_id',
             'type' => NULL,
             'options' => array (
-                'label' => 'Event_id',
+                'label' => 'Group_id',
             ),
             'attributes' => array (
                 'value' => '',
@@ -62,8 +62,8 @@ class EventFileForm extends \Eva\Form\Form
             'validators' => array (
             ),
         ),
-        'event_id' => array (
-            'name' => 'event_id',
+        'group_id' => array (
+            'name' => 'group_id',
             'required' => false,
             'filters' => array (
             ),

@@ -40,7 +40,8 @@ class GroupFile extends AbstractItem
             'group_id' => $groupId
         ))->remove();
         $data = $this->toArray();
-        $data['group_id'] = $groupId;
-        $dataClass->create($data);
+        $saveData['group_id'] = $groupId;
+        $saveData['file_id'] = $data['file_id'];
+        $dataClass->create($saveData);
     }
 }

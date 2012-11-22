@@ -40,7 +40,8 @@ class EventFile extends AbstractItem
             'event_id' => $eventId
         ))->remove();
         $data = $this->toArray();
-        $data['event_id'] = $eventId;
-        $dataClass->create($data);
+        $saveData['event_id'] = $eventId;
+        $saveData['file_id'] = $data['file_id'];
+        $dataClass->create($saveData);
     }
 }

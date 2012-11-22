@@ -8,7 +8,7 @@
  * @author    AlloVince
  */
 
-namespace Event\Form;
+namespace Group\Form;
 
 /**
  * Eva Form will automatic combination form Elements & Validators & Filters
@@ -17,7 +17,7 @@ namespace Event\Form;
  * @category   Eva
  * @package    Eva_Form
  */
-class EventForm extends \Eva\Form\Form
+class GroupForm extends \Eva\Form\Form
 {
     /**
      * Form basic elements
@@ -35,149 +35,54 @@ class EventForm extends \Eva\Form\Form
                 'value' => '',
             ),
         ),
-        'title' => array (
-            'name' => 'title',
+        'groupKey' => array (
+            'name' => 'groupKey',
             'type' => 'text',
             'options' => array (
-                'label' => 'Title',
+                'label' => 'Group Key',
             ),
             'attributes' => array (
                 'value' => '',
             ),
         ),
-        'eventStatus' => array (
-            'name' => 'eventStatus',
+        'groupName' => array (
+            'name' => 'groupName',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Group Name',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
+        'status' => array (
+            'name' => 'status',
             'type' => 'select',
             'options' => array (
-                'label' => 'Event Status',
+                'label' => 'Status',
                 'value_options' => array (
                     'active' => array (
                         'label' => 'Active',
                         'value' => 'active',
                     ),
-                    'finished' => array (
-                        'label' => 'Finished',
-                        'value' => 'finished',
+                    'pending' => array (
+                        'label' => 'Pending',
+                        'value' => 'pending',
                     ),
-                    'disputed' => array (
-                        'label' => 'Disputed',
-                        'value' => 'disputed',
-                    ),
-                    'trashed' => array (
-                        'label' => 'Trashed',
-                        'value' => 'trashed',
+                    'deleted' => array (
+                        'label' => 'Deleted',
+                        'value' => 'deleted',
                     ),
                 ),
             ),
             'attributes' => array (
-                'value' => 'active',
             ),
         ),
-        'urlName' => array (
-            'name' => 'urlName',
+        'summary' => array (
+            'name' => 'summary',
             'type' => 'text',
             'options' => array (
-                'label' => 'Url Name',
-            ),
-            'attributes' => array (
-                'value' => '',
-            ),
-        ),
-        'visibility' => array (
-            'name' => 'visibility',
-            'type' => 'select',
-            'options' => array (
-                'label' => 'Visibility',
-                'value_options' => array (
-                    'public' => array (
-                        'label' => 'Public',
-                        'value' => 'public',
-                    ),
-                    'private' => array (
-                        'label' => 'Private',
-                        'value' => 'private',
-                    ),
-                ),
-            ),
-            'attributes' => array (
-                'value' => 'public',
-            ),
-        ),
-        'eventUsage' => array (
-            'name' => 'eventUsage',
-            'type' => 'text',
-            'options' => array (
-                'label' => 'Event Usage',
-            ),
-            'attributes' => array (
-                'value' => 'other',
-            ),
-        ),
-        'eventHash' => array (
-            'name' => 'eventHash',
-            'type' => 'text',
-            'options' => array (
-                'label' => 'Event Hash',
-            ),
-            'attributes' => array (
-                'value' => '',
-            ),
-        ),
-        'startTime' => array (
-            'name' => 'startTime',
-            'type' => 'text',
-            'options' => array (
-                'label' => 'Start Time',
-            ),
-            'attributes' => array (
-                'value' => '',
-            ),
-        ),
-        'endTime' => array (
-            'name' => 'endTime',
-            'type' => 'text',
-            'options' => array (
-                'label' => 'End Time',
-            ),
-            'attributes' => array (
-                'value' => '',
-            ),
-        ),
-        'timezone' => array (
-            'name' => 'timezone',
-            'type' => 'number',
-            'options' => array (
-                'label' => 'Timezone',
-            ),
-            'attributes' => array (
-                'value' => '0',
-            ),
-        ),
-        'longitude' => array (
-            'name' => 'longitude',
-            'type' => 'text',
-            'options' => array (
-                'label' => 'Longitude',
-            ),
-            'attributes' => array (
-                'value' => '',
-            ),
-        ),
-        'latitude' => array (
-            'name' => 'latitude',
-            'type' => 'text',
-            'options' => array (
-                'label' => 'Latitude',
-            ),
-            'attributes' => array (
-                'value' => '',
-            ),
-        ),
-        'location' => array (
-            'name' => 'location',
-            'type' => 'text',
-            'options' => array (
-                'label' => 'Location',
+                'label' => 'Summary',
             ),
             'attributes' => array (
                 'value' => '',
@@ -204,8 +109,8 @@ class EventForm extends \Eva\Form\Form
                 ),
             ),
         ),
-        'title' => array (
-            'name' => 'title',
+        'groupKey' => array (
+            'name' => 'groupKey',
             'required' => false,
             'filters' => array (
                 'stripTags' => array (
@@ -221,107 +126,6 @@ class EventForm extends \Eva\Form\Form
                     'options' => array (
                     ),
                 ),
-                'stringLength' => array (
-                    'name' => 'StringLength',
-                    'options' => array (
-                        'max' => '255',
-                    ),
-                ),
-            ),
-        ),
-        'eventStatus' => array (
-            'name' => 'eventStatus',
-            'required' => false,
-            'filters' => array (
-            ),
-            'validators' => array (
-                'inArray' => array (
-                    'name' => 'InArray',
-                    'options' => array (
-                        'haystack' => array (
-                            'active',
-                            'finished',
-                            'disputed',
-                            'trashed',
-                        ),
-                    ),
-                ),
-            ),
-        ),
-        'urlName' => array (
-            'name' => 'urlName',
-            'required' => false,
-            'filters' => array (
-                'stripTags' => array (
-                    'name' => 'StripTags',
-                ),
-                'stringTrim' => array (
-                    'name' => 'StringTrim',
-                ),
-            ),
-            'validators' => array (
-                'notEmpty' => array (
-                    'name' => 'NotEmpty',
-                    'options' => array (
-                    ),
-                ),
-                'stringLength' => array (
-                    'name' => 'StringLength',
-                    'options' => array (
-                        'max' => '255',
-                    ),
-                ),
-            ),
-        ),
-        'visibility' => array (
-            'name' => 'visibility',
-            'required' => false,
-            'filters' => array (
-            ),
-            'validators' => array (
-                'inArray' => array (
-                    'name' => 'InArray',
-                    'options' => array (
-                        'haystack' => array (
-                            'public',
-                            'private',
-                        ),
-                    ),
-                ),
-            ),
-        ),
-        'eventUsage' => array (
-            'name' => 'eventUsage',
-            'required' => false,
-            'filters' => array (
-                'stripTags' => array (
-                    'name' => 'StripTags',
-                ),
-                'stringTrim' => array (
-                    'name' => 'StringTrim',
-                ),
-            ),
-            'validators' => array (
-                'stringLength' => array (
-                    'name' => 'StringLength',
-                    'options' => array (
-                        'max' => '50',
-                    ),
-                ),
-            ),
-        ),
-        'eventHash' => array (
-            'name' => 'eventHash',
-            'required' => false,
-            'filters' => array (
-                'stripTags' => array (
-                    'name' => 'StripTags',
-                ),
-                'stringTrim' => array (
-                    'name' => 'StringTrim',
-                ),
-            ),
-            'validators' => array (
                 'stringLength' => array (
                     'name' => 'StringLength',
                     'options' => array (
@@ -330,8 +134,8 @@ class EventForm extends \Eva\Form\Form
                 ),
             ),
         ),
-        'startTime' => array (
-            'name' => 'startTime',
+        'groupName' => array (
+            'name' => 'groupName',
             'required' => false,
             'filters' => array (
                 'stripTags' => array (
@@ -342,36 +146,21 @@ class EventForm extends \Eva\Form\Form
                 ),
             ),
             'validators' => array (
+                'notEmpty' => array (
+                    'name' => 'NotEmpty',
+                    'options' => array (
+                    ),
+                ),
                 'stringLength' => array (
                     'name' => 'StringLength',
                     'options' => array (
-                        'max' => NULL,
+                        'max' => '100',
                     ),
                 ),
             ),
         ),
-        'endTime' => array (
-            'name' => 'endTime',
-            'required' => false,
-            'filters' => array (
-                'stripTags' => array (
-                    'name' => 'StripTags',
-                ),
-                'stringTrim' => array (
-                    'name' => 'StringTrim',
-                ),
-            ),
-            'validators' => array (
-                'stringLength' => array (
-                    'name' => 'StringLength',
-                    'options' => array (
-                        'max' => NULL,
-                    ),
-                ),
-            ),
-        ),
-        'timezone' => array (
-            'name' => 'timezone',
+        'status' => array (
+            'name' => 'status',
             'required' => false,
             'filters' => array (
             ),
@@ -381,30 +170,20 @@ class EventForm extends \Eva\Form\Form
                     'options' => array (
                     ),
                 ),
-            ),
-        ),
-        'longitude' => array (
-            'name' => 'longitude',
-            'required' => false,
-            'filters' => array (
-                'stripTags' => array (
-                    'name' => 'StripTags',
-                ),
-                'stringTrim' => array (
-                    'name' => 'StringTrim',
-                ),
-            ),
-            'validators' => array (
-                'stringLength' => array (
-                    'name' => 'StringLength',
+                'inArray' => array (
+                    'name' => 'InArray',
                     'options' => array (
-                        'max' => '50',
+                        'haystack' => array (
+                            'active',
+                            'pending',
+                            'deleted',
+                        ),
                     ),
                 ),
             ),
         ),
-        'latitude' => array (
-            'name' => 'latitude',
+        'summary' => array (
+            'name' => 'summary',
             'required' => false,
             'filters' => array (
                 'stripTags' => array (
@@ -415,26 +194,11 @@ class EventForm extends \Eva\Form\Form
                 ),
             ),
             'validators' => array (
-                'stringLength' => array (
-                    'name' => 'StringLength',
+                'notEmpty' => array (
+                    'name' => 'NotEmpty',
                     'options' => array (
-                        'max' => '50',
                     ),
                 ),
-            ),
-        ),
-        'location' => array (
-            'name' => 'location',
-            'required' => false,
-            'filters' => array (
-                'stripTags' => array (
-                    'name' => 'StripTags',
-                ),
-                'stringTrim' => array (
-                    'name' => 'StringTrim',
-                ),
-            ),
-            'validators' => array (
                 'stringLength' => array (
                     'name' => 'StringLength',
                     'options' => array (
@@ -444,14 +208,4 @@ class EventForm extends \Eva\Form\Form
             ),
         ),
     );
-
-    public function getLanguages($element)
-    {
-        $translator = \Eva\Api::_()->getServiceManager()->get('translator');
-        $locale = $translator->getLocale();
-        $languages = \Eva\Locale\Data::getList($locale, 'language');
-        $element['options']['value_options'] = $languages;
-        $element['attributes']['value'] = $locale;
-        return $element;
-    }
 }

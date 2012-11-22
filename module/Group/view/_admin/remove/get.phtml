@@ -1,12 +1,12 @@
 <?
 $item = $this->item;
-$title = $this->_('Delete Event');
+$title = $this->_('Delete Group');
 $this->headTitle($title, 'SET');
-$form = new Event\Form\EventDeleteForm();
+$form = new Group\Form\GroupDeleteForm();
 
 $form->setView($this)
 ->setMethod('delete')
-->setAction($this->uri('/admin/event/'))
+->setAction($this->uri('/admin/group/'))
 ->bind($item)
 ->prepare();
 ?>
@@ -14,7 +14,7 @@ $form->setView($this)
 <?if($item):?>
 <div class="alert alert-block">
    <h2 class="alert-heading"><?=$title?></h2>
-   <p><?=$this->_(array('Event %title% will be deleted, are you sure?', $item['title']))?></p>
+   <p><?=$this->_(array('Group %title% will be deleted, are you sure?', $item['groupName']))?></p>
    <p>
 		<form class="form-horizontal" <?=$this->formAttr($form)?>>
 			<?=$form->restful();?>
@@ -27,6 +27,6 @@ $form->setView($this)
 </div>
 <?else:?>
 <div class="alert alert-success container">
-    <h2 class="alert-heading"<?=$this->_('>Event have been deleted')?></h2>
+    <h2 class="alert-heading"<?=$this->_('>Group have been deleted')?></h2>
 </div>
 <?endif?>
