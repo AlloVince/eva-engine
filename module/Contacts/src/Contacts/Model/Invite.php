@@ -70,7 +70,7 @@ class Invite extends AbstractModel
         
         $message->setSubject($subject)
             ->setData(array(
-                'user' => $user,
+                'user' => $this->user,
                 'url' => $this->getRegUrl(),
             ))
             ->setTemplatePath($templatePath)
