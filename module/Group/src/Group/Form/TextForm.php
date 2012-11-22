@@ -8,7 +8,7 @@
  * @author    AlloVince
  */
 
-namespace Event\Form;
+namespace Group\Form;
 
 /**
  * Eva Form will automatic combination form Elements & Validators & Filters
@@ -25,11 +25,11 @@ class TextForm extends \Eva\Form\Form
      * @var array
      */
     protected $baseElements = array (
-        'event_id' => array (
-            'name' => 'event_id',
+        'group_id' => array (
+            'name' => 'group_id',
             'type' => 'hidden',
             'options' => array (
-                'label' => 'Event_id',
+                'label' => 'Group_id',
             ),
             'attributes' => array (
                 'value' => '',
@@ -53,8 +53,8 @@ class TextForm extends \Eva\Form\Form
      * @var array
      */
     protected $baseFilters = array (
-        'event_id' => array (
-            'name' => 'event_id',
+        'group_id' => array (
+            'name' => 'group_id',
             'required' => false,
             'filters' => array (
             ),

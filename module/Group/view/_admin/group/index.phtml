@@ -1,25 +1,25 @@
 <?
-$title = $this->_('Event List');
+$title = $this->_('Group List');
 $this->headTitle($title, 'SET');
 $this->textDelay('breadcrumbText', $title);
 if($this->form){
 	$form = $this->form;
 } else {
-    $form = new Event\Form\PostSearchForm();
+    $form = new Group\Form\PostSearchForm();
 }
 
 $form
 ->setView($this)
 ->setMethod('get')
-->setAction($this->uri('/admin/event/'))
+->setAction($this->uri('/admin/group/'))
 ->bind($this->query)
 ->prepare();
 
 $lableMap = array(
     'draft' => '',
     'active' => 'label-success',
-    'finished' => 'label-warning',
-    'disputed' => 'label-inverse',
+    'pending' => 'label-warning',
+    'deleted' => 'label-inverse',
 );
 
 ?>
@@ -28,9 +28,8 @@ $lableMap = array(
         <div class="slate">
             <form <?=$this->formAttr($form)?> class="form-inline">
                 <?=$form->helper('keyword', array('class' => 'input-large', 'placeholder' => 'Keyword...'))?>
-                <?=$form->helper('eventStatus', 'formSelect', array('class' => 'span2'))?>
-                <?=$form->helper('visibility', 'formSelect', array('class' => 'span2'))?>
-                <button class="btn" type="submit"><?=$this->_('Filter Events')?></button>
+                <?=$form->helper('status', 'formSelect', array('class' => 'span2'))?>
+                <button class="btn" type="submit"><?=$this->_('Filter Groups')?></button>
             </form>
         </div>
     </div>
@@ -40,9 +39,9 @@ $lableMap = array(
 <div class="row">
     <div class="span10 listing-buttons">
         <div class="btn-group pull-right">
-            <a href="<?=$this->uri('/admin/event/create')?>" class="btn btn-info"><?=$this->_('Add New Event')?></a>
+            <a href="<?=$this->uri('/admin/group/create')?>" class="btn btn-info"><?=$this->_('Add New Group')?></a>
         </div>
-        <form action="<?=$this->uri('/admin/event/multi/')?>" method="post" class="pull-left" data-multiform="post">
+        <form action="<?=$this->uri('/admin/group/multi/')?>" method="post" class="pull-left" data-multiform="post">
             <input type="hidden" name="id" class="multiform-container-main" value="" />
             <div class="btn-group">
                 <span class="btn"><input type="checkbox" class="multiform-checker" /></span>
@@ -51,10 +50,9 @@ $lableMap = array(
                     <span class="caret"></span>
                 </span>
                 <ul class="dropdown-menu">
-                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/event/multi/status/active')?>"><?=$this->_('Active')?></a></li>
-                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/event/multi/status/finished')?>"><?=$this->_('Finished')?></a></li>
-                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/event/multi/status/disputed')?>"><?=$this->_('Disputed')?></a></li>
-                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/event/multi/status/trashed')?>"><?=$this->_('Trashed')?></a></li>
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/group/multi/status/active')?>"><?=$this->_('Active')?></a></li>
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/group/multi/status/pending')?>"><?=$this->_('Pending')?></a></li>
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/group/multi/status/deleted')?>"><?=$this->_('Deleted')?></a></li>
                 </ul>
             </div>
         </form>
@@ -68,12 +66,12 @@ $lableMap = array(
                         <?=$this->_('Order')?> <span class="caret"></span>
                     </span>
                     <ul class="dropdown-menu">
-                        <li><a href="<?=$this->uri('/admin/event/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'idasc',),));?>" class=""><i class="icon-arrow-up"></i> <?=$this->_('Id')?></a></li>
-                        <li><a href="<?=$this->uri('/admin/event/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'iddesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Id')?></a></li>
-                        <li><a href="<?=$this->uri('/admin/event/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'titleasc',),));?>" class=""><i class="icon-arrow-up"></i> <?=$this->_('Title')?></a></li>
-                        <li><a href="<?=$this->uri('/admin/event/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'titledesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Title')?></a></li>
-                        <li><a href="<?=$this->uri('/admin/event/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'timeasc',),));?>" class=""><i class="icon-arrow-up"></i> <?=$this->_('Time')?></a></li>
-                        <li><a href="<?=$this->uri('/admin/event/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'timedesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Time')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/group/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'idasc',),));?>" class=""><i class="icon-arrow-up"></i> <?=$this->_('Id')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/group/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'iddesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Id')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/group/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'titleasc',),));?>" class=""><i class="icon-arrow-up"></i> <?=$this->_('Title')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/group/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'titledesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Title')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/group/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'timeasc',),));?>" class=""><i class="icon-arrow-up"></i> <?=$this->_('Time')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/group/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'timedesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Time')?></a></li>
                     </ul>
                 </div>
                 <h2><?=$title?></h2>
@@ -84,9 +82,8 @@ $lableMap = array(
                     <tr>
                         <th class="span1">
                         </th>
-                        <th><?=$this->_('Event Title')?></th>
-                        <th class="span1"><?=$this->_('Start Time')?></th>
-                        <th class="span1"><?=$this->_('End Time')?></th>
+                        <th><?=$this->_('Group Title')?></th>
+                        <th class="span1"><?=$this->_('Summary')?></th>
                         <th class="actions"><?=$this->_('Actions')?></th>
                     </tr>
                 </thead>
@@ -98,25 +95,19 @@ $lableMap = array(
                             <input name="id" type="checkbox" class="multiform-item-checkbox"  data-multiform="post" data-multiform-itemid="<?=$item['id'] ?>" value="<?=$item['id'] ?>" />
                         </td>	
                         <td>
-                            <a href="<?=$this->uri('/admin/event/' . $item['id'])?>" class="title"><?=$item['title'] ?></a>
+                            <a href="<?=$this->uri('/admin/group/' . $item['id'])?>" class="title"><?=$item['groupName'] ?></a>
                             <span class="label <?=$lableMap[$item['status']]?>"><?=$this->_($item['status'])?></span>
-                            <?if($item['visibility'] == 'private'):?>
-                            <span class="label label-important"><?=$this->_('private')?></span>
-                            <?endif?>
                             <p>
-                            <span class="meta"><?=$item['user_name'] ?> <?=$item['createTime'];?></span>
+                            <span class="meta"><?=$item['createTime'];?></span>
                             </p>
                         </td>
                         <td>
-                            <?=$item['startDatetimeUtc'] ?>
-                        </td>
-                        <td>
-                            <?=$item['endDatetimeUtc'] ?>
+                            <?=$item['summary'] ?>
                         </td>
                         <td class="actions">
-                            <a href="<?=$this->uri('/admin/event/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/event/', array('page' => $this->page)))); ?>" class="btn btn-small btn-danger"><?=$this->_('Delete')?></a>
-                            <a href="<?=$this->uri('/event/' . $item['urlName'])?>" class="btn btn-small"><?=$this->_('View')?></a>
-                            <a href="<?=$this->uri('/admin/event/' . $item['id'])?>" class="btn btn-small"><?=$this->_('Edit')?></a>
+                            <a href="<?=$this->uri('/admin/group/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/group/', array('page' => $this->page)))); ?>" class="btn btn-small btn-danger"><?=$this->_('Delete')?></a>
+                            <a href="<?=$this->uri('/group/' . $item['groupKey'])?>" class="btn btn-small"><?=$this->_('View')?></a>
+                            <a href="<?=$this->uri('/admin/group/' . $item['id'])?>" class="btn btn-small"><?=$this->_('Edit')?></a>
                         </td>
                     </tr>
                     <?endforeach;?>
@@ -128,7 +119,7 @@ $lableMap = array(
 
     <div class="span10">
         <?if($this->paginator):?>
-        <?=$this->paginator->setPath('/admin/event/')->setBaseQuery($this->query);?>
+        <?=$this->paginator->setPath('/admin/group/')->setBaseQuery($this->query);?>
         <?=$this->widget('Core', 'widgets/paginator', $this->vars())?>
         <?endif;?>
     </div>

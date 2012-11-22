@@ -99,7 +99,7 @@ $lableMap = array(
                         </td>	
                         <td>
                             <a href="<?=$this->uri('/admin/event/' . $item['id'])?>" class="title"><?=$item['title'] ?></a>
-                            <span class="label <?=$lableMap[$item['status']]?>"><?=$this->_($item['status'])?></span>
+                            <span class="label <?=$lableMap[$item['eventStatus']]?>"><?=$this->_($item['eventStatus'])?></span>
                             <?if($item['visibility'] == 'private'):?>
                             <span class="label label-important"><?=$this->_('private')?></span>
                             <?endif?>

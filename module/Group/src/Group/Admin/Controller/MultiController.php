@@ -37,7 +37,7 @@ class MultiController extends RestfulModuleController
             }
             return $where;
         })->save(array(
-            'groupStatus' => $postStatus
+            'status' => $postStatus
         ));
         
         $this->redirect()->toUrl('/admin/group/');

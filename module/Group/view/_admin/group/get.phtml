@@ -1,6 +1,6 @@
 <?
 $item = $this->item;
-$title = $item['id'] ? 'Edit Event' : 'Create Event';
+$title = $item['id'] ? 'Edit Group' : 'Create Group';
 $title = $this->_($title);
 $method = $item['id'] ? 'put' : 'post';
 $this->headTitle($title, 'SET');
@@ -10,34 +10,34 @@ if($this->form){
 	$form = $this->form;
 } else {
     if($item['id']) {
-        $form = new Event\Form\EventEditForm();
+        $form = new Group\Form\GroupEditForm();
     } else {
-        $form = new Event\Form\EventCreateForm();
+        $form = new Group\Form\GroupCreateForm();
     }
 }
 $form->useSubFormGroup()
      ->setMethod($item['id'] ? 'put' : 'post')
      ->setView($this)
-     ->setAction($this->uri('/admin/event/'))
+     ->setAction($this->uri('/admin/group/'))
      ->bind($item)
      ->prepare();
 
 ?>
 
 <input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
-<div id="event-create-succeed" class="alert alert-success hide">
+<div id="group-create-succeed" class="alert alert-success hide">
     <a href="#" data-dismiss="alert" class="close">x</a>
-    <h4 class="alert-heading"><?=$this->_('New Event Created')?></h4>
+    <h4 class="alert-heading"><?=$this->_('New Group Created')?></h4>
 </div>
 
-<div id="event-edit-succeed" class="alert alert-success hide">
+<div id="group-edit-succeed" class="alert alert-success hide">
     <a href="#" data-dismiss="alert" class="close">x</a>
-    <h4 class="alert-heading"><?=$this->_('Event Edit Succeed')?></h4>
+    <h4 class="alert-heading"><?=$this->_('Group Edit Succeed')?></h4>
 </div>
 
-<div id="event-edit-failed" class="alert alert-error hide">
+<div id="group-edit-failed" class="alert alert-error hide">
     <a href="#" data-dismiss="alert" class="close">x</a>
-    <h4 class="alert-heading"><?=$this->_('Event Edit Failed')?></h4>
+    <h4 class="alert-heading"><?=$this->_('Group Edit Failed')?></h4>
 </div>
 
 
@@ -51,30 +51,30 @@ $form->useSubFormGroup()
                 <div class="page-header">
                     <?if($item['id']):?>
                     <div class="btn-group pull-right">
-                        <a href="<?=$this->uri('/event/' . $item['urlName'])?>" class="btn"><?=$this->_('View')?></a>
-                        <a href="<?=$this->uri('/admin/event/create')?>" class="btn"><?=$this->_('Clear Cache')?></a>
-                        <a href="<?=$this->uri('/admin/event/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/event/' . $item['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
+                        <a href="<?=$this->uri('/group/' . $item['groupKey'])?>" class="btn"><?=$this->_('View')?></a>
+                        <a href="<?=$this->uri('/admin/group/create')?>" class="btn"><?=$this->_('Clear Cache')?></a>
+                        <a href="<?=$this->uri('/admin/group/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/group/' . $item['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
                     </div>
                     <?endif?>
                     <h2><?=$title?></h2>
                 </div>
                 <fieldset class="">
-                    <div class="control-group <?=$form->isError('title') ? 'error' : '';?>">
-                        <?=$form->helper('title', 'label', array('class' => 'control-label'))?>
+                    <div class="control-group <?=$form->isError('groupName') ? 'error' : '';?>">
+                        <?=$form->helper('groupName', 'label', array('class' => 'control-label'))?>
                         <div class="controls docs-input-sizes">
-                            <?=$form->helper('title', array('class' => 'span9'))?>
-                            <div class="help-block"><?=$form->helper('title', 'formElementErrors')?></div>
+                            <?=$form->helper('groupName', array('class' => 'span9'))?>
+                            <div class="help-block"><?=$form->helper('groupName', 'formElementErrors')?></div>
                         </div>
                     </div>
 
-                    <div class="control-group <?=$form->isError('urlName') ? 'error' : '';?>">
-                        <?=$form->helper('urlName', 'label', array('class' => 'control-label'))?>
+                    <div class="control-group <?=$form->isError('groupKey') ? 'error' : '';?>">
+                        <?=$form->helper('groupKey', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
                             <div class="input-prepend input-append">
-                                <span class="add-on"><?=$this->serverUrl() . '/event/'?></span><?=$form->helper('urlName', array('class' => 'span6'))?><span class="add-on">/</span>
+                                <span class="add-on"><?=$this->serverUrl() . '/group/'?></span><?=$form->helper('groupKey', array('class' => 'span6'))?><span class="add-on">/</span>
                             </div>
                             <div class="help-block"><?=$this->_('No input will create a random url')?></div>
-                            <div class="help-block"><?=$form->helper('urlName', 'formElementErrors')?></div>
+                            <div class="help-block"><?=$form->helper('groupKey', 'formElementErrors')?></div>
                         </div>
                     </div>
 
@@ -93,95 +93,28 @@ $form->useSubFormGroup()
         <div class="span5">
             <div class="slate">
                 <div class="page-header">
-                    <h3><?=$this->_('Event Setting')?></h3>
+                    <h3><?=$this->_('Group Setting')?></h3>
                 </div>
 
 
 
                 <fieldset class="form-horizontal">
 
-                    <div class="control-group <?=$form->isError('eventStatus') ? 'error' : '';?>">
-                        <?=$form->helper('eventStatus', 'label', array('class' => 'control-label'))?>
+                    <div class="control-group <?=$form->isError('status') ? 'error' : '';?>">
+                        <?=$form->helper('status', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper('eventStatus', 'formSelect', array('class' => ''))?>
-                            <div class="help-block"><?=$form->helper('eventStatus', 'formElementErrors')?></div>
+                            <?=$form->helper('status', 'formSelect', array('class' => ''))?>
+                            <div class="help-block"><?=$form->helper('status', 'formElementErrors')?></div>
                         </div>
                     </div>
 
-                    <div class="control-group <?=$form->isError('visibility') ? 'error' : '';?>">
-                        <?=$form->helper('visibility', 'label', array('class' => 'control-label'))?>
+                    <div class="control-group <?=$form->isError('summary') ? 'error' : '';?>">
+                        <?=$form->helper('summary', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper('visibility', 'formSelect', array('class' => ''))?>
-                            <div class="help-block"><?=$form->helper('visibility', 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                </fieldset>
-            </div>
-        </div><!--span5 end-->
-
-        <div class="span5">
-            <div class="slate">
-                <div class="page-header">
-                    <h3><?=$this->_('Date')?></h3>
-                </div>
-
-                <fieldset class="form-horizontal">
-                    <div class="control-group <?=$form->isError('startTime') ? 'error' : '';?>">
-                        <?=$form->helper('startTime', 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper('startTime', array('class' => 'datepicker', 'data-date-format' => 'yyyy-mm-dd'))?>        
-                            <div class="help-block"><?=$form->helper('startTime', 'formElementErrors')?></div>
-                        </div>
-                    </div>
-
-                   <div class="control-group <?=$form->isError('endTime') ? 'error' : '';?>">
-                        <?=$form->helper('endTime', 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper('endTime', array('class' => 'datepicker', 'data-date-format' => 'yyyy-mm-dd'))?>        
-                            <div class="help-block"><?=$form->helper('endTime', 'formElementErrors')?></div>
-                        </div>
-                    </div>
-
-                    <div class="control-group <?=$form->isError('timezone') ? 'error' : '';?>">
-                        <?=$form->helper('timezone', 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper('timezone', array('class' => 'span1'))?>        
-                            <div class="help-block"><?=$form->helper('timezone', 'formElementErrors')?></div>
-                        </div>
-                    </div>  
-                </fieldset>
-            </div>
-        </div><!--span5 end-->
-        
-        <div class="span5">
-            <div class="slate">
-                <div class="page-header">
-                    <h3><?=$this->_('Location')?></h3>
-                </div>
-
-                <fieldset class="form-horizontal">
-                    <div class="control-group <?=$form->isError('location') ? 'error' : '';?>">
-                        <?=$form->helper('location', 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper('location', array('class' => 'span5'))?>        
-                            <div class="help-block"><?=$form->helper('location', 'formElementErrors')?></div>
+                            <?=$form->helper('summary', array('class' => 'span3'))?>        
+                            <div class="help-block"><?=$form->helper('summary', 'formElementErrors')?></div>
                         </div>
                     </div> 
-
-                     <div class="control-group <?=$form->isError('longitude') ? 'error' : '';?>">
-                        <?=$form->helper('longitude', 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper('longitude', array('class' => 'span3'))?>        
-                            <div class="help-block"><?=$form->helper('longitude', 'formElementErrors')?></div>
-                        </div>
-                    </div>  
-                    <div class="control-group <?=$form->isError('latitude') ? 'error' : '';?>">
-                        <?=$form->helper('latitude', 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper('latitude', array('class' => 'span3'))?>        
-                            <div class="help-block"><?=$form->helper('latitude', 'formElementErrors')?></div>
-                        </div>
-                    </div>    
                 </fieldset>
             </div>
         </div><!--span5 end-->
@@ -198,7 +131,7 @@ $form->useSubFormGroup()
                     <?else:?>
                     <img id="post-image" src="http://placehold.it/260x180" alt="" />
                     <?endif?>
-                    <?=$form->helper(array('EventFile', 'file_id'), 'formHidden')?>
+                    <?=$form->helper(array('GroupFile', 'file_id'), 'formHidden')?>
                 </div>
                 <a id="connect-image" href="<?=$this->uri('/api/file/')?>" class="btn"><?=$this->_('Select Image')?></a>
             </div>
@@ -216,7 +149,7 @@ $form->useSubFormGroup()
 eva.runtime = function(){
       
     eva.callback.connect = function(item, parentWindow){
-        $("#event-form-eventfileform-file-id").val(item.attr("data-connect-id"));
+        $("#group-form-groupfileform-file-id").val(item.attr("data-connect-id"));
         var data = $.parseJSON(item.attr('data-connect-json'));
         $("#post-image").attr("src", data.Thumb);
         $.fn.colorbox.close();

@@ -1,7 +1,7 @@
 <?php
-namespace Event\Form;
+namespace Group\Form;
 
-class EventSearchForm extends EventForm
+class GroupSearchForm extends GroupForm
 {
     protected $mergeElements = array(
         'keyword' =>     array(
@@ -23,11 +23,11 @@ class EventSearchForm extends EventForm
                 'value' => 1,
             ),
         ),
-        'user_id' =>     array(
-            'name' => 'user_id',
+        'creator_id' =>     array(
+            'name' => 'creator_id',
             'type' => 'hidden',
             'options' => array(
-                'label' => 'User Id',
+                'label' => 'Creator Id',
             ),
             'attributes' => array(
             ),
@@ -43,7 +43,7 @@ class EventSearchForm extends EventForm
         ),
         'status' => array(
             'options' => array(
-                'empty_option' => 'Event Status',
+                'empty_option' => 'Group Status',
             ),
             'attributes' => array(
                 'value' => '',

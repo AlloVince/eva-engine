@@ -1,7 +1,7 @@
 <?php
-namespace Event\Form;
+namespace Group\Form;
 
-class EventDeleteForm extends EventForm
+class GroupDeleteForm extends GroupForm
 {
     protected $validationGroup = array('id');
 
