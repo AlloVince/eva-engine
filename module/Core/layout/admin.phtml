@@ -79,6 +79,15 @@
                         </ul>
                         </li>
                         <?endif?>
+                        <?if($this->hasmodule('Group')):?>
+                        <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="collapse" data-target="#group-dropdown" href="#"><i class="icon-calendar"></i> <?=$this->_('Group')?> <b class="caret"></b></a>
+                        <ul id="group-dropdown" class="collapse">
+                            <li data-highlight-url="/admin/group/(\d+)*$"><a href="<?=$this->uri('/admin/group/')?>"><?=$this->_('Group Management')?></a></li>
+                            <li data-highlight-url="/admin/group/create"><a href="<?=$this->uri('/admin/group/create')?>"><?=$this->_('Create Group')?></a></li>
+                        </ul>
+                        </li>
+                        <?endif?>
                         <?if($this->hasmodule('User')):?>
                         <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="collapse" data-target="#user-dropdown" href="#"><i class="icon-user"></i> <?=$this->_('User')?> <b class="caret"></b></a>

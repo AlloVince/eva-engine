@@ -49,7 +49,7 @@ class Group extends AbstractItem
             'inversedBy' => 'Group\Item\GroupUser',
             'inversedMappedBy' => 'GroupUser',
             'inverseJoinColumns' => array(
-                'joinColumn' => 'creator_id',
+                'joinColumn' => 'user_id',
                 'referencedColumn' => 'id',
             ),
         ),
@@ -90,9 +90,9 @@ class Group extends AbstractItem
 
     public function getCreatorId()
     {
-        if(!$this->creator_id){
+        if(!$this->user_id){
             $user = \Core\Auth::getLoginUser();
-            $this->creator_id = $user['id'];
+            $this->user_id = $user['id'];
         }
     }
 }

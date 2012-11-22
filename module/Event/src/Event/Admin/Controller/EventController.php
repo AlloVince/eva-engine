@@ -82,6 +82,9 @@ class EventController extends RestfulModuleController
         if ($form->isValid()) {
             $postData = $form->getData();
             $itemModel = Api::_()->getModel('Event\Model\Event');
+            $user = \Core\Auth::getLoginUser('Auth_Admin');
+            $postData['user_id'] = $user['id'];
+            $postData['user_name'] = $user['userName'];
             $eventId = $itemModel->setItem($postData)->createEventdata();
             $this->flashMessenger()->addMessage('event-create-succeed');
             $this->redirect()->toUrl('/admin/event/' . $eventId);

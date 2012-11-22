@@ -22,8 +22,8 @@ class Groups extends TableGateway
             $this->page($params->page);
         }
 
-        if($params->creator_id){
-            $this->where(array('creator_id' => $params->creator_id));
+        if($params->user_id){
+            $this->where(array('user_id' => $params->user_id));
         }
 
         if($params->keyword){

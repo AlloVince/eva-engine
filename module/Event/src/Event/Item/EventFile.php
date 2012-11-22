@@ -31,7 +31,7 @@ class EventFile extends AbstractItem
     {
         $eventItem = $this->getModel()->getItem();
         $eventId = $eventItem->id;
-        if(!$eventId) {
+        if(!$eventId || !$this->file_id) {
             return;
         }
 

@@ -112,6 +112,12 @@ class Event extends AbstractModel
                 $relItem->create();
             }
         }
+        
+        $eventUserItem = $this->getItem('Event\Item\EventUser');
+        $eventUserItem->event_id = $itemId;
+        $eventUserItem->user_id  = $item->user_id;
+        $eventUserItem->create('createAdmin');
+
         $this->trigger('create');
 
         $this->trigger('create.event');

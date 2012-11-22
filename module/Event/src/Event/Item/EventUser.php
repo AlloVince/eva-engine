@@ -10,40 +10,35 @@ class EventUser extends AbstractItem
 
     protected $map = array(
         'create' => array(
+            'getAdminValues()',
+            'getRequestTime()',
+            'getApprovalTime()',
+        ),
+        'createAdmin' => array(
+            'getAdminValues()',
+            'getRequestTime()',
+            'getApprovalTime()',
         ),
     );
 
-    public function create()
+    public function getAdminValues()
     {
-        $eventItem = $this->getModel()->getItem();
-        $eventId = $eventItem->id;
-        if(!$eventId || !$this->file_id) {
-            return;
+        $this->role          = 'admin';
+        $this->operator_id   = $this->user_id;
+        $this->requestStatus = 'active';
+    }
+    
+    public function getRequestTime()
+    {
+        if(!$this->requestTime) {
+            return $this->requestTime = \Eva\Date\Date::getNow();
         }
-
-        $data = $this->toArray();
-        $data['event_id'] = $eventId;
-        $dataClass = $this->getDataClass();
-        $dataClass->create($data);
     }
 
-    public function save()
+    public function getApprovalTime()
     {
-        $eventItem = $this->getModel()->getItem();
-        $eventId = $eventItem->id;
-        if(!$eventId) {
-            return;
+        if(!$this->approvalTime) {
+            return $this->approvalTime = \Eva\Date\Date::getNow();
         }
-
-        $dataClass = $this->getDataClass();
-        $dataClass->where(array(
-            'event_id' => $fieldId
-        ))->remove();
-        if(isset($this[0])){
-            foreach($this as $item){
-                $item['event_id'] = $eventId;
-                $dataClass->create($item);
-            }
-        }
-    }
+    }   
 }

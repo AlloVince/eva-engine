@@ -112,6 +112,12 @@ class Group extends AbstractModel
                 $relItem->create();
             }
         }
+        
+        $groupUserItem = $this->getItem('Group\Item\GroupUser');
+        $groupUserItem->group_id = $itemId;
+        $groupUserItem->user_id  = $item->user_id;
+        $groupUserItem->create('createAdmin');
+
         $this->trigger('create');
 
         $this->trigger('create.group');

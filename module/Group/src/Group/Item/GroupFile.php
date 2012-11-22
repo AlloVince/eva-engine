@@ -31,7 +31,7 @@ class GroupFile extends AbstractItem
     {
         $groupItem = $this->getModel()->getItem();
         $groupId = $groupItem->id;
-        if(!$groupId) {
+        if(!$groupId || !$this->file_id) {
             return;
         }
 

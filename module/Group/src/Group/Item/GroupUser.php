@@ -10,40 +10,35 @@ class GroupUser extends AbstractItem
 
     protected $map = array(
         'create' => array(
+            'getAdminValues()',
+            'getRequestTime()',
+            'getApprovalTime()',
+        ),
+        'createAdmin' => array(
+            'getAdminValues()',
+            'getRequestTime()',
+            'getApprovalTime()',
         ),
     );
 
-    public function create()
+    public function getAdminValues()
     {
-        $groupItem = $this->getModel()->getItem();
-        $groupId = $groupItem->id;
-        if(!$groupId || !$this->file_id) {
-            return;
-        }
-
-        $data = $this->toArray();
-        $data['group_id'] = $groupId;
-        $dataClass = $this->getDataClass();
-        $dataClass->create($data);
+        $this->role          = 'admin';
+        $this->operator_id   = $this->user_id;
+        $this->requestStatus = 'active';
     }
 
-    public function save()
+    public function getRequestTime()
     {
-        $groupItem = $this->getModel()->getItem();
-        $groupId = $groupItem->id;
-        if(!$groupId) {
-            return;
-        }
-
-        $dataClass = $this->getDataClass();
-        $dataClass->where(array(
-            'group_id' => $fieldId
-        ))->remove();
-        if(isset($this[0])){
-            foreach($this as $item){
-                $item['group_id'] = $groupId;
-                $dataClass->create($item);
-            }
+        if(!$this->requestTime) {
+            return $this->requestTime = \Eva\Date\Date::getNow();
         }
     }
+
+    public function getApprovalTime()
+    {
+        if(!$this->approvalTime) {
+            return $this->approvalTime = \Eva\Date\Date::getNow();
+        }
+    }   
 }

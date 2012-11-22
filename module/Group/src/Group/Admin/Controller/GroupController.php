@@ -82,6 +82,8 @@ class GroupController extends RestfulModuleController
         if ($form->isValid()) {
             $postData = $form->getData();
             $itemModel = Api::_()->getModel('Group\Model\Group');
+            $user = \Core\Auth::getLoginUser('Auth_Admin');
+            $postData['user_id'] = $user['id'];
             $groupId = $itemModel->setItem($postData)->createGroup();
             $this->flashMessenger()->addMessage('group-create-succeed');
             $this->redirect()->toUrl('/admin/group/' . $groupId);

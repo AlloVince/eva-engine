@@ -74,6 +74,8 @@ class Event extends AbstractItem
         ),
         'save' => array(
             'getUrlName()',
+            'getStartDatetimeUtc()',
+            'getEndDatetimeUtc()',
         ),
     );
 
@@ -109,11 +111,17 @@ class Event extends AbstractItem
 
     public function getStartDatetimeUtc()
     {
+        if ($this->timezone && $this->startTime) {
+            return $this->startDatetimeUtc = \Eva\Date\Date::getBefore($this->timezone * 3600, $this->startTime, 'Y-m-d H:i:s'); 
+        }
         return $this->startDatetimeUtc = $this->startTime;
     }
 
     public function getEndDatetimeUtc()
     {
+        if ($this->timezone && $this->endTime) {
+            return $this->endDatetimeUtc = \Eva\Date\Date::getBefore($this->timezone * 3600, $this->endTime, 'Y-m-d H:i:s'); 
+        }
         return $this->endDatetimeUtc = $this->endTime;
     }
 }

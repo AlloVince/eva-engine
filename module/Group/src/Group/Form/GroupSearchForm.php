@@ -23,8 +23,8 @@ class GroupSearchForm extends GroupForm
                 'value' => 1,
             ),
         ),
-        'creator_id' =>     array(
-            'name' => 'creator_id',
+        'user_id' =>     array(
+            'name' => 'user_id',
             'type' => 'hidden',
             'options' => array(
                 'label' => 'Creator Id',
