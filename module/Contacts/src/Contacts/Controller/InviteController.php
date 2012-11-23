@@ -26,7 +26,7 @@ class InviteController extends AbstractActionController
         
         $config = $this->getServiceLocator()->get('config');
         $helper = $this->getEvent()->getApplication()->getServiceManager()->get('viewhelpermanager')->get('serverurl');
-        $url = $helper();
+        $url = $helper() . '/register/';
         
         if (!isset($config['contacts']['invite_mail'])) {
             exit;
