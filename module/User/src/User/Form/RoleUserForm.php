@@ -76,7 +76,7 @@ class RoleUserForm extends \Eva\Form\Form
         ),
         'pendingTime' => array (
             'name' => 'pendingTime',
-            'type' => 'datetime',
+            'type' => 'dateTime',
             'options' => array (
                 'label' => 'Pending Time',
             ),
@@ -86,7 +86,7 @@ class RoleUserForm extends \Eva\Form\Form
         ),
         'activeTime' => array (
             'name' => 'activeTime',
-            'type' => 'datetime',
+            'type' => 'dateTime',
             'options' => array (
                 'label' => 'Active Time',
             ),
@@ -96,7 +96,7 @@ class RoleUserForm extends \Eva\Form\Form
         ),
         'expiredTime' => array (
             'name' => 'expiredTime',
-            'type' => 'datetime',
+            'type' => 'dateTime',
             'options' => array (
                 'label' => 'Expired Time',
             ),
