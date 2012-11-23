@@ -16,6 +16,10 @@ class Roles extends TableGateway
 
     public function setParameters(Parameters $params)
     {
+        if($params->noLimit) {
+            $this->disableLimit();
+        }
+
         return $this;
     }
 }

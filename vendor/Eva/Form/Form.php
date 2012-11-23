@@ -363,6 +363,12 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
 
         $subForm->setParent($this);
         if(is_array($formConfig) && isset($formConfig['collection']) && $formConfig['collection']) {
+            if(isset($formConfig['optionsCallback'])){
+                $optionsCallback = $formConfig['optionsCallback'];
+                $optionsCallback = $subForm->$optionsCallback();
+                $formConfig = array_merge($formConfig, $optionsCallback);
+            }
+
             $object = isset($formConfig['object']) ? $formConfig['object'] : array();
             if(is_object($object) && method_exists($object, 'toArray')) {
                 $values = $object->toArray();
@@ -375,6 +381,7 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
                 'target_element' => $subForm,
             );
             $options = array_merge($options, $formConfig);
+
             if($values) {
                 $options['count'] = count($values);
             }
@@ -764,13 +771,20 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
         }
         $element->setAttributes($attrs);
 
-
         if(isset($attrs['label'])){
             $element->setLabel($attrs['label']);
         }
 
         if(isset($attrs['value'])){
             $element->setValue($attrs['value']);
+        }
+
+        //For form multi checkbox
+        if(isset($attrs['checkedValue'])){
+            $element->setCheckedValue($attrs['checkedValue']);
+        }
+        if(isset($attrs['checked'])){
+            $element->setChecked($attrs['checked']);
         }
 
         $filter = $this->getFilter($elementNameOrArray);

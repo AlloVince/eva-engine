@@ -22,6 +22,8 @@ class RoleUserForm extends \Eva\Form\Form
 {
     protected $role;
 
+    protected $roles;
+
     /**
      * Form basic elements
      *
@@ -42,7 +44,7 @@ class RoleUserForm extends \Eva\Form\Form
             'name' => 'user_id',
             'type' => 'hidden',
             'options' => array (
-                'label' => 'User_id',
+                'label' => 'User Id',
             ),
             'attributes' => array (
                 'value' => '',
@@ -186,4 +188,25 @@ class RoleUserForm extends \Eva\Form\Form
         $item = $model->getRole($roleId);
         return $item;
     }
+
+    public function initRoles()
+    {
+        $roleModel = \Eva\Api::_()->getModel('User\Model\Role');
+        $roles = $roleModel->setItemList(array(
+            'noLimit' => true
+        ))->getRoleList();
+        $roles = $roles ? $roles->toArray() : array();
+        $idArray = array();
+        foreach($roles as $key => $role) {
+            $roles[$key]['role_id'] = $role['id'];
+            $idArray[$role['id']] = $role['id'];
+        }
+        $this->roles = $roles;
+
+        $this->get('role_id')->setValueOptions($idArray);
+        return array(
+            'object' => $roles
+        );
+    }
+
 }

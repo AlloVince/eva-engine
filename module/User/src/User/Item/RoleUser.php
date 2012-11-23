@@ -34,6 +34,9 @@ class RoleUser extends AbstractItem
             return;
         }
         $dataClass = $this->getDataClass();
+        $dataClass->where(array(
+            'user_id' => $userId,
+        ))->remove();
         if(isset($this[0])){
             foreach($this as $item){
                 $item['user_id'] = $userId;

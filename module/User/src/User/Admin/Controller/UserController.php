@@ -76,14 +76,12 @@ class UserController extends RestfulModuleController
         ));
         return array(
             'item' => $item,
-            'flashMessenger' => $this->flashMessenger()->getMessages(),
         );
     }
 
     public function restPostUser()
     {
-        $request = $this->getRequest();
-        $postData = $request->getPost();
+        $postData = $this->params()->fromPost();
         $form = new Form\UserCreateForm();
         $form->useSubFormGroup()->bind($postData);
 

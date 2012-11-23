@@ -17,7 +17,6 @@ $form->setView($this)
      ->setAction($this->uri('/admin/user/'))
      ->bind($item)
      ->prepare();
-
 ?>
 
 <input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
@@ -196,7 +195,7 @@ $form->setView($this)
                     <h3><?=$this->_('Roles & Permissions')?></h3>
                 </div>
                 <?foreach($form->get('RoleUser') as $subForm):?>
-                <?$role = $subForm->getRole()?>
+                <?$role = $subForm->getRole();?>
                 <fieldset class="form-horizontal">
                     <div class="control-group <?=$subForm->isError('role_id') ? 'error' : '';?> span3">
                         <?=$subForm->helper('role_id', 'label', array(
@@ -206,7 +205,8 @@ $form->setView($this)
                         <div class="controls">
                             <?=$subForm->helper('role_id', 'formCheckbox', array(
                                 'class' => '',
-                                'checked' => ''
+                                'checkedValue' => $role['id'],
+                                'checked' => $subForm->get('user_id')->getValue() ? true : false
                             ))?>
                             <div class="help-block"><?=$subForm->helper('role_id', 'formElementErrors')?></div>
                         </div>
