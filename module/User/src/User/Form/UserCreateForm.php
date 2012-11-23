@@ -107,6 +107,8 @@ class UserCreateForm extends UserForm
         if(isset($data['inputPassword'])){
             $data['password'] = $data['inputPassword'];
             unset($data['inputPassword']);
+        } else {
+            unset($data['password']);
         }
 
         $roleUsers = array();

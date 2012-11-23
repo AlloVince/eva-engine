@@ -151,7 +151,7 @@ $form->setView($this)
                             <div class="help-block"><?=$form->helper('email', 'formElementErrors')?></div>
                         </div>
                     </div>
-                    <div class="control-group <?=$form->isError('inputPassword') ? 'error' : '';?>">
+                    <div class="control-group <?=$form->isError('inputPassword') ? 'error' : '';?> hide">
                         <?=$form->helper('inputPassword', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
                             <?=$form->helper('inputPassword', array('class' => ''))?>        
