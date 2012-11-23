@@ -61,7 +61,8 @@ class Invite extends AbstractModel
 
         $subject = isset($params['subject']) ? $params['subject'] : $this->getSubject();
 
-        $message = new Message();
+        $mail = new Mail();
+        $message = $mail->getMessage();
         $message->addFrom($mine['email'], $mine['userName']);
 
         foreach ($emails as $email) {
@@ -75,8 +76,6 @@ class Invite extends AbstractModel
             ))
             ->setTemplatePath($templatePath)
             ->setTemplate($template);
-
-        $mail = new Mail();
 
         return $mail->send($message);
     }
