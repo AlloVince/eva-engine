@@ -34,7 +34,7 @@ eva.construct = function(){
 			var height = $(window).height() > minHeight ? $(window).height() - 85 : minHeight;
 			var source = $timeline.html();
 			//source = eva.d('proxy/') + '?page=' + encodeURIComponent(source.replace(/&amp;/g, '&'));
-			source = eva.d('proxy/spreadsheet');
+			source = eva.d('/proxy/spreadsheet');
 			$timeline.empty();
 			var config = {
 				type:               'timeline',
