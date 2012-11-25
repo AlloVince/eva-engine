@@ -29,7 +29,7 @@ eva.construct = function(){
 	if($("#timeline-embed")[0]){
 		var $timeline = $("#timeline-embed");
 		$("body").addClass('timeline');
-		eva.loader(eva.s(['src/avnpc/timeline/js/storyjs-embed.js']), function(){
+		eva.loader(eva.s(['/src/avnpc/timeline/js/storyjs-embed.js']), function(){
 			var minHeight = 550;
 			var height = $(window).height() > minHeight ? $(window).height() - 85 : minHeight;
 			var source = $timeline.html();
@@ -45,8 +45,8 @@ eva.construct = function(){
 				lang:               'zh-cn',
 				source:             source,
 				embed_id:           'timeline-embed',
-				js:                 eva.s('src/avnpc/timeline/js/timeline.min.js'), 
-				css:                eva.s('src/avnpc/timeline/css/timeline.css') 
+				js:                 eva.s('/src/avnpc/timeline/js/timeline.min.js'), 
+				css:                eva.s('/src/avnpc/timeline/css/timeline.css') 
 			};
 			//console.log(config);
 			createStoryJS(config);
