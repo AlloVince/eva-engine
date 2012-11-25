@@ -1,0 +1,881 @@
+@import "../../../eva/css/evabootstrap-full.less";
+
+@linkColor : #045999;
+@baseUrl : 'http://static.av2.me/';
+
+@font-face {
+    font-family: 'FontAwesome';
+    src: url('@{baseUrl}lib/css/fontawesome/font/fontawesome-webfont.eot');
+    src: url('@{baseUrl}lib/css/fontawesome/font/fontawesome-webfont.eot?#iefix') format('embedded-opentype'),
+         url('@{baseUrl}lib/css/fontawesome/font/fontawesome-webfont.woff') format('woff'),
+         url('@{baseUrl}lib/css/fontawesome/font/fontawesome-webfont.ttf') format('truetype'),
+         url('@{baseUrl}lib/css/fontawesome/font/fontawesome-webfont.svgz#FontAwesomeRegular') format('svg'),
+         url('@{baseUrl}lib/css/fontawesome/font/fontawesome-webfont.svg#FontAwesomeRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+html, body, #page,#body,#main-wrap {
+	min-height:100%;
+}
+html {
+	background:url(img/bg.png) repeat-y left;
+}
+
+body {
+	color:#333;
+	font-size:12px;
+	font-family:@fontFamily;
+}
+
+a{
+   color:@linkColor;
+}
+
+a:hover {
+	color:#0A132F;
+	text-decoration:none;
+}
+
+
+.header {
+	position:fixed;
+	width:190px;
+	height:360px;
+	background:url(img/header.png) no-repeat right top;
+	top:0;
+	left:0;
+
+	h1 {
+		width:180px;
+		background:url(img/h1.png) no-repeat right top;
+		padding:100px 0 0 10px;
+		font-family: 'Sarina', cursive;
+		font-size:22px;
+		text-shadow:1px 1px 1px #000;
+		a {
+			color:#C6D3DE;
+		}
+	}
+
+	p {
+		margin:0 10px;
+		color:#C6D3DE;
+		font-family: 'Great Vibes', cursive;
+		font-size:15px;
+
+		a {
+			color:#C6D3DE;
+		}
+	}
+}
+
+
+
+#menu{
+	margin-top:20px;
+	li {
+		padding:10px 20px;
+		font-size:14px;
+		text-align:right;
+
+		a {
+			color:#FFF;
+			font-size:20px;
+			text-shadow:1px 1px 1px #0A132F;
+			font-family: 'Great Vibes', cursive;
+		}
+
+		a:hover {
+			color:@linkColor;
+		}
+	}
+}
+
+
+.page_content {
+	padding:130px 10px 30px 250px;
+	max-width:980px;
+}
+
+.vlist.posts {
+	.item {
+		text-align:left;
+		margin-bottom:20px;
+	}
+	h2,h3 {
+		margin-bottom:10px;
+		text-shadow:2px 2px 2px #DDD;
+		font-size:25px;
+		.wordbreak();
+	}
+
+	p {
+		color:#999;
+	}
+
+}
+
+
+.page_header{
+	position:relative;
+	height:25px;
+	line-height:25px;
+	margin-bottom:10px;
+	h2, h3, h4, h5, h6 {
+		/*
+		position:absolute;
+		top:0;
+		left:0;
+		line-height:25px;
+		font-size:15px;
+		.inline-block();
+		*/
+	}
+}
+
+.page_header.bordered{
+	border-bottom:1px solid #EBEBEB;
+	h2, h3, h4, h5, h6 {
+		border-bottom:1px solid @linkColor;
+		.wordbreak();
+	}	
+}
+
+.page_header.large {
+	display:block;
+	height:auto;
+	line-height:40px;
+	min-height:40px;
+	margin-bottom:25px;
+	color:@linkColor;
+	h2, h3 {
+		font-size:30px;
+		line-height:40px;
+	}
+
+	h4, h5, h6 {
+		font-size:20px;
+		line-height:40px;	
+	}
+
+	a {
+		text-shadow:2px 2px 2px #DDD;
+	}
+}
+
+.page_header.large.bordered {
+	border-width:2px;
+	h2, h3, h4, h5, h6 {
+		border-width:2px;
+	}
+}
+
+
+.copyright {
+	margin:10px 0 20px 0;
+	font-size:16px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.vlist-creater(@itemOuterHeight:170px, @itemInnerHeight:120px){
+	.item {
+		clear:both;
+		position:relative;
+		height:@itemInnerHeight;
+		padding:(@itemOuterHeight - @itemInnerHeight)/2 0;
+		text-align:left;	
+	}
+	.item-inline{
+		.inline-block();
+		height:@itemInnerHeight;
+	}
+	.item-absolute{
+		height:@itemInnerHeight;
+		position:absolute;
+		top:(@itemOuterHeight - @itemInnerHeight)/2;
+	}
+}
+
+.texts {
+	.vlist-creater(90px, 70px);
+	.item {
+		height:auto;
+	}	
+	.item-inline{
+		height:auto;
+	}
+	.userface {
+		left:5px;
+		top:10px;
+	}
+	.item_text {
+		margin:0 0 0 80px;
+		position:relative;
+		min-width:430px;
+		max-width:450px;
+	}
+
+	.item_text:after {
+		content:"";
+		position:absolute;
+		border-style:solid;
+		display:block; 
+		width:0;
+		top:25px;
+		left:-10px;
+		bottom:auto;
+		border-width:10px 10px 10px 0;
+		border-color:transparent #EFEFEF;
+	}
+
+	.item.right .well{
+		margin:0 0 2px 2px;
+	}
+
+	.well {
+		margin:0 2px 2px 0;
+		padding-bottom:40px;
+	}
+	.well:hover {
+		.box-shadow(0 1px 3px rgba(0,0,0,.055));
+	}
+
+	.item_action {
+		height:20px;
+		top:auto;
+		bottom:0;
+		left:0;
+		right:0;
+		color:#999;
+		padding:0 15px;
+
+		a, a .icon {
+			color:#999;
+		}
+
+		a:hover, a:hover .icon {
+			color:@linkColor;
+		}
+	}
+
+
+	.item.right {
+		text-align:right;
+		.userface {
+			left:auto;
+			right:5px;
+			top:10px;
+		}	
+
+		.item_text {
+			margin:0 80px 0 0;
+		}
+
+		.well {
+			text-align:left;
+			background:#F7F7FF;
+		}
+
+		.item_text:after {
+			left:auto;
+			right:-10px;
+			border-width:10px 0 10px 10px;
+		}
+	}
+
+	a.loaded, a.loaded .icon {
+		color:@linkColor;
+	}
+}
+
+
+
+.neighbors {
+	text-align:center;
+	margin-top:20px;
+
+	a, .postdate {
+		.inline-block();
+		width:50px;
+		height:60px;
+		overflow:hidden;
+		margin:5px;
+	}
+
+
+	.next {
+		text-align:left;
+	}
+
+	.prev .icon:hover, .next .icon:hover {
+		color:@linkColor;
+	}
+
+	.postdate {
+		position:relative;
+		cursor:help;
+		background:url(img/date.gif) top no-repeat;
+		
+		span {
+			display:block;
+			text-align:center;
+		}
+
+		.month {
+			position:absolute;
+			width:100%;
+			top:20px;
+			left:0;
+			font-size:9px;
+		}
+
+		.day {
+			position:absolute;
+			width:100%;
+			top:25px;
+			left:0;
+			font-size:18px;
+			font-weight:bolder;
+			font-family:'Georgia',sans-serif;
+			font-style:italic;
+		}
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+/*******************************
+*  Icon
+********************************/
+.icon_font {
+	font-family:'FontAwesome', sans-serif;
+	font-size:16px;
+	line-height:16px;
+	color:#666;
+	vertical-align:bottom;
+}
+
+.icon_mini {
+	font-size:12px;
+	line-height:16px;
+}
+
+.icon_font_big {
+	width:35px;
+	height:30px;
+	font-size:30px;
+	line-height:30px;
+}
+.icon_font_extra {
+	width:55px;
+	height:60px;
+	font-size:60px;
+	line-height:60px;
+}
+
+
+/*  Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen
+    readers do not read off random characters that represent icons */
+.icon-glass:before              { content: "\f000"; }
+.icon-music:before              { content: "\f001"; }
+.icon-search:before             { content: "\f002"; }
+.icon-envelope:before           { content: "\f003"; }
+.icon-heart:before              { content: "\f004"; }
+.icon-star:before               { content: "\f005"; }
+.icon-star-empty:before         { content: "\f006"; }
+.icon-user:before               { content: "\f007"; }
+.icon-film:before               { content: "\f008"; }
+.icon-th-large:before           { content: "\f009"; }
+.icon-th:before                 { content: "\f00a"; }
+.icon-th-list:before            { content: "\f00b"; }
+.icon-ok:before                 { content: "\f00c"; }
+.icon-remove:before             { content: "\f00d"; }
+.icon-zoom-in:before            { content: "\f00e"; }
+
+.icon-zoom-out:before           { content: "\f010"; }
+.icon-off:before                { content: "\f011"; }
+.icon-signal:before             { content: "\f012"; }
+.icon-cog:before                { content: "\f013"; }
+.icon-trash:before              { content: "\f014"; }
+.icon-home:before               { content: "\f015"; }
+.icon-file:before               { content: "\f016"; }
+.icon-time:before               { content: "\f017"; }
+.icon-road:before               { content: "\f018"; }
+.icon-download-alt:before       { content: "\f019"; }
+.icon-download:before           { content: "\f01a"; }
+.icon-upload:before             { content: "\f01b"; }
+.icon-inbox:before              { content: "\f01c"; }
+.icon-play-circle:before        { content: "\f01d"; }
+.icon-repeat:before             { content: "\f01e"; }
+
+/* \f020 is not a valid unicode character. all shifted one down */
+.icon-refresh:before            { content: "\f021"; }
+.icon-list-alt:before           { content: "\f022"; }
+.icon-lock:before               { content: "\f023"; }
+.icon-flag:before               { content: "\f024"; }
+.icon-headphones:before         { content: "\f025"; }
+.icon-volume-off:before         { content: "\f026"; }
+.icon-volume-down:before        { content: "\f027"; }
+.icon-volume-up:before          { content: "\f028"; }
+.icon-qrcode:before             { content: "\f029"; }
+.icon-barcode:before            { content: "\f02a"; }
+.icon-tag:before                { content: "\f02b"; }
+.icon-tags:before               { content: "\f02c"; }
+.icon-book:before               { content: "\f02d"; }
+.icon-bookmark:before           { content: "\f02e"; }
+.icon-print:before              { content: "\f02f"; }
+
+.icon-camera:before             { content: "\f030"; }
+.icon-font:before               { content: "\f031"; }
+.icon-bold:before               { content: "\f032"; }
+.icon-italic:before             { content: "\f033"; }
+.icon-text-height:before        { content: "\f034"; }
+.icon-text-width:before         { content: "\f035"; }
+.icon-align-left:before         { content: "\f036"; }
+.icon-align-center:before       { content: "\f037"; }
+.icon-align-right:before        { content: "\f038"; }
+.icon-align-justify:before      { content: "\f039"; }
+.icon-list:before               { content: "\f03a"; }
+.icon-indent-left:before        { content: "\f03b"; }
+.icon-indent-right:before       { content: "\f03c"; }
+.icon-facetime-video:before     { content: "\f03d"; }
+.icon-picture:before            { content: "\f03e"; }
+
+.icon-pencil:before             { content: "\f040"; }
+.icon-map-marker:before         { content: "\f041"; }
+.icon-adjust:before             { content: "\f042"; }
+.icon-tint:before               { content: "\f043"; }
+.icon-edit:before               { content: "\f044"; }
+.icon-share:before              { content: "\f045"; }
+.icon-check:before              { content: "\f046"; }
+.icon-move:before               { content: "\f047"; }
+.icon-step-backward:before      { content: "\f048"; }
+.icon-fast-backward:before      { content: "\f049"; }
+.icon-backward:before           { content: "\f04a"; }
+.icon-play:before               { content: "\f04b"; }
+.icon-pause:before              { content: "\f04c"; }
+.icon-stop:before               { content: "\f04d"; }
+.icon-forward:before            { content: "\f04e"; }
+
+.icon-fast-forward:before       { content: "\f050"; }
+.icon-step-forward:before       { content: "\f051"; }
+.icon-eject:before              { content: "\f052"; }
+.icon-chevron-left:before       { content: "\f053"; }
+.icon-chevron-right:before      { content: "\f054"; }
+.icon-plus-sign:before          { content: "\f055"; }
+.icon-minus-sign:before         { content: "\f056"; }
+.icon-remove-sign:before        { content: "\f057"; }
+.icon-ok-sign:before            { content: "\f058"; }
+.icon-question-sign:before      { content: "\f059"; }
+.icon-info-sign:before          { content: "\f05a"; }
+.icon-screenshot:before         { content: "\f05b"; }
+.icon-remove-circle:before      { content: "\f05c"; }
+.icon-ok-circle:before          { content: "\f05d"; }
+.icon-ban-circle:before         { content: "\f05e"; }
+
+.icon-arrow-left:before         { content: "\f060"; }
+.icon-arrow-right:before        { content: "\f061"; }
+.icon-arrow-up:before           { content: "\f062"; }
+.icon-arrow-down:before         { content: "\f063"; }
+.icon-share-alt:before          { content: "\f064"; }
+.icon-resize-full:before        { content: "\f065"; }
+.icon-resize-small:before       { content: "\f066"; }
+.icon-plus:before               { content: "\f067"; }
+.icon-minus:before              { content: "\f068"; }
+.icon-asterisk:before           { content: "\f069"; }
+.icon-exclamation-sign:before   { content: "\f06a"; }
+.icon-gift:before               { content: "\f06b"; }
+.icon-leaf:before               { content: "\f06c"; }
+.icon-fire:before               { content: "\f06d"; }
+.icon-eye-open:before           { content: "\f06e"; }
+
+.icon-eye-close:before          { content: "\f070"; }
+.icon-warning-sign:before       { content: "\f071"; }
+.icon-plane:before              { content: "\f072"; }
+.icon-calendar:before           { content: "\f073"; }
+.icon-random:before             { content: "\f074"; }
+.icon-comment:before            { content: "\f075"; }
+.icon-magnet:before             { content: "\f076"; }
+.icon-chevron-up:before         { content: "\f077"; }
+.icon-chevron-down:before       { content: "\f078"; }
+.icon-retweet:before            { content: "\f079"; }
+.icon-shopping-cart:before      { content: "\f07a"; }
+.icon-folder-close:before       { content: "\f07b"; }
+.icon-folder-open:before        { content: "\f07c"; }
+.icon-resize-vertical:before    { content: "\f07d"; }
+.icon-resize-horizontal:before  { content: "\f07e"; }
+
+.icon-bar-chart:before          { content: "\f080"; }
+.icon-twitter-sign:before       { content: "\f081"; }
+.icon-facebook-sign:before      { content: "\f082"; }
+.icon-camera-retro:before       { content: "\f083"; }
+.icon-key:before                { content: "\f084"; }
+.icon-cogs:before               { content: "\f085"; }
+.icon-comments:before           { content: "\f086"; }
+.icon-thumbs-up:before          { content: "\f087"; }
+.icon-thumbs-down:before        { content: "\f088"; }
+.icon-star-half:before          { content: "\f089"; }
+.icon-heart-empty:before        { content: "\f08a"; }
+.icon-signout:before            { content: "\f08b"; }
+.icon-linkedin-sign:before      { content: "\f08c"; }
+.icon-pushpin:before            { content: "\f08d"; }
+.icon-external-link:before      { content: "\f08e"; }
+
+.icon-signin:before             { content: "\f090"; }
+.icon-trophy:before             { content: "\f091"; }
+.icon-github-sign:before        { content: "\f092"; }
+.icon-upload-alt:before         { content: "\f093"; }
+.icon-lemon:before              { content: "\f094"; }
+
+
+#stories {
+	max-width:100%;
+	text-align:left;
+	.item {
+		overflow: hidden;
+		float:left;
+		width:285px;
+		max-height:1500px;
+		border:1px solid #DBD6DA;
+		.box-shadow(0 1px 3px rgba(0,0,0,.055));
+		margin:3px;
+		padding:10px;
+		margin-bottom:10px;
+	}
+
+	.type_note {
+		width:600px;
+	}
+
+	header {
+		padding:10px;
+		padding-left:50px;
+		background:#F5F5F5;
+		border-bottom:1px solid #CCC;
+		position:relative;
+	}
+
+
+	.icon_font {
+		position:absolute;
+		color:#CCC;
+		top:5px;
+		left:10px;
+	}
+	.content {
+		margin:10px 0;
+		//padding:10px 0;
+
+	}
+	.type_note .content{
+		max-height:200px;
+		overflow:hidden;
+	}
+	.type_memo .content{
+		max-height:100px;
+		overflow:hidden;
+	}
+	.type_music .thumbnail{
+		margin:0 auto;
+	}
+}
+
+.pager {
+	clear:both;
+}
+
+.load_story{
+	width:50%;
+}
+
+
+@media (max-width: 800px) {
+
+body {
+	padding:0;
+}
+
+html {
+	background:none;
+}
+
+.page_content {
+	padding:20px;
+}
+
+.header {
+	position:static;
+	height:70px;
+	width:100%;
+	background:#0E274A url(img/h1.png) no-repeat right bottom;
+	.box-shadow(0 1px 3px rgba(0,0,0,.055));
+
+
+	h1 {
+		width:auto;
+		height:auto;
+		padding:0;
+		background:none;
+		position:absolute;
+		top:10px;
+		left:10px;
+	}
+
+	p {
+		position:absolute;
+		top:40px;
+		left:100px;	
+	}
+}
+
+#menu{
+	margin:0;
+	position:absolute;
+	top:0;
+	right:80px;
+	li {
+		.inline-block();
+		padding:5px 10px;
+		a {
+			font-family: @fontFamily;
+			font-size:13px;
+			text-transform: uppercase;
+		}
+	}
+}
+
+
+#stories {
+	.item {
+		width:230px;
+	}
+	.content {
+		overflow:hidden;
+	}
+}
+
+}
+
+
+
+/*
+ * CSS Styles that are needed by jScrollPane for it to operate correctly.
+ *
+ * Include this stylesheet in your site or copy and paste the styles below into your stylesheet - jScrollPane
+ * may not operate correctly without them.
+ */
+
+.jspContainer
+{
+	overflow: hidden;
+	position: relative;
+}
+
+.jspPane
+{
+	position: absolute;
+}
+
+.jspVerticalBar
+{
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 16px;
+	height: 100%;
+	background: red;
+}
+
+.jspHorizontalBar
+{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 16px;
+	background: red;
+}
+
+.jspVerticalBar *,
+.jspHorizontalBar *
+{
+	margin: 0;
+	padding: 0;
+}
+
+.jspCap
+{
+	display: none;
+}
+
+.jspHorizontalBar .jspCap
+{
+	float: left;
+}
+
+.jspTrack
+{
+	background: #dde;
+	position: relative;
+}
+
+.jspDrag
+{
+	background: #bbd;
+	position: relative;
+	top: 0;
+	left: 0;
+	cursor: pointer;
+}
+
+.jspHorizontalBar .jspTrack,
+.jspHorizontalBar .jspDrag
+{
+	float: left;
+	height: 100%;
+}
+
+.jspArrow
+{
+	background: #50506d;
+	text-indent: -20000px;
+	display: block;
+	cursor: pointer;
+}
+
+.jspArrow.jspDisabled
+{
+	cursor: default;
+	background: #80808d;
+}
+
+.jspVerticalBar .jspArrow
+{
+	height: 16px;
+}
+
+.jspHorizontalBar .jspArrow
+{
+	width: 16px;
+	float: left;
+	height: 100%;
+}
+
+.jspVerticalBar .jspArrow:focus
+{
+	outline: none;
+}
+
+.jspCorner
+{
+	background: #eeeef4;
+	float: left;
+	height: 100%;
+}
+
+/* Yuk! CSS Hack for IE6 3 pixel bug :( */
+* html .jspCorner
+{
+	margin: 0 -3px 0 0;
+}
+
+
+.jspVerticalBar
+{
+	width: 5px;
+}
+.jspTrack
+{
+	background: #F5F5F5;
+}
+
+
+.jspDrag
+{
+	background: #999;
+	.border-radius(3px);
+}
+.jspHorizontalBar
+{
+	height: 5px;
+}
+
+
+/*
+ * Timeline Style
+ */
+
+.timeline {
+	.page_header {
+		text-align:center;
+		padding-top:10px;
+		height:50px;
+		background:#EFEFEF;
+		.box-shadow(inset -1px -1px 7px rgba(0, 0, 0, 0.1));
+
+		h2 {
+			position:static;
+			font-size:18px;
+		}
+	}
+	.page_content {
+		padding-top:0;
+		padding-bottom:0px;
+		max-width:100%;
+	}
+
+	p.copyright {
+		display:none;
+	}
+
+	.neighbors {
+		display:none;
+	}
+
+	.storyjs-embed.sized-embed  {
+		border:0;
+	}
+
+	.vco-storyjs .vco-feature h1, .vco-storyjs .vco-feature h2, .vco-storyjs .vco-feature h3, .vco-storyjs .vco-feature h4, .vco-storyjs .vco-feature h5, .vco-storyjs .vco-feature h6 {
+		font-family: @fontFamily;
+	}
+	.vco-storyjs p, .vco-storyjs blockquote, .vco-storyjs blockquote p, .vco-storyjs .twitter blockquote p {
+		font-family: @fontFamily !important;
+		font-weight: 500;
+		font-size:14px;
+		line-height:1.8em;
+	}
+
+
+	.vco-storyjs blockquote {
+		background: none repeat scroll 0 0 #F1F1F1;
+		margin: 1em;
+		padding: 0.6em 1em;
+		color:#555;
+	}
+	
+
+	.vco-storyjs .timenav h1, .vco-storyjs .flag-content h1, .vco-storyjs .era h1, .vco-storyjs .timenav h2, .vco-storyjs .flag-content h2, .vco-storyjs .era h2, .vco-storyjs .timenav h3, .vco-storyjs .flag-content h3, .vco-storyjs .era h3, .vco-storyjs .timenav h4, .vco-storyjs .flag-content h4, .vco-storyjs .era h4, .vco-storyjs .timenav h5, .vco-storyjs .flag-content h5, .vco-storyjs .era h5, .vco-storyjs .timenav h6, .vco-storyjs .flag-content h6, .vco-storyjs .era h6 {
+		font-family: MS UI Gothic, sans-serif !important;
+	}
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta charset="utf-8" />
+    <?=$this->headTitle()?>
+
+	<!--[if lt IE 9]>
+	<meta http-equiv="PRAGMA" content="NO-CACHE" />
+    <script src="<?=$this->link('/lib/js/html5shiv/html5shiv.min.js')?>"></script>
+    <![endif]-->
+	<link href="<?=$this->link('/src/avnpc/favicon.ico')?>" type="image/x-icon" rel="icon" />
+	<link href="<?=$this->link('/src/avnpc/favicon.ico')?>" type="image/x-icon" rel="shortcut icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="<?=$this->link('/src/avnpc/css/avnpc.css')?>" media="all" rel="stylesheet" type="text/css" />
+    <?=$this->evajs()?>
+
+    <?=$this->googleAnalytics()?>
+
+    <?=$this->headMeta()?>
+
+    <script src="<?=$this->link('/lib/js/labjs/labjs.min.js')?>"></script>
+    <script src="<?=$this->link('/lib/js/jquery/jquery.min.js')?>"></script>
+    <script src="<?=$this->link('/lib/js/moment/moment.min.js')?>"></script>
+    <script src="<?=$this->link('/lib/js/moment/lang/zh-cn.js')?>"></script>
+    <script src="<?=$this->link('/eva/js/core.min.js')?>"></script>
+    <script src="<?=$this->link('/src/avnpc/js/init.js')?>"></script>
+
+	<link href='http://fonts.googleapis.com/css?family=Sarina|Great+Vibes' rel='stylesheet' type='text/css'>
+    <link rel="alternate" type="application/rss+xml" title="Just Fine - Story of AlloVince" href="<?=$this->uri('/feed');?>" />
+    <?=$this->headlink()?>
+
+</head>
+<body>
+    <div id="page">
+        <!-- #header start-->
+        <header id="header" class="header">
+        <h1><a href="<?=$this->uri('/');?>">Just Fine</a></h1>
+        <p>— Story of <a href="https://plus.google.com/104171418568283484752?rel=author">AlloVince</a></p>
+        <nav id="menu">
+        <ul class="submenu">
+            <li><a href="<?=$this->uri('/'); ?>">Thinking</a></li>
+            <li><a href="<?=$this->uri('/life'); ?>">Life</a></li>
+            <li><a href="<?=$this->uri('/pages/projects'); ?>">Projects</a></li>
+            <li><a href="<?=$this->uri('/pages/about'); ?>">About</a></li>
+        </ul>
+        </nav>
+        <!-- #header end -->
+        </header>
+        <?=$this->content;?>
+    </div>
+</body>
+</html>

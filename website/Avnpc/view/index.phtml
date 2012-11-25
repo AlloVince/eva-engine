@@ -1,0 +1,31 @@
+<?
+if($this->paginator && $this->paginator->getCurrentPageNumber() > 1){
+    $this->headTitle('Just Fine - Story of AlloVince | page ' . $this->paginator->getCurrentPageNumber(), 'SET');
+} else {
+    $this->headTitle('Just Fine - Story of AlloVince', 'SET');
+}
+if($this->query['page'] == '1') {
+    $this->headLink(array(
+        'rel' => 'canonical',
+        'href' => $this->uri('/')
+    ));
+}
+?>
+<div class="page_content">
+    <?if($this->items):?>
+    <div class="vlist posts">
+        <?foreach($this->items as $key => $item):?>
+        <div class="item <?=$key == 0 ? 'first' : ''?>">
+            <div class="item-inline item_title">
+                <h3><a href="<?=$this->uri('/pages/' . $item['urlName'])?>"><?=$item['title']?></a></h2>
+                <p class="info">发布时间： <time datetime="<?=$this->datetime()->isoTime($item['createTime'])?>" data-jstime="<?=$this->datetime()->jsTime($item['createTime'])?>" class="agotime"><?=$this->datetime($item['createTime'])?></time></p>
+            </div>
+        </div>
+        <?endforeach;?>
+    </div>
+    <?if($this->paginator):?>
+    <?=$this->paginator->setPath('/thinking/')->setBaseQuery(array());?>
+    <?=$this->widget('Avnpc', 'widgets/paginator', $this->vars())?>
+    <?endif;?>
+    <?endif;?>
+</div>

@@ -1,0 +1,88 @@
+<?
+$this->headTitle($item['title'], 'SET');
+function userface($email, $size = 60,$default = '/skins/images/noface_male.gif')
+{
+    $gravUrl = "http://www.gravatar.com/avatar.php?".
+    "gravatar_id=".md5( strtolower($email) ).
+    "&amp;size=".$size."&amp;";
+
+    return $gravUrl;
+}
+$item = $this->item;
+?>
+<div class="page_content">
+    <div id="blog">
+        <div class="page_header large">
+            <h2><a href="<?=$this->uri('/p/' . $item['id'])?>" rel="nofollow"><?=$item['title'] ?></a></h2>
+        </div>
+        <p class="copyright">日志未经声明，均为<a href="https://plus.google.com/104171418568283484752?rel=author">AlloVince</a>原创。版权采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/2.5/cn/" target="_blank">『 知识共享署名-非商业性使用 2.5 许可协议』</a>进行许可。</p>
+        <article class="typocn">
+        <?=$item['Text']['ContentHtml']?>
+        </article>
+
+        <?if($item['Prev'] || $item['Next']):?>
+        <div class="neighbors">
+            <?if($item['Prev']):?>
+            <a href="<?=$this->uri('/pages/' . $item['Prev']['urlName'])?>" class="prev" title="<?=$this->escapeHtmlAttr($item['Prev']['title'])?>"><span class="icon icon_font icon_font_extra icon-arrow-left"></span></a>
+            <?else:?>
+            <a href="#" class="prev" title="没有了"><span class="icon icon_font icon_font_extra icon-arrow-left"></a>
+                <?endif;?>
+                <div class="postdate">
+                    <abbr class="gmtdate" title="本篇日志发布于：<?=$this->datetime($item['createTime']);?>">
+                        <span class="month"><?=$this->datetime($item['createTime'], null, 'M');?></span>
+                        <span class="day"><?=$this->datetime($item['createTime'], null, 'd');?></span>
+                    </abbr>
+                </div>
+                <?if($item['Next']):?>
+                <a href="<?=$this->uri('/pages/' . $item['Next']['urlName'])?>" class="next" title="<?=$this->escapeHtmlAttr($item['Next']['title'])?>"><span class="icon icon_font icon_font_extra icon-arrow-right"></span></a>
+                <?endif;?>
+            </div>
+            <?endif;?>
+
+            <?if(count($this->comments) > 0):?>
+            <div class="page_header large bordered">
+                <h4>评论</h4>
+            </div>
+            <div class="comments">
+                <div class="vlist texts img50">
+                    <?foreach($this->comments as $key => $comment):?>
+                    <div id="comment<?=$comment['id']?>" class="item <?=$key%2 !== 0 ? 'right' : ''?>">
+                        <a class="item-absolute imgdelay figure userface" title="" href=""><img class="thumbnail" alt="<?=$comment['user_name']?>" src="<?=userface($comment['email'], 50)?>" /></a>
+                        <div class="item-inline item_text">
+                            <div class="well">
+                                <div class="text_content">
+                                    <?=$comment['contentHtml']?>
+                                </div>
+                            </div>
+                            <div class="item-absolute item_action">
+                                <p class="margin15h pull-right">
+                                <time datetime="<?=$this->datetime()->isoTime($comment['createTime'])?>" data-jstime="<?=$this->datetime()->jsTime($comment['createTime'])?>" class="agotime"><?=$this->datetime($comment['createTime'])?></time>
+                                </p>
+                                <p class="margin15h pull-left">
+                                <?=$comment['user_name']?>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <?endforeach?>
+                </div>
+            </div><!-- box end-->
+            <?endif?>
+
+
+            <?if($item['commentStatus'] == 'open'):?>
+            <div id="disqus_thread"></div>
+            <div class="ds-thread"></div>
+            <script type="text/javascript">
+                var duoshuoQuery = {short_name: "avnpc"};
+                (function() {
+                        var ds = document.createElement('script');
+                        ds.type = 'text/javascript';ds.async = true;
+                        ds.src = 'http://static.duoshuo.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+                })();
+            </script>
+            <?endif?>
+        </div><!--blog end-->
+
+    </div>

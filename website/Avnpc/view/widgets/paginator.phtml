@@ -1,0 +1,44 @@
+<?
+$paginator = $this->paginator;
+if($paginator){
+    $path = $paginator->getPath();
+    $queryKey = $paginator->getPageQueryKey();
+    $baseQuery = $paginator->getBaseQuery();
+    $paginator = $paginator->toArray();
+}
+if($paginator && $paginator['pageCount'] > 1):
+?>
+<div class="pagination"><ul>
+    <?if($paginator['prevPage']):?>
+    <li><a href="<?=$this->uri($path . $paginator['prevPage'], 'dq', array('Q' => $baseQuery, 'q' => array()))?>">«</a></li>
+    <?endif?>
+    <?if($paginator['prevPageRangeSkip'] && $paginator['firstPage']):?>
+    <li><a href="<?=$this->uri($path . $paginator['firstPage'], 'dq', array('Q' => $baseQuery, 'q' => array()))?>">1</a></li>
+    <?endif?>
+    <?if($paginator['prevPageRangeSkip']):?>
+    <li class="disabled"><a href="javascript:;">...</a></li>
+    <?endif?>
+    <?if($paginator['prevPageRange']):?>
+    <?foreach($paginator['prevPageRange'] as $page):?>
+    <li><a href="<?=$this->uri($path . $page, 'dq', array('Q' => $baseQuery, 'q' => array()))?>"><?=$page?></a></li>
+    <?endforeach?>
+    <?endif?>
+    <li class="active">
+    <a href="<?=$this->uri($path . $paginator['pageNumber'], 'dq', array('Q' => $baseQuery, 'q' => array()))?>"><?=$paginator['pageNumber']?></a>
+    </li>
+    <?if($paginator['nextPageRange']):?>
+    <?foreach($paginator['nextPageRange'] as $page):?>
+    <li><a href="<?=$this->uri($path . $page, 'dq', array('Q' => $baseQuery, 'q' => array()))?>"><?=$page?></a></li>
+    <?endforeach?>
+    <?endif?>
+    <?if($paginator['nextPageRangeSkip']):?>
+    <li class="disabled"><a href="javascript:;">...</a></li>
+    <?endif?>
+    <?if($paginator['nextPageRangeSkip'] && $paginator['lastPage']):?>
+    <li><a href="<?=$this->uri($path . $paginator['lastPage'], 'dq', array('Q' => $baseQuery, 'q' => array()))?>"><?=$paginator['lastPage']?></a></li>
+    <?endif?>
+    <?if($paginator['nextPage']):?>
+    <li><a href="<?=$this->uri($path . $paginator['nextPage'], 'dq', array('Q' => $baseQuery, 'q' => array()))?>">»</a></li>
+    <?endif?>
+</ul></div>
+<?endif?>

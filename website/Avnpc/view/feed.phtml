@@ -1,0 +1,24 @@
+<?php
+use Zend\Feed\Writer\Feed;
+
+$feed = new Feed();
+$feed->setTitle('Just Fine - Story of AlloVince');
+$feed->setLink($this->serverUrl());
+$feed->setDateModified($this->datetime()->timeStamp($this->entries[0]['createTime']));
+$feed->setFeedLink($this->serverUrl() . '/feed/', 'atom');
+if($this->entries) {
+    foreach($this->entries as $entry){
+        $feedEntry = $feed->createEntry();
+        $feedEntry->setId($this->serverUrl() . '/p/' . $entry['id']);
+        $feedEntry->setTitle($entry['title']);
+        $feedEntry->setLink($this->serverUrl() . '/pages/' . $entry['urlName']);
+        $feedEntry->addAuthor(array(
+            'name' => $entry['user_name'] ? $entry['user_name'] : 'AlloVince',
+        ));
+        $feedEntry->setDateModified($this->datetime()->timeStamp($entry['updateTime']));
+        $feedEntry->setDateCreated($this->datetime()->timeStamp($entry['createTime']));
+        $feedEntry->setDescription($entry['Text']['ContentHtml']);
+        $feed->addEntry($feedEntry);
+    }
+}
+echo $feed->export('atom');
