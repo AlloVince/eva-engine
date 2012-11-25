@@ -16,14 +16,14 @@ $item = $this->item;
             <h2><a href="<?=$this->uri('/p/' . $item['id'])?>" rel="nofollow"><?=$item['title'] ?></a></h2>
         </div>
         <p class="copyright">日志未经声明，均为<a href="https://plus.google.com/104171418568283484752?rel=author">AlloVince</a>原创。版权采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/2.5/cn/" target="_blank">『 知识共享署名-非商业性使用 2.5 许可协议』</a>进行许可。</p>
-        <article class="typocn">
+        <article class="typo typocn">
         <?=$item['Text']['ContentHtml']?>
         </article>
 
         <?if($item['Prev'] || $item['Next']):?>
         <div class="neighbors">
             <?if($item['Prev']):?>
-            <a href="<?=$this->uri('/pages/' . $item['Prev']['urlName'])?>" class="prev" title="<?=$this->escapeHtmlAttr($item['Prev']['title'])?>"><span class="icon icon_font icon_font_extra icon-arrow-left"></span></a>
+            <a href="<?=$this->uri('/pages/' . $item['Prev']['urlName'])?>" class="prev" title="<?=$this->escapeHtmlAttr($item['Prev']['title'])?>"><span class="icon-ext icon-arrow-left"></span></a>
             <?else:?>
             <a href="#" class="prev" title="没有了"><span class="icon icon_font icon_font_extra icon-arrow-left"></a>
                 <?endif;?>
@@ -34,7 +34,7 @@ $item = $this->item;
                     </abbr>
                 </div>
                 <?if($item['Next']):?>
-                <a href="<?=$this->uri('/pages/' . $item['Next']['urlName'])?>" class="next" title="<?=$this->escapeHtmlAttr($item['Next']['title'])?>"><span class="icon icon_font icon_font_extra icon-arrow-right"></span></a>
+                <a href="<?=$this->uri('/pages/' . $item['Next']['urlName'])?>" class="next" title="<?=$this->escapeHtmlAttr($item['Next']['title'])?>"><span class="icon-ext icon-arrow-right"></span></a>
                 <?endif;?>
             </div>
             <?endif;?>
@@ -51,7 +51,7 @@ $item = $this->item;
                         <div class="item-inline item_text">
                             <div class="well">
                                 <div class="text_content">
-                                    <?=$comment['contentHtml']?>
+                                    <?=$comment['content']?>
                                 </div>
                             </div>
                             <div class="item-absolute item_action">
