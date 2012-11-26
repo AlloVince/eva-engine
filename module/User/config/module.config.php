@@ -1,12 +1,20 @@
 <?php
 return array(
+    'crontab' => array(
+        'tasks' => array(
+            'offlineUser' => array(
+                'commond' => '*/1 * * * * curl %serverUrl%/user/refresh/offline/',
+                'required' => true,
+            ),
+        ),
+    ),
     'permission' => array(
         'admin' => array(
             'SUPER_ADMIN',
             'ADMIN',
         )
     ),
-    'module_user' => array(
+    'user' => array(
         'events' => array(
         
         ),

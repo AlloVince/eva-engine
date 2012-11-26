@@ -16,7 +16,8 @@ class RefreshController extends ActionController
             $itemModel = Api::_()->getModel('User\Model\User');
             $dataClass = $itemModel->getItem()->getDataClass();
             $dataClass->where(array('id' => $user['id']))->save(array(
-                'lastFreshTime' => \Eva\Date\Date::getNow()
+                'onlineStatus' => 'online',
+                'lastFreshTime' => \Eva\Date\Date::getNow(),
             ));
             return new JsonModel();
         }

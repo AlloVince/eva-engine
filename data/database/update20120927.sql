@@ -35,4 +35,5 @@ ALTER TABLE `eva_user_friends` CHANGE `relationshipStatus` `relationshipStatus` 
 ALTER TABLE `eva_user_users` CHANGE `lastFleshTime` `lastFreshTime` DATETIME NULL DEFAULT NULL;
 
 
-ALTER TABLE `eva_user_codes` CHANGE `codeType` `codeType` ENUM( 'invite', 'verifyEmail', 'verifyMobile', 'resetPassword', 'other' ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `eva_user_codes` CHANGE `codeType` `codeType` ENUM( 'invite', 'activeAccount', 'verifyEmail', 'verifyMobile', 'resetPassword', 'other' ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `eva_oauth_accesstokens` ADD `tokenStatus` ENUM( 'active', 'expried' ) NOT NULL DEFAULT 'active' AFTER `version`;
