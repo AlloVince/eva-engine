@@ -1,5 +1,13 @@
 <?php
 return array(
+    'crontab' => array(
+        'tasks' => array(
+            'expireToken' => array(
+                'commond' => '*/1 * * * * curl %serverUrl%/oauth/refresh/expire/',
+                'required' => true,
+            ),
+        ),
+    ),
     'oauth' => array(
         'request_url_path' => '/oauth/',
         'access_url_path' => '/oauth/access/',
