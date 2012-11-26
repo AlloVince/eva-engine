@@ -12,6 +12,7 @@ eva.construct = function(){
 		time.html(moment(time.attr("datetime"), "YYYY-MM-DDTHH:mm:ss ZZ").fromNow());
 	});
 
+	/*
 	if($("#blog pre>code")[0]){
 		eva.loadcss(eva.s(['/lib/js/google-code-prettify/prettify.css']));
 		$("#blog pre>code").each(function(){
@@ -24,6 +25,16 @@ eva.construct = function(){
 			prettyPrint();
 		});
 	}
+   */
+
+	if($("#blog pre>code")[0]){
+		eva.loadcss(eva.s(['/src/avnpc/js/github.css']));
+		eva.loader(eva.s(['/src/avnpc/js/highlight.min.js']), function(){
+			hljs.tabReplace = '    ';
+			hljs.initHighlightingOnLoad();
+		});
+	}
+
 	eva.story();
 
 	if($("#timeline-embed")[0]){
