@@ -85,7 +85,10 @@ class Accesstoken extends AbstractModel
     }
 
 
-
+    public function refreshToken()
+    {
+    
+    }
 
     public function unbindToken()
     {

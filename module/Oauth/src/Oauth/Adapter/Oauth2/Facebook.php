@@ -24,4 +24,13 @@ class Facebook extends AbstractAdapter
         }
         return $token;
     }
+
+    public function refreshAccessToken()
+    {
+        $accessToken = $this->getAccessToken();
+        $client = $accessToken->getHttpClient();
+        p($client);
+        p($accessToken);
+    }
+
 }

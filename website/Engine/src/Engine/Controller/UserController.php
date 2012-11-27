@@ -12,43 +12,51 @@ class UserController extends RestfulModuleController
     public function registerAction()
     {
         $request = $this->getRequest();
-        if ($request->isPost()) {
-            
-            $item = $request->getPost();
+        if (!$request->isPost()) {
+            return;
+        }
 
-            $oauth = new \Oauth\OauthService();
+        $item = $request->getPost();
+
+        $oauth = new \Oauth\OauthService();
+        $accessToken = array();
+        if($oauth->getStorage()->getAccessToken()) {
             $oauth->setServiceLocator($this->getServiceLocator());
             $oauth->initByAccessToken();
             $accessToken = $oauth->getAdapter()->getAccessToken();
-
-            $form = $accessToken ? new \User\Form\QuickRegisterForm : new \User\Form\RegisterForm();
-            $form->bind($item);
-            if ($form->isValid()) {
-                $callback = $this->params()->fromPost('callback');
-                $callback = $callback ? $callback : '/';
-
-                $item = $form->getData();
-                $itemModel = Api::_()->getModel('User\Model\Register');
-                $itemModel->setItem($item)->register();
-                $this->redirect()->toUrl($callback);
-            } else {
-            }
-            return array(
-                'token' => $accessToken,
-                'form' => $form,
-                'item' => $item,
-            );
         }
+
+        $form = $accessToken ? new \User\Form\QuickRegisterForm : new \User\Form\RegisterForm();
+        $form->bind($item);
+        if ($form->isValid()) {
+            $callback = $this->params()->fromPost('callback');
+            $callback = $callback ? $callback : '/';
+
+            $item = $form->getData();
+            $itemModel = Api::_()->getModel('User\Model\Register');
+            $itemModel->setItem($item)->register();
+
+            $userItem = $itemModel->getItem();
+            $codeItem = $itemModel->getItem('User\Item\Code');
+
+            $this->redirect()->toUrl($callback);
+        } else {
+        }
+        return array(
+            'token' => $accessToken,
+            'form' => $form,
+            'item' => $item,
+        );
     }
 
     public function pricingAction()
     {
         $user = Auth::getLoginUser();
-    
+
         if(isset($user['isSuperAdmin']) || !$user){
             exit;
         } 
-        
+
         $itemModel = Api::_()->getModel('User\Model\User');
         $item = $itemModel->getUser($user['id']);
 
@@ -66,7 +74,7 @@ class UserController extends RestfulModuleController
                 'Account' => array('*'),
             ),
         ));
-        
+
         return array(
             'item' => $item,
         );
@@ -80,9 +88,9 @@ class UserController extends RestfulModuleController
     {
         $id = $this->getEvent()->getRouteMatch()->getParam('id');
         $adapter = $this->params()->fromQuery('service');
-        
+
         $user = Auth::getLoginUser();
-    
+
         if(isset($user['isSuperAdmin']) || !$user){
             exit;
         } 
@@ -92,18 +100,18 @@ class UserController extends RestfulModuleController
                 'No contacts service key found'
             ));
         }
-        
+
         $config = $this->getServiceLocator()->get('config');
         $import = new \Contacts\ContactsImport($adapter, false, array(
             'cacheConfig' => $config['cache']['contacts_import'],
         ));
         $contacts = $import->getStorage()->loadContacts();
-        
+
         $itemModel = \Eva\Api::_()->getModel('Contacts\Model\Contacts');
         $itemModel->setUser($user);
         $itemModel->setService($adapter);
         $contacts = $itemModel->getUserContactsInfo($contacts);
-        
+
         if ($id == 'add') {
             $count = isset($contacts['onSiteContactsCount']) ? $contacts['onSiteContactsCount'] : 0;
             $contacts = isset($contacts['onSiteContacts']) ? $contacts['onSiteContacts'] : array();

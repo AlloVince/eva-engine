@@ -11,6 +11,7 @@
 namespace Oauth\Service;
 
 use ZendOAuth\Consumer as ZendConsumer;
+use ZendOAuth\Exception;
 
 
 /**

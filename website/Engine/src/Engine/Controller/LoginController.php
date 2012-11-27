@@ -88,17 +88,6 @@ class LoginController extends RestfulModuleController
             return $this->redirect()->toUrl($callback);
         }
 
-        /*
-        $client = $oauth->getAdapter()->getHttpClient();
-        $client->setUri('https://api.weibo.com/2/users/show.json');
-        $client->setParameterGet(array(
-            'screen_name' => 'Allo'
-        ));
-        $response = $client->send();
-        p($accessToken);
-        p($response->getBody());
-        */
-
         $viewModel = new ViewModel();
         $viewModel->setTemplate('engine/user/register');
         $viewModel->setVariables(array(
