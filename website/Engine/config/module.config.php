@@ -150,6 +150,6 @@ return array(
     ),
 
     'oauth' => array(
-        'login_url_path' => '/home/'
+        'login_url_path' => '/feed/'
     ),
 );
