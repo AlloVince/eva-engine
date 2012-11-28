@@ -65,14 +65,13 @@ class GroupUser extends AbstractModel
         $userId = $item->user_id;
         $groupId = $item->group_id;
 
-        if($userId != $followerId) {
-            $item->self(array('*'));
+        $oldItem = clone $item;
+        $oldItem->self(array('*'));
 
-            if(!$item->requestStatus){
-                $item->user_id = $userId;
-                $item->group_id = $groupId;
-                $item->create();
-            }
+        if(!$oldItem->requestStatus){
+            $item->create();
+        } else {
+            $item->save();
         }
 
         $this->trigger('create');

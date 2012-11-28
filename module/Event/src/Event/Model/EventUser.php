@@ -65,14 +65,13 @@ class EventUser extends AbstractModel
         $userId = $item->user_id;
         $eventId = $item->event_id;
 
-        if($userId != $followerId) {
-            $item->self(array('*'));
+        $oldItem = clone $item;
+        $oldItem->self(array('*'));
 
-            if(!$item->requestStatus){
-                $item->user_id = $userId;
-                $item->event_id = $eventId;
-                $item->create();
-            }
+        if(!$oldItem->requestStatus){
+            $item->create();
+        } else {
+            $item->save();
         }
 
         $this->trigger('create');
