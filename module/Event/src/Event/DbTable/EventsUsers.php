@@ -30,7 +30,18 @@ class EventsUsers extends TableGateway
         if($params->user_id){
             $this->where(array('user_id' => $params->user_id));
         }
-
+        
+        $orders = array(
+            'timeasc' => 'requestTime ASC',
+            'timedesc' => 'requestTime DESC',
+        );
+        
+        if($params->order){
+            $order = $orders[$params->order];
+            if($order){
+                $this->order($order);
+            }
+        }
         return $this;
     }
 }

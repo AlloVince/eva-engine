@@ -10,7 +10,6 @@ class EventUser extends AbstractItem
 
     protected $map = array(
         'create' => array(
-            'getAdminValues()',
             'getRequestTime()',
             'getApprovalTime()',
         ),
