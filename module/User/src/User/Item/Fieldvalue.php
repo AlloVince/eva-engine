@@ -8,7 +8,7 @@ class Fieldvalue extends AbstractItem
 {
     protected $dataSourceClass = 'User\DbTable\Fieldvalues';
 
-    public function create()
+    public function create($mapKey = 'create')
     {
         $userItem = $this->getModel()->getItem('User\Item\User');
         $userId = $userItem->id;
@@ -25,7 +25,7 @@ class Fieldvalue extends AbstractItem
         }
     }
 
-    public function save()
+    public function save($mapKey = 'save')
     {
         $userItem = $this->getModel()->getItem('User\Item\User');
         $userId = $userItem->id;

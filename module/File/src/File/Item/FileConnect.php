@@ -8,7 +8,7 @@ class FileConnect extends AbstractItem
 {
     protected $dataSourceClass = 'File\DbTable\FilesConnections';
 
-    public function save()
+    public function save($mapKey = 'save')
     {
         $dataClass = $this->getDataClass();
         if(!$this->connect_id){

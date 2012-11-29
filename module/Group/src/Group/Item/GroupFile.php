@@ -13,7 +13,7 @@ class GroupFile extends AbstractItem
         ),
     );
 
-    public function create()
+    public function create($mapKey = 'create')
     {
         $groupItem = $this->getModel()->getItem();
         $groupId = $groupItem->id;
@@ -27,7 +27,7 @@ class GroupFile extends AbstractItem
         $dataClass->create($data);
     }
 
-    public function save()
+    public function save($mapKey = 'save')
     {
         $groupItem = $this->getModel()->getItem();
         $groupId = $groupItem->id;

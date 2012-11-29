@@ -36,7 +36,7 @@ class Conversation extends AbstractItem
         ),
     );
 
-    public function create()
+    public function create($mapKey = 'create')
     {
         $messageItem = $this->getModel()->getItem('Message\Item\Message');
         $messageId = $messageItem->id;
