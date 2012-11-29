@@ -25,6 +25,7 @@ class Oauth2Douban extends AbstractAdapter
             ),
         ),
         'User' => array(
+            'getMe' => '/v2/user/~me', 
             'getUser' => '/v2/user/:name', 
             'searchUser' => '/v2/user', 
         ),

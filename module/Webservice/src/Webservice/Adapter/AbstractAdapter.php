@@ -165,6 +165,22 @@ abstract class AbstractAdapter implements AdapterInterface
         return $this->getApiData();
     }
 
+    public function uniformApi($uniformApiType)
+    {
+        $uniformApiType = ucfirst(strtolower($uniformApiType));
+        $adapter = get_class($this);
+        $uniformClass = str_replace('\\Adapter\\', '\\Adapter\\' . $uniformApiType . '\\', $adapter);
+        if(!class_exists($uniformClass)){
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Request uniform api %s not exist', $uniformClass
+            ));
+        }
+
+        $uniformApi = new $uniformClass();
+        $uniformApi->setAdapter($this);
+        return $uniformApi;
+    }
+
     public function getApiMap()
     {
         return $this->apiMap;
@@ -241,11 +257,6 @@ abstract class AbstractAdapter implements AdapterInterface
             'sslverifypeer' => false
         ));
         return $this->client = $client;
-    }
-
-    public function getSecurityClient()
-    {
-    
     }
 
     protected function getAuthorityClient()
