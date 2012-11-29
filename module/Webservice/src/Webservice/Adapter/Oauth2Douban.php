@@ -11,4 +11,6 @@ class Oauth2Douban extends AbstractAdapter
 
     protected $errorResponseFormat = AbstractAdapter::FORMAT_JSON;
 
+    protected $authorityType = 'Oauth2';
+    protected $authorityClass = 'Oauth\Adapter\Oauth2\Douban';
 }
