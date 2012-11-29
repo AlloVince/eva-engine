@@ -13,7 +13,7 @@ class EventFile extends AbstractItem
         ),
     );
 
-    public function create()
+    public function create($mapKey = 'create')
     {
         $eventItem = $this->getModel()->getItem();
         $eventId = $eventItem->id;
@@ -27,7 +27,7 @@ class EventFile extends AbstractItem
         $dataClass->create($data);
     }
 
-    public function save()
+    public function save($mapKey = 'save')
     {
         $eventItem = $this->getModel()->getItem();
         $eventId = $eventItem->id;

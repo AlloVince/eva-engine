@@ -25,7 +25,7 @@ class Token extends AbstractItem
 
     private $tokenSalt = 'Eva_Login_Token_Salt';
 
-    public function create()
+    public function create($mapKey = 'create')
     {
         $dataClass = $this->getDataClass();
         $data = $this->toArray(
@@ -34,7 +34,7 @@ class Token extends AbstractItem
         return $dataClass->create($data);
     }
 
-    public function save()
+    public function save($mapKey = 'save')
     {
         //Because refresh token will update primary key, need to get primary array first
         $where = $this->getPrimaryArray();

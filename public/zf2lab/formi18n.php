@@ -31,12 +31,20 @@ $filter->remove('username');
 $filter->add(array(
     'name' => 'username',
     'required' => true,
+    'validators' => array (
+        'stringLength' => array (
+            'name' => 'StringLength',
+            'options' => array (
+                'max' => '3',
+            ),
+        ),
+    ),
 ));
 $form->setInputFilter($filter);
 
 //$form->prepare();
 $form->setData(array(
-    'username' => '',
+    'username' => 'sadjksafjas:',
 ));
 $form->prepare();
 //p($form->getInputFilter());

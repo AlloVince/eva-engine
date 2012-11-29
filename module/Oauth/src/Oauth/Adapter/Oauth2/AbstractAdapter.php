@@ -92,13 +92,22 @@ abstract class AbstractAdapter extends \Oauth\Adapter\AbstractAdapter implements
         return $this->consumer = $consumer;
     }
 
+    public function refreshAccessToken()
+    {
+    }
+
     public function getHttpClient(array $oauthOptions = array(), $uri = null, $config = null, $excludeCustomParamsFromHeader = true)
     {
         $defaultHttpClientOptions = array(
             'requestScheme' => ZendOAuth::REQUEST_SCHEME_QUERYSTRING,
         );
         $oauthOptions = array_merge($defaultHttpClientOptions, $this->httpClientOptions, $oauthOptions);
-        return $this->getAccessToken()->getHttpClient($oauthOptions, $uri, $config, $excludeCustomParamsFromHeader);
+        $client = $this->getAccessToken()->getHttpClient($oauthOptions, $uri, $config, $excludeCustomParamsFromHeader);
+        if(isset($oauthOptions['callback']) && $oauthOptions['callback']){
+            $func = $oauthOptions['callback'];
+            $client = $this->$func($client);
+        }
+        return $client;
     }
 
     public function accessTokenToArray(AccessToken $accessToken)

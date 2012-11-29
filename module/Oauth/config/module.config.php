@@ -28,6 +28,16 @@ return array(
                 'consumer_key' => '',
                 'consumer_secret' => ''
             ),
+            'flickr' => array(
+                'enable' => 1,
+                'consumer_key' => '',
+                'consumer_secret' => ''
+            ),
+            'dropbox' => array(
+                'enable' => 1,
+                'consumer_key' => '',
+                'consumer_secret' => ''
+            ),
         ),
         'oauth2' => array(
             'facebook' => array(
@@ -97,12 +107,12 @@ return array(
             ),
             'msn' => array(
                 'enable' => 1,
-                'scope' => '',
+                'consumer_key' => '',
                 'consumer_secret' => ''
             ),
             'google' => array(
                 'enable' => 1,
-                'scope' => '',
+                'consumer_key' => '',
                 'consumer_secret' => ''
             ),
             'github' => array(

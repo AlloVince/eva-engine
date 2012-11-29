@@ -1,0 +1,30 @@
+{
+    "name": "evaengine/oauth",
+    "description": " ",
+    "type": "library",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "evaengine",
+        "oauth"
+    ],
+    "minimum-stability": "dev",
+    "homepage": "http://evaengine.com/",
+    "autoload": {
+        "psr-0": {
+            "Oauth": "src/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://packages.zendframework.com/"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zend-session": "2.0.*",
+        "zendframework/zend-json": "2.0.*",
+        "zendframework/zend-eventmanager": "2.0.*",
+        "zendframework/zendoauth": "2.0.*"
+    }
+}

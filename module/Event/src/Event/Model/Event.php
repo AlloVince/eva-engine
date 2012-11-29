@@ -158,6 +158,12 @@ class Event extends AbstractModel
         $subItem = $item->join('Text');
         $subItem->remove();
 
+        $subItem = $item->join('EventUser');
+        $subItem->remove();
+        
+        $subItem = $item->join('EventFile');
+        $subItem->remove();
+
         $item->remove();
 
         $this->trigger('remove');

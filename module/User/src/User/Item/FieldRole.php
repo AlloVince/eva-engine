@@ -13,7 +13,7 @@ class FieldRole extends AbstractItem
         ),
     );
 
-    public function create()
+    public function create($mapKey = 'create')
     {
         $fieldItem = $this->getModel()->getItem();
         $fieldId = $fieldItem->id;
@@ -30,7 +30,7 @@ class FieldRole extends AbstractItem
         }
     }
 
-    public function save()
+    public function save($mapKey = 'save')
     {
         $fieldItem = $this->getModel()->getItem();
         $fieldId = $fieldItem->id;

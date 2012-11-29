@@ -52,6 +52,7 @@ class Login extends AbstractModel
         }
 
 
+        p(1);
         $this->trigger('login.post');
         return true;
     }

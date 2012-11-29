@@ -13,7 +13,7 @@ class MessageFile extends AbstractItem
         ),
     );
 
-    public function create()
+    public function create($mapKey = 'create')
     {
         $messageItem = $this->getModel()->getItem();
         $messageId = $messageItem->id;
@@ -27,7 +27,7 @@ class MessageFile extends AbstractItem
         $dataClass->create($data);
     }
 
-    public function save()
+    public function save($mapKey = 'save')
     {
         $messageItem = $this->getModel()->getItem();
         $messageId = $messageItem->id;

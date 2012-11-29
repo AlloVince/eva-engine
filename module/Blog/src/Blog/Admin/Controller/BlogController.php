@@ -87,6 +87,10 @@ class BlogController extends RestfulModuleController
         if ($form->isValid()) {
             $postData = $form->getData();
             $itemModel = Api::_()->getModel('Blog\Model\Post');
+
+            $user = \Core\Auth::getLoginUser('Auth_Admin');
+            $postData['user_id'] = $user['id'];
+            $postData['user_name'] = $user['userName'];
             $postId = $itemModel->setItem($postData)->createPost();
             $this->flashMessenger()->addMessage('post-create-succeed');
             $this->redirect()->toUrl('/admin/blog/' . $postId);

@@ -22,6 +22,27 @@ class Facebook extends AbstractAdapter
         if($expiredTime) {
             $token['expireTime'] =  gmdate('Y-m-d H:i:s', time() + $expiredTime);
         }
+        if(!isset($token['remoteUserId']) || !$token['remoteUserId']){
+            $token['remoteUserId'] = $this->getRemoteUserId();
+        }
         return $token;
     }
+
+    public function refreshAccessToken()
+    {
+        $accessToken = $this->getAccessToken();
+        $client = $accessToken->getHttpClient();
+    }
+
+    public function getRemoteUserId()
+    {
+        $client = $this->getHttpClient();
+        $client->setUri('https://graph.facebook.com/me');
+        $response = $client->send();
+        if($response->getStatusCode() == 200){
+            $data = (array) \Zend\Json\Json::decode($response->getBody());
+            return $data['id'];
+        }
+    }
+
 }

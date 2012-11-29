@@ -30,6 +30,11 @@ class GroupsUsers extends TableGateway
         if($params->user_id){
             $this->where(array('user_id' => $params->user_id));
         }
+        
+        $orders = array(
+            'timeasc' => 'requestTime ASC',
+            'timedesc' => 'requestTime DESC',
+        );
 
         return $this;
     }
