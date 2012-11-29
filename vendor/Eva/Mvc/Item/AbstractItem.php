@@ -761,11 +761,11 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         return $this->join($relationshipKey);
     }
 
-    public function create()
+    public function create($mapKey = 'create')
     {
         $dataClass = $this->getDataClass();
         $data = $this->toArray(
-            isset($this->map['create']) ? $this->map['create'] : array()
+            isset($this->map[$mapKey]) ? $this->map[$mapKey] : array()
         );
         $primaryKey = $dataClass->getPrimaryKey();
         if($dataClass->create($data)){
@@ -779,11 +779,11 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         }
     }
 
-    public function save()
+    public function save($mapKey = 'save')
     {
         $dataClass = $this->getDataClass();
         $data = $this->toArray(
-            isset($this->map['save']) ? $this->map['save'] : array()
+            isset($this->map[$mapKey]) ? $this->map[$mapKey] : array()
         );
         $where = $this->primaryWhere();
         $dataClass->where($where)->save($data);
