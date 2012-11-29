@@ -157,6 +157,12 @@ class Group extends AbstractModel
 
         $subItem = $item->join('Text');
         $subItem->remove();
+        
+        $subItem = $item->join('GroupUser');
+        $subItem->remove();
+        
+        $subItem = $item->join('GroupFile');
+        $subItem->remove();
 
         $item->remove();
 
