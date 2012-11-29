@@ -37,6 +37,8 @@ abstract class AbstractAdapter implements AdapterInterface
     protected $options;
 
     protected $client;
+
+    protected $cache;
     
     protected $uniformApi = array();
 

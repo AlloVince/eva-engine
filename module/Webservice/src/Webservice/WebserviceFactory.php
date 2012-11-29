@@ -28,6 +28,8 @@ class WebserviceFactory
 
     protected $adapter;
 
+    protected $cache;
+
     /**
     * Constructor
     *
