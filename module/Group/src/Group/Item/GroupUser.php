@@ -7,6 +7,15 @@ use Eva\Mvc\Item\AbstractItem;
 class GroupUser extends AbstractItem
 {
     protected $dataSourceClass = 'Group\DbTable\GroupsUsers';
+    
+    protected $relationships = array(
+        'Group' => array(
+            'targetEntity' => 'Group\Item\Group',
+            'relationship' => 'OneToOne',
+            'joinColumn' => 'id',
+            'referencedColumn' => 'group_id',
+        ),
+    );
 
     protected $map = array(
         'create' => array(

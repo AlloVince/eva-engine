@@ -7,7 +7,16 @@ use Eva\Mvc\Item\AbstractItem;
 class EventUser extends AbstractItem
 {
     protected $dataSourceClass = 'Event\DbTable\EventsUsers';
-
+    
+    protected $relationships = array(
+        'Event' => array(
+            'targetEntity' => 'Event\Item\Event',
+            'relationship' => 'OneToOne',
+            'joinColumn' => 'id',
+            'referencedColumn' => 'event_id',
+        ),
+    );
+    
     protected $map = array(
         'create' => array(
             'getRequestTime()',
@@ -26,7 +35,7 @@ class EventUser extends AbstractItem
         $this->operator_id   = $this->user_id;
         $this->requestStatus = 'active';
     }
-    
+
     public function getRequestTime()
     {
         if(!$this->requestTime) {
