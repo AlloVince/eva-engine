@@ -23,6 +23,8 @@
     "require": {
         "php": ">=5.3.3",
         "zendframework/zend-session": "2.0.*",
+        "zendframework/zend-json": "2.0.*",
+        "zendframework/zend-eventmanager": "2.0.*",
         "zendframework/zendoauth": "2.0.*"
     }
 }
