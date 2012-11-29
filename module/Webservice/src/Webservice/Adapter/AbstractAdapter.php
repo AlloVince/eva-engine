@@ -28,6 +28,10 @@ abstract class AbstractAdapter implements AdapterInterface
     * Final client response data after parse
     */
     protected $apiData;
+
+    protected $apiMap = array();
+    protected $apiHost;
+
     protected $messages;
 
     protected $options;
@@ -105,7 +109,6 @@ abstract class AbstractAdapter implements AdapterInterface
     {
         $this->errorResponseFormat = $format;
         return $this;
-    
     }
 
     public function setUniformApi(array $apiMap)
@@ -122,12 +125,99 @@ abstract class AbstractAdapter implements AdapterInterface
         return $this->uniformApi;
     }
 
-    public function api($apiName)
+    public function api($apiNameOrUrl, $urlParams = null, $method = 'GET', array $requestParams = array())
     {
-        if(isset($this->uniformApi[$apiName])){
-            
+        $apiUri = '';
+        if(0 === strpos($apiNameOrUrl, 'http://') || 0 === strpos($apiNameOrUrl, 'https://')){
+            $apiUri = $apiNameOrUrl;
+        } else {
+            list($apiUri, $method) = $this->getApiUriFromMap($apiNameOrUrl);
         }
-    
+
+        //: must after http:
+        if(strripos($apiUri, ':') > 5){
+            $apiUri = $this->replaceUri($apiUri, $urlParams);
+        } else {
+            //Nothing need to replace in Url, use second paramater as main
+            if(!$requestParams && $urlParams){
+                $requestParams = $urlParams;
+            }
+        }
+
+        if(!$apiUri){
+            throw new Exception\InvalidArgumentException(sprintf(
+                'API url not found'
+            ));
+        }
+
+        $this->setApiUri($apiUri);
+        $client = $this->getClient();
+        $client->setMethod($method);
+
+        if($requestParams){
+            if($method === 'GET'){
+                $client->setParameterGet($requestParams);
+            } else {
+                $client->setParameterPost($requestParams);
+            }
+        }
+
+        return $this->getApiData();
+    }
+
+    public function getApiMap()
+    {
+        return $this->apiMap;
+    }
+
+    public function getApiUriFromMap($apiName)
+    {
+        $method = 'GET';
+        $apiUri = '';
+        $host = $this->apiHost;
+        $map = $this->apiMap;
+
+        $apiKeys = explode('::', $apiName);
+        foreach($apiKeys as $mapKey){
+            if(!isset($map[$mapKey])){
+                throw new Exception\InvalidArgumentException(sprintf(
+                    'Api %s no found in api map in %s', $apiName, get_class($this)
+                ));
+            }
+            $map = $map[$mapKey];
+        }
+
+        if(is_string($map)){
+            $apiUri = $map;
+        } else {
+            if(isset($map['method'])){
+                $method = $map['method'];
+            }
+            if(isset($map['url'])){
+                $apiUri = $map['url'];
+            }
+        }
+        return array($host . $apiUri, $method);
+    }
+
+    protected function replaceUri($uri, $urlParams)
+    {
+        if(!$urlParams){
+            return $uri;
+        }
+
+        if(is_string($urlParams)){
+            $uri = preg_replace('/:[\w_]+/', $urlParams, $uri);
+        } elseif (is_array($urlParams)){
+            $patterns = array();
+            $replaces = array();
+            foreach($urlParams as $key => $value){
+                $patterns[] = ":$key";
+                $replaces[] = $value;
+            }
+            $uri = str_replace($patterns, $replaces, $uri);
+        }
+        return $uri;
     }
 
     public function setClient(Client $client)

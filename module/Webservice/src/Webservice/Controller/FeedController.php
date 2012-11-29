@@ -27,11 +27,24 @@ class FeedController extends AbstractActionController
 
         $webserice = WebserviceFactory::factory('Oauth2Douban', $item, $this->getServiceLocator());
         $adapter = $webserice->getAdapter();
+        $data = $adapter->api('User::searchUser', array(
+            'q' => 'a',
+            'start' => '0',
+        ));
+        /*
+        $data = $adapter->api('https://api.douban.com/v2/user', null, 'GET', array(
+            'q' => 'a',
+            'start' => '0',
+        ));
+        */
+
+        /*
         $adapter->setApiUri('https://api.douban.com/v2/book/20389191');
         //https://api.douban.com/v2/user/~me
         $data = $adapter->getApiData();
         p($adapter->isApiResponseSuccess());
         p($data);
         p($adapter->getMessages());
+        */
     }
 }
