@@ -4,11 +4,11 @@ namespace Webservice\Adapter\User;
 
 use Webservice\Exception;
 
-class Oauth2Douban extends AbstractUser
+class Oauth2Weibo extends AbstractUser
 {
     protected $apiMapping = array(
         'UserApi' => array(
-            'api' => '/v2/user/:name',
+            'api' => '/2/users/show.json',
             'beforeCallback' => 'replaceUserId',
         ),
     );
@@ -19,30 +19,34 @@ class Oauth2Douban extends AbstractUser
             'Type' => 'Read',
             'Nodes' => array(
                 'id' => 'id',
-                'userName' => 'uid',
-                'screenName' => 'name',
+                'userName' => 'name',
+                'screenName' => 'screen_name',
             ),
         ),
         'Profile' => array(
             'Config' => 'UserApi',
             'Type' => 'Read',
             'Nodes' => array(
-                'city' => 'loc_name',
-                'bio' => 'desc',
+                'city' => 'city',
+                'bio' => 'description',
             ),
+            'Callback' => ''
         ),
         'Avatar' => array(
             'Config' => 'UserApi',
             'Type' => 'Read',
             'Nodes' => array(
-                'url' => 'avatar',
+                'url' => 'profile_image_url',
             ),
         ),
     );
 
     protected function replaceUserId($params)
     {
-        $params['apiParams'] = $this->userId;
+        $params['requestParams'] = array(
+            'uid' => $this->userId
+        );
         return $params;
     }
 }
+

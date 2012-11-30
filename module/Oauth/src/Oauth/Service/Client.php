@@ -16,6 +16,7 @@ use Zend\Http\Request as HttpRequest;
 use Zend\Http\Response as HttpResponse;
 use Zend\Stdlib\ArrayUtils;
 use ZendOAuth\OAuth;
+use Oauth\Exception;
 
 /**
  * @category   Zend

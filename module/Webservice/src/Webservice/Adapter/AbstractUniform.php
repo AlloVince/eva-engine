@@ -10,38 +10,81 @@ abstract class AbstractUniform
 {
     protected $adapter;
 
-    protected $cache;
+    protected $apiMapping;
 
-    protected $defaultApi;
-
-    protected $mapping;
-
+    protected $dataMapping;
+    
     protected $mapKey;
 
-    protected function api($mapItem)
+    protected $lastRawResponse;
+
+    protected function prepareApiMapping($apiMapKey)
     {
-        if(is_string($mapItem)){
-            $api = $this->defaultApi;
-            $apiDataKey = $mapItem;
+        $apiMapping = $this->apiMapping[$apiMapKey];
+        return $apiMapping;
+    }
+
+
+    protected function prepareParams($dataNode, $dataMap)
+    {
+        $defaultParams =  array(
+            'api' => '',
+            'method' => 'GET',
+            'key' => '',
+            'apiParams' => null,
+            'requestParams' => array(),
+            'security' => false,
+            'beforeCallback' => '',
+            'afterCallback' => '',
+            'useDefault' => true,
+        );
+        
+        if(is_string($dataNode)){
+            $params = $this->prepareApiMapping($dataMap['Config']);
+            $params = array_merge($defaultParams, $params);
+            $params['key'] = $dataNode;
+        } elseif (is_array($dataNode)){
+            $params = array_merge($defaultParams, $dataNode);
         } else {
-            if(!isset($mapItem['fromApi'])){
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Api mapping require string or array'
+            ));
+        }
+
+        return $params;
+    }
+
+    protected function api($dataNode, $dataMap)
+    {
+        $params = $this->prepareParams($dataNode, $dataMap);
+
+        if(!$params['api']){
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Data source api not found in %s', get_class($this)
+            ));
+        }
+
+        if($params['beforeCallback']){
+            if(false === method_exists($this, $params['beforeCallback'])){
                 throw new Exception\InvalidArgumentException(sprintf(
-                    'Data source api not found in %s', get_class($this)
+                    'Callback %s not found in %s', $params['beforeCallback'], get_class($this)
                 ));
             }
-            $api = $mapItem['fromApi'];
-            $apiDataKey = $mapItem['key'];
+            $beforeCallback = $params['beforeCallback'];
+            $params = $this->$beforeCallback($params);
         }
 
-        $cache = $this->cache;
-        if(!isset($cache[$api])){
-            $data = $this->adapter->api($api);
-            $cache[$api] = $data;
-        }
+        $api = $params['api'];
+        $apiDataKey = $params['key'];
+        $apiParams = $params['apiParams'];
+        $method = $params['method'];
+        $requestParams = $params['requestParams'];
 
-        if(isset($cache[$api][$apiDataKey])){
-            return $cache[$api][$apiDataKey];
-        }
+        $data = $this->adapter->api($api, $apiParams, $method, $requestParams);
+
+        $this->lastRawResponse = $data;
+
+        return isset($data[$apiDataKey]) ? $data[$apiDataKey] : null;
     }
 
     public function __call($methodName, $arguments) 
@@ -75,14 +118,27 @@ abstract class AbstractUniform
 
     }
 
-    public function getData()
+    public function getData($dataMapKey = null)
     {
-        $mapping = $this->mapping;
+        $mapping = $this->dataMapping;
         $data = array();
+        if($dataMapKey){
+            $this->mapKey = $dataMapKey;
+            $dataMapping = $mapping[$dataMapKey];
+            foreach($dataMapping['Nodes'] as $key => $dataNode){
+                $data[$key] = $this->api($dataNode, $dataMapping);
+            }
+            return $data;
+        }
 
-        foreach($mapping as $dataType => $subMapping){
-            foreach($subMapping as $key => $mapItem){
-                $data[$dataType][$key] = $this->api($mapItem);
+
+        foreach($mapping as $dataMapKey => $dataMapping){
+            if($dataMapping['Type'] != 'Read'){
+                continue;
+            }
+
+            foreach($dataMapping['Nodes'] as $key => $dataNode){
+                $data[$dataMapKey][$key] = $this->api($dataNode, $dataMapping);
             }
         }
         return $data;
@@ -97,5 +153,10 @@ abstract class AbstractUniform
     {
         $this->adapter = $adapter;
         return $this;
+    }
+
+    public function getLastRawResponse()
+    {
+        return $this->lastRawResponse;
     }
 }

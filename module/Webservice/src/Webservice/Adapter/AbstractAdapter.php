@@ -38,7 +38,7 @@ abstract class AbstractAdapter implements AdapterInterface
 
     protected $client;
 
-    protected $cache;
+    protected $innerCache;
     
     protected $uniformApi = array();
 
@@ -132,6 +132,9 @@ abstract class AbstractAdapter implements AdapterInterface
         $apiUri = '';
         if(0 === strpos($apiNameOrUrl, 'http://') || 0 === strpos($apiNameOrUrl, 'https://')){
             $apiUri = $apiNameOrUrl;
+        } elseif(0 === strpos($apiNameOrUrl, '/')) {
+            //Start from / will be a url path
+            $apiUri = $this->apiHost . $apiNameOrUrl;
         } else {
             list($apiUri, $method) = $this->getApiUriFromMap($apiNameOrUrl);
         }
@@ -145,6 +148,20 @@ abstract class AbstractAdapter implements AdapterInterface
                 $requestParams = $urlParams;
             }
         }
+
+        $cacheKey = '';
+        //Cache complate same GET request in memery
+        if($method === 'GET'){
+            $cacheKey = md5(serialize(array(
+                $apiUri,
+                $urlParams,
+                $requestParams,
+            )));
+            if(isset($this->innerCache[$cacheKey])){
+                return $this->innerCache[$cacheKey];
+            }
+        }
+
 
         if(!$apiUri){
             throw new Exception\InvalidArgumentException(sprintf(
@@ -164,7 +181,11 @@ abstract class AbstractAdapter implements AdapterInterface
             }
         }
 
-        return $this->getApiData();
+        $data = $this->getApiData();
+        if($cacheKey){
+            $this->innerCache[$cacheKey] = $data;
+        }
+        return $data;
     }
 
     public function uniformApi($uniformApiType)
