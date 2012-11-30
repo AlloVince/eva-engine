@@ -97,9 +97,7 @@ $form->useSubFormGroup()
                 </div>
 
 
-
                 <fieldset class="form-horizontal">
-
                     <div class="control-group <?=$form->isError('eventStatus') ? 'error' : '';?>">
                         <?=$form->helper('eventStatus', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
@@ -115,6 +113,65 @@ $form->useSubFormGroup()
                             <div class="help-block"><?=$form->helper('visibility', 'formElementErrors')?></div>
                         </div>
                     </div>
+
+                    <div class="control-group <?=$form->isError('isFullDayEvent') ? 'error' : '';?>">
+                        <?=$form->helper('isFullDayEvent', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('isFullDayEvent', 'formSelect', array('class' => ''))?>
+                            <div class="help-block"><?=$form->helper('isFullDayEvent', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div><!--span5 end-->
+        
+        <div class="span5">
+            <div class="slate">
+                <div class="page-header">
+                    <h3><?=$this->_('Repeat Setting')?></h3>
+                </div>
+
+                <fieldset class="form-horizontal">
+                    <div class="control-group <?=$form->isError('reminderType') ? 'error' : '';?>">
+                        <?=$form->helper('reminderType', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('reminderType', 'formSelect', array('class' => ''))?>
+                            <div class="help-block"><?=$form->helper('reminderType', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+
+                    <div class="control-group <?=$form->isError('reminderTimeUnit') ? 'error' : '';?>">
+                        <?=$form->helper('reminderTimeUnit', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('reminderTimeUnit', 'formSelect', array('class' => ''))?>
+                            <div class="help-block"><?=$form->helper('reminderTimeUnit', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group <?=$form->isError('reminderTimeValue') ? 'error' : '';?>">
+                        <?=$form->helper('reminderTimeValue', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('reminderTimeValue', array('class' => 'span1'))?>
+                            <div class="help-block"><?=$form->helper('reminderTimeValue', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+<!--
+                    <div class="control-group <?=$form->isError('registrationStart') ? 'error' : '';?>">
+                        <?=$form->helper('registrationStart', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('registrationStart', array('class' => ''))?>
+                            <div class="help-block"><?=$form->helper('registrationStart', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+
+                    <div class="control-group <?=$form->isError('registrationEnd') ? 'error' : '';?>">
+                        <?=$form->helper('registrationEnd', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('registrationEnd', array('class' => ''))?>
+                            <div class="help-block"><?=$form->helper('registrationEnd', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+-->
                 </fieldset>
             </div>
         </div><!--span5 end-->
@@ -126,29 +183,45 @@ $form->useSubFormGroup()
                 </div>
 
                 <fieldset class="form-horizontal">
-                    <div class="control-group <?=$form->isError('startTime') ? 'error' : '';?>">
-                        <?=$form->helper('startTime', 'label', array('class' => 'control-label'))?>
+                 <div class="span2">   
+                    <div class="control-group <?=$form->isError('startDay') ? 'error' : '';?>">
+                        <?=$form->helper('startDay', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper('startTime', array('class' => 'datepicker', 'data-date-format' => 'yyyy-mm-dd'))?>        
-                            <div class="help-block"><?=$form->helper('startTime', 'formElementErrors')?></div>
+                            <?=$form->helper('startDay', array('class' => 'datepicker span2', 'data-date-format' => 'yyyy-mm-dd'))?>        
+                            <div class="help-block"><?=$form->helper('startDay', 'formElementErrors')?></div>
                         </div>
                     </div>
-
-                   <div class="control-group <?=$form->isError('endTime') ? 'error' : '';?>">
-                        <?=$form->helper('endTime', 'label', array('class' => 'control-label'))?>
+        
+                   <div class="control-group <?=$form->isError('endDay') ? 'error' : '';?>">
+                        <?=$form->helper('endDay', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper('endTime', array('class' => 'datepicker', 'data-date-format' => 'yyyy-mm-dd'))?>        
-                            <div class="help-block"><?=$form->helper('endTime', 'formElementErrors')?></div>
+                            <?=$form->helper('endDay', array('class' => 'datepicker span2', 'data-date-format' => 'yyyy-mm-dd'))?>        
+                            <div class="help-block"><?=$form->helper('endDay', 'formElementErrors')?></div>
                         </div>
                     </div>
-
                     <div class="control-group <?=$form->isError('timezone') ? 'error' : '';?>">
                         <?=$form->helper('timezone', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
                             <?=$form->helper('timezone', array('class' => 'span1'))?>        
                             <div class="help-block"><?=$form->helper('timezone', 'formElementErrors')?></div>
                         </div>
-                    </div>  
+                    </div>
+                </div>
+                 <div class="span1">   
+                    <div class="control-group <?=$form->isError('startTime') ? 'error' : '';?>">
+                        <div class="controls">
+                            <?=$form->helper('startTime', array('class' => 'timepicker span1', 'data-date-format' => 'hh-ii-ss'))?>        
+                            <div class="help-block"><?=$form->helper('startTime', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+
+                   <div class="control-group <?=$form->isError('endTime') ? 'error' : '';?>">
+                        <div class="controls">
+                            <?=$form->helper('endTime', array('class' => 'timepicker span1', 'data-date-format' => 'hh-ii-ss'))?>        
+                            <div class="help-block"><?=$form->helper('endTime', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                </div>  
                 </fieldset>
             </div>
         </div><!--span5 end-->
@@ -163,7 +236,7 @@ $form->useSubFormGroup()
                     <div class="control-group <?=$form->isError('location') ? 'error' : '';?>">
                         <?=$form->helper('location', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper('location', array('class' => 'span5'))?>        
+                            <?=$form->helper('location', array('class' => 'span3'))?>        
                             <div class="help-block"><?=$form->helper('location', 'formElementErrors')?></div>
                         </div>
                     </div> 

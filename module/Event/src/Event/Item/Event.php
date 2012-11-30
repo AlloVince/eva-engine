@@ -111,17 +111,19 @@ class Event extends AbstractItem
 
     public function getStartDatetimeUtc()
     {
-        if ($this->timezone && $this->startTime) {
-            return $this->startDatetimeUtc = \Eva\Date\Date::getBefore($this->timezone * 3600, $this->startTime, 'Y-m-d H:i:s'); 
+        $datetime = $this->startDay . ' ' . $this->startTime;
+        if ($this->timezone && $this->startTime && $this->startDay) {
+            return $this->startDatetimeUtc = \Eva\Date\Date::getBefore($this->timezone * 3600, $datetime, 'Y-m-d H:i:s'); 
         }
-        return $this->startDatetimeUtc = $this->startTime;
+        return $this->startDatetimeUtc = $datetime;
     }
 
     public function getEndDatetimeUtc()
     {
-        if ($this->timezone && $this->endTime) {
-            return $this->endDatetimeUtc = \Eva\Date\Date::getBefore($this->timezone * 3600, $this->endTime, 'Y-m-d H:i:s'); 
+        $datetime = $this->endDay . ' ' . $this->endTime;
+        if ($this->timezone && $this->endTime && $this->endDay) {
+            return $this->endDatetimeUtc = \Eva\Date\Date::getBefore($this->timezone * 3600, $datetime, 'Y-m-d H:i:s'); 
         }
-        return $this->endDatetimeUtc = $this->endTime;
+        return $this->endDatetimeUtc = $datetime;
     }
 }

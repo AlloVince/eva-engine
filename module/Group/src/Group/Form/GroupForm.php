@@ -208,4 +208,14 @@ class GroupForm extends \Eva\Form\Form
             ),
         ),
     );
+
+    public function getLanguages($element)
+    {
+        $translator = \Eva\Api::_()->getServiceManager()->get('translator');
+        $locale = $translator->getLocale();
+        $languages = \Eva\Locale\Data::getList($locale, 'language');
+        $element['options']['value_options'] = $languages;
+        $element['attributes']['value'] = $locale;
+        return $element;
+    }
 }

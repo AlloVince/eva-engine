@@ -159,19 +159,21 @@ class Group extends AbstractModel
         $subItem->remove();
         
         $subItem = $item->join('GroupUser');
-        $subItem->remove();
-        
+        foreach ($subItem as $groupUser) {
+            $groupUser->remove();
+        }
+
         $subItem = $item->join('GroupFile');
         $subItem->remove();
 
         $item->remove();
 
         $this->trigger('remove');
-    
+
         $this->trigger('remove.group');
 
         return true;
-    
+
     }
 
 
