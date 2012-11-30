@@ -68,8 +68,18 @@ abstract class AbstractAdapter extends \Oauth\Adapter\AbstractAdapter implements
             'consumerKey' => $consumer->getConsumerKey(),
             'consumerSecret' => $consumer->getConsumerSecret(),
         );
+        if(!$defaultOptions['consumerKey'] || !$defaultOptions['consumerSecret']){
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Oauth1.0 AccessToken http client require consumerKey & consumerSecret input in %s',
+                get_class($this)
+            ));
+        }
         $oauthOptions = array_merge($defaultOptions, $this->httpClientOptions, $oauthOptions);
-        return $this->getAccessToken()->getHttpClient($oauthOptions, $uri, $config, $excludeCustomParamsFromHeader);
+        $client = $this->getAccessToken()->getHttpClient($oauthOptions, $uri, $config, $excludeCustomParamsFromHeader);
+        $client->setOptions(array(
+            'sslverifypeer' => false
+        ));
+        return $client;
     }
 
     public function accessTokenToArray(AccessToken $accessToken)

@@ -3,6 +3,7 @@
 namespace Oauth\Adapter\Oauth1;
 
 use Oauth\Adapter\Oauth1\AbstractAdapter;
+use ZendOAuth\Token\Access as AccessToken;
 
 
 class Twitter extends AbstractAdapter
@@ -14,4 +15,12 @@ class Twitter extends AbstractAdapter
     protected $authorizeUrl = "https://api.twitter.com/oauth/authorize";
 
     protected $accessTokenUrl = "https://api.twitter.com/oauth/access_token";
+
+    public function accessTokenToArray(AccessToken $accessToken)
+    {
+        $token = parent::accessTokenToArray($accessToken);
+        $token['remoteUserId'] = $accessToken->getParam('user_id');
+        $token['remoteUserName'] = $accessToken->getParam('screen_name');
+        return $token;
+    }
 }
