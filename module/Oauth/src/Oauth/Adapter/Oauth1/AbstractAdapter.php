@@ -25,7 +25,7 @@ abstract class AbstractAdapter extends \Oauth\Adapter\AbstractAdapter implements
             'accessTokenUrl' => $this->accessTokenUrl,
 		);
 
-        $options = array_merge($defaultOptions, $options);
+        $options = array_merge($defaultOptions, $this->defaultOptions, $options);
 
         if(!$options['consumerKey']){
             throw new Exception\InvalidArgumentException(sprintf('No consumer key found in %s', get_class($this)));

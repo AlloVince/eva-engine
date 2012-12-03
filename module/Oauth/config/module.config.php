@@ -26,7 +26,7 @@ return array(
             'weibo' => array(
                 'enable' => 1,
                 'consumer_key' => '',
-                'consumer_secret' => ''
+                'consumer_secret' => '',
             ),
             'flickr' => array(
                 'enable' => 1,
