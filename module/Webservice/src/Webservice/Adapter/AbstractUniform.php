@@ -144,6 +144,47 @@ abstract class AbstractUniform
         return $data;
     }
 
+    public function writeData($dataMapKey, $params)
+    {
+        $mapping = $this->dataMapping;
+        if(!isset($mapping[$dataMapKey])){
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Request write api %s not defined in api mapping', $dataMapKey
+            ));
+        }
+        $dataMapping = $mapping[$dataMapKey];
+        if($dataMapping['Type'] !== 'Write'){
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Request api %s is not able to write by mapping Type', $dataMapKey
+            ));
+        }
+
+        $dataNodes = $dataMapping['Nodes'];
+        $data = array();
+
+        foreach($dataNodes as $key => $remoteDataKey){
+            if(isset($params[$key])){
+                $data[$remoteDataKey] = $params[$key];
+            }
+        }
+
+        $apiParams = $this->prepareParams($dataMapKey, $dataMapping);
+        $apiParams['requestParams'] = $data;
+        $data = $this->api($apiParams, $dataMapping);
+        
+        $response = $this->lastRawResponse;
+        $result = $params;
+        if(isset($dataMapping['ResponseNodes'])){
+            $responseMapping = $dataMapping['ResponseNodes'];
+            foreach($responseMapping as $key => $remoteDataKey){
+                if(isset($response[$remoteDataKey])){
+                    $result[$key] = $response[$remoteDataKey];
+                }
+            }
+        }
+        return $result;
+    }
+
     public function getAdapter()
     {
         return $this->adapter;

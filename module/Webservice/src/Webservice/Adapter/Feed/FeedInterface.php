@@ -1,6 +1,6 @@
 <?php
 
-namespace Webservice\Adapter\User;
+namespace Webservice\Adapter\Feed;
 
 interface FeedInterface
 {

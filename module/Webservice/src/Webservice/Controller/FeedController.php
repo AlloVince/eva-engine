@@ -11,40 +11,47 @@ class FeedController extends AbstractActionController
 {
     public function indexAction()
     {
+        $serviceKey = $this->params()->fromQuery('service');
+        $serviceType = $this->params()->fromQuery('type');
+        $userId = $this->params()->fromQuery('uid');
+
+        $serviceKey = ucfirst(strtolower($serviceKey));
+        $serviceType = ucfirst(strtolower($serviceType));
+
+
         $this->changeViewModel('json');
         $itemModel = Api::_()->getModel('Oauth\Model\Accesstoken');
         $dataClass = $itemModel->getItem()->getDataClass();
-        $item = $dataClass->where(function($where){
-            $where->equalTo('adapterKey', 'douban');
+        $item = $dataClass->where(function($where) use ($serviceKey, $serviceType, $userId){
+            $where->equalTo('adapterKey', strtolower($serviceKey));
             $where->equalTo('tokenStatus', 'active');
-            $where->equalTo('version', 'Oauth2');
-            //$where->greaterThan('expireTime', 0);
+            $where->equalTo('version', $serviceType);
+            $where->equalTo('user_id', $userId);
             return $where;
         })
-        ->order('expireTime ASC')
         ->find('one');
         $item = (array) $item;
 
-        $webserice = WebserviceFactory::factory('Oauth2Douban', $item, $this->getServiceLocator());
-        $adapter = $webserice->getAdapter();
-        $data = $adapter->api('User::searchUser', array(
-            'q' => 'a',
-            'start' => '0',
-        ));
-        /*
-        $data = $adapter->api('https://api.douban.com/v2/user', null, 'GET', array(
-            'q' => 'a',
-            'start' => '0',
-        ));
-        */
+        if(!$item){
+            return new JsonModel();
+        }
 
-        /*
-        $adapter->setApiUri('https://api.douban.com/v2/book/20389191');
-        //https://api.douban.com/v2/user/~me
-        $data = $adapter->getApiData();
-        p($adapter->isApiResponseSuccess());
-        p($data);
-        p($adapter->getMessages());
-        */
+        $webserice = WebserviceFactory::factory($serviceType . $serviceKey, $item, $this->getServiceLocator());
+        $adapter = $webserice->getAdapter();
+
+        $content = 'Hello World2';
+        $feedApi = $adapter->uniformApi('Feed');
+        $feedApi->createFeed(array(
+            'content' => $content,
+        ));
+
+        //$json = $userApi->getLastRawResponse();
+        //p($userApi->getAdapter()->getClient()->getRequest()->toString());
+        //p($userApi->getAdapter()->getClient()->getResponse()->getBody());
+
+
+        return new JsonModel(array(
+            'data' => $user
+        ));
     }
 }

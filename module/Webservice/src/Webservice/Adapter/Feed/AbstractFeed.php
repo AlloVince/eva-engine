@@ -5,7 +5,7 @@ namespace Webservice\Adapter\Feed;
 use Webservice\Adapter\AbstractUniform;
 use Webservice\Exception;
 
-abstract class AbstractFeed extends AbstractUniform implements UserInterface
+abstract class AbstractFeed extends AbstractUniform implements FeedInterface
 {
 
     protected $feedId;
