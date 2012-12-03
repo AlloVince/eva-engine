@@ -49,7 +49,6 @@ class RefreshController extends AbstractActionController
         $adapter = $oauth->getAdapter();
 
         $client = $adapter->getHttpClient();
-        p($client->getToken());
         //$client->setUri('https://api.weibo.com/2/users/show.json');
         //$client->setParameterGet(array(
         //    'screen_name' => 'Allo'

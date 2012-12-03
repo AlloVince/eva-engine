@@ -46,9 +46,7 @@ class Google extends AbstractAdapter
         $client = $this->getHttpClient();
         $client->setUri('https://www.googleapis.com/oauth2/v2/userinfo');
         $response = $client->send();
-        if($response->getStatusCode() == 200){
-            $data = (array) \Zend\Json\Json::decode($response->getBody());
-            return $data['id'];
-        }
+        $data = $this->parseJsonpResponse($response);
+        return isset($data['id']) ? $data['id'] : null;
     }
 }

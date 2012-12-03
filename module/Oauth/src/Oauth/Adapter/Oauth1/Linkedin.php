@@ -21,7 +21,8 @@ class Linkedin extends AbstractAdapter
     public function accessTokenToArray(AccessToken $accessToken)
     {
         $token = parent::accessTokenToArray($accessToken);
-        //$token['remoteUserId'] = $accessToken->getParam('douban_user_id');
+        $expiredTime = $accessToken->getParam('oauth_authorization_expires_in');
+        $token['expireTime'] = gmdate('Y-m-d H:i:s', time() + $expiredTime);
         return $token;
     }
 }

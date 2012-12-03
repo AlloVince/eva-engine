@@ -39,10 +39,8 @@ class Facebook extends AbstractAdapter
         $client = $this->getHttpClient();
         $client->setUri('https://graph.facebook.com/me');
         $response = $client->send();
-        if($response->getStatusCode() == 200){
-            $data = (array) \Zend\Json\Json::decode($response->getBody());
-            return $data['id'];
-        }
+        $data = $this->parseJsonResponse($response);
+        return isset($data['id']) ? $data['id'] : null;
     }
 
 }
