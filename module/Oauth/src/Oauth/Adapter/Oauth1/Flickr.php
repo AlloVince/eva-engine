@@ -4,6 +4,7 @@ namespace Oauth\Adapter\Oauth1;
 
 use Oauth\Adapter\Oauth1\AbstractAdapter;
 use ZendOAuth\OAuth;
+use ZendOAuth\Token\Access as AccessToken;
 
 class Flickr extends AbstractAdapter
 {
@@ -14,7 +15,15 @@ class Flickr extends AbstractAdapter
     protected $accessTokenUrl = "http://www.flickr.com/services/oauth/access_token";
 
     protected $defaultOptions = array(
-        'requestScheme' => OAuth::REQUEST_SCHEME_QUERYSTRING,
+        //Flickr required GET method
         'requestMethod' => OAuth::GET,
     );
+
+    public function accessTokenToArray(AccessToken $accessToken)
+    {
+        $token = parent::accessTokenToArray($accessToken);
+        $token['remoteUserId'] = $accessToken->getParam('user_nsid');
+        $token['remoteUserName'] = $accessToken->getParam('username');
+        return $token;
+    }
 }
