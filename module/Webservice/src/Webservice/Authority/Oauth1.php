@@ -9,10 +9,12 @@ class Oauth1 implements AuthorityInterface
 
     protected $options;
     protected $authorityClass;
+    protected $serviceLocator;
 
     public function getClient()
     {
         $oauth = new OauthService();
+        $oauth->setServiceLocator($this->serviceLocator);
         $oauth->initByAccessToken($this->options);
         $adapter = $oauth->getAdapter();
 
@@ -20,10 +22,11 @@ class Oauth1 implements AuthorityInterface
         return $client;
     }
 
-    public function __construct($authorityClass, $options)
+    public function __construct($authorityClass, $options, $serviceLocator = null)
     {
         $this->authorityClass = $authorityClass;
         $this->options = $options;
+        $this->serviceLocator = $serviceLocator;
     }
 
 }

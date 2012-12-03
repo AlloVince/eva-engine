@@ -296,7 +296,7 @@ abstract class AbstractAdapter implements AdapterInterface
                 'No Webservice authority bridge %s found', $authorityBridge
             ));
         }
-        $authority = new $authorityBridge($authorityClass, $this->getOptions());
+        $authority = new $authorityBridge($authorityClass, $this->getOptions(), $this->getServiceLocator());
         return $authority->getClient();
     }
 
