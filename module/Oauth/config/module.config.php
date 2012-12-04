@@ -48,6 +48,7 @@ return array(
                 'consumer_key' => '',
                 'consumer_secret' => ''
             ),
+
         ),
         'oauth2' => array(
             'facebook' => array(
@@ -126,6 +127,11 @@ return array(
                 'consumer_secret' => ''
             ),
             'github' => array(
+                'enable' => 1,
+                'consumer_key' => '',
+                'consumer_secret' => ''
+            ),
+            'foursquare' => array(
                 'enable' => 1,
                 'consumer_key' => '',
                 'consumer_secret' => ''
