@@ -43,6 +43,11 @@ return array(
                 'consumer_key' => '',
                 'consumer_secret' => ''
             ),
+            'yahoo' => array(
+                'enable' => 1,
+                'consumer_key' => '',
+                'consumer_secret' => ''
+            ),
         ),
         'oauth2' => array(
             'facebook' => array(
