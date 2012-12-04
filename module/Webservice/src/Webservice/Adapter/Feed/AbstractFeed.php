@@ -10,6 +10,14 @@ abstract class AbstractFeed extends AbstractUniform implements FeedInterface
 
     protected $feedId;
 
+    protected $userId;
+
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
+        return $this;
+    }
+
     public function setFeedId($feedId)
     {
         $this->feedId = $feedId;

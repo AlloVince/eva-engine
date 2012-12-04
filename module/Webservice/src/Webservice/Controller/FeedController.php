@@ -2,7 +2,7 @@
 namespace Webservice\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
+use Zend\View\Model\JsonModel;
 use Eva\Api;
 use Webservice\WebserviceFactory;
 use Webservice\Exception;
@@ -39,19 +39,21 @@ class FeedController extends AbstractActionController
         $webserice = WebserviceFactory::factory($serviceType . $serviceKey, $item, $this->getServiceLocator());
         $adapter = $webserice->getAdapter();
 
-        $content = 'Hello World2';
+        $content = 'Hello World';
         $feedApi = $adapter->uniformApi('Feed');
-        $feedApi->createFeed(array(
+        $feedApi->setUserId($item['remoteUserId']);
+        $feed = $feedApi->createFeed(array(
             'content' => $content,
         ));
 
-        //$json = $userApi->getLastRawResponse();
-        //p($userApi->getAdapter()->getClient()->getRequest()->toString());
-        //p($userApi->getAdapter()->getClient()->getResponse()->getBody());
+        $json = $feedApi->getLastRawResponse();
+        p($feedApi->getAdapter()->getClient()->getRequest()->toString());
+        p($feedApi->getAdapter()->getClient()->getResponse()->getBody());
 
 
+        exit;
         return new JsonModel(array(
-            'data' => $user
+            'data' => $feed
         ));
     }
 }
