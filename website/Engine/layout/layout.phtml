@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta charset="utf-8" />
+    <?=$this->headTitle()?>
+    <?$this->link('/src/admin/css/bootstrap.css')?>
+	<!--[if lt IE 9]>
+	<meta http-equiv="PRAGMA" content="NO-CACHE" />
+    <script src="<?=$this->link('/lib/js/html5shiv/html5shiv.min.js')?>"></script>
+	<![endif]-->
+    <?=$this->headMeta()?>
+    <?=$this->googleAnalytics()?>
+    <link href="<?=$this->link('/lib/css/fontawesome/css/font-awesome.css')?>" media="all" rel="stylesheet" type="text/css" />
+    <link href="<?=$this->link('/src/engine/css/ee.css')?>" media="all" rel="stylesheet" type="text/css" />
+    <?=$this->evajs()?>
+    <script src="<?=$this->link('/lib/js/labjs/labjs.min.js')?>"></script>
+    <script src="<?=$this->link('/lib/js/jquery/jquery.min.js')?>"></script>
+    <!--<script src="<?=$this->link('/lib/js/bootstrap/bootstrap.min.js')?>"></script>-->
+    <script src="<?=$this->link('/eva/js/core.js')?>"></script>
+    <script src="<?=$this->link('/eva/js/ui.js')?>"></script>
+    <script src="<?=$this->link('/src/admin/js/init.js')?>"></script>
+</head>
+
+<body>
+    <div id="navbar">
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="/">EvaEngine</a>	
+                    <div class="nav-collapse">
+                        <ul class="nav">
+                            <li data-highlight-url="^/$"><a href="/"><?=$this->_('Home')?></a></li>
+                            <li data-highlight-url="/documents/?.*"><a href="/documents/"><?=$this->_('Documents')?></a></li>
+                        </ul>
+                        <!--
+                        <form class="navbar-search pull-left" action="">
+                            <input class="search-query span2" placeholder="Search" type="text">
+                        </form>
+                        -->
+                        <ul class="nav pull-right">
+                            <li class="divider-vertical"></li>
+                            <?if($this->hasModule('User')):?>
+                            <?if($this->loginUser):?>
+                            <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?=$this->loginUser['userName']?> <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Profile</a></li>
+                                <li><a href="#">Setting</a></li>
+                                <li class="divider"></li>
+                                <li><a href="<?=$this->uri('/user/logout/')?>">Logout</a></li>
+                            </ul>
+                            </li>
+                            <?else:?>
+                            <li data-highlight-url="/register/*"><a href="/register/"><?=$this->_('Register')?></a></li>
+                            <li data-highlight-url="/login/*"><a href="/login/"><?=$this->_('Login')?></a></li>
+                            <?endif?>
+                            <?endif?>
+                        </ul>
+                    </div><!-- /.nav-collapse -->
+                </div>
+            </div><!-- /navbar-inner -->
+        </div><!-- /navbar -->
+    </div><!-- /#navbar -->
+
+    <div id="page" class="page">
+        <?=$this->content;?>
+    </div><!-- #page end-->
+
+    <div class="container">
+        <div class="row" id="footer">
+            <h4>For more details, follow me on</h4>
+            <div class="footericon">
+                <a href="https://twitter.com/AlloVince"><i class="icon-twitter-sign"></i></a>
+                <a href="https://github.com/AlloVince/eva-engine"><i class="icon-github"></i></a>
+                <a href="http://avnpc.com/"><i class="icon-rss"></i></a>
+            </div>
+            <p>&copy;2012 EvaEngine All rights reserved.</p>
+        </div><!--end row-->
+    </div>
+
+    <script>
+        eva.init(eva_config);
+    </script>
+
+</body>
+
+</html>

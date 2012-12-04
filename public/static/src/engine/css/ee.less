@@ -1,5 +1,5 @@
 @import "../../../eva/css/evabootstrap-full.less";
-@linkColor : #0099FF;
+@linkColor : #CF5522;
 
 @golden : #AC9217;
 @orange:#E1500D;
@@ -198,9 +198,210 @@ a {
 
 }
 
+@mailColor:#CF5522;
 
+body{ 
+	color:#525252;
+	background:url(bg.png);
 
-#footer {
-	margin-top:20px;
-	padding:20px 0;
 }
+
+#navbar {
+	border-top:solid 5px @mailColor;
+	
+	.navbar-inner {
+		.border-radius(0);
+		background:#F4F3F0;
+		//background-color: #B0B5BD;
+	    //background-image: radial-gradient(circle closest-corner, #F5F6F8 0%, #C2C9D3 100%);
+		//background-color: #A7AEB7;
+    	//background-image: radial-gradient(circle closest-corner, #DBDBDC 0%, #A7AEB7 100%);
+	}
+}
+
+#header{
+	margin-top:45px;
+	margin-bottom:60px;
+	text-align:center;
+}
+#header a{
+	width:130px;
+	height:70px;
+	display:block;
+	background:@mailColor;
+	margin:0 auto;
+	color:#fff;padding:30px 0;
+	-webkit-border-radius: 70px;
+	border-radius: 70px;
+	-moz-border-radius:70px;
+	-moz-background-clip: padding;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;	
+	-webkit-box-shadow: 0px 2px 0px 0px #9c2520;
+	-moz-box-shadow: 0px 2px 0px 0px #9c2520;
+	box-shadow: 0px 2px 0px 0px #9c2520;
+	text-shadow: 0px 1px #9c2520;
+	font-family: 'Droid Sans', serif;
+	font-weight: 700;
+}
+#header a:hover{
+	text-decoration:none;
+}
+#header a i{color:#9c2520;
+	font-size:18px;
+	line-height:28px;
+	padding:0 5px;
+	-webkit-background-clip: text;
+	-moz-background-clip: text;
+	background-clip: text;
+	text-shadow: rgba(0,0,0,0.9) -1px -1px 0px;
+}
+#header a span#it{
+	display:block;
+	font-size:22px;
+	border-bottom:solid 1px rgba(0, 0, 0, 0.5);
+	margin:0 18px;
+}
+#header a span#beta{ display:block;
+	font-size:36px;
+	border-top:solid 1px rgba(255, 255, 255, 0.4);
+	margin:0 18px;
+}
+
+/*** CATCHY CONTENT ****/
+#catchycontent{
+	text-align:center;
+}
+#catchycontent h2{ font-size:30px;
+	font-family: 'Droid Serif', serif;
+	font-weight: 400;
+	margin-bottom:30px;
+}
+#catchycontent p{ font-size:16px;
+	font-family: 'Droid Serif', serif;
+	line-height:26px;
+	font-weight:400;
+	font-style:italic;
+}
+
+/*** SUBSCRIBE ****/
+#subscribe{
+	text-align:center;
+	margin-top:40px;
+}
+.input-large{
+   padding:9px 14px;
+}
+.btn-success {
+	background-color: @mailColor;
+	background-image: -ms-linear-gradient(top, @mailColor, #9c2520);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@mailColor), to(#9c2520));
+	background-image: -webkit-linear-gradient(top, @mailColor, #9c2520);
+	background-image: -o-linear-gradient(top, @mailColor, #9c2520);
+	background-image: -moz-linear-gradient(top, @mailColor, #9c2520);
+	background-image: linear-gradient(top, @mailColor, #9c2520);
+	background-repeat: repeat-x;
+	border-color: #9c2520 #9c2520 #9c2520;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	filter: progid:dximagetransform.microsoft.gradient(startColorstr='@mailColor', endColorstr='#9c2520', GradientType=0);
+	filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+}
+.btn-success:hover,
+.btn-success:active,
+.btn-success.active,
+.btn-success.disabled,
+.btn-success[disabled] {
+	background-color: #9c2520;
+}
+.btn-success:active,
+.btn-success.active {
+	background-color: #9c2520 \9;
+}
+.btn-large {
+	padding: 9px 20px;
+	font-size: 16px;
+	line-height: normal;
+	font-weight:700;font-family: 'Droid Serif', serif;
+	font-style:italic;
+	margin-left:10px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+
+}
+input:focus,
+textarea:focus {
+	border-color: rgba(82, 82, 82, 0.8);
+	outline: 0;
+	outline: thin dotted \9;
+	/* IE6-9 */
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 82, 82, 0.6);
+	-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 82, 82, 0.6);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 82, 82, 0.6);
+}
+
+/*** FEATURES ****/
+#features{
+	margin-top:40px;
+	text-align:center;
+}
+#features .divider{
+	background:url(divider.png) repeat-y right;
+}
+.featureicon{
+	color:@mailColor;
+	font-size:56px;
+	margin-bottom:20px;
+	padding:0 20px 0 0;
+}
+#features h3{ font-size:20px;
+	font-family: 'Droid Sans', serif;
+	line-height:30px;
+	font-weight:700;
+	padding:0 20px 0 0;}
+#features p{font-size:13px;
+	font-family: 'Droid Sans', serif;
+	line-height:20px;
+	font-weight:400;padding:10px 20px 0 0;}
+.divider{background:url(divider.png) repeat-y right;}
+
+/*** FOOTER ****/
+#footer{margin-top:20px;
+	text-align:center;
+	background:url(footer-divider.png) repeat-x top;
+	padding-top:40px;}
+#footer h4{ margin:0 0 20px;font-size:14px;
+	font-family: 'Droid Serif', serif;
+	line-height:24px;
+	font-weight:400;}
+.footericon{ color:@mailColor;
+	font-size:36px;
+	margin-bottom:15px;}
+.footericon a{ color:@mailColor;}
+.footericon a:hover{ color:#9c2520;
+	text-decoration:none;}
+#footer p{ font-size:10px;
+	font-family: 'Droid Serif', serif;font-weight:400;}
+
+
+/*** MEDIA QUERIES ****/
+@media (max-width: 767px) {
+	.btn-large{margin-top:20px;
+		margin-left:0px;}
+	.input-large{padding:18px 14px;}	
+	#features{ margin-top:20px;text-align: left;}
+	.featureicon,#features h3,#features p{ padding:0;}
+	.featureicon{ float:left;
+		margin-right:10px;}
+	#features h3{ float:left;}
+	#features p{display:block;
+		clear:both;}
+	#features .divider{background:url(footer-divider.png) repeat-x bottom;
+		padding-bottom:15px;
+		margin-bottom:10px;}
+	#footer{margin-top:0px;}
+
+}
+
+
+
