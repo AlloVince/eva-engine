@@ -17,6 +17,10 @@ class Accesstokens extends TableGateway
 
     public function setParameters(Parameters $params)
     {
+        if($params->noLimit){
+            $this->disableLimit();
+        }
+
         if($params->adapterKey){
             $this->where(array('adapterKey' => $params->adapterKey));
         }
