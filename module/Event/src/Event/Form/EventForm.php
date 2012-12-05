@@ -285,7 +285,7 @@ class EventForm extends \Eva\Form\Form
         ),
         'registrationStart' => array (
             'name' => 'registrationStart',
-            'type' => 'dateTime',
+            'type' => 'text',
             'options' => array (
                 'label' => 'Registration Start',
             ),
@@ -295,7 +295,7 @@ class EventForm extends \Eva\Form\Form
         ),
         'registrationEnd' => array (
             'name' => 'registrationEnd',
-            'type' => 'dateTime',
+            'type' => 'text',
             'options' => array (
                 'label' => 'Registration End',
             ),
