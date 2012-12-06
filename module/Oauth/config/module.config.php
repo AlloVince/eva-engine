@@ -48,7 +48,16 @@ return array(
                 'consumer_key' => '',
                 'consumer_secret' => ''
             ),
-
+            'sohu' => array(
+                'enable' => 0,
+                'consumer_key' => '',
+                'consumer_secret' => ''
+            ),
+            'tianya' => array(
+                'enable' => 0,
+                'consumer_key' => '',
+                'consumer_secret' => ''
+            ),
         ),
         'oauth2' => array(
             'facebook' => array(
@@ -137,6 +146,11 @@ return array(
                 'consumer_secret' => ''
             ),
             'disqus' => array(
+                'enable' => 0,
+                'consumer_key' => '',
+                'consumer_secret' => ''
+            ),
+            'netease' => array(
                 'enable' => 0,
                 'consumer_key' => '',
                 'consumer_secret' => ''

@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS `eva_oauth_accesstokens` (
   `tokenSecret` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `version` enum('Oauth1','Oauth2') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Oauth2',
   `tokenStatus` enum('active','expried') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'active',
+  `scope` text COLLATE utf8_unicode_ci,
   `refreshToken` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `refreshTime` datetime DEFAULT NULL,
   `expireTime` datetime DEFAULT NULL,

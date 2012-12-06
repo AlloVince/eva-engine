@@ -896,5 +896,5 @@ input:focus,textarea:focus{border-color:rgba(82, 82, 82, 0.8);outline:0;outline:
 .footericon{color:#cf5522;font-size:36px;margin-bottom:15px;}
 .footericon a{color:#cf5522;}
 .footericon a:hover{color:#9c2520;text-decoration:none;}
-#footer p{font-size:10px;font-family:'Droid Serif',serif;font-weight:400;}
+#footer p{font-size:12px;font-family:'Droid Serif',serif;font-weight:400;}
 @media (max-width:767px){.btn-large{margin-top:20px;margin-left:0px;} .input-large{padding:18px 14px;} #features{margin-top:20px;text-align:left;} .featureicon,#features h3,#features p{padding:0;} .featureicon{float:left;margin-right:10px;} #features h3{float:left;} #features p{display:block;clear:both;} #features .divider{background:url(footer-divider.png) repeat-x bottom;padding-bottom:15px;margin-bottom:10px;} #footer{margin-top:0px;}}

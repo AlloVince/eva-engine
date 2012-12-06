@@ -86,7 +86,7 @@ class OauthService
 
          if(!$options['enable']){
              throw new Exception\RuntimeException(sprintf(
-                 'Oauth service %s not enabled by config', get_class($this)
+                 'Oauth service %s not enabled by config', get_class($oauth)
              ));
          }
 
