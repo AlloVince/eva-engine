@@ -6,6 +6,7 @@ use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Http\Response;
 use Zend\Http\Client;
+use Zend\Json\Json;
 
 abstract class AbstractAdapter implements AdapterInterface
 {
@@ -408,6 +409,53 @@ abstract class AbstractAdapter implements AdapterInterface
         return $this;
     }
 
+    protected function getDataValueByMappingString($data, $dataKeyString)
+    {
+        $dataKeyArray = explode('::', $dataKeyString);
+        foreach($dataKeyArray as $dataKey){
+            if(isset($data[$dataKey])){
+                $data = $data[$dataKey];
+            } else {
+                $data = null;
+            }
+        }
+        return $data;
+    }
+
+    public function readMapping(array $data = array(),array $mapping = array())
+    {
+        if(!$data || !$mapping){
+            return $data;
+        }
+
+        /*
+        * response is {"rsp":{"photoid":"8248454241"}}
+        * mapping to id : 8248454241
+        * by array('id' => 'rsp::photoid')
+        */
+        $newData = array();
+        foreach($mapping as $key => $dataKeyString){
+            $newData[$key] = $this->getDataValueByMappingString($data, $dataKeyString);
+        }
+        return $newData;
+    }
+
+    public function writeMapping(array $data = array(),array $mapping = array())
+    {
+        if(!$data || !$mapping){
+            return $data;
+        }
+        $newData = array();
+        foreach($data as $key => $value){
+            if(!isset($mapping[$key])){
+                continue;
+            }
+
+            $newData[$mapping[$key]] = $value;
+        }
+        return $newData;
+    }
+
     protected function parseResponse(Response $response, $format)
     {
         switch($format){
@@ -433,7 +481,7 @@ abstract class AbstractAdapter implements AdapterInterface
         if(!$responseText){
             return;
         }
-        $data = \Zend\Json\Json::decode($responseText, \Zend\Json\Json::TYPE_ARRAY);
+        $data = Json::decode($responseText, Json::TYPE_ARRAY);
         return $data;
     }
 
@@ -446,7 +494,7 @@ abstract class AbstractAdapter implements AdapterInterface
         $lpos = strpos($responseText, "(");
         $rpos = strrpos($responseText, ")");
         $responseText = substr($responseText, $lpos + 1, $rpos - $lpos -1);
-        $data = \Zend\Json\Json::decode($responseText, \Zend\Json\Json::TYPE_ARRAY);
+        $data = Json::decode($responseText, Json::TYPE_ARRAY);
         return $data;	
     }
 
@@ -456,7 +504,7 @@ abstract class AbstractAdapter implements AdapterInterface
         if(!$responseText){
             return;
         }
-        $data = \Zend\Json\Json::fromXml($responseText, \Zend\Json\Json::TYPE_ARRAY);
+        $data = Json::decode(Json::fromXml($responseText), Json::TYPE_ARRAY);
         return $data;
     }
 }

@@ -18,10 +18,33 @@ abstract class AbstractUniform
 
     protected $lastRawResponse;
 
-    protected function prepareApiMapping($apiMapKey)
+    protected function prepareApiParamsFromMapping($dataMapKey)
     {
-        $apiMapping = $this->apiMapping[$apiMapKey];
-        return $apiMapping;
+        $mapping = $this->dataMapping;
+        if(!isset($mapping[$dataMapKey])){
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Request write api %s not defined in api mapping', $dataMapKey
+            ));
+        }
+        $dataMapping = $mapping[$dataMapKey];
+        if($dataMapping['Type'] !== 'Write'){
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Request api %s is not able to write by mapping Type', $dataMapKey
+            ));
+        }
+
+        $dataNodes = $dataMapping['Nodes'];
+        $data = array();
+
+        foreach($dataNodes as $key => $remoteDataKey){
+            if(isset($params[$key])){
+                $data[$remoteDataKey] = $params[$key];
+            }
+        }
+
+        $apiParams = $this->prepareParams($dataMapKey, $dataMapping);
+
+        return $apiParams;
     }
 
 
@@ -40,7 +63,7 @@ abstract class AbstractUniform
         );
         
         if(is_string($dataNode)){
-            $params = $this->prepareApiMapping($dataMap['Config']);
+            $params = $this->apiMapping[$dataMap['Config']];
             $params = array_merge($defaultParams, $params);
             $params['key'] = $dataNode;
         } elseif (is_array($dataNode)){
@@ -146,29 +169,18 @@ abstract class AbstractUniform
 
     public function writeData($dataMapKey, $params)
     {
-        $mapping = $this->dataMapping;
-        if(!isset($mapping[$dataMapKey])){
-            throw new Exception\InvalidArgumentException(sprintf(
-                'Request write api %s not defined in api mapping', $dataMapKey
-            ));
-        }
-        $dataMapping = $mapping[$dataMapKey];
-        if($dataMapping['Type'] !== 'Write'){
-            throw new Exception\InvalidArgumentException(sprintf(
-                'Request api %s is not able to write by mapping Type', $dataMapKey
-            ));
-        }
+        $apiParams = $this->prepareApiParamsFromMapping($dataMapKey);
 
+        $mapping = $this->dataMapping;
+        $dataMapping = $mapping[$dataMapKey];
         $dataNodes = $dataMapping['Nodes'];
         $data = array();
-
         foreach($dataNodes as $key => $remoteDataKey){
             if(isset($params[$key])){
                 $data[$remoteDataKey] = $params[$key];
             }
         }
 
-        $apiParams = $this->prepareParams($dataMapKey, $dataMapping);
         $apiParams['requestParams'] = $data;
         $data = $this->api($apiParams, $dataMapping);
         
