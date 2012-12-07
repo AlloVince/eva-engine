@@ -37,7 +37,7 @@ class AlbumController extends AbstractActionController
         }
 
         $fileModel = Api::_()->getModel('File\Model\File');
-        $file = $fileModel->getFile(23, array(
+        $file = $fileModel->getFile(24, array(
             'self' => array(
                 '*',
                 'getThumb()',
@@ -49,19 +49,13 @@ class AlbumController extends AbstractActionController
         $adapter = $webserice->getAdapter();
 
         $albumApi = $adapter->uniformApi('Album');
-        $albumApi->uploadPhoto(array(
-            'photo' => $file['FullPath'],
-            'title' => 'Test Photo',
-            'description' => 'Test abc',
-            'safetyLevel' => '3',
-        ));
+        $albumApi->setUserId($item['remoteUserId']);
+        $albumApi->setAlbumId('5819073682310479025');
+        //$data = $albumApi->getAlbumList();
 
-
-
-
-
-        exit;
+        $file = $albumApi->uploadPhoto($file);
         return new JsonModel(array(
+            'file' => $file,
         ));
     }
 }
