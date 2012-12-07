@@ -13,6 +13,42 @@ class EventSearchForm extends EventForm
             'attributes' => array(
             ),
         ),
+        'beforeStartDay' =>     array(
+            'name' => 'beforeStartDay',
+            'type' => 'text',
+            'options' => array(
+                'label' => 'Before Start Day',
+            ),
+            'attributes' => array(
+            ),
+        ),
+        'afterStartDay' =>     array(
+            'name' => 'afterStartDay',
+            'type' => 'text',
+            'options' => array(
+                'label' => 'After Start Day',
+            ),
+            'attributes' => array(
+            ),
+        ),
+        'beforeEndDay' =>     array(
+            'name' => 'beforeEndDay',
+            'type' => 'text',
+            'options' => array(
+                'label' => 'Before End Day',
+            ),
+            'attributes' => array(
+            ),
+        ),
+        'afterEndDay' =>     array(
+            'name' => 'afterEndDay',
+            'type' => 'text',
+            'options' => array(
+                'label' => 'After End Day',
+            ),
+            'attributes' => array(
+            ),
+        ),
         'page' =>     array(
             'name' => 'page',
             'type' => 'text',
