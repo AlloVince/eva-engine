@@ -4,6 +4,7 @@ namespace Oauth\Adapter\Oauth2;
 
 use Oauth\Adapter\Oauth2\AbstractAdapter;
 use ZendOAuth\OAuth;
+use Oauth\Service\Token\Access as AccessToken;
 
 class Github extends AbstractAdapter
 {
@@ -14,5 +15,24 @@ class Github extends AbstractAdapter
 
     protected $defaultOptions = array(
         'requestScheme' => OAuth::REQUEST_SCHEME_POSTBODY,
+        'scope' => 'user',
     );
+
+    public function accessTokenToArray(AccessToken $accessToken)
+    {
+        $token = parent::accessTokenToArray($accessToken);
+        if(!isset($token['remoteUserId']) || !$token['remoteUserId']){
+            $token['remoteUserId'] = $this->getRemoteUserId();
+        }
+        return $token;
+    }
+
+    public function getRemoteUserId()
+    {
+        $client = $this->getHttpClient();
+        $client->setUri('https://api.github.com/user');
+        $response = $client->send();
+        $data = $this->parseJsonResponse($response);
+        return isset($data['id']) ? $data['id'] : null;
+    }
 }

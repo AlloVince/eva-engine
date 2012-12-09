@@ -20,7 +20,7 @@ $form
 <div class="container typo">
 
     <div class="row">
-        <div class="span8">
+        <div class="span7">
             <header class="typo page-header">
             <h2 class=""><?=$title?></h2>
             </header>
@@ -51,29 +51,44 @@ $form
 
             </form>
         </div>
-        <div class="span4">
+        <div class="span5">
             <div class="well">
-                <header class="page-header">
-                <h4 class="">Login by</h4>
-                </header>
-                <div class="btn-group btn-group-vertical">
-                    <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'twitter', 'version' => 1))?>" class="btn btn-small">Twitter</a>
-                    <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'twitter'))?>" class="btn btn-small">Twitter 2.0</a>
-                    <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'facebook',))?>" class="btn btn-small">Facebook</a>
-                    <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'google',))?>" class="btn btn-small">Google</a>
-                    <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'msn',))?>" class="btn btn-small">Msn</a>
-                    <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'github',))?>" class="btn btn-small">Github</a>
-                </div>
-                <hr />
-                <div class="btn-group btn-group-vertical">
-                    <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'douban', 'version' => 1))?>" class="btn btn-small">Douban</a>
-                    <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'douban'))?>" class="btn btn-small">Douban 2.0</a>
-                    <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'weibo',))?>" class="btn btn-small">Weibo</a>
-                    <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'baidu',))?>" class="btn btn-small">Baidu</a>
-                    <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'renren',))?>" class="btn btn-small">Renren</a>
-                    <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'tencent',))?>" class="btn btn-small">QQ</a>
-                    <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'kaixin',))?>" class="btn btn-small">Kaixin</a>
-                    <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'qihoo',))?>" class="btn btn-small">360 Safe</a>
+                    <header class="page-header">
+                    <h4 class="">Login by</h4>
+                    </header>
+                <div class="row">
+
+                    <div  class="span2">
+                        <div class="btn-group btn-group-vertical">
+                            <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'twitter', 'version' => 1))?>" class="btn btn-small">Twitter</a>
+                            <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'twitter'))?>" class="btn btn-small">Twitter 2.0</a>
+                            <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'facebook',))?>" class="btn btn-small">Facebook</a>
+                            <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'google',))?>" class="btn btn-small">Google</a>
+                            <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'msn',))?>" class="btn btn-small">Msn</a>
+                            <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'github',))?>" class="btn btn-small">Github</a>
+                            <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'linkedin', 'version' => 1))?>" class="btn btn-small">LinkedIn</a>
+                            <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'flickr', 'version' => 1))?>" class="btn btn-small">Flickr</a>
+                            <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'dropbox', 'version' => 1))?>" class="btn btn-small">Dropbox</a>
+                            <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'yahoo', 'version' => 1))?>" class="btn btn-small">Yahoo</a>
+                            <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'foursquare'))?>" class="btn btn-small">Foursquare</a>
+                            <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'disqus'))?>" class="btn btn-small">Disqus</a>
+                        </div>
+                    </div>
+                    <div  class="span2">
+                        <div class="btn-group btn-group-vertical">
+                            <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'douban', 'version' => 1))?>" class="btn btn-small">Douban</a>
+                            <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'douban'))?>" class="btn btn-small">Douban 2.0</a>
+                            <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'weibo',))?>" class="btn btn-small">Weibo</a>
+                            <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'baidu',))?>" class="btn btn-small">Baidu</a>
+                            <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'renren',))?>" class="btn btn-small">Renren</a>
+                            <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'tencent',))?>" class="btn btn-small">QQ</a>
+                            <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'kaixin',))?>" class="btn btn-small">Kaixin</a>
+                            <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'qihoo',))?>" class="btn btn-small">360 Safe</a>
+                            <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'netease',))?>" class="btn btn-small">NetEase</a>
+                            <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'sohu', 'version' => 1))?>" class="btn btn-small">Sohu</a>
+                            <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'tianya', 'version' => 1))?>" class="btn btn-small">Tianya</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -2,34 +2,47 @@
     
 namespace Webservice\Adapter\User;
 
-use Webservice\Adapter\AbstractUniform;
 use Webservice\Exception;
 
-class Oauth2Douban extends AbstractUniform
+class Oauth2Douban extends AbstractUser
 {
-    protected $defaultApi = 'User::getMe';
-
-    protected $mapping = array(
-        'User' => array(
-            'userName' => 'uid',
-            'screenName' => 'name',
-            /*
-            'email' => array(
-                'fromApi' => 'User::getEmail',
-                'key' => 'email_list::email',
-            ),
-            */
-        ),
-        'Profile' => array(
-            'city' => 'loc_name',
-            'bio' => 'desc',
-        ),
-        'Avatar' => array(
-            'url' => 'avatar',
-        ),
-        'Oauth' => array(
-            'remoteUserId' => 'id',
+    protected $apiMapping = array(
+        'UserApi' => array(
+            'api' => '/v2/user/:name',
+            'beforeCallback' => 'replaceUserId',
         ),
     );
 
+    protected $dataMapping = array(
+        'User' => array(
+            'Config' => 'UserApi',
+            'Type' => 'Read',
+            'Nodes' => array(
+                'id' => 'id',
+                'userName' => 'uid',
+                'screenName' => 'name',
+            ),
+        ),
+        'Profile' => array(
+            'Config' => 'UserApi',
+            'Type' => 'Read',
+            'Nodes' => array(
+                'city' => 'loc_name',
+                'bio' => 'desc',
+            ),
+        ),
+        'Avatar' => array(
+            'Config' => 'UserApi',
+            'Type' => 'Read',
+            'Nodes' => array(
+                'url' => 'avatar',
+            ),
+        ),
+    );
+
+    protected function replaceUserId($params)
+    {
+        $params['apiParams'] = $this->userId;
+        return $params;
+    }
 }

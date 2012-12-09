@@ -7,6 +7,7 @@ use Oauth\Exception;
 use ZendOAuth\OAuth as ZendOAuth;
 use Oauth\Service\Consumer;
 use ZendOAuth\Token\Access as AccessToken;
+use Zend\Http\Response;
 
 
 abstract class AbstractAdapter implements AdapterInterface
@@ -165,6 +166,39 @@ abstract class AbstractAdapter implements AdapterInterface
         return $this->accessToken = $this->getConsumer()->getAccessToken($queryData, $token, $httpMethod, $request);
     }
 
+
+    protected function parseJsonResponse(Response $response)
+    {
+        $responseText = $response->getBody();
+        if(!$responseText){
+            return;
+        }
+        $data = \Zend\Json\Json::decode($responseText, \Zend\Json\Json::TYPE_ARRAY);
+        return $data;
+    }
+
+    protected function parseJsonpResponse(Response $response)
+    {
+        $responseText = $response->getBody();
+        if(!$responseText){
+            return;
+        }
+        $lpos = strpos($responseText, "(");
+        $rpos = strrpos($responseText, ")");
+        $responseText = substr($responseText, $lpos + 1, $rpos - $lpos -1);
+        $data = \Zend\Json\Json::decode($responseText, \Zend\Json\Json::TYPE_ARRAY);
+        return $data;	
+    }
+
+    protected function parseXmlResponse(Response $response)
+    {
+        $responseText = $response->getBody();
+        if(!$responseText){
+            return;
+        }
+        $data = \Zend\Json\Json::fromXml($responseText, \Zend\Json\Json::TYPE_ARRAY);
+        return $data;
+    }
 
     public function __construct($options = array())
     {

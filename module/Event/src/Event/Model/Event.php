@@ -159,8 +159,10 @@ class Event extends AbstractModel
         $subItem->remove();
 
         $subItem = $item->join('EventUser');
-        $subItem->remove();
-        
+        foreach ($subItem as $eventUser) {
+            $eventUser->remove();
+        }
+
         $subItem = $item->join('EventFile');
         $subItem->remove();
 

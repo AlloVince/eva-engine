@@ -39,23 +39,17 @@ class UserController extends AbstractActionController
         $webserice = WebserviceFactory::factory($serviceType . $serviceKey, $item, $this->getServiceLocator());
         $adapter = $webserice->getAdapter();
 
-        $data = $adapter->uniformApi('User')->getData();
-        //$data = $adapter->uniformApi('User')->fromUser()->getUserName();
-        p($data);
-        /*
-        $data = $adapter->api('https://api.douban.com/v2/user', null, 'GET', array(
-            'q' => 'a',
-            'start' => '0',
-        ));
-        */
+        $userApi = $adapter->uniformApi('User');
+        $userId = $item['remoteUserId'];
+        $user = $userApi->setUserId($userId)->getData();
 
-        /*
-        $adapter->setApiUri('https://api.douban.com/v2/book/20389191');
-        //https://api.douban.com/v2/user/~me
-        $data = $adapter->getApiData();
-        p($adapter->isApiResponseSuccess());
-        p($data);
-        p($adapter->getMessages());
-        */
+        //$json = $userApi->getLastRawResponse();
+        //p($userApi->getAdapter()->getClient()->getRequest()->toString());
+        //p($userApi->getAdapter()->getClient()->getResponse()->getBody());
+
+
+        return new JsonModel(array(
+            'data' => $user
+        ));
     }
 }

@@ -6,6 +6,7 @@ use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Http\Response;
 use Zend\Http\Client;
+use Zend\Json\Json;
 
 abstract class AbstractAdapter implements AdapterInterface
 {
@@ -38,7 +39,7 @@ abstract class AbstractAdapter implements AdapterInterface
 
     protected $client;
 
-    protected $cache;
+    protected $innerCache;
     
     protected $uniformApi = array();
 
@@ -132,6 +133,9 @@ abstract class AbstractAdapter implements AdapterInterface
         $apiUri = '';
         if(0 === strpos($apiNameOrUrl, 'http://') || 0 === strpos($apiNameOrUrl, 'https://')){
             $apiUri = $apiNameOrUrl;
+        } elseif(0 === strpos($apiNameOrUrl, '/')) {
+            //Start from / will be a url path
+            $apiUri = $this->apiHost . $apiNameOrUrl;
         } else {
             list($apiUri, $method) = $this->getApiUriFromMap($apiNameOrUrl);
         }
@@ -145,6 +149,20 @@ abstract class AbstractAdapter implements AdapterInterface
                 $requestParams = $urlParams;
             }
         }
+
+        $cacheKey = '';
+        //Cache complate same GET request in memery
+        if($method === 'GET'){
+            $cacheKey = md5(serialize(array(
+                $apiUri,
+                $urlParams,
+                $requestParams,
+            )));
+            if(isset($this->innerCache[$cacheKey])){
+                return $this->innerCache[$cacheKey];
+            }
+        }
+
 
         if(!$apiUri){
             throw new Exception\InvalidArgumentException(sprintf(
@@ -164,7 +182,11 @@ abstract class AbstractAdapter implements AdapterInterface
             }
         }
 
-        return $this->getApiData();
+        $data = $this->getApiData();
+        if($cacheKey){
+            $this->innerCache[$cacheKey] = $data;
+        }
+        return $data;
     }
 
     public function uniformApi($uniformApiType)
@@ -275,7 +297,7 @@ abstract class AbstractAdapter implements AdapterInterface
                 'No Webservice authority bridge %s found', $authorityBridge
             ));
         }
-        $authority = new $authorityBridge($authorityClass, $this->getOptions());
+        $authority = new $authorityBridge($authorityClass, $this->getOptions(), $this->getServiceLocator());
         return $authority->getClient();
     }
 
@@ -387,6 +409,53 @@ abstract class AbstractAdapter implements AdapterInterface
         return $this;
     }
 
+    protected function getDataValueByMappingString($data, $dataKeyString)
+    {
+        $dataKeyArray = explode('::', $dataKeyString);
+        foreach($dataKeyArray as $dataKey){
+            if(isset($data[$dataKey])){
+                $data = $data[$dataKey];
+            } else {
+                $data = null;
+            }
+        }
+        return $data;
+    }
+
+    public function readMapping(array $data = array(),array $mapping = array())
+    {
+        if(!$data || !$mapping){
+            return $data;
+        }
+
+        /*
+        * response is {"rsp":{"photoid":"8248454241"}}
+        * mapping to id : 8248454241
+        * by array('id' => 'rsp::photoid')
+        */
+        $newData = array();
+        foreach($mapping as $key => $dataKeyString){
+            $newData[$key] = $this->getDataValueByMappingString($data, $dataKeyString);
+        }
+        return $newData;
+    }
+
+    public function writeMapping(array $data = array(),array $mapping = array())
+    {
+        if(!$data || !$mapping){
+            return $data;
+        }
+        $newData = array();
+        foreach($data as $key => $value){
+            if(!isset($mapping[$key])){
+                continue;
+            }
+
+            $newData[$mapping[$key]] = $value;
+        }
+        return $newData;
+    }
+
     protected function parseResponse(Response $response, $format)
     {
         switch($format){
@@ -412,7 +481,7 @@ abstract class AbstractAdapter implements AdapterInterface
         if(!$responseText){
             return;
         }
-        $data = \Zend\Json\Json::decode($responseText, \Zend\Json\Json::TYPE_ARRAY);
+        $data = Json::decode($responseText, Json::TYPE_ARRAY);
         return $data;
     }
 
@@ -425,7 +494,7 @@ abstract class AbstractAdapter implements AdapterInterface
         $lpos = strpos($responseText, "(");
         $rpos = strrpos($responseText, ")");
         $responseText = substr($responseText, $lpos + 1, $rpos - $lpos -1);
-        $data = \Zend\Json\Json::decode($responseText, \Zend\Json\Json::TYPE_ARRAY);
+        $data = Json::decode($responseText, Json::TYPE_ARRAY);
         return $data;	
     }
 
@@ -435,7 +504,7 @@ abstract class AbstractAdapter implements AdapterInterface
         if(!$responseText){
             return;
         }
-        $data = \Zend\Json\Json::fromXml($responseText, \Zend\Json\Json::TYPE_ARRAY);
+        $data = Json::decode(Json::fromXml($responseText), Json::TYPE_ARRAY);
         return $data;
     }
 }

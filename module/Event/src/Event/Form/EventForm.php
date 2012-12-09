@@ -113,6 +113,26 @@ class EventForm extends \Eva\Form\Form
                 'value' => 'other',
             ),
         ),
+        'isFullDayEvent' => array (
+            'name' => 'isFullDayEvent',
+            'type' => 'select',
+            'options' => array (
+                'label' => 'Is Full Day Event',
+                'value_options' => array (
+                    'yes' => array (
+                        'label' => 'Yes',
+                        'value' => 1,
+                    ),
+                    'no' => array (
+                        'label' => 'No',
+                        'value' => 0,
+                    ),
+                ),
+            ),
+            'attributes' => array (
+                'value' => '0',
+            ),
+        ),
         'eventHash' => array (
             'name' => 'eventHash',
             'type' => 'text',
@@ -123,11 +143,31 @@ class EventForm extends \Eva\Form\Form
                 'value' => '',
             ),
         ),
+        'startDay' => array (
+            'name' => 'startDay',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Start Day',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
         'startTime' => array (
             'name' => 'startTime',
             'type' => 'text',
             'options' => array (
                 'label' => 'Start Time',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
+        'endDay' => array (
+            'name' => 'endDay',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'End Day',
             ),
             'attributes' => array (
                 'value' => '',
@@ -178,6 +218,86 @@ class EventForm extends \Eva\Form\Form
             'type' => 'text',
             'options' => array (
                 'label' => 'Location',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
+        'reminderType' => array (
+            'name' => 'reminderType',
+            'type' => 'select',
+            'options' => array (
+                'label' => 'Reminder Type',
+                'value_options' => array (
+                    'email' => array (
+                        'label' => 'Email',
+                        'value' => 'email',
+                    ),
+                    'alert' => array (
+                        'label' => 'Alert',
+                        'value' => 'alert',
+                    ),
+                    'sms' => array (
+                        'label' => 'Sms',
+                        'value' => 'sms',
+                    ),
+                ),
+            ),
+            'attributes' => array (
+            ),
+        ),
+        'reminderTimeUnit' => array (
+            'name' => 'reminderTimeUnit',
+            'type' => 'select',
+            'options' => array (
+                'label' => 'Reminder Time Unit',
+                'value_options' => array (
+                    'minute' => array (
+                        'label' => 'Minute',
+                        'value' => 'minute',
+                    ),
+                    'hour' => array (
+                        'label' => 'Hour',
+                        'value' => 'hour',
+                    ),
+                    'day' => array (
+                        'label' => 'Day',
+                        'value' => 'day',
+                    ),
+                    'week' => array (
+                        'label' => 'Week',
+                        'value' => 'week',
+                    ),
+                ),
+            ),
+            'attributes' => array (
+            ),
+        ),
+        'reminderTimeValue' => array (
+            'name' => 'reminderTimeValue',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Reminder Time Value',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
+        'registrationStart' => array (
+            'name' => 'registrationStart',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Registration Start',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
+        'registrationEnd' => array (
+            'name' => 'registrationEnd',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Registration End',
             ),
             'attributes' => array (
                 'value' => '',
@@ -310,6 +430,19 @@ class EventForm extends \Eva\Form\Form
                 ),
             ),
         ),
+        'isFullDayEvent' => array (
+            'name' => 'isFullDayEvent',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+                'notEmpty' => array (
+                    'name' => 'NotEmpty',
+                    'options' => array (
+                    ),
+                ),
+            ),
+        ),
         'eventHash' => array (
             'name' => 'eventHash',
             'required' => false,
@@ -330,6 +463,31 @@ class EventForm extends \Eva\Form\Form
                 ),
             ),
         ),
+        'startDay' => array (
+            'name' => 'startDay',
+            'required' => false,
+            'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+                'notEmpty' => array (
+                    'name' => 'NotEmpty',
+                    'options' => array (
+                    ),
+                ),
+                'stringLength' => array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => NULL,
+                    ),
+                ),
+            ),
+        ),
         'startTime' => array (
             'name' => 'startTime',
             'required' => false,
@@ -342,6 +500,31 @@ class EventForm extends \Eva\Form\Form
                 ),
             ),
             'validators' => array (
+                'stringLength' => array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => NULL,
+                    ),
+                ),
+            ),
+        ),
+        'endDay' => array (
+            'name' => 'endDay',
+            'required' => false,
+            'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+                'notEmpty' => array (
+                    'name' => 'NotEmpty',
+                    'options' => array (
+                    ),
+                ),
                 'stringLength' => array (
                     'name' => 'StringLength',
                     'options' => array (
@@ -441,6 +624,67 @@ class EventForm extends \Eva\Form\Form
                         'max' => '255',
                     ),
                 ),
+            ),
+        ),
+        'reminderType' => array (
+            'name' => 'reminderType',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+                'inArray' => array (
+                    'name' => 'InArray',
+                    'options' => array (
+                        'haystack' => array (
+                            'email',
+                            'alert',
+                            'sms',
+                        ),
+                    ),
+                ),
+            ),
+        ),
+        'reminderTimeUnit' => array (
+            'name' => 'reminderTimeUnit',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+                'inArray' => array (
+                    'name' => 'InArray',
+                    'options' => array (
+                        'haystack' => array (
+                            'minute',
+                            'hour',
+                            'day',
+                            'week',
+                        ),
+                    ),
+                ),
+            ),
+        ),
+        'reminderTimeValue' => array (
+            'name' => 'reminderTimeValue',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+            ),
+        ),
+        'registrationStart' => array (
+            'name' => 'registrationStart',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+            ),
+        ),
+        'registrationEnd' => array (
+            'name' => 'registrationEnd',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
             ),
         ),
     );

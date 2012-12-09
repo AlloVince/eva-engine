@@ -33,6 +33,38 @@ class Events extends TableGateway
                 return $where;
             });
         }
+        
+        if($params->beforeStartDay){
+            $beforeStartDay = $params->beforeStartDay;
+            $this->where(function($where) use ($beforeStartDay){
+                $where->lessThanOrEqualTo('startDay', $beforeStartDay);
+                return $where;
+            });
+        }
+        
+        if($params->afterStartDay){
+            $afterStartDay = $params->afterStartDay;
+            $this->where(function($where) use ($afterStartDay){
+                $where->greaterThanOrEqualTo('startDay', $afterStartDay);
+                return $where;
+            });
+        }
+        
+        if($params->beforeEndDay){
+            $beforeEndDay = $params->beforeEndDay;
+            $this->where(function($where) use ($beforeEndDay){
+                $where->lessThanOrEqualTo('endDay', $beforeEndDay);
+                return $where;
+            });
+        }
+        
+        if($params->afterEndDay){
+            $afterEndDay = $params->afterEndDay;
+            $this->where(function($where) use ($afterEndDay){
+                $where->greaterThanOrEqualTo('endDay', $afterEndDay);
+                return $where;
+            });
+        }
 
         if($params->eventStatus){
             $this->where(array('eventStatus' => $params->eventStatus));

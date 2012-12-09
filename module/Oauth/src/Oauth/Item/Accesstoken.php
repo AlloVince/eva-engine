@@ -19,7 +19,7 @@ class Accesstoken extends AbstractItem
             'referencedColumn' => 'id',
             'joinParameters' => array(
                 'columns' => array('user_id', 'appType', 'token', 'tokenSecret'),
-                'limit' => false,
+                'noLimit' => true,
             ),
         ),
     );
