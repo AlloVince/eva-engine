@@ -46,7 +46,7 @@ class Google extends AbstractAdapter
         $client = $this->getHttpClient();
         $client->setUri('https://www.googleapis.com/oauth2/v2/userinfo');
         $response = $client->send();
-        $data = $this->parseJsonpResponse($response);
+        $data = $this->parseJsonResponse($response);
         return isset($data['id']) ? $data['id'] : null;
     }
 }

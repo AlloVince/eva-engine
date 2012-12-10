@@ -28,3 +28,6 @@
 [submodule "public/static/eva/css"]
 	path = public/static/eva/css
 	url = git://github.com/AlloVince/EvaBootstrap.git
+[submodule "vendor/ZendGData"]
+	path = vendor/ZendGData
+	url = git://github.com/zendframework/ZendGData.git

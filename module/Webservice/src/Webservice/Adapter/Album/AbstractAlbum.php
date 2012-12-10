@@ -11,6 +11,14 @@ abstract class AbstractAlbum extends AbstractUniform implements AlbumInterface
 
     protected $albumId;
 
+    protected $userId;
+
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
+        return $this;
+    }
+
     public function setAlbumId($albumId)
     {
         $this->albumId = $albumId;
