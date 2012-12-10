@@ -4,7 +4,8 @@ namespace Group\Controller;
 use Group\Form,
     Eva\Api,
     Eva\Mvc\Controller\RestfulModuleController,
-    Eva\View\Model\ViewModel;
+    Eva\View\Model\ViewModel,
+    Zend\View\Model\JsonModel;
 
 class GroupController extends RestfulModuleController
 {
@@ -12,7 +13,7 @@ class GroupController extends RestfulModuleController
         'restIndexGroup' => 'blank',    
     );
 
-    public function restIndexGroup()
+    public function indexAction()
     {
         $this->changeViewModel('json');
         $query = $this->getRequest()->getQuery();
