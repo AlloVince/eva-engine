@@ -10,6 +10,24 @@ return array(
         'sorted' => true,
     ),
 
+    'console' => array(
+        'router' => array(
+            'routes' => array(
+                'queue' => array(
+                    'type'    => 'simple',
+                    'options' => array(
+                        'route'    => 'queue <queueName>',
+                        'defaults' => array(
+                            'controller' => 'QueueController',
+                            'action'     => 'index'
+                        )
+                    )
+                ),
+            ),//routes end
+        )
+    ),
+
+
     'db' => array(
         'driver' => 'Pdo',
         'dsn'            => 'mysql:dbname=eva;hostname=localhost',
@@ -28,7 +46,8 @@ return array(
 
     'controllers' => array(
         'invokables' => array(
-            'ErrorController' => 'Core\Controller\ErrorController'
+            'ErrorController' => 'Core\Controller\ErrorController',
+            'QueueController' => 'Core\Controller\QueueController',
         ),
     ),
 

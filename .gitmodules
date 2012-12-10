@@ -31,3 +31,6 @@
 [submodule "vendor/ZendGData"]
 	path = vendor/ZendGData
 	url = git://github.com/zendframework/ZendGData.git
+[submodule "vendor/ZendQueue"]
+	path = vendor/ZendQueue
+	url = git://github.com/zendframework/ZendQueue.git
