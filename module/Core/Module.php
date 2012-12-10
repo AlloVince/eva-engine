@@ -16,6 +16,7 @@ class Module implements ConsoleBannerProviderInterface
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
+                    'ZendQueue' => __DIR__ . '/../../vendor/ZendQueue/library/ZendQueue',
                 ),
             ),
         );

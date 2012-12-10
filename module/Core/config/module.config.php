@@ -27,6 +27,10 @@ return array(
         )
     ),
 
+    'queue' => array(
+        'driver' => 'Mongodb',
+        'dsn'    => 'mongodb://localhost:27017',
+    ),
 
     'db' => array(
         'driver' => 'Pdo',
