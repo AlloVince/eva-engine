@@ -47,7 +47,7 @@ class EventController extends RestfulModuleController
                     'getEmailHash()',
                 ),
             ));
-            $items = $itemModel->combineList($items, $userList, 'User', array('user_id' => 'id'));
+            $items = $itemModel->combineList($items->toArray(), $userList, 'User', array('user_id' => 'id'));
         }
 
         return new JsonModel(array(
