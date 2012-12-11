@@ -56,7 +56,7 @@ class Group extends AbstractModel
             ));
         } elseif(is_string($groupIdOrUrlName)) {
             $this->setItem(array(
-                'urlName' => $groupIdOrUrlName,
+                'groupKey' => $groupIdOrUrlName,
             ));
         }
         $this->trigger('get.pre');
