@@ -247,6 +247,12 @@ class Mongodb extends AbstractAdapter
         return new $classname($options);
     }
 
+
+    public function batchSend($messages, $queue = null)
+    {
+    
+    }
+
     /**
     * Get messages in the queue
     *
