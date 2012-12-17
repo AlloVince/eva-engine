@@ -1,30 +1,11 @@
--- phpMyAdmin SQL Dump
--- version 3.4.5
--- http://www.phpmyadmin.net
---
--- 主机: localhost
--- 生成日期: 2012 年 09 月 18 日 08:13
--- 服务器版本: 5.5.16
--- PHP 版本: 5.3.8
-
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
---
--- 数据库: `eva`
---
-
--- --------------------------------------------------------
-
---
--- 表的结构 `eva_user_accounts`
---
 
 DROP TABLE IF EXISTS `eva_user_accounts`;
 CREATE TABLE IF NOT EXISTS `eva_user_accounts` (
@@ -35,11 +16,21 @@ CREATE TABLE IF NOT EXISTS `eva_user_accounts` (
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `eva_user_fieldoptions`
---
+DROP TABLE IF EXISTS `eva_user_codes`;
+CREATE TABLE IF NOT EXISTS `eva_user_codes` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `code` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `codeSalt` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `codeType` enum('invite','activeAccount','verifyEmail','verifyMobile','resetPassword','other') COLLATE utf8_unicode_ci NOT NULL,
+  `codeStatus` enum('active','used','expired') COLLATE utf8_unicode_ci NOT NULL,
+  `user_id` int(10) NOT NULL,
+  `createTime` datetime NOT NULL,
+  `expiredTime` datetime DEFAULT NULL,
+  `usedTime` datetime DEFAULT NULL,
+  `used_by_id` int(10) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `code` (`code`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=33 ;
 
 DROP TABLE IF EXISTS `eva_user_fieldoptions`;
 CREATE TABLE IF NOT EXISTS `eva_user_fieldoptions` (
@@ -50,13 +41,7 @@ CREATE TABLE IF NOT EXISTS `eva_user_fieldoptions` (
   `order` smallint(6) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `field_id` (`field_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `eva_user_fields`
---
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=75 ;
 
 DROP TABLE IF EXISTS `eva_user_fields`;
 CREATE TABLE IF NOT EXISTS `eva_user_fields` (
@@ -77,13 +62,7 @@ CREATE TABLE IF NOT EXISTS `eva_user_fields` (
   `style` text COLLATE utf8_unicode_ci,
   `error` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `eva_user_fields_roles`
---
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=14 ;
 
 DROP TABLE IF EXISTS `eva_user_fields_roles`;
 CREATE TABLE IF NOT EXISTS `eva_user_fields_roles` (
@@ -91,12 +70,6 @@ CREATE TABLE IF NOT EXISTS `eva_user_fields_roles` (
   `role_id` int(11) NOT NULL,
   PRIMARY KEY (`field_id`,`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `eva_user_fieldvalues`
---
 
 DROP TABLE IF EXISTS `eva_user_fieldvalues`;
 CREATE TABLE IF NOT EXISTS `eva_user_fieldvalues` (
@@ -106,51 +79,18 @@ CREATE TABLE IF NOT EXISTS `eva_user_fieldvalues` (
   PRIMARY KEY (`field_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `eva_user_friends`
---
-
 DROP TABLE IF EXISTS `eva_user_friends`;
 CREATE TABLE IF NOT EXISTS `eva_user_friends` (
   `from_user_id` int(10) NOT NULL,
   `to_user_id` int(10) NOT NULL,
-  `relationShipStatus` enum('pending','refused','active','blocked') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'pending',
+  `relationshipStatus` enum('pending','refused','approved','blocked','removed') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'pending',
   `requestTime` datetime NOT NULL,
-  `approcalTime` datetime DEFAULT NULL,
+  `approvalTime` datetime DEFAULT NULL,
   `refusedTime` datetime DEFAULT NULL,
   `blockedTime` datetime DEFAULT NULL,
+  `removedTime` datetime DEFAULT NULL,
   PRIMARY KEY (`from_user_id`,`to_user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `eva_user_oauths`
---
-
-DROP TABLE IF EXISTS `eva_user_oauths`;
-CREATE TABLE IF NOT EXISTS `eva_user_oauths` (
-  `user_id` int(10) NOT NULL,
-  `appType` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `token` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `tokenSecret` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `version` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `refreshToken` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `refreshTime` datetime DEFAULT NULL,
-  `expireTime` datetime DEFAULT NULL,
-  `appUserId` bigint(20) DEFAULT NULL,
-  `appUserName` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `appExt` mediumtext COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`user_id`,`appType`,`token`,`tokenSecret`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `eva_user_options`
---
 
 DROP TABLE IF EXISTS `eva_user_options`;
 CREATE TABLE IF NOT EXISTS `eva_user_options` (
@@ -160,12 +100,6 @@ CREATE TABLE IF NOT EXISTS `eva_user_options` (
   PRIMARY KEY (`user_id`,`optionKey`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `eva_user_profiles`
---
-
 DROP TABLE IF EXISTS `eva_user_profiles`;
 CREATE TABLE IF NOT EXISTS `eva_user_profiles` (
   `user_id` int(10) NOT NULL,
@@ -174,6 +108,7 @@ CREATE TABLE IF NOT EXISTS `eva_user_profiles` (
   `photoName` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `fullName` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   `birthday` date DEFAULT NULL,
+  `relationshipStatus` enum('single','inRelationship','engaged','married','widowed','separated','divorced','other') COLLATE utf8_unicode_ci DEFAULT NULL,
   `height` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `weight` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `country` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -200,12 +135,6 @@ CREATE TABLE IF NOT EXISTS `eva_user_profiles` (
   PRIMARY KEY (`user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `eva_user_roles`
---
-
 DROP TABLE IF EXISTS `eva_user_roles`;
 CREATE TABLE IF NOT EXISTS `eva_user_roles` (
   `id` int(5) NOT NULL AUTO_INCREMENT,
@@ -213,22 +142,7 @@ CREATE TABLE IF NOT EXISTS `eva_user_roles` (
   `roleName` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `description` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=11 ;
-
---
--- 转存表中的数据 `eva_user_roles`
---
-
-INSERT INTO `eva_user_roles` (`id`, `roleKey`, `roleName`, `description`) VALUES
-(1, 'ADMIN', 'Admin', ''),
-(2, 'USER', 'User', ''),
-(3, 'GUEST', 'Guest', '');
-
--- --------------------------------------------------------
-
---
--- 表的结构 `eva_user_roles_users`
---
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=15 ;
 
 DROP TABLE IF EXISTS `eva_user_roles_users`;
 CREATE TABLE IF NOT EXISTS `eva_user_roles_users` (
@@ -241,12 +155,6 @@ CREATE TABLE IF NOT EXISTS `eva_user_roles_users` (
   PRIMARY KEY (`role_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `eva_user_tags`
---
-
 DROP TABLE IF EXISTS `eva_user_tags`;
 CREATE TABLE IF NOT EXISTS `eva_user_tags` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
@@ -254,12 +162,6 @@ CREATE TABLE IF NOT EXISTS `eva_user_tags` (
   `language` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'en',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `eva_user_tags_users`
---
 
 DROP TABLE IF EXISTS `eva_user_tags_users`;
 CREATE TABLE IF NOT EXISTS `eva_user_tags_users` (
@@ -270,17 +172,23 @@ CREATE TABLE IF NOT EXISTS `eva_user_tags_users` (
   PRIMARY KEY (`user_id`,`tag_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `eva_user_users`
---
+DROP TABLE IF EXISTS `eva_user_tokens`;
+CREATE TABLE IF NOT EXISTS `eva_user_tokens` (
+  `sessionId` varchar(40) COLLATE utf8_bin NOT NULL,
+  `token` varchar(32) COLLATE utf8_bin NOT NULL,
+  `userHash` varchar(32) COLLATE utf8_bin NOT NULL,
+  `user_id` int(10) NOT NULL,
+  `refreshTime` datetime NOT NULL,
+  `expiredTime` datetime NOT NULL,
+  PRIMARY KEY (`sessionId`,`token`,`userHash`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 DROP TABLE IF EXISTS `eva_user_users`;
 CREATE TABLE IF NOT EXISTS `eva_user_users` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `userName` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(320) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `mobile` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `status` enum('active','deleted','inactive') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'active',
   `screenName` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
   `salt` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
@@ -298,12 +206,14 @@ CREATE TABLE IF NOT EXISTS `eva_user_users` (
   `setting` int(10) NOT NULL DEFAULT '0',
   `inviteUserId` int(10) DEFAULT '0',
   `onlineStatus` enum('online','busy','invisible','offline') COLLATE utf8_unicode_ci DEFAULT 'offline',
-  `lastFleshTime` datetime DEFAULT NULL,
+  `lastFreshTime` datetime DEFAULT NULL,
   `viewCount` bigint(20) NOT NULL DEFAULT '0',
   `registerIp` varbinary(16) DEFAULT NULL,
   `lastLoginIp` varbinary(16) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=253 ;
+  PRIMARY KEY (`id`),
+  KEY `userName` (`userName`),
+  KEY `email` (`email`(255))
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=28 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
