@@ -61,3 +61,12 @@ CREATE TABLE IF NOT EXISTS `eva_event_texts` (
   `content` longtext COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`event_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+DROP TABLE IF EXISTS `eva_event_events_activities`;
+CREATE TABLE IF NOT EXISTS `eva_event_events_activities` (
+  `event_id` int(10) NOT NULL,
+  `message_id` bigint(30) NOT NULL,
+  `messageTime` datetime NOT NULL,
+  PRIMARY KEY (`event_id`,`message_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
