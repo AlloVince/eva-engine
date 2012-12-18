@@ -91,9 +91,14 @@ class PostForm extends \Eva\Form\Form
                         'value' => 'markdown',
                     ),
                     array (
-                        'label' => 'Html',
+                        'label' => 'reStructuredText',
+                        'value' => 'reStructuredText',
+                    ),
+                    array (
+                        'label' => 'HTML',
                         'value' => 'html',
                     ),
+                    /*
                     array (
                         'label' => 'Wiki',
                         'value' => 'wiki',
@@ -106,6 +111,7 @@ class PostForm extends \Eva\Form\Form
                         'label' => 'Other',
                         'value' => 'other',
                     ),
+                    */
                 ),
             ),
             'attributes' => array (
@@ -317,6 +323,7 @@ class PostForm extends \Eva\Form\Form
                             'markdown',
                             'html',
                             'wiki',
+                            'reStructuredText',
                             'ubb',
                             'other',
                         ),

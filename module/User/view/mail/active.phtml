@@ -1,0 +1,5 @@
+Hello, <?=$this->user['userName']?>
+
+If you make the request, please open this link in your browser to verify your email:
+
+<?=$this->serverUrl('/account/active/?code=' . $this->code['code'])?>

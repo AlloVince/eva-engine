@@ -679,7 +679,7 @@ class RST_Parser
             array(&$this, '_doImages_inline_callback'), $text);
 
         # handle "image" restructuredtext tag.
-                $match = preg_match(  "/.. image:: (\S+)/", $text, &$result);
+                $match = preg_match(  "/.. image:: (\S+)/", $text, $result);
 
                 if ($match) {
                     $new_text = $this->hashPart("<img src='".$result[1]."' alt=''/>");
