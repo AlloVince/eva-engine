@@ -303,6 +303,56 @@ class EventForm extends \Eva\Form\Form
                 'value' => '',
             ),
         ),
+        'country' => array (
+            'name' => 'country',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Country',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
+        'province' => array (
+            'name' => 'province',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Province',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
+        'city' => array (
+            'name' => 'city',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'City',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
+        'address' => array (
+            'name' => 'address',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Address',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
+        'recommend' => array (
+            'name' => 'recommend',
+            'type' => 'number',
+            'options' => array (
+                'label' => 'Recommend',
+            ),
+            'attributes' => array (
+                'value' => '0',
+            ),
+        ),
     );
 
     /**
@@ -685,6 +735,99 @@ class EventForm extends \Eva\Form\Form
             'filters' => array (
             ),
             'validators' => array (
+            ),
+        ),
+        'country' => array (
+            'name' => 'country',
+            'required' => false,
+            'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+                'stringLength' => array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => '100',
+                    ),
+                ),
+            ),
+        ),
+        'province' => array (
+            'name' => 'province',
+            'required' => false,
+            'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+                'stringLength' => array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => '100',
+                    ),
+                ),
+            ),
+        ),
+        'city' => array (
+            'name' => 'city',
+            'required' => false,
+            'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+                'stringLength' => array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => '100',
+                    ),
+                ),
+            ),
+        ),
+        'address' => array (
+            'name' => 'address',
+            'required' => false,
+            'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+                'stringLength' => array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => '255',
+                    ),
+                ),
+            ),
+        ),
+        'recommend' => array (
+            'name' => 'recommend',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+                'notEmpty' => array (
+                    'name' => 'NotEmpty',
+                    'options' => array (
+                    ),
+                ),
             ),
         ),
     );

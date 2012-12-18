@@ -67,7 +67,7 @@ class Event extends AbstractModel
         } else {
             $item = $item->self(array('*'));
         }
-
+        
         $this->trigger('get');
 
         $this->trigger('get.event');
@@ -117,6 +117,11 @@ class Event extends AbstractModel
         $eventUserItem->event_id = $itemId;
         $eventUserItem->user_id  = $item->user_id;
         $eventUserItem->create('createAdmin');
+        
+        $eventCountItem = $this->getItem('Event\Item\Count');
+        $eventCountItem->event_id = $itemId;
+        $eventCountItem->memberCount  = 1;
+        $eventCountItem->create();
 
         $this->trigger('create');
 
@@ -134,7 +139,12 @@ class Event extends AbstractModel
         $item = $this->getItem();
         
         $this->trigger('save.pre');
-
+        
+        //Admin save item will remove all categories
+        $categoryEventItem = $this->getItem('Event\Item\CategoryEvent');
+        $categoryEventItem->event_id = $item->id;
+        $categoryEventItem->remove();
+        
         $item->save();
 
         if($item->hasLoadedRelationships()){

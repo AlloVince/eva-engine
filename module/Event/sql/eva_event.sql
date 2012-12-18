@@ -1,6 +1,36 @@
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
+DROP TABLE IF EXISTS `eva_event_categories`;
+CREATE TABLE IF NOT EXISTS `eva_event_categories` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `categoryName` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `urlName` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `description` text COLLATE utf8_unicode_ci,
+  `parentId` int(10) NOT NULL DEFAULT '0',
+  `rootId` int(10) NOT NULL DEFAULT '0',
+  `orderNumber` int(10) NOT NULL DEFAULT '0',
+  `createTime` datetime NOT NULL,
+  `count` int(10) NOT NULL DEFAULT '0',
+  `left` int(15) NOT NULL DEFAULT '0',
+  `right` int(15) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `eva_event_categories_events`;
+CREATE TABLE IF NOT EXISTS `eva_event_categories_events` (
+  `category_id` int(11) NOT NULL,
+  `event_id` int(11) NOT NULL,
+  PRIMARY KEY (`category_id`,`event_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `eva_event_counts`;
+CREATE TABLE IF NOT EXISTS `eva_event_counts` (
+  `event_id` int(20) NOT NULL,
+  `memberCount` int(5) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`event_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 DROP TABLE IF EXISTS `eva_event_events`;
 CREATE TABLE IF NOT EXISTS `eva_event_events` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -21,6 +51,10 @@ CREATE TABLE IF NOT EXISTS `eva_event_events` (
   `timezone` tinyint(2) NOT NULL DEFAULT '0',
   `longitude` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `latitude` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `country` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `province` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `city` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `address` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `location` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `reminderEnable` tinyint(1) NOT NULL DEFAULT '0',
   `reminderType` enum('email','alert','sms') COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -31,8 +65,17 @@ CREATE TABLE IF NOT EXISTS `eva_event_events` (
   `user_id` int(11) NOT NULL,
   `user_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `createTime` datetime NOT NULL,
+  `recommend` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `eva_event_events_activities`;
+CREATE TABLE IF NOT EXISTS `eva_event_events_activities` (
+  `event_id` int(10) NOT NULL,
+  `message_id` bigint(30) NOT NULL,
+  `messageTime` datetime NOT NULL,
+  PRIMARY KEY (`event_id`,`message_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS `eva_event_events_files`;
 CREATE TABLE IF NOT EXISTS `eva_event_events_files` (
@@ -61,12 +104,3 @@ CREATE TABLE IF NOT EXISTS `eva_event_texts` (
   `content` longtext COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`event_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-
-DROP TABLE IF EXISTS `eva_event_events_activities`;
-CREATE TABLE IF NOT EXISTS `eva_event_events_activities` (
-  `event_id` int(10) NOT NULL,
-  `message_id` bigint(30) NOT NULL,
-  `messageTime` datetime NOT NULL,
-  PRIMARY KEY (`event_id`,`message_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

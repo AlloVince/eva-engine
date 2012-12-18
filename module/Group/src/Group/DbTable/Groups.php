@@ -4,6 +4,7 @@ namespace Group\DbTable;
 
 use Eva\Db\TableGateway\TableGateway;
 use Zend\Stdlib\Parameters;
+use Eva\Api;
 
 class Groups extends TableGateway
 {
@@ -42,6 +43,36 @@ class Groups extends TableGateway
             $this->limit((int) $params->rows);
         }
 
+        if ($params->category) {
+            $categoryModel = Api::_()->getModel('Group\Model\Category');
+            $categoryItem = $categoryModel->getCategory($params->category);
+
+            if ($categoryItem->id) {
+                $categoryGroupDb = Api::_()->getDbTable('Group\DbTable\CategoriesGroups');
+                $categoryGroupTabName = $categoryGroupDb->initTableName()->table;
+                $this->join(
+                    $categoryGroupTabName,
+                    "{$this->table}.id = $categoryGroupTabName.group_id",
+                    array('*'),
+                    'inner'
+                );
+                $this->where(array("$categoryGroupTabName.category_id" => $categoryItem->id));
+            } else {
+                $this->where(array("id" => 0));
+            }    
+        }
+
+        if ($params->order == 'memberdesc' || $params->order == 'memberasc') {
+            $groupCountDb = Api::_()->getDbTable('Group\DbTable\Counts');
+            $groupCountTabName = $groupCountDb->initTableName()->table;
+            $this->join(
+                $groupCountTabName,
+                "{$this->table}.id = $groupCountTabName.group_id",
+                array('*'),
+                'inner'
+            );
+        }
+
         $orders = array(
             'idasc' => 'id ASC',
             'iddesc' => 'id DESC',
@@ -49,6 +80,8 @@ class Groups extends TableGateway
             'timedesc' => 'createTime DESC',
             'titleasc' => 'groupName ASC',
             'titledesc' => 'groupName DESC',
+            'memberdesc' => 'memberCount DESC',
+            'memberasc' => 'memberCount ASC',
         );
         if($params->order){
             $order = $orders[$params->order];

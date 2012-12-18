@@ -1,29 +1,32 @@
 <?php
 namespace Event\Form;
 
-use Eva\Form\Form;
-use Zend\Form\Element;
-
-class EventEditForm extends EventCreateForm
+class CategoryEditForm extends CategoryForm
 {
-    protected $mergeElements = array(
-    );
-
     protected $mergeFilters = array(
         'urlName' =>     array(
+            'name' => 'urlName',
+            'required' => false,
+            'filters' => array(
+                array('name' => 'StringTrim'),
+            ),
             'validators' => array(
-                'db' => array(
+                array(
+                    'name' => 'StringLength',
+                    'options' => array(
+                        'encoding' => 'UTF-8',
+                        'max' => 100,
+                    ),
+                ),
+                array(
                     'name' => 'Eva\Validator\Db\NoRecordExists',
                     'injectdata' => true,
                     'options' => array(
-                        'table' => 'event_events',
                         'field' => 'urlName',
+                        'table' => 'event_categories',
                         'exclude' => array(
                             'field' => 'id',
                         ),
-                        'messages' => array(
-                            'recordFound' => 'Abc',
-                        ), 
                     ),
                 ),
             ),
