@@ -17,6 +17,7 @@ class Module implements ConsoleBannerProviderInterface
                 'namespaces' => array(
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
                     'ZendQueue' => __DIR__ . '/../../vendor/ZendQueue/library/ZendQueue',
+                    'Assetic' =>  __DIR__ . '/../../vendor/Assetic/src/Assetic',
                 ),
             ),
         );
