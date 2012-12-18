@@ -1,15 +1,6 @@
-[submodule "vendor/Sphinx"]
-	path = vendor/Sphinx
-	url = https://github.com/AlloVince/evaengine-libs-sphinx.git
-[submodule "vendor/Simplehtmldom"]
-	path = vendor/Simplehtmldom
-	url = https://github.com/AlloVince/evaengine-libs-simplehtmldom.git
 [submodule "public/static/lib"]
 	path = public/static/lib
 	url = https://github.com/AlloVince/evaengine-libs-front.git
-[submodule "vendor/Markdown"]
-	path = vendor/Markdown
-	url = https://github.com/AlloVince/evaengine-libs-markdown.git
 [submodule "depends/ZendDeveloperTools"]
 	path = depends/ZendDeveloperTools
 	url = git://github.com/zendframework/ZendDeveloperTools.git
@@ -34,3 +25,6 @@
 [submodule "vendor/ZendQueue"]
 	path = vendor/ZendQueue
 	url = git://github.com/zendframework/ZendQueue.git
+[submodule "vendor/Libs"]
+	path = vendor/Libs
+	url = git://github.com/AlloVince/evaengine-libs.git
