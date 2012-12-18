@@ -85,6 +85,15 @@ class EventSearchForm extends EventForm
                 'value' => '',
             ),
         ),
+        'category' =>     array(
+            'name' => 'category',
+            'type' => 'text',
+            'options' => array(
+                'label' => 'Category',
+            ),
+            'attributes' => array(
+            ),
+        ),
         'visibility' => array(
             'options' => array(
                 'empty_option' => 'Select Visibility',

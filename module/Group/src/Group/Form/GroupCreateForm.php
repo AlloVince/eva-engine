@@ -7,6 +7,11 @@ class GroupCreateForm extends GroupForm
         'default' => array(
             'Text' => 'Group\Form\TextForm',
             'GroupFile' => 'Group\Form\GroupFileForm',
+            'CategoryGroup' => array(
+                'formClass' => 'Group\Form\CategoryGroupForm',
+                'collection' => true,
+                'optionsCallback' => 'initCategories',
+            ),
         ),
     );
 
@@ -30,11 +35,44 @@ class GroupCreateForm extends GroupForm
             ),
         ),
     );
+    
+    public function beforeBind($data)
+    {
+        //Data is array is for display
+        if(isset($data['CategoryGroup']) && is_array($data)){
+            $categoryGroups = array();
+            $subForms = $this->get('CategoryGroup');
+            foreach($subForms as $key => $subForm){
+                $categoryGroup = array();
+                $category = $subForm->getCategory()->toArray();
+                $categoryGroup['category_id'] = $category['id'];
+                foreach($data['CategoryGroup'] as $categoryGroupArray){
+                    if($categoryGroup['category_id'] == $categoryGroupArray['category_id']){
+                        $categoryGroup = array_merge($categoryGroup, $categoryGroupArray);
+                        break;
+                    }
+                }
+                $categoryGroups[] = $categoryGroup;
+            }
+            $data['CategoryGroup'] = $categoryGroups;
+        }
+        return $data;
+    }
 
     public function prepareData($data)
     {
         if(isset($data['GroupFile'])){
             $data['GroupFile']['group_id'] = $data['id'];
+        }
+        
+        $categoryGroups = array();
+        if(isset($data['CategoryGroup']) && $data['CategoryGroup']){
+            foreach($data['CategoryGroup'] as $categoryGroup){
+                if(isset($categoryGroup['category_id']) && $categoryGroup['category_id']){
+                    $categoryGroups[] = $categoryGroup;
+                }
+            }
+            $data['CategoryGroup'] = $categoryGroups;
         }
 
         return $data;

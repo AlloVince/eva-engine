@@ -60,9 +60,12 @@ class EventController extends RestfulModuleController
                         'getThumb()',
                     )
                 ),
+                'Category' => array(
+                        '*',
+                ),
             ),
         ));
-
+        
         if(isset($item['EventFile'][0])){
             $item['EventFile'] = $item['EventFile'][0];
         }
@@ -78,7 +81,7 @@ class EventController extends RestfulModuleController
         $form = new Form\EventCreateForm();
         $form->useSubFormGroup()
             ->bind($postData);
-
+        
         if ($form->isValid()) {
             $postData = $form->getData();
             $itemModel = Api::_()->getModel('Event\Model\Event');
@@ -101,7 +104,8 @@ class EventController extends RestfulModuleController
 
     public function restPutEvent()
     {
-        $postData = $this->params()->fromPost();
+        $request = $this->getRequest();
+        $postData = $request->getPost();
         $form = new Form\EventEditForm();
         $form->useSubFormGroup()
             ->bind($postData);

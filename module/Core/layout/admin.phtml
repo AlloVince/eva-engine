@@ -76,6 +76,7 @@
                         <ul id="event-dropdown" class="collapse">
                             <li data-highlight-url="/admin/event/(\d+)*$"><a href="<?=$this->uri('/admin/event/')?>"><?=$this->_('Event Management')?></a></li>
                             <li data-highlight-url="/admin/event/create"><a href="<?=$this->uri('/admin/event/create')?>"><?=$this->_('Create Event')?></a></li>
+                            <li data-highlight-url="/admin/event/category/(\d+|create|remove)*$"><a href="<?=$this->uri('/admin/event/category/')?>"><?=$this->_('Event Categories')?></a></li>
                         </ul>
                         </li>
                         <?endif?>
@@ -85,6 +86,7 @@
                         <ul id="group-dropdown" class="collapse">
                             <li data-highlight-url="/admin/group/(\d+)*$"><a href="<?=$this->uri('/admin/group/')?>"><?=$this->_('Group Management')?></a></li>
                             <li data-highlight-url="/admin/group/create"><a href="<?=$this->uri('/admin/group/create')?>"><?=$this->_('Create Group')?></a></li>
+                            <li data-highlight-url="/admin/group/category/(\d+|create|remove)*$"><a href="<?=$this->uri('/admin/group/category/')?>"><?=$this->_('Group Categories')?></a></li>
                         </ul>
                         </li>
                         <?endif?>

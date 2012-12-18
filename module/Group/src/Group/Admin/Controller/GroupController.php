@@ -60,6 +60,16 @@ class GroupController extends RestfulModuleController
                         'getThumb()',
                     )
                 ),
+                'CategoryGroup' => array(
+                    'self' => array(
+                        '*',
+                    )
+                ),
+                'Category' => array(
+                    'self' => array(
+                        '*',
+                    )
+                ),
             ),
         ));
 
@@ -74,7 +84,8 @@ class GroupController extends RestfulModuleController
 
     public function restPostGroup()
     {
-        $postData = $this->params()->fromPost();
+        $request = $this->getRequest();
+        $postData = $request->getPost();
         $form = new Form\GroupCreateForm();
         $form->useSubFormGroup()
             ->bind($postData);

@@ -15,6 +15,12 @@ class Event extends AbstractItem
             'joinColumn' => 'event_id',
             'referencedColumn' => 'id',
         ),
+        'Count' => array(
+            'targetEntity' => 'Event\Item\Count',
+            'relationship' => 'OneToOne',
+            'joinColumn' => 'event_id',
+            'referencedColumn' => 'id',
+        ),
         'File' => array(
             'targetEntity' => 'File\Item\File',
             'relationship' => 'ManyToMany',
@@ -61,6 +67,29 @@ class Event extends AbstractItem
             'joinParameters' => array(
             ),
         ),
+        'Category' => array(
+            'targetEntity' => 'Event\Item\Category',
+            'relationship' => 'ManyToMany',
+            'mappedBy' => 'Category',
+            'joinColumns' => array(
+                'joinColumn' => 'event_id',
+                'referencedColumn' => 'id',
+            ),
+            'inversedBy' => 'Event\Item\CategoryEvent',
+            'inversedMappedBy' => 'CategoryEvent',
+            'inverseJoinColumns' => array(
+                'joinColumn' => 'category_id',
+                'referencedColumn' => 'id',
+            ),
+        ),
+        'CategoryEvent' => array(
+            'targetEntity' => 'Event\Item\CategoryEvent',
+            'relationship' => 'OneToMany',
+            'joinColumn' => 'event_id',
+            'referencedColumn' => 'id',
+            'joinParameters' => array(
+            ),
+        ),
     );
 
     protected $map = array(
@@ -71,6 +100,7 @@ class Event extends AbstractItem
             'getUserName()',
             'getStartDatetimeUtc()',
             'getEndDatetimeUtc()',
+            'getRecommend()',
         ),
         'save' => array(
             'getUrlName()',
@@ -78,6 +108,13 @@ class Event extends AbstractItem
             'getEndDatetimeUtc()',
         ),
     );
+
+    public function getRecommend()
+    {
+        if (!$this->recommend) {
+            return $this->recommend = 0;
+        }
+    }
 
     public function getUrlName()
     {

@@ -4,15 +4,8 @@ namespace Group\Form;
 use Eva\Form\Form;
 use Zend\Form\Element;
 
-class GroupEditForm extends GroupForm
+class GroupEditForm extends GroupCreateForm
 {
-    protected $subFormGroups = array(
-        'default' => array(
-            'Text' => 'Group\Form\TextForm',
-            'GroupFile' => 'Group\Form\GroupFileForm',
-        ),
-    );
-
     protected $mergeElements = array(
     );
 
@@ -36,14 +29,4 @@ class GroupEditForm extends GroupForm
             ),
         ),
     );
-
-
-   public function prepareData($data)
-    {
-        if(isset($data['GroupFile'])){
-            $data['GroupFile']['group_id'] = $data['id'];
-        }
-
-        return $data;
-    }
 }
