@@ -25,7 +25,7 @@ class EventFileForm extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseElements = array (
+    protected $mergeElements = array (
         'file_id' => array (
             'name' => 'file_id',
             'type' => NULL,
@@ -53,7 +53,7 @@ class EventFileForm extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseFilters = array (
+    protected $mergeFilters = array (
         'file_id' => array (
             'name' => 'file_id',
             'required' => false,

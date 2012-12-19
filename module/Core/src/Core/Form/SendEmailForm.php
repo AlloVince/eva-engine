@@ -25,7 +25,7 @@ class SendEmailForm extends \Eva\Form\Form
         ),
     );
 
-    protected $baseElements = array(
+    protected $mergeElements = array(
         'sender' => array (
             'name' => 'sender',
             'type' => 'text',
@@ -77,7 +77,7 @@ class SendEmailForm extends \Eva\Form\Form
         ),
     );
 
-    protected $baseFilters = array(
+    protected $mergeFilters = array(
         'sender' => array (
             'name' => 'sender',
             'required' => false,

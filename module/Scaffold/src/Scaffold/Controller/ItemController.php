@@ -117,16 +117,16 @@ class ItemController extends RestfulModuleController
 
         $tabName = count($tabNameArray) == 3 ? ucfirst($tabNameArray[2]) : ( ucfirst($tabNameArray[2]) . ucfirst($tabNameArray[3]) );
 
-        $baseElements = array();
+        $mergeElements = array();
         
-        $baseFilters = array();
+        $mergeFilters = array();
             
         foreach ($columns as $column) {
-            $baseElements[$column['name']] = array(
+            $mergeElements[$column['name']] = array(
                 'name' => $column['name'],
             );  
 
-            $baseFilters[$column['name']] = array(
+            $mergeFilters[$column['name']] = array(
                 'name' => $column['name'],
                 'required' => $column['required'] ? true : false,
                 'filters' => array(
@@ -136,13 +136,13 @@ class ItemController extends RestfulModuleController
             );   
 
             if ($column['data_type'] != 'enum') {
-                $baseElements[$column['name']]['attributes'] = array(
+                $mergeElements[$column['name']]['attributes'] = array(
                     'type' => $column['data_type'] == 'longtext' ? 'textarea' : 'text',
                     'label' => ucfirst($column['name']),
                 );
 
                 if ($column['isHidden'] == true) {
-                    $baseElements[$column['name']]['attributes']['type'] = 'hidden'; 
+                    $mergeElements[$column['name']]['attributes']['type'] = 'hidden'; 
                 }
             
             } else {
@@ -166,20 +166,20 @@ class ItemController extends RestfulModuleController
                     }
                 }            
 
-                $baseElements[$column['name']]['attributes'] = array(
+                $mergeElements[$column['name']]['attributes'] = array(
                     'type' => $column['inputType'] == 'raido' ? 'raido' : 'select',
                     'label' => ucfirst($column['name']),
                     'options' => $selectOptions,
                 ); 
 
                 if ($column['column_default']) {
-                    $baseElements[$column['name']]['attributes']['value'] = $column['column_default']; 
+                    $mergeElements[$column['name']]['attributes']['value'] = $column['column_default']; 
                 }    
             }
         }
 
-        $baseElementsString = var_export($baseElements, true);
-        $baseFiltersString = var_export($baseFilters, true);
+        $mergeElementsString = var_export($mergeElements, true);
+        $mergeFiltersString = var_export($mergeFilters, true);
 
         $formString = 
             "<?php
@@ -190,9 +190,9 @@ use Zend\Form\Element;
 
 class {$tabName}Form extends Form
 {
-    ".'   protected $baseElements = ' . $baseElementsString . ';
+    ".'   protected $mergeElements = ' . $mergeElementsString . ';
 
-    protected $baseFilters = ' . $baseFiltersString . ';
+    protected $mergeFilters = ' . $mergeFiltersString . ';
 
     }';
         

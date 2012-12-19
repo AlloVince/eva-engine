@@ -24,7 +24,7 @@ class MessageFileForm extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseElements = array (
+    protected $mergeElements = array (
         'message_id' => array (
             'name' => 'message_id',
             'type' => 'hidden',
@@ -52,7 +52,7 @@ class MessageFileForm extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseFilters = array (
+    protected $mergeFilters = array (
         'message_id' => array (
             'name' => 'message_id',
             'required' => false,

@@ -8,7 +8,7 @@ class ConversationForm extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseElements = array (
+    protected $mergeElements = array (
         'recipient_id' => array (
             'name' => 'recipient_id',
             'type' => 'text',
@@ -26,7 +26,7 @@ class ConversationForm extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseFilters = array (
+    protected $mergeFilters = array (
         'recipient_id' => array (
             'name' => 'recipient_id',
             'required' => true,

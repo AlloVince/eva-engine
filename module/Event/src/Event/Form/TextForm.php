@@ -24,7 +24,7 @@ class TextForm extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseElements = array (
+    protected $mergeElements = array (
         'event_id' => array (
             'name' => 'event_id',
             'type' => 'hidden',
@@ -52,7 +52,7 @@ class TextForm extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseFilters = array (
+    protected $mergeFilters = array (
         'event_id' => array (
             'name' => 'event_id',
             'required' => false,

@@ -30,7 +30,7 @@ class MessageForm extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseElements = array (
+    protected $mergeElements = array (
         'body' => array (
             'name' => 'body',
             'type' => 'textarea',
@@ -48,7 +48,7 @@ class MessageForm extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseFilters = array (
+    protected $mergeFilters = array (
         'body' => array (
             'name' => 'body',
             'required' => true,

@@ -3,8 +3,6 @@ namespace User\Form;
 
 class AdminLoginForm extends LoginForm
 {
-
-
     protected $mergeElements = array(
         'isSuperAdmin' => array (
             'name' => 'isSuperAdmin',

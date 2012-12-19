@@ -31,14 +31,6 @@ use Eva\File\Transfer\TransferFactory;
  */
 class Form extends \Zend\Form\Form implements InputFilterProviderInterface
 {
-
-    /**
-    * Element definitions
-    *
-    * @var array
-    */
-    protected $baseElements = array();
-
     /**
     * Tobe Merge Element definitions
     *
@@ -54,11 +46,11 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
     protected $mergedElements = array();
 
     /**
-    * Filter definitions
+    * Form elements inited
     *
-    * @var array
+    * @var boolean
     */
-    protected $baseFilters = array();
+    protected $elementsInited = false;
 
     /**
     * Tobe Merge Filter definitions
@@ -95,8 +87,6 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
     */
     protected $idPrefix;
 
-    //protected $fieldsMap = array();
-
     /**
     * Sub Forms
     *
@@ -104,12 +94,6 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
     */
     protected $subForms = array();
 
-    /**
-    * Form element inited
-    *
-    * @var boolean
-    */
-    protected $elementsInited = false;
 
     /**
     * Form filters inited
@@ -149,8 +133,17 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
     protected $parent;
 
 
+    /**
+    * Mvc View
+    *
+    * @var Zend\View
+    */
+    protected $view;
+
+
     public function setParent($parent)
     {
+        $this->init();
         $this->parent = $parent;
         return $this;
     }
@@ -166,18 +159,11 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
         if(is_array($elementOrFieldset) && isset($elementOrFieldset['name'])){
             $elementOrFieldset = $this->get($elementOrFieldset['name']);
         }
-        if ($elementOrFieldset instanceof RestfulForm) {
+        if ($elementOrFieldset instanceof Form) {
             $this->setParent($this);
         }
         return $this;
     }
-
-    /**
-    * Mvc View
-    *
-    * @var Zend\View
-    */
-    protected $view;
 
     public function getView()
     {
@@ -186,6 +172,7 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
 
     public function setView($view)
     {
+        $this->init();
         $this->view = $view;
         return $this;
     }
@@ -255,19 +242,28 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
         return $this->mergeElements;
     }
 
-    public function mergeElements(array $elements = array())
+    public function mergeElements($childElements = array())
     {
         if($this->mergedElements){
             return $this->mergedElements;
         }
-        //TODO: could merge parent class elements
-        $elements = $elements ? $elements : $this->mergeElements;
-        return $this->mergedElements = $this->merge($this->baseElements, $elements);
-    }
 
-    public function getElementsArray()
-    {
-        return $this->mergedElements;
+        $elements = isset($this->mergeElements) ? $this->mergeElements : array();
+        $parentClassName = get_parent_class($this);
+        $parentClass = null;
+        if($parentClassName) {
+            $parentClass = new $parentClassName();
+        }
+        if(true === method_exists($parentClass, 'mergeElements')){
+            if($childElements){
+                $elements = $this->merge($elements, $childElements);
+            }
+            $this->mergedElements = $parentClass->mergeElements($elements);
+            unset($parentClass);
+            return $this->mergedElements;
+        } else {
+            return $this->merge($elements, $childElements);
+        }
     }
 
     public function searchElementsArray($elementName)
@@ -278,12 +274,28 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
         return array();
     }
 
-    public function mergeFilters()
+    public function mergeFilters($childFilters = null)
     {
         if($this->mergedFilters){
             return $this->mergedFilters;
         }
-        return $this->mergedFilters = $this->merge($this->baseFilters, $this->mergeFilters);
+
+        $filters = isset($this->mergeFilters) ? $this->mergeFilters : array();
+        $parentClassName = get_parent_class($this);
+        $parentClass = null;
+        if($parentClassName) {
+            $parentClass = new $parentClassName();
+        }
+        if(true === method_exists($parentClass, 'mergeFilters')){
+            if($childFilters){
+                $filters = $this->merge($filters, $childFilters);
+            }
+            $this->mergedFilters = $parentClass->mergeFilters($filters);
+            unset($parentClass);
+            return $this->mergedFilters;
+        } else {
+            return $this->merge($filters, $childFilters);
+        }
     }
 
     public function getFiltersArray()
@@ -400,10 +412,15 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
 
     public function init(array $options = array())
     {
+        if(true === $this->elementsInited){
+            return $this;
+        }
         $elements = $this->mergeElements();
         foreach($elements as $element){
             $this->initElement($element);
         }
+        $this->elementsInited = true;
+        $this->afterInit();
         return $this;
     }
 
@@ -469,7 +486,7 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
 
     public function initFileTransfer()
     {
-        $elements = $this->getElementsArray();
+        $elements = $this->mergeElements();
         $fileElements = array();
         foreach($elements as $key => $element){
             if(isset($element['type']) && $element['type'] == 'file'){
@@ -614,6 +631,8 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
 
     public function bind($valuesOrObject, $flags = FormInterface::VALUES_NORMALIZED)
     {
+        $this->init();
+
         $valuesOrObject = $this->beforeBind($valuesOrObject);
 
         if(!$valuesOrObject){
@@ -638,7 +657,7 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
     public function isError($elementNameOrArray)
     {
         $element = $this->getElement($elementNameOrArray);
-        return $element->getMessages() ? true : false;
+        return $element && $element->getMessages() ? true : false;
     }
 
 
@@ -684,7 +703,7 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
         }
 
         if(!$element){
-            throw new Exception\InvalidArgumentException(sprintf('Request Element %s not found', $elementName));
+            throw new Exception\InvalidArgumentException(sprintf('Request Element %s not found in %s', $elementName, get_class($this)));
         }
 
         return $element;
@@ -734,7 +753,7 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
 
         $element = $this->getElement($elementNameOrArray);
         if(!$element){
-            throw new Exception\InvalidArgumentException(sprintf('Request element %s not found', $elementNameOrArray));
+            throw new Exception\InvalidArgumentException(sprintf('Request element %s not found in %s', $elementNameOrArray, get_class($this)));
         }
 
         $defaultOptions = array(
@@ -800,31 +819,18 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
         if(!$local) {
             return $global;
         }
-
         $global = new Config($global);
         $local = new Config($local);
         $global->merge($local);
         return $global->toArray();
     }
 
+    /*
     public function __construct($name = null, $subFormGroup = null)
     {
         parent::__construct($name);
         $this->init();
         $this->afterInit();
-
-        if(Api::_()->getServiceManager()->has('translator')){
-            $translator = \Zend\I18n\Translator\Translator::factory(array(
-                'locale' => Api::_()->getServiceManager()->get('translator')->getLocale(),
-                'translation_file_patterns' => array(
-                    'zf' => array(
-                        'type' => 'PhpArray',
-                        'base_dir' => EVA_LIB_PATH . '/Zend/resources/languages/',
-                        'pattern' => '%s/Zend_Validate.php'
-                    ),
-                ),
-            ));
-            \Zend\Validator\AbstractValidator::setDefaultTranslator($translator);
-        }
     }
+    */
 }

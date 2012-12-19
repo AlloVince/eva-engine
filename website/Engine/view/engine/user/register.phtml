@@ -8,7 +8,6 @@ if($this->form){
 } else {
     $form = $token ? new User\Form\QuickRegisterForm() : new User\Form\RegisterForm();
 }
-
 $form
 ->setView($this)
 ->useSubFormGroup()
