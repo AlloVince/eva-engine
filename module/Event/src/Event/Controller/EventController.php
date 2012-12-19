@@ -4,7 +4,8 @@ namespace Event\Controller;
 use Event\Form,
     Eva\Api,
     Eva\Mvc\Controller\RestfulModuleController,
-    Eva\View\Model\ViewModel;
+    Eva\View\Model\ViewModel,
+    Zend\View\Model\JsonModel;
 
 class EventController extends RestfulModuleController
 {
@@ -12,7 +13,7 @@ class EventController extends RestfulModuleController
         'restIndexEvent' => 'blank',    
     );
 
-    public function restIndexEvent()
+    public function indexAction()
     {
         $this->changeViewModel('json');
         $query = $this->getRequest()->getQuery();
@@ -46,7 +47,7 @@ class EventController extends RestfulModuleController
                     'getEmailHash()',
                 ),
             ));
-            $items = $itemModel->combineList($items, $userList, 'User', array('user_id' => 'id'));
+            $items = $itemModel->combineList($items->toArray(), $userList, 'User', array('user_id' => 'id'));
         }
 
         return new JsonModel(array(

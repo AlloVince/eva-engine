@@ -56,7 +56,7 @@ class Group extends AbstractModel
             ));
         } elseif(is_string($groupIdOrUrlName)) {
             $this->setItem(array(
-                'urlName' => $groupIdOrUrlName,
+                'groupKey' => $groupIdOrUrlName,
             ));
         }
         $this->trigger('get.pre');
@@ -118,6 +118,11 @@ class Group extends AbstractModel
         $groupUserItem->user_id  = $item->user_id;
         $groupUserItem->create('createAdmin');
 
+        $groupCountItem = $this->getItem('Group\Item\Count');
+        $groupCountItem->group_id = $itemId;
+        $groupCountItem->memberCount  = 1;
+        $groupCountItem->create();
+
         $this->trigger('create');
 
         $this->trigger('create.group');
@@ -134,6 +139,11 @@ class Group extends AbstractModel
         $item = $this->getItem();
         
         $this->trigger('save.pre');
+        
+        //Admin save item will remove all categories
+        $categoryGroupItem = $this->getItem('Group\Item\CategoryGroup');
+        $categoryGroupItem->group_id = $item->id;
+        $categoryGroupItem->remove();
 
         $item->save();
 

@@ -4,6 +4,7 @@ namespace Event\DbTable;
 
 use Eva\Db\TableGateway\TableGateway;
 use Zend\Stdlib\Parameters;
+use Eva\Api;
 
 class Events extends TableGateway
 {
@@ -77,6 +78,36 @@ class Events extends TableGateway
         if ($params->rows) {
             $this->limit((int) $params->rows);
         }
+        
+        if ($params->category) {
+            $categoryModel = Api::_()->getModel('Event\Model\Category');
+            $categoryItem = $categoryModel->getCategory($params->category);
+
+            if ($categoryItem->id) {
+                $categoryEventDb = Api::_()->getDbTable('Event\DbTable\CategoriesEvents');
+                $categoryEventTabName = $categoryEventDb->initTableName()->table;
+                $this->join(
+                    $categoryEventTabName,
+                    "{$this->table}.id = $categoryEventTabName.event_id",
+                    array('*'),
+                    'inner'
+                );
+                $this->where(array("$categoryEventTabName.category_id" => $categoryItem->id));
+            } else {
+                $this->where(array("id" => 0));
+            }    
+        }
+
+        if ($params->order == 'memberdesc' || $params->order == 'memberasc') {
+            $eventCountDb = Api::_()->getDbTable('Event\DbTable\Counts');
+            $eventCountTabName = $eventCountDb->initTableName()->table;
+            $this->join(
+                $eventCountTabName,
+                "{$this->table}.id = $eventCountTabName.event_id",
+                array('*'),
+                'inner'
+            );
+        }
 
         $orders = array(
             'idasc' => 'id ASC',
@@ -85,7 +116,10 @@ class Events extends TableGateway
             'timedesc' => 'startDatetimeUtc DESC',
             'titleasc' => 'title ASC',
             'titledesc' => 'title DESC',
+            'memberdesc' => 'memberCount DESC',
+            'memberasc' => 'memberCount ASC',
         );
+
         if($params->order){
             $order = $orders[$params->order];
             if($order){

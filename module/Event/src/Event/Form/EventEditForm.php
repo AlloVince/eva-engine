@@ -4,15 +4,8 @@ namespace Event\Form;
 use Eva\Form\Form;
 use Zend\Form\Element;
 
-class EventEditForm extends EventForm
+class EventEditForm extends EventCreateForm
 {
-    protected $subFormGroups = array(
-        'default' => array(
-            'Text' => 'Event\Form\TextForm',
-            'EventFile' => 'Event\Form\EventFileForm',
-        ),
-    );
-
     protected $mergeElements = array(
     );
 
@@ -36,14 +29,4 @@ class EventEditForm extends EventForm
             ),
         ),
     );
-
-
-   public function prepareData($data)
-    {
-        if(isset($data['EventFile'])){
-            $data['EventFile']['event_id'] = $data['id'];
-        }
-
-        return $data;
-    }
 }

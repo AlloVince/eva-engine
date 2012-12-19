@@ -21,6 +21,7 @@ return array(
                 ),
                 'priority' => 2,
             ),
+
             'blog' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -33,33 +34,6 @@ return array(
                 'may_terminate' => true,
                 'child_routes' => array(
                     'post' => array(
-                        'type' => 'Segment',
-                        'options' => array(
-                            'route' => '[/][:id][/]',
-                            'constraints' => array(
-                                'id' => '[a-zA-Z0-9_-]+'
-                            ),
-                            'defaults' => array(
-                                'action' => 'get'
-                            )
-                        )
-                    ),
-                ),
-                'priority' => 2,
-            ),
-
-            'feed' => array(
-                'type' => 'Segment',
-                'options' => array(
-                    'route' => '/feed[/]',
-                    'defaults' => array(
-                        'controller' => 'FeedController',
-                        'action' => 'index'
-                    ),
-                ),
-                'may_terminate' => true,
-                'child_routes' => array(
-                    'tweet' => array(
                         'type' => 'Segment',
                         'options' => array(
                             'route' => '[/][:id][/]',
@@ -101,45 +75,6 @@ return array(
                 ),
                 'priority' => 2,
             ),
-
-            //For test
-            'pricing' => array(
-                'type' => 'Segment',
-                'options' => array(
-                    'route' => '/pricing[/]',
-                    'defaults' => array(
-                        'controller' => 'UserController',
-                        'action' => 'pricing',
-                    ),
-                ),
-                'priority' => 2,
-            ),
-            'findfriends' => array(
-                'type' => 'Segment',
-                'options' => array(
-                    'route' => '/findfriends[/]',
-                    'defaults' => array(
-                        'controller' => 'UserController',
-                        'action' => 'contacts',
-                    ),
-                ),
-                'may_terminate' => true,
-                'child_routes' => array(
-                    'step' => array(
-                        'type' => 'Segment',
-                        'options' => array(
-                            'route' => '[/][:id][/]',
-                            'constraints' => array(
-                                'id' => 'add|invite'
-                            ),
-                            'defaults' => array(
-                                'action' => 'invite'
-                            )
-                        )
-                    ),
-                ),
-                'priority' => 2,
-            ),
         ),
     ),
     'controllers' => array(
@@ -148,7 +83,6 @@ return array(
             'IndexController' => 'Engine\Controller\IndexController',
             'LoginController' => 'Engine\Controller\LoginController',
             'UserController' => 'Engine\Controller\UserController',
-            'FeedController' => 'Engine\Controller\FeedController',
         ),
     ),
 

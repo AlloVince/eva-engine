@@ -1,0 +1,12 @@
+TRUNCATE `eva_user_accounts`;
+TRUNCATE `eva_user_codes`;
+TRUNCATE `eva_user_fieldvalues`;
+TRUNCATE `eva_user_friends`;
+TRUNCATE `eva_user_options`;
+TRUNCATE `eva_user_profiles`;
+TRUNCATE `eva_user_roles_users`;
+TRUNCATE `eva_user_tags`;
+TRUNCATE `eva_user_tags_users`;
+TRUNCATE `eva_user_tokens`;
+TRUNCATE `eva_user_users`;
+ALTER TABLE `eva_user_users` AUTO_INCREMENT =253;

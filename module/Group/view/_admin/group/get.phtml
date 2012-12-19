@@ -118,6 +118,33 @@ $form->useSubFormGroup()
                 </fieldset>
             </div>
         </div><!--span5 end-->
+        
+        <div class="span10">
+            <div class="slate">
+                <div class="page-header">
+                    <h3><?=$this->_('Categories')?></h3>
+                </div>
+                <?foreach($form->get('CategoryGroup') as $subForm):?>
+                <?$cate = $subForm->getCategory();if(!$cate){continue;}?>
+                <fieldset class="form-horizontal">
+                    <div class="control-group <?=$subForm->isError('category_id') ? 'error' : '';?> span3">
+                        <?=$subForm->helper('category_id', 'label', array(
+                            'class' => 'control-label',
+                            'label' => $cate['categoryName'],
+                        ))?>
+                        <div class="controls">
+                            <?=$subForm->helper('category_id', 'formCheckbox', array(
+                                'class' => '',
+                                'checkedValue' => $cate['id'],
+                                'checked' => $subForm->get('group_id')->getValue() ? true : false
+                            ))?>
+                            <div class="help-block"><?=$subForm->helper('category_id', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                </fieldset>
+                <?endforeach?>
+            </div>
+        </div><!--span5 end-->
 
         <?if($this->hasModule('File')):?>
         <div class="span5">

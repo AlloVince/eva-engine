@@ -1,0 +1,136 @@
+<?
+if($this->form){
+	$form = $this->form;
+} else {
+    $form = new File\Form\UploadForm();
+}
+
+$form->setView($this)
+->setMethod('post')
+->setAction($this->uri('/api/file/'));
+?>
+
+<div id="singlefileupload">
+    <div class="control-group fileupload-buttonbar centeralign clearfix">
+        <span class="btn fileinput-button btn-block">
+            <i class="icon-plus icon-white"></i>
+            <span><?=$this->_('Select Image')?>...</span>
+            <input type="file" name="upload[]"  accept="image/png, image/gif, image/jpg, image/jpeg">
+        </span>
+    </div>
+    <div id="result" class="fileupload-progress hide">
+        <div id="progress" class="progress progress-striped" style="height:5px;"  role="progressbar" aria-valuemin="0" aria-valuemax="100">
+            <div class="bar" style="width: 0%;"></div>
+        </div>
+        <div class="progress-extended">&nbsp;</div>
+        <input id="fileupload-response" type="hidden" />
+    </div>
+    <div id="image-preview" class="logowrapper" role="presentation">
+        <div class="files">
+            <!--
+            <p class="help-block">Only image files (jpg|gif|png) allowed.</p>
+            <p class="help-block">Maximum image size is 5 MB.</p>
+            <p class="help-block">You can drag &amp; drop images here from your desktop.</p>
+            -->
+        </div>
+        <div class="fileupload-loading">
+        </div>
+    </div>
+</div>
+
+<!-- The template to display files available for upload -->
+<script id="template-upload" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+<div class="template-upload fade">
+    {% if (file.error) { %}
+        <div class="alert error">{%=file.error%}</div>
+    {% } else { %}
+    <div class="preview thumbnail"><span class="fade"></span></div>
+    <div class="name"><span>{%=file.name%}</span></div>
+    <div class="size"><span>{%=o.formatFileSize(file.size)%}</span></div>
+    <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="height:5px;"><div class="bar" style="width:0%;"></div></div>
+    <span class="start">
+        {% if (!o.options.autoUpload) { %}
+            <button class="btn btn-block"><i class="icon-upload"></i><?=$this->_('Start Upload');?></button>
+        {% } %}
+    </span>
+    {% } %}
+    <span class="cancel"><button class="btn btn-block"><i class="icon-ban-circle"></i><?=$this->_('Cancel');?></button></span>
+</div>
+{% } %}
+</script>
+
+
+<!-- The template to display files available for download -->
+<script id="template-download" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+<div class="template-download fade">
+    {% if (file.error) { %}
+        <div class="alert error">{%=file.error%}</div>
+        <span class="cancel"><button class="btn btn-block"><i class="icon-ban-circle"></i><?=$this->_('Cancel');?></span>
+    {% } else { %}
+    <div class="preview thumbnail"><img src="{%=file.thumbnail_url%}"></div>
+    <div class="name"><span>{%=file.name%}</span></div>
+    <div class="size"><span>{%=o.formatFileSize(file.size)%}</span></div>
+    <div class="delete">
+        <button class="btn btn-block" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}">
+        <i class="icon-trash icon-white"></i>
+        <?=$this->_('Delete');?>
+        </button>
+    </div>
+    {% } %}
+</div>
+{% } %}
+</script>
+
+<script>
+var evaUpload = function(){
+
+    var uploader = $("#singlefileupload");
+    uploader.fileupload({
+        url : '/api/file/',
+        dataType: 'json',
+        autoUpload: true,
+        acceptFileTypes:  /(\.|\/)(gif|jpe?g|png)$/i,
+        maxNumberOfFiles : 1,
+        fileInput : uploader.find("input:file"),
+        maxFileSize: 5000000,
+        previewMaxWidth : 200,
+        previewMaxHeight : 200    
+    });
+
+
+    uploader.bind('fileuploadfailed', function (e, data) {
+            //eva.p(data);
+    });
+    uploader.bind('fileuploadadded', function (e, data) {
+            if(!data.files.valid) {
+                    //uploader.find('.files .cancel').click();
+            }
+    });
+    uploader.bind('fileuploadchange', function (e, data) {
+            //uploader.find('.files').empty();
+    });
+
+    //Fix firefox input disable attr issue
+    uploader.find("input:file").removeAttr('disabled');
+}
+eva.runtime = function(){
+        var libs = [
+        "/lib/js/jstemplates/tmpl.js", 
+        "/lib/js/loadimage/load-image.js", 
+        "/lib/js/upload/js/vendor/jquery.ui.widget.js", 
+        "/lib/js/upload/js/jquery.iframe-transport.js",
+        "/lib/js/upload/js/jquery.fileupload.js", 
+        "/lib/js/upload/js/jquery.fileupload-fp.js", 
+        "/lib/js/upload/js/jquery.fileupload-ui.js" 
+        ];
+
+        eva.loadcss(eva.s(["/lib/js/upload/css/jquery.fileupload-ui.css"]));
+        eva.loader(eva.s(libs), function(){
+            evaUpload();
+        });
+}
+</script>
+
+<!--[if gte IE 8]><script src="<?=$this->link("/lib/js/upload/js/cors/jquery.xdr-transport.js")?>"></script><![endif]-->
