@@ -1,0 +1,31 @@
+<?
+$title = $this->_('Queue Runner');
+$this->headTitle($title, 'SET');
+$this->textDelay('breadcrumbText', $title);
+?>
+
+<div class="row">
+    <div class="span10">
+        <div class="slate">
+            <div class="page-header">
+                <h2><?=$title?></h2>
+            </div>
+
+
+            <div class="typo">
+                <dl class="dl-horizontal">
+                    <dt>Queue Name</dt>
+                    <dd><?=$item['options']['name']?></dd>
+                    <dt>Queue Type</dt>
+                    <dd><?=$item['adapter']?></dd>
+                    <dt>Queue Count</dt>
+                    <dd><?=$item['count']?></dd>
+                </dl>
+                <button class="btn btn-large btn-block">Run Queue</button>
+            </div>
+
+            <pre id="log">
+            </pre>
+        </div>
+    </div><!--span10 end-->
+</div>

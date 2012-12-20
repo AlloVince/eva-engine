@@ -50,17 +50,6 @@ class Queue extends ZendQueue
          return $this->serviceLocator;
      }
 
-     public function getOptions()
-     {
-         return $this->options;
-     }
-
-     public function setOptions($options)
-     {
-         $this->options = $options;
-         return $this;
-     }
-
     public static function factory($queueName)
     {
     
