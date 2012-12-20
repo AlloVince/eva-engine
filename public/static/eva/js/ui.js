@@ -179,10 +179,35 @@
 				spellchecker_rpc_url : eva.s('/lib/js/tiny_mce/plugins/spellchecker/rpc.php')
 			};
 
+			var mceGlobelConfigSimple = {
+				mode : "textareas",
+				theme : "advanced",
+				plugins : "autolink,lists,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+				// Theme options
+                theme_advanced_buttons1 : "bold,italic,underline,separator,strikethrough,justifyleft,justifycenter,justifyright, justifyfull,bullist,numlist,undo,redo,link,unlink",
+                theme_advanced_buttons2 : "formatselect,fontselect,fontsizeselect,|,forecolor,backcolor,image,media",
+                theme_advanced_buttons3 : "",
+				theme_advanced_toolbar_location : "top",
+				theme_advanced_toolbar_align : "left",
+				theme_advanced_statusbar_location : "bottom",
+				theme_advanced_resizing : true,
+				
+				remove_linebreaks : false,
+				extended_valid_elements : "pre[cols|rows|disabled|name|readonly|class]",
+				script_url : eva.s('/lib/js/tiny_mce/tiny_mce.js'),
+				
+				content_css: eva.s("/lib/css/typo/typo.min.css"),
+				spellchecker_rpc_url : eva.s('/lib/js/tiny_mce/plugins/spellchecker/rpc.php')
+			};
+
 			eva.loader(eva.s(methods.config.pathTinymce), function(){
 				$(methods._itemClass.htmleditor).each(function(){
 					var opt = methods._getOption(this);
-					var mceconfig = mceGlobelConfig;
+					if($(this).hasClass('simple')) {
+						var mceconfig = mceGlobelConfigSimple;
+					} else {
+						var mceconfig = mceGlobelConfig;
+					}
 					if(opt) {
 						for(var i in opt){
 							mceconfig[i] = opt[i];
