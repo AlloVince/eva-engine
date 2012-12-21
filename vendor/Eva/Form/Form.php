@@ -29,7 +29,7 @@ use Eva\File\Transfer\TransferFactory;
  * @category   Eva
  * @package    Eva_Form
  */
-class Form extends \Zend\Form\Form implements InputFilterProviderInterface
+class Form extends \Zend\Form\Form
 {
     /**
     * Tobe Merge Element definitions
@@ -298,11 +298,6 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
         }
     }
 
-    public function getFiltersArray()
-    {
-        return $this->mergedFilters;
-    }
-
     public function searchFiltersArray($filterName)
     {
         if(isset($this->mergedFilters[$filterName])){
@@ -516,7 +511,7 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
             )
         ));
 
-        $mergeFilters = $this->getFiltersArray();
+        $mergeFilters = $this->mergedFilters();
         foreach($fileElements as $key => $element){
             if(isset($mergeFilters[$key]['validators'])){
                 foreach($mergeFilters[$key]['validators'] as $validator){
@@ -824,13 +819,4 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
         $global->merge($local);
         return $global->toArray();
     }
-
-    /*
-    public function __construct($name = null, $subFormGroup = null)
-    {
-        parent::__construct($name);
-        $this->init();
-        $this->afterInit();
-    }
-    */
 }
