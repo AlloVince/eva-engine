@@ -507,7 +507,7 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
             )
         ));
 
-        $mergeFilters = $this->mergedFilters();
+        $mergeFilters = $this->mergeFilters();
         foreach($fileElements as $key => $element){
             if(isset($mergeFilters[$key]['validators'])){
                 foreach($mergeFilters[$key]['validators'] as $validator){
