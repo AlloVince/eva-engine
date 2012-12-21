@@ -448,6 +448,7 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
         return $this->add($element);
     }
 
+    /*
     protected function initFilters()
     {
         if(true === $this->filtersInited){
@@ -455,16 +456,6 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
         }
 
         $filters = $this->mergeFilters();
-        //Note: some Validators need inject full user input data
-        foreach($filters as $key => $filter){
-            if(isset($filter['validators']) && is_array($filter['validators'])) {
-                foreach($filter['validators'] as $validKey => $validator){
-                    if(isset($validator['injectdata']) && $validator['injectdata']){
-                        $filters[$key]['validators'][$validKey]['options']['data'] = $this->data;
-                    }
-                }
-            }
-        }
 
         $formFactory  = $this->getFormFactory();
         $inputFactory = $formFactory->getInputFilterFactory();
@@ -482,6 +473,7 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
         $this->filtersInited = true;
         return $this;
     }
+    */
 
     public function initFileTransfer()
     {
@@ -817,7 +809,6 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
             $this->attachInputFilterDefaults($filter, $fieldset);
         }
     }
-
 
     public function helper($elementNameOrArray, $attrsOrInputType = null, array $attrs = array(), array $options = array())
     {
