@@ -99,7 +99,7 @@ eva.flashMessenger = function(){
 	}
 }
 
-eva.construct = function(){
+eva.ready(function(){
 
 	$(".main-left-col").height($(document).height()).css("background", "#333232");
 
@@ -108,8 +108,6 @@ eva.construct = function(){
 	eva.flashMessenger();
 
 	//$('.dropdown-toggle').dropdown();
-
-	eva.ui.init();
 
 	var lang = eva.config.lang;
 	var langMap = {
@@ -126,7 +124,4 @@ eva.construct = function(){
 	
 
 	return false;
-};
-
-eva.destruct = function(){
-};
+});

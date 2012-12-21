@@ -351,7 +351,7 @@ $form->useSubFormGroup()
 
 
 <script>
-eva.runtime = function(){
+eva.ready(function(){
       
     eva.callback.connect = function(item, parentWindow){
         $("#event-form-eventfileform-file-id").val(item.attr("data-connect-id"));
@@ -476,5 +476,5 @@ eva.runtime = function(){
                 switchEditor(); 
             }
     });
-}
+});
 </script>

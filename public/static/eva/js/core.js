@@ -42,6 +42,8 @@ dirHandler = function(dir, configDir){
 	return configDir + dir;
 },
 
+readyFuncs = [],
+
 methods = window.eva = {
 	module : {},
 
@@ -244,12 +246,18 @@ methods = window.eva = {
 
 	callback : {},
 
+	ready : function(func){
+		if (typeof func !== 'function') {
+			return false;
+		} 
+		readyFuncs.push(func);
+	},
+
 	init : function(setting){
 		config = methods.getConfig(setting);
 		methods.config = config;
 		var router = methods.getRouter();
-
-		jQuery(document).ready(function () {
+		var run = function(){
 			if(eva.construct !== undefined) {
 				eva.construct();
 			}
@@ -257,16 +265,27 @@ methods = window.eva = {
 			if(router) {
 				router();
 			}
+
 			if(eva.runtime !== undefined) {
 				eva.runtime();
 			}
 
+			for(var i in readyFuncs){
+				readyFuncs[i]();
+			}
+
 			if(eva.destruct !== undefined) {
 				eva.destruct();
-			}
-			return false;
-		});
+			}		
+		};
 
+		if (typeof jQuery === 'undefined') {
+			window.onload = run;
+		} else {
+			jQuery(document).ready(function () {
+				return run();
+			});
+		} 
 	}
 };
 })();

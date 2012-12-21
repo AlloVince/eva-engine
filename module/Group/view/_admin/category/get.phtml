@@ -114,7 +114,7 @@ $form->setView($this)
     </form>
 </div>
 
-<script>eva.runtime = function(){
+<script>eva.ready(function(){
         eva.callback.connect = function(item, parentWindow){
                 $("#file-form-fileconnectform-file-id").val(item.attr("data-connect-id"));
                 var data = $.parseJSON(item.attr('data-connect-json'));
@@ -129,4 +129,4 @@ $form->setView($this)
                         height:"80%"
                 });
         });
-}</script>
+});</script>
