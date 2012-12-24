@@ -24,7 +24,7 @@ class GroupUserForm extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseElements = array (
+    protected $mergeElements = array (
         'user_id' => array (
             'name' => 'user_id',
             'type' => 'hidden',
@@ -52,7 +52,7 @@ class GroupUserForm extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseFilters = array (
+    protected $mergeFilters = array (
         'user_id' => array (
             'name' => 'user_id',
             'required' => true,

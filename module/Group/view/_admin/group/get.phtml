@@ -114,6 +114,22 @@ $form->useSubFormGroup()
                             <?=$form->helper('summary', array('class' => 'span3'))?>        
                             <div class="help-block"><?=$form->helper('summary', 'formElementErrors')?></div>
                         </div>
+                    </div>
+
+                    <div class="control-group <?=$form->isError('memberLimit') ? 'error' : '';?>">
+                        <?=$form->helper('memberLimit', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('memberLimit', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('memberLimit', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+
+                    <div class="control-group <?=$form->isError('memberEnable') ? 'error' : '';?>">
+                        <?=$form->helper('memberEnable', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('memberEnable', 'formSelect', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('memberEnable', 'formElementErrors')?></div>
+                        </div>
                     </div> 
                 </fieldset>
             </div>
@@ -173,7 +189,7 @@ $form->useSubFormGroup()
 
 
 <script>
-eva.runtime = function(){
+eva.ready(function(){
       
     eva.callback.connect = function(item, parentWindow){
         $("#group-form-groupfileform-file-id").val(item.attr("data-connect-id"));
@@ -298,5 +314,5 @@ eva.runtime = function(){
                 switchEditor(); 
             }
     });
-}
+});
 </script>

@@ -88,6 +88,11 @@ class FileController extends RestfulModuleController
         return new JsonModel($response);
     }
 
+    public function restPutFile()
+    {
+        return $this->restPostFile();
+    }
+
     public function restDeleteFile()
     {
         //Fix ie

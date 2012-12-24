@@ -70,8 +70,8 @@ class Group extends AbstractModel
 
         $this->trigger('get');
 
-        $this->trigger('get.group');
-        $this->trigger('get.groupcache');
+        $this->trigger('get.post');
+        $this->trigger('get.postcache');
 
         return $item;
     }
@@ -89,8 +89,8 @@ class Group extends AbstractModel
 
         $this->trigger('get');
 
-        $this->trigger('list.group');
-        $this->trigger('list.groupcache');
+        $this->trigger('list.post');
+        $this->trigger('list.postcache');
 
         return $item;
     }
@@ -125,7 +125,7 @@ class Group extends AbstractModel
 
         $this->trigger('create');
 
-        $this->trigger('create.group');
+        $this->trigger('create.post');
 
         return $itemId;
     }
@@ -154,7 +154,7 @@ class Group extends AbstractModel
         }
         $this->trigger('save');
 
-        $this->trigger('save.group');
+        $this->trigger('save.post');
 
         return $item->id;
     }
@@ -180,7 +180,7 @@ class Group extends AbstractModel
 
         $this->trigger('remove');
 
-        $this->trigger('remove.group');
+        $this->trigger('remove.post');
 
         return true;
 

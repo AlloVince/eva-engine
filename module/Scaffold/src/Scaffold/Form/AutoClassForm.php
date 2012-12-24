@@ -3,7 +3,7 @@ namespace Scaffold\Form;
 
 class AutoClassForm extends \Eva\Form\Form
 {
-    protected $baseElements = array(
+    protected $mergeElements = array(
         'select_type' => array(
             'name' => 'inputType[]',
             'type' => 'select',

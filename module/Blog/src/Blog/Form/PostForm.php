@@ -8,7 +8,7 @@ class PostForm extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseElements = array (
+    protected $mergeElements = array (
         'id' => array (
             'name' => 'id',
             'type' => 'hidden',
@@ -35,19 +35,19 @@ class PostForm extends \Eva\Form\Form
             'options' => array (
                 'label' => 'Status',
                 'value_options' => array (
-                    array (
+                    'deleted' => array (
                         'label' => 'Deleted',
                         'value' => 'deleted',
                     ),
-                    array (
+                    'draft' => array (
                         'label' => 'Draft',
                         'value' => 'draft',
                     ),
-                    array (
+                    'published' => array (
                         'label' => 'Published',
                         'value' => 'published',
                     ),
-                    array (
+                    'pending' => array (
                         'label' => 'Pending',
                         'value' => 'pending',
                     ),
@@ -63,15 +63,15 @@ class PostForm extends \Eva\Form\Form
             'options' => array (
                 'label' => 'Visibility',
                 'value_options' => array (
-                    array (
+                    'public' => array (
                         'label' => 'Public',
                         'value' => 'public',
                     ),
-                    array (
+                    'private' => array (
                         'label' => 'Private',
                         'value' => 'private',
                     ),
-                    array (
+                    'password' => array (
                         'label' => 'Password',
                         'value' => 'password',
                     ),
@@ -86,15 +86,15 @@ class PostForm extends \Eva\Form\Form
             'options' => array (
                 'label' => 'Code Type',
                 'value_options' => array (
-                    array (
+                    'markdown' => array (
                         'label' => 'Markdown',
                         'value' => 'markdown',
                     ),
-                    array (
+                    'reStructuredText' => array (
                         'label' => 'reStructuredText',
                         'value' => 'reStructuredText',
                     ),
-                    array (
+                    'html' => array (
                         'label' => 'HTML',
                         'value' => 'html',
                     ),
@@ -176,15 +176,15 @@ class PostForm extends \Eva\Form\Form
             'options' => array (
                 'label' => 'Comment Status',
                 'value_options' => array (
-                    array (
+                    'open' => array (
                         'label' => 'Open',
                         'value' => 'open',
                     ),
-                    array (
+                    'closed' => array (
                         'label' => 'Closed',
                         'value' => 'closed',
                     ),
-                    array (
+                    'authority' => array (
                         'label' => 'Authority',
                         'value' => 'authority',
                     ),
@@ -200,19 +200,19 @@ class PostForm extends \Eva\Form\Form
             'options' => array (
                 'label' => 'Comment Type',
                 'value_options' => array (
-                    array (
+                    'local' => array (
                         'label' => 'Local',
                         'value' => 'local',
                     ),
-                    array (
+                    'disqus' => array (
                         'label' => 'Disqus',
                         'value' => 'disqus',
                     ),
-                    array (
+                    'youyan' => array (
                         'label' => 'Youyan',
                         'value' => 'youyan',
                     ),
-                    array (
+                    'duoshuo' => array (
                         'label' => 'Duoshuo',
                         'value' => 'duoshuo',
                     ),
@@ -229,7 +229,7 @@ class PostForm extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseFilters = array (
+    protected $mergeFilters = array (
         'id' => array (
             'name' => 'id',
             'required' => false,

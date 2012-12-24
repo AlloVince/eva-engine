@@ -38,6 +38,10 @@ class Groups extends TableGateway
         if($params->status){
             $this->where(array('status' => $params->status));
         }
+        
+        if($params->memberEnable){
+            $this->where(array('memberEnable' => $params->memberEnable));
+        }
 
         if ($params->rows) {
             $this->limit((int) $params->rows);

@@ -29,7 +29,7 @@ class RoleUserForm extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseElements = array (
+    protected $mergeElements = array (
         'role_id' => array (
             'name' => 'role_id',
             'type' => 'multiCheckbox',
@@ -111,7 +111,7 @@ class RoleUserForm extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseFilters = array (
+    protected $mergeFilters = array (
         'role_id' => array (
             'name' => 'role_id',
             'required' => false,

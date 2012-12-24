@@ -1,0 +1,48 @@
+<?
+$title = $this->_('Queue List');
+$this->headTitle($title, 'SET');
+$this->textDelay('breadcrumbText', $title);
+?>
+
+<div class="row">
+    <div class="span10">
+        <div class="slate">
+            <div class="page-header">
+                <h2><?=$title?></h2>
+            </div>
+
+            <table class="orders-table table">
+                <thead>
+                    <tr>
+                        <th class="span1">
+                        </th>
+                        <th><?=$this->_('Queue Name')?></th>
+                        <th><?=$this->_('Queue Name')?></th>
+                        <th class="actions"><?=$this->_('Actions')?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?if($this->items):?>
+                    <?foreach($this->items as $key=>$item):?>
+                    <tr class="">
+                        <td>
+                            <input name="id" type="checkbox" class="multiform-item-checkbox"  data-multiform="post" data-multiform-itemid="<?=$key?>" value="<?=$key?>" />
+                        </td>	
+                        <td>
+                            <a href="<?=$this->uri('/admin/core/queue/' . $item['name'])?>" class="title"><?=$item['name']?></a>
+                        </td>
+                        <td>
+                            <pre><?//=var_export($item['debug'])?></pre>
+                        </td>
+                        <td class="actions">
+                            <a href="<?=$this->uri('/admin/core/queue/' . $item['name'])?>" class="btn btn-small"><?=$this->_('Run As Http')?></a>
+                            <a href="<?=$this->uri('/admin/core/queue/' . $item['name'])?>" class="btn btn-small"><?=$this->_('Run As Commond')?></a>
+                        </td>
+                    </tr>
+                    <?endforeach;?>
+                    <?endif;?>
+                </tbody>
+            </table>
+        </div>
+    </div><!--span10 end-->
+</div>

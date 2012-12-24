@@ -5,7 +5,7 @@ class CategoryDeleteForm extends CategoryForm
 {
     protected $validationGroup = array('id');
 
-    protected $baseFilters = array(
+    protected $mergeFilters = array(
         'id' => array(
             'name' => 'id',
             'required' => true,

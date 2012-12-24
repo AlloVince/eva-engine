@@ -5,7 +5,7 @@ use Eva\Form\Form;
 
 class ResetForm extends Form
 {
-    protected $baseElements = array(
+    protected $mergeElements = array(
         'email' => array (
             'name' => 'email',
             'type' => 'text',
@@ -18,7 +18,7 @@ class ResetForm extends Form
         ),
     );
 
-    protected $baseFilters = array(
+    protected $mergeFilters = array(
         'email' =>     array(
             'name' => 'email',
             'required' => true,

@@ -24,12 +24,12 @@ class <?=$this->formClassName?> extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseElements = <?=$this->codeIndent($this->elementsCode)?>;
+    protected $mergeElements = <?=$this->codeIndent($this->elementsCode)?>;
 
     /**
      * Form basic Validators
      *
      * @var array
      */
-    protected $baseFilters = <?=$this->codeIndent($this->validatorsCode)?>;
+    protected $mergeFilters = <?=$this->codeIndent($this->validatorsCode)?>;
 }

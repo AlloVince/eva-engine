@@ -25,7 +25,7 @@ class ResetPasswordForm extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseElements = array (
+    protected $mergeElements = array (
         'code' => array (
             'name' => 'code',
             'type' => 'hidden',
@@ -63,7 +63,7 @@ class ResetPasswordForm extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseFilters = array (
+    protected $mergeFilters = array (
         'code' => array (
             'name' => 'code',
             'required' => true,

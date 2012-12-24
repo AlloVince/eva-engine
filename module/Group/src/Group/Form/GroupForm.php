@@ -24,7 +24,7 @@ class GroupForm extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseElements = array (
+    protected $mergeElements = array (
         'id' => array (
             'name' => 'id',
             'type' => 'hidden',
@@ -88,6 +88,36 @@ class GroupForm extends \Eva\Form\Form
                 'value' => '',
             ),
         ),
+        'memberLimit' => array (
+            'name' => 'memberLimit',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Member Limit',
+            ),
+            'attributes' => array (
+                'value' => '0',
+            ),
+        ),
+        'memberEnable' => array (
+            'name' => 'memberEnable',
+            'type' => 'select',
+            'options' => array (
+                'label' => 'Member Enable',
+                'value_options' => array (
+                    '0' => array (
+                        'label' => 'Disable',
+                        'value' => 0,
+                    ),
+                    '1' => array (
+                        'label' => 'Enable',
+                        'value' => 1,
+                    ),
+                ),
+            ),
+            'attributes' => array (
+                'value' => 1,
+            ),
+        ),
     );
 
     /**
@@ -95,7 +125,7 @@ class GroupForm extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseFilters = array (
+    protected $mergeFilters = array (
         'id' => array (
             'name' => 'id',
             'required' => false,
@@ -205,6 +235,22 @@ class GroupForm extends \Eva\Form\Form
                         'max' => '255',
                     ),
                 ),
+            ),
+        ),
+        'memberLimit' => array (
+            'name' => 'memberLimit',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+            ),
+        ),
+        'memberEnable' => array (
+            'name' => 'memberEnable',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
             ),
         ),
     );

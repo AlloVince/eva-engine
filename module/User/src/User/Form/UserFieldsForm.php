@@ -13,7 +13,7 @@ class UserFieldsForm extends UserForm
         ),
     );
 
-    protected $baseElements = array (
+    protected $mergeElements = array (
         'id' => array (
             'name' => 'id',
             'type' => 'hidden',
@@ -26,7 +26,7 @@ class UserFieldsForm extends UserForm
         ),
     );
 
-    protected $baseFilters = array(
+    protected $mergeFilters = array(
         'id' => array(
             'name' => 'id',
             'required' => true,

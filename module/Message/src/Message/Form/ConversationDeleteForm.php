@@ -8,7 +8,7 @@ class ConversationDeleteForm extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseElements = array (
+    protected $mergeElements = array (
         'id' => array (
             'name' => 'id',
             'type' => 'hidden',
@@ -23,7 +23,7 @@ class ConversationDeleteForm extends \Eva\Form\Form
   
     protected $validationGroup = array('id');
 
-    protected $baseFilters = array(
+    protected $mergeFilters = array(
         'id' => array(
             'name' => 'id',
             'required' => true,

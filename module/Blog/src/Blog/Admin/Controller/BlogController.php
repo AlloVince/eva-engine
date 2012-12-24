@@ -96,6 +96,13 @@ class BlogController extends RestfulModuleController
             $this->redirect()->toUrl('/admin/blog/' . $postId);
 
         } else {
+            p($postData);
+            p($form->getMessages());
+            //p($form->getElements(), 1);
+            foreach($form->getFieldsets() as $fieldset){
+             //   p($fieldset->getMessages());
+            //    p($fieldset->getElements());
+            }
             
         }
 

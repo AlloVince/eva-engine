@@ -25,7 +25,7 @@ class ChangeEmailForm extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseElements = array (
+    protected $mergeElements = array (
         'id' => array (
             'name' => 'id',
             'type' => 'hidden',
@@ -53,7 +53,7 @@ class ChangeEmailForm extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseFilters = array (
+    protected $mergeFilters = array (
         'id' => array (
             'name' => 'id',
             'required' => true,

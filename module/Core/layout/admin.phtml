@@ -45,8 +45,8 @@
                             <li data-highlight-url="/admin/blog/(\d+|(remove.*))*$"><a href="<?=$this->uri('/admin/blog/')?>"><?=$this->_('Pages')?></a></li>
                             <li data-highlight-url="/admin/blog/create$"><a href="<?=$this->uri('/admin/blog/create')?>"><?=$this->_('Add New Post')?></a></li>
                             <li data-highlight-url="/admin/blog/category/(\d+|create|remove)*$"><a href="<?=$this->uri('/admin/blog/category/')?>"><?=$this->_('Page Categories')?></a></li>
-                            <!--
                             <li data-highlight-url="/admin/blog/comment/(\d+)*$"><a href="<?=$this->uri('/admin/blog/comment/')?>"><?=$this->_('Comments')?></a></li>
+                            <!--
                             <li data-highlight-url="/admin/blog/tag/(\d+)*$"><a href="<?=$this->uri('/admin/blog/tag/')?>"><?=$this->_('Page Tags')?></a></li>
                             -->
                         </ul>
@@ -82,7 +82,7 @@
                         <?endif?>
                         <?if($this->hasmodule('Group')):?>
                         <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="collapse" data-target="#group-dropdown" href="#"><i class="icon-calendar"></i> <?=$this->_('Group')?> <b class="caret"></b></a>
+                        <a class="dropdown-toggle" data-toggle="collapse" data-target="#group-dropdown" href="#"><i class="icon-group"></i> <?=$this->_('Group')?> <b class="caret"></b></a>
                         <ul id="group-dropdown" class="collapse">
                             <li data-highlight-url="/admin/group/(\d+)*$"><a href="<?=$this->uri('/admin/group/')?>"><?=$this->_('Group Management')?></a></li>
                             <li data-highlight-url="/admin/group/create"><a href="<?=$this->uri('/admin/group/create')?>"><?=$this->_('Create Group')?></a></li>
@@ -102,21 +102,19 @@
                         </li>
                         <?endif?>
                         <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="collapse" data-target="#setting-dropdown" href="#"><i class="icon-file"></i> <?=$this->_('Setting')?> <b class="caret"></b></a>
+                        <a class="dropdown-toggle" data-toggle="collapse" data-target="#setting-dropdown" href="#"><i class="icon-cogs"></i> <?=$this->_('Setting')?> <b class="caret"></b></a>
                         <ul id="setting-dropdown" class="collapse">
+                            <li data-highlight-url="/admin/core/queue.*$"><a href="<?=$this->uri('/admin/core/queue/')?>"><i class="icon-retweet"></i> Queue</a></li>
+                            <?if($this->hasmodule('Crontab')):?>
+                            <li data-highlight-url="/admin/crontab/"><a href="<?=$this->uri('/admin/crontab/')?>"><i class="icon-tasks"></i> <?=$this->_('Crontabs')?></a></li>
+                            <?endif?>
                             <li data-highlight-url="/admin/core/cache"><a href="<?=$this->uri('/admin/core/cache')?>"><?=$this->_('Cache Cleaner')?></a></li>
                             <!--<li data-highlight-url="/admin/core/setting"><a href="<?=$this->uri('/admin/core/setting')?>"><?=$this->_('Global Setting')?></a></li>-->
                             <li data-highlight-url="/admin/core/setting/components"><a href="<?=$this->uri('/admin/core/setting/components')?>"><?=$this->_('Page Components')?></a></li>
+
                         </ul>
                         </li>
-                        <?if($this->hasmodule('Crontab')):?>
-                        <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="collapse" data-target="#crontab-dropdown" href="#"><i class="icon-calendar"></i> <?=$this->_('Crontab')?> <b class="caret"></b></a>
-                        <ul id="crontab-dropdown" class="collapse">
-                            <li data-highlight-url="/admin/crontab/"><a href="<?=$this->uri('/admin/crontab/')?>"><?=$this->_('Crontab Management')?></a></li>
-                        </ul>
-                        </li>
-                        <?endif?>
+
                         <?if($this->hasmodule('Scaffold')):?>
                         <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="collapse" data-target="#scaffold-dropdown" href="#"><i class="icon-gift"></i> Scaffold <b class="caret"></b></a>

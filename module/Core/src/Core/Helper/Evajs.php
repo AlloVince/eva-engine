@@ -74,6 +74,6 @@ class Evajs extends \Zend\Form\View\Helper\AbstractHelper
             'lang' => $lang,
             'ie' => false,
         ), $jsParams);
-        return '<script type="text/javascript">var eva_config = ' . \Zend\Json\Json::encode($jsConfig) . '</script>';
+        return '<script type="text/javascript">var eva_config = ' . \Zend\Json\Json::encode($jsConfig) . "</script>\n";
     }
 }

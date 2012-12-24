@@ -25,7 +25,7 @@ class SuperAdminLoginForm extends \Eva\Form\Form
         ),
     );
 
-    protected $baseElements = array(
+    protected $mergeElements = array(
         'loginName' => array (
             'name' => 'loginName',
             'type' => 'text',
@@ -58,7 +58,7 @@ class SuperAdminLoginForm extends \Eva\Form\Form
         ),
     );
 
-    protected $baseFilters = array(
+    protected $mergeFilters = array(
         'loginName' => array (
             'name' => 'loginName',
             'required' => true,

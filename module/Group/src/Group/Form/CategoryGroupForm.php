@@ -28,7 +28,7 @@ class CategoryGroupForm extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseElements = array (
+    protected $mergeElements = array (
         'category_id' => array (
             'name' => 'category_id',
             'type' => 'multiCheckbox',
@@ -56,7 +56,7 @@ class CategoryGroupForm extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseFilters = array (
+    protected $mergeFilters = array (
         'category_id' => array (
             'name' => 'category_id',
             'required' => false,

@@ -3,7 +3,7 @@ namespace Message\Form;
 
 class IndexForm extends \Eva\Form\Form
 {
-    protected $baseElements = array(
+    protected $mergeElements = array(
         'page' =>     array(
             'name' => 'page',
             'type' => 'text',
@@ -34,7 +34,7 @@ class IndexForm extends \Eva\Form\Form
         ),
     );
 
-    protected $baseFilters = array(
+    protected $mergeFilters = array(
     );
 
     public function prepareData($data)

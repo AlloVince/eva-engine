@@ -24,7 +24,7 @@ class TextForm extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseElements = array (
+    protected $mergeElements = array (
         'post_id' => array (
             'name' => 'post_id',
             'type' => 'hidden',
@@ -82,7 +82,7 @@ class TextForm extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseFilters = array (
+    protected $mergeFilters = array (
         'post_id' => array (
             'name' => 'post_id',
             'required' => false,

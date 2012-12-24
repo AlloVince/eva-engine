@@ -36,7 +36,17 @@ class TranslatorServiceFactory implements FactoryInterface
             $translator->setFallbackLocale($config['translator']['locale']);
         }
 
-        //\Zend\Validator\AbstractValidator::setDefaultTranslator($translator);
+        $validatorTranslator = \Zend\I18n\Translator\Translator::factory(array(
+            'locale' => $translator->getLocale(),
+            'translation_file_patterns' => array(
+                'zf' => array(
+                    'type' => 'PhpArray',
+                    'base_dir' => EVA_LIB_PATH . '/Zend/resources/languages/',
+                    'pattern' => '%s/Zend_Validate.php'
+                ),
+            ),
+        ));
+        \Zend\Validator\AbstractValidator::setDefaultTranslator($validatorTranslator);
 
         return $translator;
     }

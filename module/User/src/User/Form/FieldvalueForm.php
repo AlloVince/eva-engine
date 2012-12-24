@@ -25,7 +25,7 @@ class FieldvalueForm extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseElements = array (
+    protected $mergeElements = array (
         'field_id' => array (
             'name' => 'field_id',
             'type' => 'hidden',
@@ -63,7 +63,7 @@ class FieldvalueForm extends \Eva\Form\Form
      *
      * @var array
      */
-    protected $baseFilters = array (
+    protected $mergeFilters = array (
         'field_id' => array (
             'name' => 'field_id',
             'required' => false,
