@@ -1,4 +1,4 @@
-eva.construct = function(){
+eva.ready(function(){
 	if($.browser.msie && (($.browser.version == "6.0" && !$.support.style) || $.browser.version == "7.0")) {
 		jQuery.fx.off = true;
 	}
@@ -63,8 +63,7 @@ eva.construct = function(){
 			createStoryJS(config);
 		});	
 	}
-
-};
+});
 
 eva.destruct = function(){
 	//eva.login.init();

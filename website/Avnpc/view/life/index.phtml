@@ -18,19 +18,19 @@ if($nextId){
                 <header>
                 <h2 itemprop="summary">
                 <?if($entry['type'] == 'tweet'):?>
-                <span class="icon icon_font icon_font_big icon-comments"></span>
+                <span class="story-icon icon-comments"></span>
                 <time itemprop="startDate" datetime="<?=$this->datetime()->isoTime($entry['dateModified'])?>" data-jstime="<?=$this->datetime()->jsTime($entry['dateModified'])?>" class="agotime"><?=$this->DateTime($entry['dateModified'])?></time>在<a href="<?=$entry['link']?>" itemprop="url"><?=$entry['source']?></a>说
                 <?elseif($entry['type'] == 'movie'):?>
-                <span class="icon icon_font icon_font_big icon-facetime-video"></span>
+                <span class="story-icon icon-facetime-video"></span>
                 <time itemprop="startDate" datetime="<?=$this->datetime()->isoTime($entry['dateModified'])?>" data-jstime="<?=$this->datetime()->jsTime($entry['dateModified'])?>" class="agotime"><?=$this->DateTime($entry['dateModified'])?></time>在<?=$entry['source']?><?=$entry['title']?>
                 <?elseif($entry['type'] == 'music'):?>
-                <span class="icon icon_font icon_font_big icon-music"></span>
+                <span class="story-icon icon-music"></span>
                 在<time itemprop="startDate" datetime="<?=$this->datetime()->isoTime($entry['dateModified'])?>" data-jstime="<?=$this->datetime()->jsTime($entry['dateModified'])?>" class="agotime"><?=$this->DateTime($entry['dateModified'])?></time>喜欢听：<a href="<?=$entry['link']?>" itemprop="url"><?=$entry['title']?></a>
                 <?elseif($entry['type'] == 'memo'):?>
-                <span class="icon icon_font icon_font_big icon-pencil"></span>
+                <span class="story-icon icon-pencil"></span>
                 在<time itemprop="startDate" datetime="<?=$this->datetime()->isoTime($entry['dateModified'])?>" data-jstime="<?=$this->datetime()->jsTime($entry['dateModified'])?>" class="agotime"><?=$this->DateTime($entry['dateModified'])?></time>记录：<a href="<?=$entry['link']?>" itemprop="url"><?=$entry['title']?></a>
                 <?else:?>
-                <span class="icon icon_font icon_font_big icon-book"></span>
+                <span class="story-icon icon-book"></span>
                 在<time itemprop="startDate" datetime="<?=$this->datetime()->isoTime($entry['dateModified'])?>" data-jstime="<?=$this->datetime()->jsTime($entry['dateModified'])?>" class="agotime"><?=$this->DateTime($entry['dateModified'])?></time>收藏了：<a href="<?=$entry['link']?>" itemprop="url"><?=$entry['title']?></a>
                 <?endif?>
                 </h2>

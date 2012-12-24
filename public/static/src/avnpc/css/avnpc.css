@@ -874,7 +874,7 @@ a:hover{color:#0A132F;text-decoration:none;}
 #stories{max-width:100%;text-align:left;}#stories .item{overflow:hidden;float:left;width:285px;max-height:1500px;border:1px solid #DBD6DA;-webkit-box-shadow:0 1px 3px rgba(0, 0, 0, 0.055);-moz-box-shadow:0 1px 3px rgba(0, 0, 0, 0.055);box-shadow:0 1px 3px rgba(0, 0, 0, 0.055);margin:3px;padding:10px;margin-bottom:10px;}
 #stories .type_note{width:600px;}
 #stories header{padding:10px;padding-left:50px;background:#F5F5F5;border-bottom:1px solid #CCC;position:relative;}
-#stories .icon_font{position:absolute;color:#CCC;top:5px;left:10px;}
+#stories .story-icon{position:absolute;color:#CCC;top:0;left:10px;font-size:25px;}
 #stories .content{margin:10px 0;}
 #stories .type_note .content{max-height:200px;overflow:hidden;}
 #stories .type_memo .content{max-height:100px;overflow:hidden;}

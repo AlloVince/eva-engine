@@ -6,8 +6,6 @@ use Eva\Api,
     Eva\View\Model\ViewModel,
     Zend\Feed\Reader\Reader as FeedReader;
 
-require_once EVA_LIB_PATH . '/Simplehtmldom/simplehtmldom.php';
-
 class LifeController extends ActionController
 {
     protected $addResources = array(
