@@ -9,12 +9,12 @@ if($nextId){
     $this->headTitle('Life of AlloVince', 'SET');
 }
 ?>
-<div id="stories" class="page_content">
+<div id="stories" class="page-content">
     <?if($feeds):?>
-    <div class="stories_wrap">
+    <div class="stories-wrap">
         <div class="stories">
             <?foreach($feeds as $key => $entry):?>
-            <div class="item type_<?=$entry['type']?>"  itemscope itemtype="http://data-vocabulary.org/Event">
+            <div class="item type-<?=$entry['type']?>"  itemscope itemtype="http://data-vocabulary.org/Event">
                 <header>
                 <h2 itemprop="summary">
                 <?if($entry['type'] == 'tweet'):?>
@@ -42,7 +42,7 @@ if($nextId){
         </div>
         <?if($this->nextpage):?>
         <div class="pager">
-            <a href="<?=$this->uri('/life/' . $this->nextpage)?>" class="btn load_story">更多</a>
+            <a href="<?=$this->uri('/life/' . $this->nextpage)?>" class="btn load-story">更多</a>
         </div>
         <?endif?>
     </div>

@@ -79,10 +79,10 @@ eva.story = function(){
 	var startStory = function(){
 		var maxLoaded = 10;
 		var loadTimes = 1;
-		var container = $("#stories>.stories_wrap>.stories");
-		var loader = $("#stories .load_story");
-		$("body").append('<div id="load_area"></div>');
-		var loadArea = $("#load_area");
+		var container = $("#stories>.stories-wrap>.stories");
+		var loader = $("#stories .load-story");
+		$("body").append('<div id="load-area"></div>');
+		var loadArea = $("#load-area");
 		var loaded = [];
 
 		var initStory = function(items){
@@ -97,7 +97,7 @@ eva.story = function(){
 				if(item.hasClass("inited")){
 					return true;
 				}
-				if(item.hasClass("type_note")){
+				if(item.hasClass("type-note")){
 					item.find(">.content").jScrollPane({autoReinitialise: true});	
 				}
 
@@ -153,10 +153,10 @@ eva.story = function(){
 			loader.addClass("disabled").html(" （；^ω^） 正在努力载入...");
 			loaded.push(url);
 
-			loadArea.load(url + ' #stories>.stories_wrap', function() {
-				var newUrl = loadArea.find(".load_story").attr("href");
+			loadArea.load(url + ' #stories>.stories-wrap', function() {
+				var newUrl = loadArea.find(".load-story").attr("href");
 				loader.attr("href", newUrl); 
-				var content = loadArea.find(".stories_wrap>.stories>.item");
+				var content = loadArea.find(".stories-wrap>.stories>.item");
 				loadArea.imagesLoaded( function(){
 					container.append(content).masonry( 'appended', content, true);
 					initStory(container.find(".item:not(.inited)"));
