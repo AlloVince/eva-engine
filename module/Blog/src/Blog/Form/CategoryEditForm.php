@@ -11,16 +11,15 @@ class CategoryEditForm extends CategoryForm
                 array('name' => 'StringTrim'),
             ),
             'validators' => array(
-                array(
+                'stringLength' => array(
                     'name' => 'StringLength',
                     'options' => array(
                         'encoding' => 'UTF-8',
                         'max' => 100,
                     ),
                 ),
-                array(
+                'db' => array(
                     'name' => 'Eva\Validator\Db\NoRecordExists',
-                    'injectdata' => true,
                     'options' => array(
                         'field' => 'urlName',
                         'table' => 'blog_categories',

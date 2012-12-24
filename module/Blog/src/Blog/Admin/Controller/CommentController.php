@@ -13,12 +13,27 @@ class CommentController extends RestfulModuleController
 
     public function restIndexComment()
     {
-        $request = $this->getRequest();
-        $query = $request->getQuery();
+        $query = $this->getRequest()->getQuery();
+        $form = new Form\CommentSearchForm();
+        $form->bind($query);
+        if($form->isValid()){
+            $query = $form->getData();
+        } else {
+            return array(
+                'form' => $form,
+                'items' => array(),
+            );
+        }
 
+        $itemModel = Api::_()->getModel('Blog\Model\Comment');
+        $items = $itemModel->setItemList($query)->getCommentList();
+        $paginator = $itemModel->getPaginator();
 
         return array(
+            'form' => $form,
+            'items' => $items,
             'query' => $query,
+            'paginator' => $paginator,
         );
     }
 

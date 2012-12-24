@@ -52,7 +52,7 @@ class Posts extends TableGateway
 
         if ($params->category) {
             $cateModel = \Eva\Api::_()->getModel('Blog\Model\Category');
-            $categoryinfo = $cateModel->setItemParams($params->category)->getCategory();
+            $categoryinfo = $cateModel->getCategory($params->category);
 
             $categoeyPostDb = \Eva\Api::_()->getDbTable('Blog\DbTable\CategoriesPosts'); 
             $categoeyPostTableName = $categoeyPostDb->initTableName()->getTable();

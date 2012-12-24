@@ -96,7 +96,7 @@ $form->setView($this)
                     <h2><?=$this->_('Category Image')?></h2>
                 </div>
                 <div class="well">
-                    <?if($item['File']):?>
+                    <?if(isset($item['File']) && $item['File']):?>
                     <img id="category-image" src="<?=$this->thumb($item['File']['Thumb'], array('h_250'))?>" alt="" />
                     <?else:?>
                     <img id="category-image" src="http://placehold.it/260x180" alt="" />

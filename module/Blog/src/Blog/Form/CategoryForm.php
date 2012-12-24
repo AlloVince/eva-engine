@@ -98,7 +98,7 @@ class CategoryForm extends \Eva\Form\Form
         ),
         'categoryName' => array (
             'name' => 'categoryName',
-            'required' => false,
+            'required' => true,
             'filters' => array (
                 'stripTags' => array (
                     'name' => 'StripTags',
