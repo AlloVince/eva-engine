@@ -70,8 +70,8 @@ class Event extends AbstractModel
         
         $this->trigger('get');
 
-        $this->trigger('get.event');
-        $this->trigger('get.eventcache');
+        $this->trigger('get.post');
+        $this->trigger('get.postcache');
 
         return $item;
     }
@@ -89,8 +89,8 @@ class Event extends AbstractModel
 
         $this->trigger('get');
 
-        $this->trigger('list.event');
-        $this->trigger('list.eventcache');
+        $this->trigger('list.post');
+        $this->trigger('list.postcache');
 
         return $item;
     }
@@ -125,7 +125,7 @@ class Event extends AbstractModel
 
         $this->trigger('create');
 
-        $this->trigger('create.event');
+        $this->trigger('create.post');
 
         return $itemId;
     }
@@ -154,7 +154,7 @@ class Event extends AbstractModel
         }
         $this->trigger('save');
 
-        $this->trigger('save.event');
+        $this->trigger('save.post');
 
         return $item->id;
     }
@@ -180,7 +180,7 @@ class Event extends AbstractModel
 
         $this->trigger('remove');
     
-        $this->trigger('remove.event');
+        $this->trigger('remove.post');
 
         return true;
     

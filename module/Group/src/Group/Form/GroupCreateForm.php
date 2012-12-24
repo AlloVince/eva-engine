@@ -44,7 +44,11 @@ class GroupCreateForm extends GroupForm
             $subForms = $this->get('CategoryGroup');
             foreach($subForms as $key => $subForm){
                 $categoryGroup = array();
-                $category = $subForm->getCategory()->toArray();
+                $category = $subForm->getCategory();
+                if (!$category) {
+                    continue;
+                }
+                $category = $category->toArray();
                 $categoryGroup['category_id'] = $category['id'];
                 foreach($data['CategoryGroup'] as $categoryGroupArray){
                     if($categoryGroup['category_id'] == $categoryGroupArray['category_id']){

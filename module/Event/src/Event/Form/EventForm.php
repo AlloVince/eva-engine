@@ -55,17 +55,13 @@ class EventForm extends \Eva\Form\Form
                         'label' => 'Active',
                         'value' => 'active',
                     ),
-                    'finished' => array (
-                        'label' => 'Finished',
-                        'value' => 'finished',
+                    'pending' => array (
+                        'label' => 'Pending',
+                        'value' => 'pending',
                     ),
-                    'disputed' => array (
-                        'label' => 'Disputed',
-                        'value' => 'disputed',
-                    ),
-                    'trashed' => array (
-                        'label' => 'Trashed',
-                        'value' => 'trashed',
+                    'deleted' => array (
+                        'label' => 'Deleted',
+                        'value' => 'deleted',
                     ),
                 ),
             ),
@@ -341,6 +337,36 @@ class EventForm extends \Eva\Form\Form
             ),
             'attributes' => array (
                 'value' => '',
+            ),
+        ),
+        'memberLimit' => array (
+            'name' => 'memberLimit',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Member Limit',
+            ),
+            'attributes' => array (
+                'value' => '0',
+            ),
+        ),
+        'memberEnable' => array (
+            'name' => 'memberEnable',
+            'type' => 'select',
+            'options' => array (
+                'label' => 'Member Enable',
+                'value_options' => array (
+                    '0' => array (
+                        'label' => 'Disable',
+                        'value' => 0,
+                    ),
+                    '1' => array (
+                        'label' => 'Enable',
+                        'value' => 1,
+                    ),
+                ),
+            ),
+            'attributes' => array (
+                'value' => 1,
             ),
         ),
         'recommend' => array (
@@ -828,6 +854,22 @@ class EventForm extends \Eva\Form\Form
                     'options' => array (
                     ),
                 ),
+            ),
+        ),
+        'memberLimit' => array (
+            'name' => 'memberLimit',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+            ),
+        ),
+        'memberEnable' => array (
+            'name' => 'memberEnable',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
             ),
         ),
     );

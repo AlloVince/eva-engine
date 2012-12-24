@@ -120,6 +120,22 @@ $form->useSubFormGroup()
                             <div class="help-block"><?=$form->helper('isFullDayEvent', 'formElementErrors')?></div>
                         </div>
                     </div>
+
+                    <div class="control-group <?=$form->isError('memberLimit') ? 'error' : '';?>">
+                        <?=$form->helper('memberLimit', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('memberLimit', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('memberLimit', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+
+                    <div class="control-group <?=$form->isError('memberEnable') ? 'error' : '';?>">
+                        <?=$form->helper('memberEnable', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('memberEnable', 'formSelect', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('memberEnable', 'formElementErrors')?></div>
+                        </div>
+                    </div>
                 </fieldset>
             </div>
         </div><!--span5 end-->

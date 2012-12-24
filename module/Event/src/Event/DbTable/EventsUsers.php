@@ -43,12 +43,28 @@ class EventsUsers extends TableGateway
         if ($params->rows) {
             $this->limit((int) $params->rows);
         }
+        
+        if ($params->eventStatus) {
+            $eventDb = Api::_()->getDbTable('Event\DbTable\Events');
+            $eventTabName = $eventDb->initTableName()->table;
+            $this->join(
+                $eventTabName,
+                "{$this->table}.event_id = $eventTabName.id",
+                array('*'),
+                'inner'
+            );
+            $this->where(array("$eventTabName.eventStatus" => $params->eventStatus));
+        }
+        
+        if ($params->order == 'eventcount') {
+        }
 
         $orders = array(
+            'eventcount' => 'EventCount DESC',
             'timeasc' => 'requestTime ASC',
             'timedesc' => 'requestTime DESC',
         );
-        
+
         if($params->order){
             $order = $orders[$params->order];
             if($order){
