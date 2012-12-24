@@ -65,7 +65,7 @@ class CommentForm extends \Eva\Form\Form
         ),
         'codeType' => array (
             'name' => 'codeType',
-            'type' => 'text',
+            'type' => 'radio',
             'options' => array (
                 'label' => 'Code Type',
                 'value_options' => array (
@@ -276,6 +276,9 @@ class CommentForm extends \Eva\Form\Form
                     'options' => array (
                         'max' => '255',
                     ),
+                ),
+                'emailAddress' => array (
+                    'name' => 'EmailAddress',
                 ),
             ),
         ),

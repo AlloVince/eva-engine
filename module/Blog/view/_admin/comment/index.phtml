@@ -30,10 +30,6 @@ $lableMap = array(
                 <?=$form->helper('keyword', array('class' => 'input-large', 'placeholder' => 'Keyword...'))?>
                 <?=$form->helper('status', 'formSelect', array('class' => 'span2'))?>
                 <?=$form->helper('post_id', 'formText', array('class' => 'span2'))?>
-                <?/*=$form->helper('category', 'formSelect', array(
-                    'class' => 'span2',
-                    'value_options' => $this->action('Blog\Api\Controller\CategoryController', 'selectAction'),
-                ), array('replace' => false, 'i18n' => false))*/?>
                 <button class="btn" type="submit"><?=$this->_('Filter Comments')?></button>
             </form>
         </div>
@@ -44,7 +40,7 @@ $lableMap = array(
 <div class="row">
     <div class="span10 listing-buttons">
         <div class="btn-group pull-right">
-            <a href="<?=$this->uri('/admin/blog/comment/create')?>" class="btn btn-info"><?=$this->_('Add New Post')?></a>
+            <a href="<?=$this->uri('/admin/blog/comment/create')?>" class="btn btn-info"><?=$this->_('Add New Comment')?></a>
         </div>
         <form action="<?=$this->uri('/admin/blog/comment/multi/')?>" method="post" class="pull-left" data-multiform="post">
             <input type="hidden" name="id" class="multiform-container-main" value="" />

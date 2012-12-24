@@ -13,7 +13,7 @@ class Comment extends AbstractModel
     {
         $this->trigger('get.precache');
 
-        if(is_numeric($postIdOrUrlName)){
+        if(is_numeric($commentId)){
             $this->setItem(array(
                 'id' => $commentId,
             ));

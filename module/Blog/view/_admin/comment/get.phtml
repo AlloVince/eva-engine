@@ -1,0 +1,111 @@
+<?
+$item = $this->item;
+$title = $item['id'] ? 'Edit Comment' : 'Create Comment';
+$title = $this->_($title);
+$method = $item['id'] ? 'put' : 'post';
+$this->headTitle($title, 'SET');
+$this->textDelay('breadcrumbText', $title);
+
+if($this->form){
+	$form = $this->form;
+} else {
+    if($item['id']) {
+        $form = new Blog\Form\CommentEditForm();
+    } else {
+        $form = new Blog\Form\CommentCreateForm();
+    }
+}
+$form->useSubFormGroup()
+     ->setMethod($item['id'] ? 'put' : 'post')
+     ->setView($this)
+     ->setAction($this->uri('/admin/blog/comment'))
+     ->bind($item)
+     ->prepare();
+
+?>
+
+<div class="row">
+    <form <?=$this->formAttr($form)?>>
+        <?=$form->restful();?>
+        <?=$form->helper('id');?>
+        <div class="span10">
+            <div class="slate">
+                <div class="page-header">
+                    <h2><?=$title?></h2>
+                </div>
+                <fieldset class="">
+                    <div class="control-group <?=$form->isError('status') ? 'error' : '';?>">
+                        <?=$form->helper('status', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('status', 'formSelect', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('status', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError('codeType') ? 'error' : '';?>">
+                        <?=$form->helper('codeType', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('codeType', 'formRadio', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('codeType', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError('post_id') ? 'error' : '';?>">
+                        <?=$form->helper('post_id', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('post_id', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('post_id', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+
+                    <div class="control-group <?=$form->isError('user_id') ? 'error' : '';?>">
+                        <?=$form->helper('user_id', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('user_id', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('user_id', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+
+                    <div class="control-group <?=$form->isError('user_name') ? 'error' : '';?>">
+                        <?=$form->helper('user_name', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('user_name', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('user_name', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError('email') ? 'error' : '';?>">
+                        <?=$form->helper('email', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('email', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('email', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError('site') ? 'error' : '';?>">
+                        <?=$form->helper('site', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('site', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('site', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError('content') ? 'error' : '';?>">
+                        <?=$form->helper('content', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('content', 'formTextarea', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('content', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError('parentId') ? 'error' : '';?>">
+                        <?=$form->helper('parentId', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('parentId', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('parentId', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+
+                </fieldset>
+            </div>
+        </div><!--span10 end-->
+
+        <div class="span10 listing-buttons">
+            <button id="save-publish" class="btn btn-success btn-large"><?=$this->_('Save')?></button>
+        </div>
+    </form>
+</div>
