@@ -11,9 +11,6 @@ class PostCreateForm extends PostForm
         ),
     );
 
-    protected $mergeElements = array(
-    );
-
     protected $mergeFilters = array(
         'title' => array(
             'required' => true,

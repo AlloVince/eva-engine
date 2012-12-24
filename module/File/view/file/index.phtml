@@ -144,7 +144,7 @@ var evaUpload = function(){
     //Fix firefox input disable attr issue
     uploader.find("input:file").removeAttr('disabled');
 }
-eva.runtime = function(){
+eva.ready(function(){
         var libs = [
         "/lib/js/jstemplates/tmpl.js", 
         "/lib/js/loadimage/load-image.js", 
@@ -159,7 +159,7 @@ eva.runtime = function(){
         eva.loader(eva.s(libs), function(){
             evaUpload();
         });
-}
+});
 </script>
 
 <!--[if gte IE 8]><script src="<?=$this->link("/lib/js/upload/js/cors/jquery.xdr-transport.js")?>"></script><![endif]-->

@@ -222,7 +222,7 @@ $form->setView($this)
 
 
 <script>
-eva.runtime = function(){
+eva.ready(function(){
 
      var resetNum = function(){
         var num = 0;
@@ -262,5 +262,5 @@ eva.runtime = function(){
             resetNum();
             return false;
     });
-}
+});
 </script>

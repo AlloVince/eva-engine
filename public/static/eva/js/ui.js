@@ -8,7 +8,6 @@
 
 		config : {
 			pathUiBase : ["/lib/js/bootstrap/bootstrap.min.js"],
-			pathJqueryUi : ["/javascripts/jquery/jquery-ui.js", "/javascripts/jquery/jquery-ui-i18n.js", "/javascripts/jquery/jquery-ui-custom.js"],
 			pathCodeMirror : ['/lib/js/codemirror/lib/codemirror.js'],
 			pathSwfUploader : ["/javascripts/jquery/jquery.swfupload.js", "/javascripts/swfupload/swfupload.js", "/javascripts/swfupload/swfupload.queue.js"],
 			pathDatepiker : ["/lib/js/bootstrap/datepicker/bootstrap-datepicker.js"],
@@ -428,19 +427,16 @@
 					eva.ui[func]();
 				}
 			}
-			if(eva.ui.runtime !== undefined){
-				eva.ui.runtime();
-			}
 		},
 
 		init : function(){
-			//methods._init();
-			if(false === this._inited) {
-				eva.loader(eva.s(this.config.pathUiBase), this._init);
-				this._inited = true;
+			if(false === methods._inited) {
+				eva.loader(eva.s(methods.config.pathUiBase), methods._init);
+				methods._inited = true;
 			}
 		}
 	};
 
 	eva.ui = methods;
+	eva.ready(methods.init);
 })();

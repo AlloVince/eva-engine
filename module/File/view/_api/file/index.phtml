@@ -157,7 +157,7 @@ function getFileTypeIcon($ext)
 </div>
 
 
-<script>eva.ui.runtime = function(){
+<script>eva.ready(function(){
         var connect = function(item){
             if(window === window.parent){
                     return false;
@@ -169,4 +169,4 @@ function getFileTypeIcon($ext)
             connect(item);
             return false;
         });
-}</script>
+});</script>

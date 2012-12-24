@@ -31,19 +31,6 @@ abstract class AbstractDb extends \Zend\Validator\Db\AbstractDb implements Servi
 
     protected $options;
 
-    protected $data;
-
-    public function getData()
-    {
-        return $this->data;
-    }
-
-    public function setData($data)
-    {
-        $this->data = $data;
-        return $this;
-    }
-
     /**
     * Set the service locator.
     *
@@ -83,22 +70,5 @@ abstract class AbstractDb extends \Zend\Validator\Db\AbstractDb implements Servi
         if(!$this->getAdapter() && $serviceLocator->has('Zend\Db\Adapter\Adapter')){
             $this->setAdapter($serviceLocator->get('Zend\Db\Adapter\Adapter'));
         }
-
-        if(isset($options['data'])){
-            $this->setData($options['data']);
-        }
-
-        if($this->data && $this->exclude && isset($this->exclude['field']) && (!isset($this->exclude['value']) || is_null($this->exclude['value'])) ){
-            $field = $this->exclude['field'];
-            if(isset($this->data[$field])){
-                $this->exclude['value'] = $this->data[$field];
-            }
-        }
-    }
-
-    public function __construct($options = null)
-    {
-        parent::__construct($options);
-        $this->options = $options;
     }
 }
