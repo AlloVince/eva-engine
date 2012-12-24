@@ -4,19 +4,19 @@ return array(
     'blog' => array(
         'comment_social' => array(
             'duoshuo' => array(
-                'websiteId' => 'avnpc',
+                'websiteId' => '',
             ),
             'denglu' => array(
-                'websiteId' => '25799denLkbKLwQl5KiGx3pKvsl4Y6',
+                'websiteId' => '',
             ),
             'disqus' => array(
-                'websiteId' => 'avnpc',
+                'websiteId' => '',
             ),
             'youyan' => array(
-                'websiteId' => '1500011',
+                'websiteId' => '',
             ),
             'livefyre' => array(
-                'websiteId' => '302665',
+                'websiteId' => '',
             ),
         ),
     ),

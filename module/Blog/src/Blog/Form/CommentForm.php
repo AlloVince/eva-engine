@@ -87,10 +87,20 @@ class CommentForm extends \Eva\Form\Form
             'name' => 'post_id',
             'type' => 'hidden',
             'options' => array (
-                'label' => 'Post_id',
+                'label' => 'Post Id',
             ),
             'attributes' => array (
                 'value' => '',
+            ),
+        ),
+        'user_id' => array (
+            'name' => 'user_id',
+            'type' => 'hidden',
+            'options' => array (
+                'label' => 'User Id',
+            ),
+            'attributes' => array (
+                'value' => '0',
             ),
         ),
         'user_name' => array (
@@ -218,6 +228,19 @@ class CommentForm extends \Eva\Form\Form
         ),
         'post_id' => array (
             'name' => 'post_id',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+                'notEmpty' => array (
+                    'name' => 'NotEmpty',
+                    'options' => array (
+                    ),
+                ),
+            ),
+        ),
+        'user_id' => array (
+            'name' => 'user_id',
             'required' => false,
             'filters' => array (
             ),

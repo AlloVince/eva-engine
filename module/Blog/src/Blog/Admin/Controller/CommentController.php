@@ -16,10 +16,28 @@ class CommentController extends RestfulModuleController
     protected $renders = array(
         'restGetCommentCreate' => 'comment/get',    
         'restPutComment' => 'comment/get',    
+        'restPostComment' => 'comment/get',    
+        'restDeleteComment' => 'comment/remove',    
     );
 
     public function restGetCommentCreate()
     {
+        $item = $this->getRequest()->getQuery();
+
+        return array(
+            'item' => $item
+        );
+    }
+
+    public function restGetCommentRemove()
+    {
+        $item = array(
+            'id' => $this->params('id')
+        );
+
+        return array(
+            'item' => $item
+        );
     }
 
     public function restIndexComment()
@@ -64,38 +82,33 @@ class CommentController extends RestfulModuleController
         );
     }
 
-    public function restPostBlog()
+    public function restPostComment()
     {
         $postData = $this->params()->fromPost();
-        $form = new Form\PostCreateForm();
+        $form = new Form\CommentCreateForm();
         $form->useSubFormGroup()
              ->bind($postData);
 
         if ($form->isValid()) {
             $postData = $form->getData();
-            $itemModel = Api::_()->getModel('Blog\Model\Post');
+            $itemModel = Api::_()->getModel('Blog\Model\Comment');
 
             $user = \Core\Auth::getLoginUser('Auth_Admin');
-            $postData['user_id'] = $user['id'];
-            $postData['user_name'] = $user['userName'];
-            $postId = $itemModel->setItem($postData)->createPost();
-            $this->flashMessenger()->addMessage('post-create-succeed');
-            $this->redirect()->toUrl('/admin/blog/' . $postId);
+            if(!$postData['user_id']){
+                $postData['user_id'] = $user['id'];
+            }
+            if(!$postData['user_name']){
+                $postData['user_name'] = $user['userName'];
+            }
+            $itemId = $itemModel->setItem($postData)->createComment();
+            $this->redirect()->toUrl('/admin/blog/comment/' . $itemId);
 
         } else {
-            p($postData);
-            p($form->getMessages());
-            //p($form->getElements(), 1);
-            foreach($form->getFieldsets() as $fieldset){
-             //   p($fieldset->getMessages());
-            //    p($fieldset->getElements());
-            }
-            
         }
 
         return array(
             'form' => $form,
-            'post' => $postData,
+            'item' => $postData,
         );
     }
 
@@ -121,7 +134,7 @@ class CommentController extends RestfulModuleController
         );
     }
 
-    public function restDeleteBlog()
+    public function restDeleteComment()
     {
         $postData = $this->params()->fromPost();
         $callback = $this->params()->fromPost('callback');
@@ -131,8 +144,8 @@ class CommentController extends RestfulModuleController
         if ($form->isValid()) {
 
             $postData = $form->getData();
-            $itemModel = Api::_()->getModel('Blog\Model\Post');
-            $itemModel->setItem($postData)->removePost();
+            $itemModel = Api::_()->getModel('Blog\Model\Comment');
+            $itemModel->setItem($postData)->removeComment();
 
             if($callback){
                 $this->redirect()->toUrl($callback);

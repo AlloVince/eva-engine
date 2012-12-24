@@ -51,7 +51,7 @@ $form->useSubFormGroup()
                     <div class="control-group <?=$form->isError('post_id') ? 'error' : '';?>">
                         <?=$form->helper('post_id', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper('post_id', array('class' => ''))?>        
+                            <?=$form->helper('post_id', 'formText', array('class' => ''))?>        
                             <div class="help-block"><?=$form->helper('post_id', 'formElementErrors')?></div>
                         </div>
                     </div>
@@ -59,7 +59,7 @@ $form->useSubFormGroup()
                     <div class="control-group <?=$form->isError('user_id') ? 'error' : '';?>">
                         <?=$form->helper('user_id', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper('user_id', array('class' => ''))?>        
+                            <?=$form->helper('user_id', 'formText', array('class' => ''))?>        
                             <div class="help-block"><?=$form->helper('user_id', 'formElementErrors')?></div>
                         </div>
                     </div>
