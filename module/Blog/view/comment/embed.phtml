@@ -1,0 +1,73 @@
+<?
+$item = $this->item;
+$formAction = $this->formAction;
+?>
+
+<?if($item['commentStatus'] == 'open'):?>
+<?if($item['commentType'] == 'local'):?>
+
+<?
+$form = new Blog\Form\CommentCreateForm();
+$form
+->setView($this)
+->useSubFormGroup()
+->setMethod('post')
+->setAction($formAction);
+?>
+
+<form <?=$this->formAttr($form)?> class="form">
+    <?=$form->restful();?>
+    <?=$form->helper('id', array('class' => ''))?>
+    <?=$form->helper('codeType', 'formHidden', array('value' => 'markdown'))?>        
+    <?=$form->helper('parentId', 'formHidden', array('value' => ''))?>        
+    <?=$form->helper('post_id', array('value' => $item['id']))?>
+
+    <div class="row">
+        <div class="span7">
+            <div class="control-group <?=$form->isError('content') ? 'error' : '';?>">
+                <div class="controls">
+                    <?=$form->helper('content', 'formTextarea', array('class' => 'span7', 'rows' => 8))?>        
+                    <div class="help-block"><?=$form->helper('content', 'formElementErrors')?></div>
+                </div>
+            </div>
+        </div>
+        <div class="span5">
+            <div class="control-group <?=$form->isError('user_name') ? 'error' : '';?>">
+                <div class="controls">
+                    <?=$form->helper('user_name', array('class' => 'input-block-level', 'placeholder' => 'Your Name'))?>        
+                    <div class="help-block"><?=$form->helper('user_name', 'formElementErrors')?></div>
+                </div>
+            </div>
+            <div class="control-group <?=$form->isError('email') ? 'error' : '';?>">
+                <div class="controls">
+                    <?=$form->helper('email', array('class' => 'input-block-level', 'placeholder' => 'Email'))?>        
+                    <div class="help-block"><?=$form->helper('email', 'formElementErrors')?></div>
+                </div>
+            </div>
+            <div class="control-group <?=$form->isError('site') ? 'error' : '';?>">
+                <div class="controls">
+                    <?=$form->helper('site', array('class' => 'input-block-level', 'placeholder' => 'Your Site'))?>        
+                    <div class="help-block"><?=$form->helper('site', 'formElementErrors')?></div>
+                </div>
+            </div>
+            <div class="control-group">
+                <button type="submit" class="btn btn-block"><?=$this->_('Post Comment');?></button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<?elseif($item['commentType'] == 'duoshuo'):?>
+<?=$this->duoshuoComment($item['id']);?>
+<?elseif($item['commentType'] == 'disqus'):?>
+<?=$this->disqusComment($item['id']);?>
+<?elseif($item['commentType'] == 'youyan'):?>
+<?=$this->youyanComment($item['id']);?>
+<?elseif($item['commentType'] == 'livefyre'):?>
+<?=$this->livefyreComment($item['id']);?>
+<?elseif($item['commentType'] == 'denglu'):?>
+<?=$this->dengluComment($item['id']);?>
+<?endif?>
+<?endif?>
+
+

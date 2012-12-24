@@ -93,6 +93,16 @@ class CommentForm extends \Eva\Form\Form
                 'value' => '',
             ),
         ),
+        'user_name' => array (
+            'name' => 'user_name',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Your Name',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
         'email' => array (
             'name' => 'email',
             'type' => 'text',
@@ -219,6 +229,31 @@ class CommentForm extends \Eva\Form\Form
                 ),
             ),
         ),
+        'user_name' => array (
+            'name' => 'user_name',
+            'required' => false,
+            'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+                'notEmpty' => array (
+                    'name' => 'NotEmpty',
+                    'options' => array (
+                    ),
+                ),
+                'stringLength' => array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => '255',
+                    ),
+                ),
+            ),
+        ),
         'email' => array (
             'name' => 'email',
             'required' => false,
@@ -260,6 +295,12 @@ class CommentForm extends \Eva\Form\Form
                     'name' => 'StringLength',
                     'options' => array (
                         'max' => '255',
+                    ),
+                ),
+                'uri' => array (
+                    'name' => 'Uri',
+                    'options' => array (
+                        'allowRelative' => false,
                     ),
                 ),
             ),

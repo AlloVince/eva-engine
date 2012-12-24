@@ -55,4 +55,17 @@ class Comment extends AbstractItem
             return $this->ip = $_SERVER["REMOTE_ADDR"];
         }
     }
+
+    public function getContentHtml()
+    {
+        if($this->codeType == 'html'){
+            return $this->ContentHtml = $this->content;
+        } else{
+            $md = new \Markdown_Parser();
+            $md->no_markup = true;
+            $md->no_entities = true;
+            return $this->ContentHtml = $md->transform($this->content);
+        }
+    }
+
 }
