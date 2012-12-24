@@ -11,12 +11,12 @@ if($this->query['page'] == '1') {
     ));
 }
 ?>
-<div class="page_content">
+<div class="page-content">
     <?if($this->items):?>
     <div class="vlist posts">
         <?foreach($this->items as $key => $item):?>
         <div class="item <?=$key == 0 ? 'first' : ''?>">
-            <div class="item-inline item_title">
+            <div class="item-inline item-title">
                 <h3><a href="<?=$this->uri('/pages/' . $item['urlName'])?>"><?=$item['title']?></a></h2>
                 <p class="info">发布时间： <time datetime="<?=$this->datetime()->isoTime($item['createTime'])?>" data-jstime="<?=$this->datetime()->jsTime($item['createTime'])?>" class="agotime"><?=$this->datetime($item['createTime'])?></time></p>
             </div>

@@ -47,10 +47,10 @@ $item = $this->item;
                 <div class="vlist texts img50">
                     <?foreach($this->comments as $key => $comment):?>
                     <div id="comment<?=$comment['id']?>" class="item <?=$key%2 !== 0 ? 'right' : ''?>">
-                        <a class="item-absolute imgdelay figure userface" title="" href=""><img class="thumbnail" alt="<?=$comment['user_name']?>" src="<?=userface($comment['email'], 50)?>" /></a>
-                        <div class="item-inline item_text">
+                        <span class="item-absolute imgdelay figure userface" title=""><img class="thumbnail" alt="<?=$comment['user_name']?>" src="<?=$this->gravatar($comment['email'], array('img_size' => 50))?>" /></span>
+                        <div class="item-inline item-text">
                             <div class="well">
-                                <div class="text_content">
+                                <div class="text-content">
                                     <?=$comment['content']?>
                                 </div>
                             </div>
