@@ -41,7 +41,7 @@ class HelperConfig implements ConfigInterface
          'datetime' => 'Eva\View\Helper\Datetime',
          'googleAnalytics' => 'Eva\View\Helper\GoogleAnalytics',
          'flashMessenger' => 'Eva\View\Helper\FlashMessenger',
-         'gravatar' => 'Eva\View\Helper\Gravatar',
+         'gravatarLink' => 'Eva\View\Helper\GravatarLink',
          'subText' => 'Eva\View\Helper\SubText',
          'callback' => 'Eva\View\Helper\Callback',
      );

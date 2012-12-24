@@ -22,7 +22,7 @@ use Zend\View\Exception;
  * @copyright  Copyright (c) 2012 AlloVince (http://avnpc.com/)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Gravatar extends \Zend\View\Helper\AbstractHelper
+class GravatarLink extends \Zend\View\Helper\AbstractHelper
 {
     public function __invoke($email, $size = 60, $default = '')
     {
