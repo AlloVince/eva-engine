@@ -83,6 +83,13 @@ class EvaAssets
 
     protected $writer;
 
+    protected $options = array(
+        'libRootPath' => '',
+        'urlRootPath' => '',
+        'cache' => false,
+        'useSeaJs' => false,
+    );
+
     public function getDefaultFilter()
     {
     
@@ -146,7 +153,7 @@ class EvaAssets
         $urlPathArray = $this->getUrlPathArray();
 
         $fileSourceType = array_shift($urlPathArray);
-        if($fileSourceType == 'lib' || $fileSourceType == 'eva'){
+        if($fileSourceType == 'lib'){
             $sourcePath = $this->libRootPath . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $urlPathArray);
             $targetPath = $this->urlRootPath . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $urlPathArray);
 
