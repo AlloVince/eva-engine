@@ -67,10 +67,10 @@ class UserRoleFieldsForm extends \Eva\Form\Form
             $fieldModel = \Eva\Api::_()->getModel('User\Model\Field');
             $elements = array();
             foreach($item['Fields'] as $field){
-                $this->baseElements[$field['id']] = $fieldModel->fieldToElement($field);
-                $this->baseFilters[$field['id']] = $fieldModel->fieldToFilter($field);
+                $this->mergeElements[$field['id']] = $fieldModel->fieldToElement($field);
+                $this->mergeFilters[$field['id']] = $fieldModel->fieldToFilter($field);
             }
-            parent::init();
         }
+        parent::init();
     }
 }
