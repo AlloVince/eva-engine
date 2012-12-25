@@ -1,29 +1,6 @@
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
-DROP TABLE IF EXISTS `eva_event_categories`;
-CREATE TABLE IF NOT EXISTS `eva_event_categories` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `categoryName` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `urlName` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `description` text COLLATE utf8_unicode_ci,
-  `parentId` int(10) NOT NULL DEFAULT '0',
-  `rootId` int(10) NOT NULL DEFAULT '0',
-  `orderNumber` int(10) NOT NULL DEFAULT '0',
-  `createTime` datetime NOT NULL,
-  `count` int(10) NOT NULL DEFAULT '0',
-  `left` int(15) NOT NULL DEFAULT '0',
-  `right` int(15) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-DROP TABLE IF EXISTS `eva_event_categories_events`;
-CREATE TABLE IF NOT EXISTS `eva_event_categories_events` (
-  `category_id` int(11) NOT NULL,
-  `event_id` int(11) NOT NULL,
-  PRIMARY KEY (`category_id`,`event_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
 DROP TABLE IF EXISTS `eva_event_counts`;
 CREATE TABLE IF NOT EXISTS `eva_event_counts` (
   `event_id` int(20) NOT NULL,
@@ -36,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `eva_event_events` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `recurrence_id` int(10) DEFAULT NULL,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `eventStatus` enum('active','finished','disputed','trashed') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'active',
+  `eventStatus` enum('active','pending','deleted') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'active',
   `urlName` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `visibility` enum('public','private') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'public',
   `eventUsage` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'other',
@@ -56,6 +33,8 @@ CREATE TABLE IF NOT EXISTS `eva_event_events` (
   `city` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `address` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `location` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `memberLimit` int(5) DEFAULT NULL,
+  `memberEnable` tinyint(1) NOT NULL DEFAULT '1',
   `reminderEnable` tinyint(1) NOT NULL DEFAULT '0',
   `reminderType` enum('email','alert','sms') COLLATE utf8_unicode_ci DEFAULT NULL,
   `reminderTimeUnit` enum('minute','hour','day','week') COLLATE utf8_unicode_ci DEFAULT NULL,
