@@ -4,6 +4,7 @@ namespace Event\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Eva\Date\Calendar;
+use Eva\Api;
 
 
 class CalendarController extends AbstractActionController
@@ -12,10 +13,12 @@ class CalendarController extends AbstractActionController
     {
         $this->layout('layout/blank');
         $startDay = $this->params()->fromQuery('start');
-        $calendar = new Calendar(array(
+        
+        $itemModel = Api::_()->getModel('Event\Model\Calendar');
+        $calendarArray = $itemModel->getEventCalendar(array(
             'startDay' => $startDay,
         ));
-        $calendarArray = $calendar->toArray();
+
         return new ViewModel(array(
             'calendar' => $calendarArray,
             'prevPath' => '/event/calendar/',
