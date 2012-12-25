@@ -55,6 +55,8 @@ $lableMap = array(
                     <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/event/multi/status/finished')?>"><?=$this->_('Finished')?></a></li>
                     <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/event/multi/status/disputed')?>"><?=$this->_('Disputed')?></a></li>
                     <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/event/multi/status/trashed')?>"><?=$this->_('Trashed')?></a></li>
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/event/multi/recommend/recommend')?>"><?=$this->_('Recommend')?></a></li>
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/event/multi/recommend/unrecommend')?>"><?=$this->_('Unrecommend')?></a></li>
                 </ul>
             </div>
         </form>
@@ -85,6 +87,7 @@ $lableMap = array(
                         <th class="span1">
                         </th>
                         <th><?=$this->_('Event Title')?></th>
+                        <th class="span1"><?=$this->_('Recommend')?></th>
                         <th class="span1"><?=$this->_('Start Time')?></th>
                         <th class="span1"><?=$this->_('End Time')?></th>
                         <th class="actions"><?=$this->_('Actions')?></th>
@@ -106,6 +109,9 @@ $lableMap = array(
                             <p>
                             <span class="meta"><?=$item['user_name'] ?> <?=$item['createTime'];?></span>
                             </p>
+                        </td>
+                        <td>
+                            <?=$item['recommend'] ?>
                         </td>
                         <td>
                             <?=$item['startDatetimeUtc'] ?>
