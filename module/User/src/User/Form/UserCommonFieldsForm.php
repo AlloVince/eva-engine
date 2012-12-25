@@ -38,10 +38,10 @@ class UserCommonFieldsForm extends \Eva\Form\Form
         ));
 
         foreach($items as $item){
-            $this->baseElements[$item['id']] = $itemModel->fieldToElement($item);
-            $this->baseFilters[$item['id']] = $itemModel->fieldToFilter($item);
+            $this->mergeElements[$item['id']] = $itemModel->fieldToElement($item);
+            $this->mergeFilters[$item['id']] = $itemModel->fieldToFilter($item);
         }
 
-        parent::init();
+        return parent::init();
     }
 }
