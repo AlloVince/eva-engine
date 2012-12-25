@@ -30,6 +30,18 @@ class GroupController extends RestfulModuleController
 
         $itemModel = Api::_()->getModel('Group\Model\Group');
         $items = $itemModel->setItemList($query)->getGroupList();
+        $items = $items->toArray(array(
+            'self' => array(
+            ),
+            'join' => array(
+                'Count' => array(
+                    '*',
+                ),
+                'File' => array(
+                    '*'
+                ),
+            ), 
+        ));
 
         $paginator = $itemModel->getPaginator();
         $paginator = $paginator ? $paginator->toArray() : null;
@@ -47,7 +59,7 @@ class GroupController extends RestfulModuleController
                     'getEmailHash()',
                 ),
             ));
-            $items = $itemModel->combineList($items->toArray(), $userList, 'User', array('user_id' => 'id'));
+            $items = $itemModel->combineList($items, $userList, 'User', array('user_id' => 'id'));
         }
 
         return new JsonModel(array(
