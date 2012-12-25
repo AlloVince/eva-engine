@@ -239,6 +239,11 @@ class EvaAssets
             $urlPathArray = array_slice($urlPathArray, count($prefixArray));
         }
 
+        //UrlRewrite not enabled
+        if($urlPathArray[0] === 'index.php'){
+            array_shift($urlPathArray);
+        }
+
         return $urlPathArray;
     }
 

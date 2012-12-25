@@ -31,3 +31,6 @@
 [submodule "vendor/Symfony/Component/Process"]
 	path = vendor/Symfony/Component/Process
 	url = git://github.com/symfony/Process.git
+[submodule "module/Core/assets/css"]
+	path = module/Core/assets/css
+	url = git://github.com/AlloVince/EvaBootstrap.git
