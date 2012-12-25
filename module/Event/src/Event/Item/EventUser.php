@@ -15,6 +15,12 @@ class EventUser extends AbstractItem
             'joinColumn' => 'id',
             'referencedColumn' => 'event_id',
         ),
+        'User' => array(
+            'targetEntity' => 'User\Item\User',
+            'relationship' => 'OneToOne',
+            'joinColumn' => 'id',
+            'referencedColumn' => 'user_id',
+        ),
     );
     
     protected $map = array(
