@@ -81,6 +81,8 @@ class EvaAssets
 
     protected $filter;
 
+    protected $writer;
+
     public function getDefaultFilter()
     {
     
@@ -88,12 +90,21 @@ class EvaAssets
 
     public function getDefaultWriter()
     {
+        if($this->writer){
+            return $this->writer;
+        }
+
+        return $this->writer = new AssetWriter(__DIR__);
     
     }
 
     public function getAssetManager()
     {
-    
+        if($this->assetManager){
+            return $this->assetManager;
+        }
+
+        return $this->assetManager = new AssetManager();
     }
 
     public function compress()
@@ -132,9 +143,57 @@ class EvaAssets
 
     public function copy()
     {
+        $urlPathArray = $this->getUrlPathArray();
+
+        $fileSourceType = array_shift($urlPathArray);
+        if($fileSourceType == 'lib' || $fileSourceType == 'eva'){
+            $sourcePath = $this->libRootPath . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $urlPathArray);
+            $targetPath = $this->urlRootPath . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $urlPathArray);
+
+            $fileAsset = new FileAsset($sourcePath);
+            if(true === $this->cache){
+                $this->prepareDirectoryStructure($targetPath, count($urlPathArray));
+                copy($sourcePath, $targetPath);
+            } else {
+                header('Content-Type: text/css');
+                echo $fileAsset->dump();
+            }
+        } elseif($fileSourceType == 'module') {
+            $module = array_shift($urlPathArray);
+            $moduleClass = ucfirst($module) . '\\' . 'Module';
+            if(true === class_exists($moduleClass)){
+                $object = new \ReflectionObject(new $moduleClass);
+                $modulePath = dirname($object->getFileName());
+                $moduleAssetPath = $modulePath . DIRECTORY_SEPARATOR . 'assets';
+
+                $sourcePath = $moduleAssetPath . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $urlPathArray);
+                $targetPath = $this->urlRootPath . DIRECTORY_SEPARATOR . 'module' . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $urlPathArray);
+
+                $fileAsset = new FileAsset($sourcePath);
+
+                if(true === $this->cache){
+                    $this->prepareDirectoryStructure($targetPath, count($urlPathArray));
+                    copy($sourcePath, $targetPath);
+                } else {
+                    header('Content-Type: text/css');
+                    echo $fileAsset->dump();
+                }
+            }
+        }
     }
 
     public function run()
+    {
+        $this->copy();
+    }
+
+    public function __construct()
+    {
+        $this->libRootPath = realpath(__DIR__ . '/../lib');
+        $this->urlRootPath  = __DIR__;
+    }
+
+    protected function getUrlPathArray()
     {
         $url = $this->getCurrentUrl();
         $url = parse_url($url);
@@ -166,50 +225,7 @@ class EvaAssets
             $urlPathArray = array_slice($urlPathArray, count($prefixArray));
         }
 
-        $fileSourceType = array_shift($urlPathArray);
-        if($fileSourceType == 'lib' || $fileSourceType == 'eva'){
-            $sourcePath = $this->libRootPath . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $urlPathArray);
-            //$targetFileName = array_pop($urlPathArray);
-            $targetPath = $this->urlRootPath . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $urlPathArray);
-            if(true === $this->cache){
-                $this->prepareDirectoryStructure($targetPath, count($urlPathArray));
-                copy($sourcePath, $targetPath);
-            } else {
-
-                header('Content-Type: text/css');
-                echo file_get_contents($sourcePath);
-            }
-        } elseif($fileSourceType == 'module') {
-            $module = array_shift($urlPathArray);
-            $moduleClass = ucfirst($module) . '\\' . 'Module';
-            if(true === class_exists($moduleClass)){
-                $object = new \ReflectionObject(new $moduleClass);
-                $modulePath = dirname($object->getFileName());
-                $moduleAssetPath = $modulePath . DIRECTORY_SEPARATOR . 'assets';
-
-                $sourcePath = $moduleAssetPath . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $urlPathArray);
-                //$targetFileName = array_pop($urlPathArray);
-                $targetPath = $this->urlRootPath . DIRECTORY_SEPARATOR . 'module' . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $urlPathArray);
-                if(true === $this->cache){
-                    $this->prepareDirectoryStructure($targetPath, count($urlPathArray));
-                    copy($sourcePath, $targetPath);
-                } else {
-                    header('Content-Type: text/css');
-                    echo file_get_contents($sourcePath);
-                }
-            }
-        }
-    }
-
-    public function getUrl()
-    {
-
-    }
-
-    public function __construct()
-    {
-        $this->libRootPath = realpath(__DIR__ . '/../lib');
-        $this->urlRootPath  = __DIR__;
+        return $urlPathArray;
     }
 
     protected function getCurrentUrl()
