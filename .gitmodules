@@ -16,9 +16,6 @@
 [submodule "vendor/Zend"]
 	path = vendor/Zend
 	url = git://github.com/AlloVince/zf2.git
-[submodule "public/static/eva/css"]
-	path = public/static/eva/css
-	url = git://github.com/AlloVince/EvaBootstrap.git
 [submodule "vendor/ZendGData"]
 	path = vendor/ZendGData
 	url = git://github.com/zendframework/ZendGData.git
@@ -31,3 +28,9 @@
 [submodule "vendor/Assetic"]
 	path = vendor/Assetic
 	url = git://github.com/kriswallsmith/assetic.git
+[submodule "vendor/Symfony/Component/Process"]
+	path = vendor/Symfony/Component/Process
+	url = git://github.com/symfony/Process.git
+[submodule "module/Core/assets/css"]
+	path = module/Core/assets/css
+	url = git://github.com/AlloVince/EvaBootstrap.git

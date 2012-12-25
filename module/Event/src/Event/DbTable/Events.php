@@ -78,6 +78,10 @@ class Events extends TableGateway
         if($params->eventStatus){
             $this->where(array('eventStatus' => $params->eventStatus));
         }
+        
+        if($params->recommend){
+            $this->where(array('recommend' => $params->recommend));
+        }
 
         if($params->visibility){
             $this->where(array('visibility' => $params->visibility));

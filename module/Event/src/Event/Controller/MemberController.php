@@ -15,6 +15,7 @@ class MemberController extends RestfulModuleController
         $selectQuery = array(
             'event_id' => $this->params()->fromQuery('event_id'),
             'requestStatus' => 'active',
+            'order' => $this->params()->fromQuery('order'),
             'page' => $this->params()->fromQuery('page', 1),
             'rows' => $this->params()->fromQuery('rows', 16),
         );

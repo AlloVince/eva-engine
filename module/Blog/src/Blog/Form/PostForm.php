@@ -208,6 +208,10 @@ class PostForm extends \Eva\Form\Form
                         'label' => 'Disqus',
                         'value' => 'disqus',
                     ),
+                    'livefyre' => array (
+                        'label' => 'Livefyre',
+                        'value' => 'livefyre',
+                    ),
                     'youyan' => array (
                         'label' => 'Youyan',
                         'value' => 'youyan',
@@ -215,6 +219,10 @@ class PostForm extends \Eva\Form\Form
                     'duoshuo' => array (
                         'label' => 'Duoshuo',
                         'value' => 'duoshuo',
+                    ),
+                    'denglu' => array (
+                        'label' => 'Denglu.cc',
+                        'value' => 'denglu',
                     ),
                 ),
             ),
@@ -461,17 +469,6 @@ class PostForm extends \Eva\Form\Form
             'filters' => array (
             ),
             'validators' => array (
-                'inArray' => array (
-                    'name' => 'InArray',
-                    'options' => array (
-                        'haystack' => array (
-                            'local',
-                            'disqus',
-                            'youyan',
-                            'duoshuo',
-                        ),
-                    ),
-                ),
             ),
         ),
     );

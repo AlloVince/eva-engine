@@ -107,9 +107,38 @@ $form->useSubFormGroup()
                                 </div>
                             </div>
                             -->
-                            <?=$form->helper(array('Text', 'content'), 'formTextarea', array('class' => 'span9', 'rows' => '15',))?>
+                            <?=$form->helper(array('Text', 'content'), 'formTextarea', array('class' => 'input-block-level', 'rows' => '15',))?>
                         </div>
-                        <div id="editor-right" class="markdown-preview"></div>
+                        <div class="accordion">
+                            <div class="accordion-group">
+                                <div class="accordion-heading">
+                                    <a class="accordion-toggle" data-toggle="collapse" href="#collapse-preview">
+                                        Preview
+                                    </a>
+                                </div>
+                                <div id="collapse-preview" class="accordion-body collapse in">
+                                    <div class="accordion-inner">
+                                        <div id="markdown-preview" class="typo typocn">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-group">
+                                <div class="accordion-heading">
+                                    <a class="accordion-toggle" data-toggle="collapse" href="#collapse-preview-html">
+                                        Preview Html
+                                    </a>
+                                </div>
+                                <div id="collapse-preview-html" class="accordion-body collapse">
+                                    <div class="accordion-inner">
+                                        <pre id="preview-html">
+                                        </pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="help-block"><?=$form->helper(array('Text', 'content'), 'formElementErrors')?></div>
 
                     </div>
@@ -290,6 +319,8 @@ eva.ready(function(){
     });
 
     var editor = $("#blog-form-textform-content");
+    var editorPreview = $("#markdown-preview");
+    var editorPreviewHtml = $("#preview-html");
 
     var editorMd;
     var mdInited = false;
@@ -298,7 +329,7 @@ eva.ready(function(){
             return;
         }
         eva.loadcss(eva.s(['/lib/js/codemirror/lib/codemirror.css', '/lib/js/codemirror/theme/ambiance.css']));
-        eva.loader(eva.s(['/lib/js/codemirror/lib/codemirror.js', '/lib/js/codemirror/mode/xml/xml.js', '/lib/js/codemirror/mode/markdown/markdown.js', '/lib/js/showdown/showdown.js']), function(){
+        eva.loader(eva.s(['/lib/js/codemirror/lib/codemirror.js', '/lib/js/codemirror/mode/xml/xml.js', '/lib/js/codemirror/mode/markdown/markdown.js', '/lib/js/showdown/showdown.js', '/lib/js/js-markdown-extra/js-markdown-extra.js']), function(){
             mdInited = true;
             builtMdEditor(_editor);
         });
@@ -313,13 +344,28 @@ eva.ready(function(){
                 "theme":"ambiance",
                 "lineNumbers":true,
                 "lineWrapping":true,
-                onChange : function(){
+                onChange : function(cm){
+                        var html = Markdown(cm.getValue());
+                        editorPreview.html(html);
                 }
         });	
     }
+
+
+    $("#collapse-preview-html").on('show', function () {
+            function htmlencode(s){  
+                    var div = document.createElement('div');  
+                    div.appendChild(document.createTextNode(s));  
+                    return div.innerHTML;  
+            }  
+            $("#preview-html").html(htmlencode(editorPreview.html()));
+    });
+
+
+
     var removeMdEditor = function(){
-        if(!editorMd){
-                return;
+            if(!editorMd){
+                    return;
             }
             editorMd.toTextArea();
     }
@@ -329,7 +375,7 @@ eva.ready(function(){
     var htmlInited = false;
     var initHtml = function(_editor){
             if(true === htmlInited) {
-                return;
+                    return;
             }
             eva.loader(eva.s(["/lib/js/tiny_mce/jquery.tinymce.js"]), function(){
                     htmlInited = true;
@@ -384,6 +430,9 @@ eva.ready(function(){
             } else if(codeType == 'html'){
                     removeMdEditor(editor);
                     builtHtmlEditor(editor);
+            } else {
+                    removeHtmlEditor(editor);
+                    removeMdEditor(editor);
             }
     }
     switchEditor();

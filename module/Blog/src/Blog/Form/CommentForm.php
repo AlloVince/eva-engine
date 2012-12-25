@@ -65,7 +65,7 @@ class CommentForm extends \Eva\Form\Form
         ),
         'codeType' => array (
             'name' => 'codeType',
-            'type' => 'text',
+            'type' => 'radio',
             'options' => array (
                 'label' => 'Code Type',
                 'value_options' => array (
@@ -87,7 +87,27 @@ class CommentForm extends \Eva\Form\Form
             'name' => 'post_id',
             'type' => 'hidden',
             'options' => array (
-                'label' => 'Post_id',
+                'label' => 'Post Id',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
+        'user_id' => array (
+            'name' => 'user_id',
+            'type' => 'hidden',
+            'options' => array (
+                'label' => 'User Id',
+            ),
+            'attributes' => array (
+                'value' => '0',
+            ),
+        ),
+        'user_name' => array (
+            'name' => 'user_name',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Your Name',
             ),
             'attributes' => array (
                 'value' => '',
@@ -219,8 +239,21 @@ class CommentForm extends \Eva\Form\Form
                 ),
             ),
         ),
-        'email' => array (
-            'name' => 'email',
+        'user_id' => array (
+            'name' => 'user_id',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+                'notEmpty' => array (
+                    'name' => 'NotEmpty',
+                    'options' => array (
+                    ),
+                ),
+            ),
+        ),
+        'user_name' => array (
+            'name' => 'user_name',
             'required' => false,
             'filters' => array (
                 'stripTags' => array (
@@ -244,6 +277,34 @@ class CommentForm extends \Eva\Form\Form
                 ),
             ),
         ),
+        'email' => array (
+            'name' => 'email',
+            'required' => false,
+            'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+                'notEmpty' => array (
+                    'name' => 'NotEmpty',
+                    'options' => array (
+                    ),
+                ),
+                'stringLength' => array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => '255',
+                    ),
+                ),
+                'emailAddress' => array (
+                    'name' => 'EmailAddress',
+                ),
+            ),
+        ),
         'site' => array (
             'name' => 'site',
             'required' => false,
@@ -260,6 +321,12 @@ class CommentForm extends \Eva\Form\Form
                     'name' => 'StringLength',
                     'options' => array (
                         'max' => '255',
+                    ),
+                ),
+                'uri' => array (
+                    'name' => 'Uri',
+                    'options' => array (
+                        'allowRelative' => false,
                     ),
                 ),
             ),

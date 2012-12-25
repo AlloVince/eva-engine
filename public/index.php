@@ -42,8 +42,7 @@ set_include_path(implode(PATH_SEPARATOR, array(
 */
 
 require_once EVA_LIB_PATH . '/Zend/library/Zend/Loader/AutoloaderFactory.php';
-require_once EVA_LIB_PATH . '/Eva/Loader/AutoloaderFactory.php';
-use Eva\Loader\AutoloaderFactory;
+use Zend\Loader\AutoloaderFactory;
 AutoloaderFactory::factory(array(
     'Zend\Loader\StandardAutoloader' => array(
         'autoregister_zf' => true

@@ -57,6 +57,12 @@ class EventsUsers extends TableGateway
         }
         
         if ($params->order == 'eventcount') {
+        /*
+            $this->from(array('b' => $this->table));
+            $distinct = new \Zend\Db\Sql\Expression("DISTINCT {$this->table}.user_id");
+            $count = new \Zend\Db\Sql\Expression("(SELECT COUNT(*) AS {$this->table}.EventCount FROM b WHERE b.user_id = {$this->table}.user_id)"); 
+            $this->columns(array($distinct, $count));
+         */
         }
 
         $orders = array(
