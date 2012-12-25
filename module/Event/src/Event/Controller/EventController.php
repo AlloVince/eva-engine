@@ -30,6 +30,18 @@ class EventController extends RestfulModuleController
 
         $itemModel = Api::_()->getModel('Event\Model\Event');
         $items = $itemModel->setItemList($query)->getEventdataList();
+        $items = $items->toArray(
+           'self' => array(
+            ),
+            'join' => array(
+                'Count' => array(
+                    '*',
+                ),
+                'File' => array(
+                    '*'
+                ),
+            ), 
+        );
 
         $paginator = $itemModel->getPaginator();
         $paginator = $paginator ? $paginator->toArray() : null;
@@ -47,7 +59,7 @@ class EventController extends RestfulModuleController
                     'getEmailHash()',
                 ),
             ));
-            $items = $itemModel->combineList($items->toArray(), $userList, 'User', array('user_id' => 'id'));
+            $items = $itemModel->combineList($items, $userList, 'User', array('user_id' => 'id'));
         }
 
         return new JsonModel(array(
