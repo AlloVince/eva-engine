@@ -1,13 +1,5 @@
 <?
 $this->headTitle($item['title'], 'SET');
-function userface($email, $size = 60, $default = '/skins/images/noface_male.gif')
-{
-    $gravUrl = "http://www.gravatar.com/avatar.php?".
-    "gravatar_id=".md5( strtolower($email) ).
-    "&amp;size=".$size."&amp;";
-
-    return $gravUrl;
-}
 $item = $this->item;
 ?>
 <div class="page-content">
@@ -39,6 +31,7 @@ $item = $this->item;
             </div>
             <?endif;?>
 
+            <?=$this->widget('Blog', 'comment/embed', $this->vars())?>
             <?if(count($this->comments) > 0):?>
             <div class="page-header large bordered">
                 <h4>评论</h4>
@@ -47,11 +40,11 @@ $item = $this->item;
                 <div class="vlist texts img50">
                     <?foreach($this->comments as $key => $comment):?>
                     <div id="comment<?=$comment['id']?>" class="item <?=$key%2 !== 0 ? 'right' : ''?>">
-                        <span class="item-absolute imgdelay figure userface" title=""><img class="thumbnail" alt="<?=$comment['user_name']?>" src="<?=$this->gravatar($comment['email'], array('img_size' => 50))?>" /></span>
+                        <span class="item-absolute imgdelay figure userface" title=""><img class="thumbnail" alt="<?=$comment['user_name']?>" src="<?=$this->gravatarLink($comment['email'], 50)?>" /></span>
                         <div class="item-inline item-text">
                             <div class="well">
                                 <div class="text-content">
-                                    <?=$comment['content']?>
+                                    <?=$comment['ContentHtml']?>
                                 </div>
                             </div>
                             <div class="item-absolute item-action">
@@ -67,21 +60,6 @@ $item = $this->item;
                     <?endforeach?>
                 </div>
             </div><!-- box end-->
-            <?endif?>
-
-
-            <?if($item['commentStatus'] == 'open'):?>
-            <div id="disqus_thread"></div>
-            <div class="ds-thread"></div>
-            <script type="text/javascript">
-                var duoshuoQuery = {short_name: "avnpc"};
-                (function() {
-                        var ds = document.createElement('script');
-                        ds.type = 'text/javascript';ds.async = true;
-                        ds.src = 'http://static.duoshuo.com/embed.js';
-                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
-                })();
-            </script>
             <?endif?>
         </div><!--blog end-->
 

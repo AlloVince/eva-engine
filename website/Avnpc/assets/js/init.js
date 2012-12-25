@@ -12,24 +12,9 @@ eva.ready(function(){
 		time.html(moment(time.attr("datetime"), "YYYY-MM-DDTHH:mm:ss ZZ").fromNow());
 	});
 
-	/*
 	if($("#blog pre>code")[0]){
-		eva.loadcss(eva.s(['/lib/js/google-code-prettify/prettify.css']));
-		$("#blog pre>code").each(function(){
-			var $this = $(this),
-			pre = $this.parent(),
-			$code = $this.html();
-			pre.html($code).addClass('prettyprint');
-		});
-		eva.loader(eva.s(['/lib/js/google-code-prettify/prettify.js']), function(){
-			prettyPrint();
-		});
-	}
-   */
-
-	if($("#blog pre>code")[0]){
-		eva.loadcss(eva.s(['/src/avnpc/js/github.css']));
-		eva.loader(eva.s(['/src/avnpc/js/highlight.min.js']), function(){
+		eva.loadcss(eva.s(['/assets/module/avnpc/js/github.css']));
+		eva.loader(eva.s(['/assets/module/avnpc/js/highlight.min.js']), function(){
 			hljs.tabReplace = '    ';
 			hljs.initHighlightingOnLoad();
 		});
@@ -40,7 +25,7 @@ eva.ready(function(){
 	if($("#timeline-embed")[0]){
 		var $timeline = $("#timeline-embed");
 		$("body").addClass('timeline');
-		eva.loader(eva.s(['/src/avnpc/timeline/js/storyjs-embed.js']), function(){
+		eva.loader(eva.s(['/assets/module/avnpc/timeline/js/storyjs-embed.js']), function(){
 			var minHeight = 550;
 			var height = $(window).height() > minHeight ? $(window).height() - 85 : minHeight;
 			var source = $timeline.html();
@@ -56,8 +41,8 @@ eva.ready(function(){
 				lang:               'zh-cn',
 				source:             source,
 				embed_id:           'timeline-embed',
-				js:                 eva.s('/src/avnpc/timeline/js/timeline.min.js'), 
-				css:                eva.s('/src/avnpc/timeline/css/timeline.css') 
+				js:                 eva.s('/assets/module/avnpc/timeline/js/timeline.min.js'), 
+				css:                eva.s('/assets/module/avnpc/timeline/css/timeline.css') 
 			};
 			//console.log(config);
 			createStoryJS(config);
@@ -181,9 +166,9 @@ eva.story = function(){
 	}
 
 	eva.loader(eva.s([
-		'/lib/js/jquery/jquery.masonry.js',
-		'/lib/js/jquery/jquery.mousewheel.js',
-		'/lib/js/jquery/jquery.jscrollpane.js'
+		'/assets/lib/js/jquery/jquery.masonry.js',
+		'/assets/lib/js/jquery/jquery.mousewheel.js',
+		'/assets/lib/js/jquery/jquery.jscrollpane.js'
 	]), startStory);
 };
 

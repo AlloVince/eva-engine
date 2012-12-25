@@ -826,6 +826,7 @@ a.label:hover,a.badge:hover{color:#ffffff;text-decoration:none;cursor:pointer;}
 .navbar .nav{line-height:30px;}
 .navbar .divider-vertical{height:50px;}
 .form-inline .btn{margin-bottom:10px;}
+.form .input-block-level{width:100%;}
 html,body,#page,#body,#main-wrap{min-height:100%;}
 html{background:url(img/bg.png) repeat-y left;}
 body{color:#333;font-size:12px;font-family:Microsoft YaHei,Trebuchet MS,Verdana,Helvetica,Arial,sans-serif;}

@@ -7,30 +7,30 @@
 
 	<!--[if lt IE 9]>
 	<meta http-equiv="PRAGMA" content="NO-CACHE" />
-    <script src="<?=$this->link('/lib/js/html5shiv/html5shiv.min.js')?>"></script>
+    <script src="<?=$this->assets('/lib/js/html5shiv/html5shiv.min.js')?>"></script>
     <![endif]-->
-	<link href="<?=$this->link('/src/avnpc/favicon.ico')?>" type="image/x-icon" rel="icon" />
-	<link href="<?=$this->link('/src/avnpc/favicon.ico')?>" type="image/x-icon" rel="shortcut icon" />
+	<link href="<?=$this->assets('/module/avnpc/favicon.ico')?>" type="image/x-icon" rel="icon" />
+    <link href="<?=$this->assets('/module/avnpc/favicon.ico')?>" type="image/x-icon" rel="shortcut icon" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="<?=$this->link('/src/avnpc/css/avnpc.css')?>" media="all" rel="stylesheet" type="text/css" />
-    <link href="<?=$this->link('/lib/css/fontawesome/css/font-awesome.css')?>" media="all" rel="stylesheet" type="text/css" />
     <?=$this->evajs()?>
-
     <?=$this->googleAnalytics()?>
-
     <?=$this->headMeta()?>
+    <?=$this->headStyle()?>
 
-    <script src="<?=$this->link('/lib/js/labjs/labjs.min.js')?>"></script>
-    <script src="<?=$this->link('/lib/js/jquery/jquery.min.js')?>"></script>
-    <script src="<?=$this->link('/lib/js/moment/moment.min.js')?>"></script>
-    <script src="<?=$this->link('/lib/js/moment/lang/zh-cn.js')?>"></script>
-    <script src="<?=$this->link('/eva/js/core.min.js')?>"></script>
-    <script src="<?=$this->link('/src/avnpc/js/init.js')?>"></script>
-
+    <?$this->cssAssets(array(
+        '/lib/css/fontawesome/css/font-awesome.css',
+        '/module/avnpc/css/avnpc.css'
+    ));?>
+    <?$this->jsAssets(array(
+        '/lib/js/labjs/labjs.js',
+        '/lib/js/jquery/jquery.js',
+        '/lib/js/moment/moment.js',
+        '/module/avnpc/js/init.js',
+    ));?>
+    <?=$this->headLink()?>
+    <?=$this->headScript()?>
 	<link href='http://fonts.googleapis.com/css?family=Sarina|Great+Vibes' rel='stylesheet' type='text/css'>
     <link rel="alternate" type="application/rss+xml" title="Just Fine - Story of AlloVince" href="<?=$this->uri('/feed');?>" />
-    <?=$this->headlink()?>
-
 </head>
 <body>
     <div id="page">

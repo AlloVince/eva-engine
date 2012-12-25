@@ -69,8 +69,15 @@ class PagesController extends ActionController
 
         $comments = array();
         if($item){
-            $commentsTable = Api::_()->getDbTable('Blog\DbTable\Comments');
-            $comments = $commentsTable->where(array("post_id = {$item['id']}"))->find('all');
+            $commentModel = Api::_()->getModel('Blog\Model\Comment');
+            $comments = $commentModel->setItemList(array(
+                'post_id' => $item['id'],
+            ))->getCommentList(array(
+                'self' => array(
+                    '*',
+                    'getContentHtml()',
+                ),
+            ));
         }
         $view = new ViewModel(array(
             'item' => $item,

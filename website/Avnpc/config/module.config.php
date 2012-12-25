@@ -1,5 +1,24 @@
 <?php
 return array(
+    'blog' => array(
+        'comment_social' => array(
+            'duoshuo' => array(
+                'websiteId' => 'avnpc',
+            ),
+            'denglu' => array(
+                'websiteId' => '25799denLkbKLwQl5KiGx3pKvsl4Y6',
+            ),
+            'disqus' => array(
+                'websiteId' => 'avnpc',
+            ),
+            'youyan' => array(
+                'websiteId' => '1500011',
+            ),
+            'livefyre' => array(
+                'websiteId' => '302665',
+            ),
+        ),
+    ),
     'router' => array(
         'routes' => array(
             'front' => array(
