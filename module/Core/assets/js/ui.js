@@ -66,7 +66,7 @@
 		},
 
 		initAccordion : function(setting){
-			$(this._itemClass.accordion).each(function(){
+			$(methods._itemClass.accordion).each(function(){
 				var option = methods._getOption(this, setting);
 				$(this).accordion(option);
 				methods.callback(this);
@@ -74,19 +74,19 @@
 		},
 
 		initButton : function(setting) {
-			$(this._itemClass.button).each(function(){
+			$(methods._itemClass.button).each(function(){
 				$(this).button(methods._getOption(this, setting));
 			});					 
 		},
 
 		initButtonset : function(setting){
-			$(this._itemClass.buttonset).each(function(){
+			$(methods._itemClass.buttonset).each(function(){
 				$(this).buttonset(methods._getOption(this, setting));
 			});						
 		},
 
 		initDialog : function(setting){
-			$(this._itemClass.dialog).each(function(){
+			$(methods._itemClass.dialog).each(function(){
 				$(this).dialog(methods._getOption(this, setting));
 			});	
 
@@ -101,13 +101,13 @@
 		},
 
 		initTabs : function(setting){
-			$(this._itemClass.tabs).each(function(){
+			$(methods._itemClass.tabs).each(function(){
 				$(this).tabs(methods._getOption(this, setting));
 			});						
 		},
 
 		initProgressbar : function(setting){
-			$(this._itemClass.progressbar).each(function(){
+			$(methods._itemClass.progressbar).each(function(){
 				$(this).progressbar(methods._getOption(this, setting));
 			});						
 		},
@@ -124,7 +124,7 @@
 
 		//beta
 		initPanel : function(setting){
-			$(this._itemClass.panel).each(function(){
+			$(methods._itemClass.panel).each(function(){
 				$(this).panel(methods._getOption(this, setting));
 			});						
 		},
@@ -136,7 +136,7 @@
 				return parseInt(className.replace(/(.*)width_(\d+)(.*)/,"$2"), 10);		
 			};
 
-			$(this._itemClass.grid).each(function(){
+			$(methods._itemClass.grid).each(function(){
 				$(this).grid(methods._getOption(this), setting);
 
 				$(" td, th", this).each(function(){
@@ -151,7 +151,7 @@
 
 		//beta
 		initHtmleditor : function(setting) {
-			if(!$(this._itemClass.htmleditor)[0]) {
+			if(!$(methods._itemClass.htmleditor)[0]) {
 				return false;
 			}
 
@@ -221,7 +221,7 @@
 		},
 
 		initCodeeditor : function(){
-			if(!$(this._itemClass.codeeditor)[0]) {
+			if(!$(methods._itemClass.codeeditor)[0]) {
 				return false;
 			}
 
@@ -266,6 +266,9 @@
 		},
 
 		initMarkdowneditor : function(editor){
+			if(!$(methods._itemClass.markdowneditor)[0]) {
+				return false;
+			}
 			/*
 		  	$(".markdown-toolbar").css({
 				"margin" : 0,
@@ -335,7 +338,7 @@
 		},
 
 		initFileuploader : function(){
-			if(!$(this._itemClass.fileuploader)[0]) {
+			if(!$(methods._itemClass.fileuploader)[0]) {
 				return false;
 			}
 
@@ -362,7 +365,7 @@
 		//beta
 		/*
 		initSwfuploader : function(){
-			if(!$(this._itemClass.swfuploader)[0]) {
+			if(!$(methods._itemClass.swfuploader)[0]) {
 				return false;
 			}
 
