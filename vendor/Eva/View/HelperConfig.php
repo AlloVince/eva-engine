@@ -44,6 +44,9 @@ class HelperConfig implements ConfigInterface
          'gravatarLink' => 'Eva\View\Helper\GravatarLink',
          'subText' => 'Eva\View\Helper\SubText',
          'callback' => 'Eva\View\Helper\Callback',
+         'assets' => 'Eva\View\Helper\Assets',
+         'jsAssets' => 'Eva\View\Helper\JsAssets',
+         'cssAssets' => 'Eva\View\Helper\CssAssets',
      );
 
     /**
