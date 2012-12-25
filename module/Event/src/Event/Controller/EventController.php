@@ -30,8 +30,9 @@ class EventController extends RestfulModuleController
 
         $itemModel = Api::_()->getModel('Event\Model\Event');
         $items = $itemModel->setItemList($query)->getEventdataList();
-        $items = $items->toArray(
-           'self' => array(
+        $items = $items->toArray(array(
+            'self' => array(
+                '*'
             ),
             'join' => array(
                 'Count' => array(
@@ -41,7 +42,7 @@ class EventController extends RestfulModuleController
                     '*'
                 ),
             ), 
-        );
+        ));
 
         $paginator = $itemModel->getPaginator();
         $paginator = $paginator ? $paginator->toArray() : null;

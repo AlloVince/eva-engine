@@ -30,7 +30,7 @@ class GroupController extends RestfulModuleController
 
         $itemModel = Api::_()->getModel('Group\Model\Group');
         $items = $itemModel->setItemList($query)->getGroupList();
-        $items = $items->toArray(
+        $items = $items->toArray(array(
             'self' => array(
             ),
             'join' => array(
@@ -41,7 +41,7 @@ class GroupController extends RestfulModuleController
                     '*'
                 ),
             ), 
-        );
+        ));
 
         $paginator = $itemModel->getPaginator();
         $paginator = $paginator ? $paginator->toArray() : null;
