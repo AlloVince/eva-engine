@@ -14,7 +14,7 @@
         public function indexAction()
         {
             $postData = $this->params()->fromPost();
-            $form = new \Event\Form\EventCreateForm();
+            $form = new \Blog\Form\PostCreateForm();
             $form->useSubFormGroup()
             ->bind($postData);
 
