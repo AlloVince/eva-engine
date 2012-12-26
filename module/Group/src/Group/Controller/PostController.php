@@ -14,7 +14,7 @@
         public function indexAction()
         {
             $postData = $this->params()->fromPost();
-            $form = new \Blog\Form\PostCreateForm();
+            $form = new \Epic\Form\PostCreateForm();
             $form->useSubFormGroup()
             ->bind($postData);
 
