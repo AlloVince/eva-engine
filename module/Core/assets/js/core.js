@@ -244,6 +244,15 @@ methods = window.eva = {
 		return template;
 	},
 
+	thumb : function(url, params){
+		url = url.split('.');
+		var ext = url.pop();
+		url[url.length - 1] += ',' + params;
+		url.push(ext);
+		url = url.join('.');
+		return url;
+	},
+
 	callback : {},
 
 	ready : function(func){
