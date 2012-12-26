@@ -22,14 +22,14 @@
             if ($form->isValid()) {
                 $item = $form->getData();
                 $itemModel = Api::_()->getModel('Blog\Model\Post');
-
+                $groupId = $this->groupId;
                 if($postData['group_id']) {
                     $this->groupId = $postData['group_id'];
                     $eventManager = $this->getServiceLocator()->get('Application')->getEventManager();
-                    $eventManager->attach('blog.model.post.create.post', function($event) use ($itemModel){
+                    $eventManager->attach('blog.model.post.create.post', function($event) use ($itemModel, $groupId){
                         $item = $itemModel->getItem();
                         $groupPostItem = $itemModel->getItem('Group\Item\GroupPost');
-                        $groupPostItem->group_id = $this->groupId;
+                        $groupPostItem->group_id = $groupId;
                         $groupPostItem->post_id = $item->id;
                         $groupPostItem->create();
                     });

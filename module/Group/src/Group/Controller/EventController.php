@@ -26,10 +26,11 @@
                 if($postData['group_id']) {
                     $this->groupId = $postData['group_id'];
                     $eventManager = $this->getServiceLocator()->get('Application')->getEventManager();
-                    $eventManager->attach('event.model.event.create.post', function($event) use ($itemModel){
+                    $groupId = $this->groupId;
+                    $eventManager->attach('event.model.event.create.post', function($event) use ($itemModel, $groupId){
                         $item = $itemModel->getItem();
                         $groupEventItem = $itemModel->getItem('Group\Item\GroupEvent');
-                        $groupEventItem->group_id = $this->groupId;
+                        $groupEventItem->group_id = $groupId;
                         $groupEventItem->event_id = $item->id;
                         $groupEventItem->create();
                     });
