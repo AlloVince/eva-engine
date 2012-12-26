@@ -11,14 +11,26 @@
     <?=$this->headMeta()?>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="<?=$this->link('/lib/css/fontawesome/css/font-awesome.css')?>" media="all" rel="stylesheet" type="text/css" />
-    <link href="<?=$this->link('/src/admin/css/admin.css')?>" media="all" rel="stylesheet" type="text/css" />
+
+    <?=$this->headMeta()?>
+    <?=$this->googleAnalytics()?>
     <?=$this->evajs()?>
-    <script src="<?=$this->link('/lib/js/labjs/labjs.min.js')?>"></script>
-    <script src="<?=$this->link('/lib/js/jquery/jquery.min.js')?>"></script>
-    <script src="<?=$this->link('/lib/js/jquery/jquery.validationEngine.js')?>"></script>
-    <script src="<?=$this->link('/eva/js/core.js')?>"></script>
-    <script src="<?=$this->link('/eva/js/ui.js')?>"></script>
+
+    <?=$this->headMeta()?>
+    <?=$this->headStyle()?>
+
+    <?$this->cssAssets(array(
+        '/lib/css/fontawesome/css/font-awesome.css',
+    ));?>
+    <link href="<?=$this->link('/src/admin/css/admin.css')?>" media="all" rel="stylesheet" type="text/css" />
+    <?$this->jsAssets(array(
+        '/lib/js/labjs/labjs.js',
+        '/lib/js/jquery/jquery.js',
+        '/module/core/js/core.js',
+        '/module/core/js/ui.js',
+    ));?>
+    <?=$this->headLink()?>
+    <?=$this->headScript()?>
     <script src="<?=$this->link('/src/admin/js/init.js')?>"></script>
 </head>
 
