@@ -3,6 +3,7 @@ $calendar = $this->calendar;
 $prevPath = $this->prevPath;
 $nextPath = $this->nextPath;
 $dayPath = $this->dayPath;
+$eventPath = $this->eventPath;
 ?>
 <table class="table-condensed">
     <thead>
@@ -25,11 +26,19 @@ $dayPath = $this->dayPath;
         <?foreach($calendar['days'] as $week):?>
         <tr>
             <?foreach($week as $day):?>
-            <td  title="<?=$day['datedb']?>" class="day <?=$day['isAdd'] ? "old" : ''?> <?=$day['datedb'] < $calendar['today']['datedb'] ? 'passed' : ''?>  <?=$day['datedb'] == $calendar['today']['datedb'] ? 'today' : ''?> <?=isset($day['Events']) ? 'has-event' : ''?>">
-                <?if($day['datedb'] == $calendar['today']['datedb']):?>
-                <span class="today"><?=$day['day']?></span>
+            <td  title="<?=$day['datedb']?>" class="day <?=$day['isAdd'] ? "old" : ''?> <?=$day['datedb'] < $calendar['today']['datedb'] ? 'passed' : ''?> <?=$day['datedb'] == $calendar['today']['datedb'] ? 'today' : ''?> <?=isset($day['Events']) ? 'has-event' : ''?>">
+                <?if(isset($day['Events'])):?>
+                    <?if(count($day['Events']) <= 1):?>
+                    <a href="<?=$this->uri('/event/' . $day['Events'][0]['urlName'])?>"><?=$day['day']?></a>
+                    <?else:?>
+                    <a href="<?=$this->uri('/events/list/?afterStartDay=' . $day['datedb'] . '&beforeStartDay=' . $day['datedb'])?>"><?=$day['day']?></a>
+                    <?endif?>
                 <?else:?>
-                <?=$day['day']?>
+                    <?if($day['datedb'] == $calendar['today']['datedb']):?>
+                        <span class="today"><?=$day['day']?></span>
+                    <?else:?>
+                        <?=$day['day']?>
+                    <?endif?>
                 <?endif?>
             </td>
             <?endforeach;?>
