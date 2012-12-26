@@ -5,7 +5,7 @@ namespace Group\DbTable;
 use Eva\Db\TableGateway\TableGateway;
 use Zend\Stdlib\Parameters;
 
-class GroupsEvents extends TableGateway
+class GroupsPosts extends TableGateway
 {
     protected $tableName = 'groups_posts';
 

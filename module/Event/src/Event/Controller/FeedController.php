@@ -26,10 +26,11 @@
                 if($postData['event_id']) {
                     $this->eventId = $postData['event_id'];
                     $eventManager = $this->getServiceLocator()->get('Application')->getEventManager();
-                    $eventManager->attach('activity.model.activity.create.post', function($event) use ($itemModel){
+                    $eventId = $this->eventId;
+                    $eventManager->attach('activity.model.activity.create.post', function($event) use ($itemModel, $eventId){
                         $item = $itemModel->getItem();
                         $eventActivityItem = $itemModel->getItem('Event\Item\EventActivity');
-                        $eventActivityItem->event_id = $this->eventId;
+                        $eventActivityItem->event_id = $eventId;
                         $eventActivityItem->message_id = $item->id;
                         $eventActivityItem->messageTime = \Eva\Date\Date::getNow();
                         $eventActivityItem->create();
