@@ -22,9 +22,9 @@
             if ($form->isValid()) {
                 $item = $form->getData();
                 $itemModel = Api::_()->getModel('Blog\Model\Post');
-                $groupId = $this->groupId;
                 if($postData['group_id']) {
                     $this->groupId = $postData['group_id'];
+                    $groupId = $this->groupId;
                     $eventManager = $this->getServiceLocator()->get('Application')->getEventManager();
                     $eventManager->attach('blog.model.post.create.post', function($event) use ($itemModel, $groupId){
                         $item = $itemModel->getItem();
