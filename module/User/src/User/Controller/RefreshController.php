@@ -30,7 +30,6 @@ class RefreshController extends ActionController
         $this->changeViewModel('json');
         $itemModel = Api::_()->getModel('User\Model\User');
         $config = Api::_()->getConfig();
-        $onlineToOfflineTime = $config['module_user']['online_to_offline_time'];
         $onlineToOfflineTime = \Eva\Date\Date::getBefore($onlineToOfflineTime, null, 'Y-m-d H:i:s');
 
         $dataClass = $itemModel->getItem()->getDataClass();
