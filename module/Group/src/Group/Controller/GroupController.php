@@ -45,6 +45,17 @@ class GroupController extends RestfulModuleController
                 ),
             ), 
         ));
+        
+        if (count($items) > 0) {
+            foreach ($items as $key=>$item) {
+                if (count($item['File']) > 0) {
+                    unset($items[$key]['File'][0]);
+                    $items[$key]['File'] = $item['File'][0];
+                } else {
+                    unset($items[$key]['File']);
+                }
+            }
+        }
 
         $paginator = $itemModel->getPaginator();
         $paginator = $paginator ? $paginator->toArray() : null;
