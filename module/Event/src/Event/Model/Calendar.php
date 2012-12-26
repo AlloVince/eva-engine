@@ -16,7 +16,7 @@ class Calendar extends AbstractModel
         $query = array(
             'afterStartDay' => $calendarArray['beginDay'],
             'beforeStartDay' => $calendarArray['finishDay'],
-            'rows' => '5',
+            'noLimit' => true,
         );
         
         if (!$items) {
