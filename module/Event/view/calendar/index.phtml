@@ -25,7 +25,7 @@ $dayPath = $this->dayPath;
         <?foreach($calendar['days'] as $week):?>
         <tr>
             <?foreach($week as $day):?>
-            <td  title="<?=$day['datedb']?>" class="day <?=$day['isAdd'] ? "new" : ''?>">
+            <td  title="<?=$day['datedb']?>" class="day <?=$day['isAdd'] ? "old" : ''?> <?=$day['datedb'] < $calendar['today']['datedb'] ? 'passed' : ''?>  <?=$day['datedb'] == $calendar['today']['datedb'] ? 'today' : ''?> <?=isset($day['Events']) ? 'has-event' : ''?>">
                 <?if($day['datedb'] == $calendar['today']['datedb']):?>
                 <span class="today"><?=$day['day']?></span>
                 <?else:?>
