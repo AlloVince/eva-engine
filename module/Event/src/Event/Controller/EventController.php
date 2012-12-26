@@ -39,7 +39,10 @@ class EventController extends RestfulModuleController
                     '*',
                 ),
                 'File' => array(
-                    '*'
+                    'self' => array(
+                        '*',
+                        'getThumb()',
+                    )
                 ),
             ), 
         ));

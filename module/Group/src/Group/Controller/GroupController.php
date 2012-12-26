@@ -38,7 +38,10 @@ class GroupController extends RestfulModuleController
                     '*',
                 ),
                 'File' => array(
-                    '*'
+                    'self' => array(
+                        '*',
+                        'getThumb()',
+                    )
                 ),
             ), 
         ));
