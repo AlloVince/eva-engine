@@ -8,6 +8,17 @@ class Post extends AbstractItem
 {
     protected $dataSourceClass = 'Blog\DbTable\Posts';
 
+    protected $inverseRelationships = array(
+        'User' => array(
+            'targetEntity' => 'User\Item\User',
+            'relationship' => 'OneToOne',
+            'joinColumn' => 'id',
+            'referencedColumn' => 'user_id',
+            'joinParameters' => array(
+            ),
+        ),
+    );
+
     protected $relationships = array(
         'Text' => array(
             'targetEntity' => 'Blog\Item\Text',

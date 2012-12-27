@@ -118,5 +118,21 @@ class Comment extends AbstractModel
     
     }
 
+    public function updatePostCommentCount()
+    {
+        $item = $this->getItem();
+        if(!$item->post_id){
+            return false;
+        }
+        $postId = $item->post_id;
+        $postDbTable = $this->getItem('Blog\Item\Post')->getDataClass();
+        $postDbTable->where(array(
+            'id' => $postId,
+        ))->save(array(
+            'commentCount' => $item->getDataClass()->where(array(
+                'post_id' => $postId
+            ))->find('count')
+        ));
+    }
 
 }

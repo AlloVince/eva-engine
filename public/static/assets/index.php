@@ -197,8 +197,10 @@ class EvaAssets
 
     public function __construct()
     {
-        $this->libRootPath = realpath(__DIR__ . '/../lib');
-        $this->urlRootPath  = __DIR__;
+        $config = include __DIR__ . '/config.inc.php';
+        $this->libRootPath = $config['libRootPath'];
+        $this->urlRootPath  = $config['urlRootPath'];
+        $this->cache = $config['cache'];
     }
 
     protected function getFileExtension($filePath)
