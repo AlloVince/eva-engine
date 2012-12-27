@@ -4,6 +4,7 @@ namespace Blog\DbTable;
 
 use Eva\Db\TableGateway\TableGateway;
 use Zend\Stdlib\Parameters;
+use Zend\Db\Sql\Expression;
 
 class Posts extends TableGateway
 {

@@ -5,6 +5,7 @@ namespace Event\DbTable;
 use Eva\Db\TableGateway\TableGateway;
 use Zend\Stdlib\Parameters;
 use Eva\Api;
+use Zend\Db\Sql\Expression;
 
 class Events extends TableGateway
 {
