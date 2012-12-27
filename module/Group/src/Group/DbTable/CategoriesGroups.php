@@ -19,6 +19,10 @@ class CategoriesGroups extends TableGateway
         if($params->category_id){
             $this->where(array('category_id' => $params->category_id));
         }
+        
+        if($params->noLimit) {
+            $this->disableLimit();
+        }
 
         return $this;
     }

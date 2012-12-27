@@ -81,6 +81,10 @@ class Groups extends TableGateway
             );
         }
 
+        if($params->noLimit) {
+            $this->disableLimit();
+        }
+
         $orders = array(
             'idasc' => 'id ASC',
             'iddesc' => 'id DESC',

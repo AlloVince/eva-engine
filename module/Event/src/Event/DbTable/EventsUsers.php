@@ -64,6 +64,10 @@ class EventsUsers extends TableGateway
             $this->columns(array($distinct, $count));
          */
         }
+        
+        if($params->noLimit) {
+            $this->disableLimit();
+        }
 
         $orders = array(
             'eventcount' => 'EventCount DESC',

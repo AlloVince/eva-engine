@@ -30,6 +30,10 @@ class EventsFiles extends TableGateway
         if($params->file_id){
             $this->where(array('file_id' => $params->file_id));
         }
+        
+        if($params->noLimit) {
+            $this->disableLimit();
+        }
 
         return $this;
     }
