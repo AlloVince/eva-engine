@@ -30,6 +30,10 @@ class GroupsEvents extends TableGateway
         if($params->event_id){
             $this->where(array('event_id' => $params->event_id));
         }
+        
+        if($params->noLimit) {
+            $this->disableLimit();
+        }
 
         return $this;
     }

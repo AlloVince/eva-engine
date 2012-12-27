@@ -128,6 +128,10 @@ class Events extends TableGateway
                 'inner'
             );
         }
+        
+        if($params->noLimit) {
+            $this->disableLimit();
+        }
 
         $orders = array(
             'idasc' => 'id ASC',

@@ -24,6 +24,10 @@ class Categories extends TableGateway
             $this->page($params->page);
         }
 
+        if($params->noLimit) {
+            $this->disableLimit();
+        }
+
         $orders = array(
             'idasc' => 'id ASC',
             'iddesc' => 'id DESC',
@@ -32,7 +36,7 @@ class Categories extends TableGateway
             'nameasc' => 'categoryName ASC',
             'namedesc' => 'categoryName DESC',
         );
-        
+
         if($params->order){
             $order = $orders[$params->order];
             if($order){

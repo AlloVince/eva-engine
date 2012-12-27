@@ -30,6 +30,10 @@ class GroupsPosts extends TableGateway
         if($params->post_id){
             $this->where(array('post_id' => $params->post_id));
         }
+        
+        if($params->noLimit) {
+            $this->disableLimit();
+        }
 
         return $this;
     }
