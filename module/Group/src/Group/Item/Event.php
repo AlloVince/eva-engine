@@ -2,9 +2,9 @@
 
 namespace Group\Item;
 
-class Post extends \Blog\Item\Post
+class Event extends \Blog\Item\Post
 {
-    protected $dataSourceClass = 'Group\DbTable\Posts';
+    protected $dataSourceClass = 'Group\DbTable\Events';
 
     protected $addRelationships = array(
         'Group' => array(
@@ -12,20 +12,20 @@ class Post extends \Blog\Item\Post
             'relationship' => 'ManyToMany',
             'mappedBy' => 'Group',
             'joinColumns' => array(
-                'joinColumn' => 'post_id',
+                'joinColumn' => 'event_id',
                 'referencedColumn' => 'id',
             ),
-            'inversedBy' => 'Group\Item\GroupPost',
-            'inversedMappedBy' => 'GroupPost',
+            'inversedBy' => 'Group\Item\GroupEvent',
+            'inversedMappedBy' => 'GroupEvent',
             'inverseJoinColumns' => array(
                 'joinColumn' => 'group_id',
                 'referencedColumn' => 'id',
             ),
         ),
-        'GroupPost' => array(
-            'targetEntity' => 'Group\Item\GroupPost',
+        'GroupEvent' => array(
+            'targetEntity' => 'Group\Item\GroupEvent',
             'relationship' => 'OneToMany',
-            'joinColumn' => 'post_id',
+            'joinColumn' => 'event_id',
             'referencedColumn' => 'id',
             'joinParameters' => array(
             ),
