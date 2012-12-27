@@ -34,6 +34,26 @@ class GroupsPosts extends TableGateway
         if($params->noLimit) {
             $this->disableLimit();
         }
+        
+        if ($params->rows) {
+            $this->limit($params->rows);
+        }
+
+        if($params->page){
+            $this->enableCount();
+            $this->page($params->page);
+        }
+
+        $orders = array(
+            'idasc' => 'post_id ASC',
+            'iddesc' => 'post_id DESC',
+        );
+        if($params->order){
+            $order = $orders[$params->order];
+            if($order){
+                $this->order($order);
+            }
+        }
 
         return $this;
     }
