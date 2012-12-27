@@ -50,7 +50,8 @@ class CssAssets extends \Zend\View\Helper\AbstractHelper
 
         $view = $this->getView();
         $config = $view->getHelperPluginManager()->getServiceLocator()->get('config');
-        $prefix = $config['site']['assets']['basePath'];
+        $config = $config['site']['assets'];
+        $prefix = $config['cache'] ? $config['cachePath'] : $config['phpPath'];
 
         if(is_array($files)){
             foreach($files as $file){

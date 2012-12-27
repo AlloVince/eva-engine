@@ -228,7 +228,7 @@ class CommentForm extends \Eva\Form\Form
         ),
         'post_id' => array (
             'name' => 'post_id',
-            'required' => false,
+            'required' => true,
             'filters' => array (
             ),
             'validators' => array (

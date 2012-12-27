@@ -3,6 +3,14 @@ namespace Blog;
 
 class Module
 {
+    public function onBootstrap($e)
+    {
+        $app = $e->getParam('application');
+        $serviceManager = $app->getServiceManager();
+        $serviceManager->setInvokableClass('Blog\Event\Listener', 'Blog\Event\Listener');
+        $app->getEventManager()->attach($serviceManager->get('Blog\Event\Listener'));
+    }
+
     public function getAutoloaderConfig()
     {
         return array(
