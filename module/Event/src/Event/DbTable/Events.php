@@ -22,7 +22,11 @@ class Events extends TableGateway
             $this->enableCount();
             $this->page($params->page);
         }
-        
+       
+        if($params->noResult) {
+            $this->setNoResult(true);
+        }
+
         if($params->id){
             if(is_array($params->id)){
                 $this->where(array('id' => array_unique($params->id)));

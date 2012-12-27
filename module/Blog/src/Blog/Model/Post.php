@@ -8,6 +8,8 @@ use Eva\Api,
 class Post extends AbstractModel
 {
     protected $itemTableName = 'Blog\DbTable\Posts';
+    
+    protected $itemClass = 'Blog\Item\Post';
 
     protected $userList;
 

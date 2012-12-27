@@ -8,6 +8,8 @@ use Eva\Api,
 class Event extends AbstractModel
 {
     protected $itemTableName = 'Event\DbTable\Events';
+    
+    protected $itemClass = 'Event\Item\Event';
 
     protected $userList;
 
