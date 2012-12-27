@@ -74,6 +74,12 @@ class EventUser extends AbstractModel
             $item->save();
         }
 
+        $countItem = $this->getItem('Event\Item\Count');
+        $countItem->event_id = $eventId;
+        $countItem->self(array('*'));
+        $countItem->memberCount += 1;
+        $countItem->save();
+
         $this->trigger('create');
         $this->trigger('create.post');
 
@@ -91,6 +97,12 @@ class EventUser extends AbstractModel
         $eventId = $item->event_id;
 
         $item->remove();
+        
+        $countItem = $this->getItem('Event\Item\Count');
+        $countItem->event_id = $eventId;
+        $countItem->self(array('*'));
+        $countItem->memberCount -= 1;
+        $countItem->save();
 
         $this->trigger('remove');
         $this->trigger('remove.post');
