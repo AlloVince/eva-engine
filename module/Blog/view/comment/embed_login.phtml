@@ -23,7 +23,7 @@ $form
     <?=$form->helper('post_id', array('value' => $item['id']))?>
     <div class="control-group <?=$form->isError('content') ? 'error' : '';?>">
         <div class="controls">
-            <?=$form->helper('content', 'formTextarea', array('class' => 'span7', 'rows' => 3))?>        
+            <?=$form->helper('content', 'formTextarea', array('class' => 'input-blog-level', 'rows' => 3))?>        
             <button type="submit" class="btn btn-block"><?=$this->_('Leave Comment');?></button>
             <div class="help-block"><?=$form->helper('content', 'formElementErrors')?></div>
             <?=$this->callback()?>
