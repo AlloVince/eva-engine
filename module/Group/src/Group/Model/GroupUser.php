@@ -75,7 +75,7 @@ class GroupUser extends AbstractModel
         }
 
         $countItem = $this->getItem('Group\Item\Count');
-        $countItem->group_id = $group;
+        $countItem->group_id = $groupId;
         $countItem->self(array('*'));
         $countItem->memberCount += 1;
         $countItem->save();
@@ -99,7 +99,7 @@ class GroupUser extends AbstractModel
         $item->remove();
         
         $countItem = $this->getItem('Group\Item\Count');
-        $countItem->group_id = $group;
+        $countItem->group_id = $groupId;
         $countItem->self(array('*'));
         $countItem->memberCount -= 1;
         $countItem->save();
