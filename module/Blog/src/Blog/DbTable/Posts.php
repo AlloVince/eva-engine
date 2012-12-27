@@ -82,6 +82,8 @@ class Posts extends TableGateway
             'timedesc' => 'updateTime DESC',
             'titleasc' => 'title ASC',
             'titledesc' => 'title DESC',
+            'commentasc' => 'commentCount ASC',
+            'commentdesc' => 'commentCount DESC',
             'idarray' => 'FIELD(id, %s)',
         );
         if($params->order){
