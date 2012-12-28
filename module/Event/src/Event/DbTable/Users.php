@@ -37,15 +37,13 @@ class Users extends \User\DbTable\Users
         }
 
         if($params->order == 'eventcountdesc'){
-            //$this->from($eventsUsersTableName);
-            //$this->columns(array(new Expression("count('event_id')") => 'EventCount'));
             $this->columns(array(
                 '*',
                 'EventCount' => new Expression("count('event_id')"),
             ));
+            $this->group('user_id');
             $this->order('EventCount DESC');
             unset($params->order);
-            //p($this);
         }
 
         return parent::setParameters($params);
