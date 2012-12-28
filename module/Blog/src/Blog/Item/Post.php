@@ -17,6 +17,17 @@ class Post extends AbstractItem
             'joinParameters' => array(
             ),
         ),
+        'UserPostCount' => array(
+            'targetEntity' => 'Blog\Item\Post',
+            'relationship' => 'OneToMany',
+            'joinColumn' => 'user_id',
+            'referencedColumn' => 'id',
+            'asCount' => true,
+            'countKey' => 'postCount',
+            'joinParameters' => array(
+                'count' => true,
+            ),
+        ),
     );
 
     protected $relationships = array(
