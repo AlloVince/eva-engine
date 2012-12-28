@@ -19,15 +19,19 @@ class Posts extends \Blog\DbTable\Posts
     {
         $groupsPostsTable = Api::_()->getDbTable('Group\DbTable\GroupsPosts');
         $groupsPostsTableName = $groupsPostsTable->initTableName()->getTable();
-
-        if($params->group_id){
+        
+        $groupsCategoriesTable = Api::_()->getDbTable('Group\DbTable\CategoriesGroups');
+        $groupsCategoriesTableName = $groupsCategoriesTable->initTableName()->getTable();
+        
+        if($params->group_id || $params->groupCategory){
             $params->inGroup = true;
         }
 
         if($params->inGroup){
             $groupId = $params->group_id;
+            $categoryId = $params->groupCategory;
 
-            $this->where(function($where) use ($groupsPostsTableName, $groupId){
+            $this->where(function($where) use ($groupsPostsTableName, $groupsCategoriesTableName, $groupId, $categoryId){
                 $select = new Select($groupsPostsTableName);
                 $select->columns(array('post_id'));
                 if($groupId){
@@ -35,7 +39,21 @@ class Posts extends \Blog\DbTable\Posts
                         'group_id' => $groupId
                     ));
                 }
+                
+                if ($categoryId) {
+                    $cateSelect = new Select($groupsCategoriesTableName);
+                    $cateSelect->columns(array('group_id'));
+                    $cateSelect->where(array(
+                        'category_id' => $categoryId
+                    )); 
+                    $select->where(function($where) use ($cateSelect){
+                        $where->in('group_id', $cateSelect);
+                        return $where;
+                    }); 
+                }
+
                 $where->in('id', $select);
+
                 return $where;
             });
         }
