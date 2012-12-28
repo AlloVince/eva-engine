@@ -2,7 +2,7 @@
 
 namespace Group\Item;
 
-class Event extends \Blog\Item\Post
+class Event extends \Event\Item\Event
 {
     protected $dataSourceClass = 'Group\DbTable\Events';
 
