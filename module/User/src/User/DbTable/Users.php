@@ -41,6 +41,10 @@ class Users extends TableGateway
         if($params->status){
             $this->where(array('status' => $params->status));
         }
+        
+        if($params->flag){
+            $this->where(array('flag' => $params->flag));
+        }
 
         if($params->gender){
             $this->where(array('gender' => $params->gender));

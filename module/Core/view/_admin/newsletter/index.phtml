@@ -1,0 +1,75 @@
+<?
+$title = $this->_('Newsletter List');
+$this->headTitle($title, 'SET');
+$this->textDelay('breadcrumbText', $title);
+
+$lableMap = array(
+    'draft' => '',
+    'active' => 'label-success',
+    'pending' => 'label-warning',
+    'deleted' => 'label-inverse',
+);
+
+?>
+
+<div class="row">
+    <div class="span10 listing-buttons">
+        <div class="btn-group pull-right">
+            <a href="<?=$this->uri('/admin/core/newsletter/send')?>" class="btn btn-info"><?=$this->_('Send')?></a>
+        </div>
+        <form action="<?=$this->uri('/admin/core/newsletter/')?>" method="post" class="pull-left" data-multiform="post">
+            <input type="hidden" name="id" class="multiform-container-main" value="" />
+            <div class="btn-group">
+                <span class="btn"><input type="checkbox" class="multiform-checker" /></span>
+                <span data-toggle="dropdown" class="btn dropdown-toggle">
+                    <?=$this->_('Delete')?>
+                    <span class="caret"></span>
+                </span>
+                <ul class="dropdown-menu">
+                    <li><a href="#" class="multiform-submiter" data-multiform-action="<?=$this->uri('/admin/core/newsletter/')?>"><?=$this->_('Delete')?></a></li>
+                </ul>
+            </div>
+        </form>
+    </div>
+
+    <div class="span10">
+        <div class="slate">
+            <table class="orders-table table">
+                <thead>
+                    <tr>
+                        <th class="span1">
+                        </th>
+                        <th><?=$this->_('User Id')?></th>
+                        <th class="span1"><?=$this->_('Email')?></th>
+                        <th class="actions"><?=$this->_('Actions')?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?if($this->items):?>
+                    <?foreach($this->items as $key=>$item):?>
+                    <tr class="">
+                        <td>
+                            <input name="id" type="checkbox" class="multiform-item-checkbox"  data-multiform="post" data-multiform-itemid="<?=$item['user_id'] ?>" value="<?=$item['user_id'] ?>" />
+                        </td>	
+                        <td>
+                            <a href="<?=$this->uri('/admin/user/' . $item['user_id'])?>" class="title"><?=$item['user_id'] ?></a>
+                        </td>
+                        <td>
+                            <?=$item['email'] ?>
+                        </td>
+                    </tr>
+                    <?endforeach;?>
+                    <?endif;?>
+                </tbody>
+            </table>
+        </div>
+    </div><!--span10 end-->
+
+    <div class="span10">
+        <?if($this->paginator):?>
+        <?=$this->paginator->setPath('/admin/core/newsletter/')->setBaseQuery($this->query);?>
+        <?=$this->widget('Core', 'widgets/paginator', $this->vars())?>
+        <?endif;?>
+    </div>
+
+</div>

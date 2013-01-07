@@ -226,6 +226,16 @@ class UserForm extends \Eva\Form\Form
                 'value' => 'offline',
             ),
         ),
+        'flag' => array (
+            'name' => 'flag',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Flag',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
     );
 
     /**
