@@ -23,6 +23,10 @@ class ImagesUsers extends TableGateway
             $this->where(array('file_id' => $params->file_id));
         }
 
+        if($params->usage){
+            $this->where(array('usage' => $params->usage));
+        }
+
         return $this;
     }
 }

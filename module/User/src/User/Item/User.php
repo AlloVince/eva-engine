@@ -97,6 +97,24 @@ class User extends AbstractItem
             'joinParameters' => array(
             ),
         ),
+        'Header' => array(
+            'targetEntity' => 'File\Item\File',
+            'relationship' => 'ManyToMany',
+            'mappedBy' => 'Header',
+            'joinColumns' => array(
+                'joinColumn' => 'user_id',
+                'referencedColumn' => 'id',
+            ),
+            'inversedBy' => 'User\Item\ImageUser',
+            'inversedMappedBy' => 'ImageUserHeader',
+            'inverseJoinColumns' => array(
+                'joinColumn' => 'file_id',
+                'referencedColumn' => 'id',
+            ),
+            'inverseJoinParameters' => array(
+                'usage' => 'header',
+            ),
+        ),
     );
 
     protected $map = array(
