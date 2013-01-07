@@ -72,3 +72,26 @@ ADD `frequencyWeek` VARCHAR( 7 ) NOT NULL DEFAULT '0' AFTER `frequency` ,
 ADD `frequencyMonth` ENUM( 'dayofmonth', 'dayofweek' ) NOT NULL DEFAULT 'dayofweek' AFTER `frequencyWeek` ,
 ADD `interval` INT( 2 ) NOT NULL DEFAULT '0' AFTER `frequencyMonth`;
 ALTER TABLE `eva_event_events` DROP `recurrence_id`;
+
+
+
+-----2013-01-07
+ALTER TABLE `eva_blog_posts` ADD `flag` VARCHAR( 20 ) NULL AFTER `status`;
+ALTER TABLE `eva_user_users` ADD `flag` VARCHAR( 20 ) NULL AFTER `status`;
+ALTER TABLE `eva_group_groups` ADD `flag` VARCHAR( 20 ) NULL AFTER `status`;
+ALTER TABLE `eva_user_users` ADD `avatar_id` INT( 10 ) NOT NULL DEFAULT '0' AFTER `gender` 
+
+DROP TABLE IF EXISTS `eva_user_avatars`;
+CREATE TABLE IF NOT EXISTS `eva_user_avatars` (
+  `user_id` int(10) NOT NULL,
+  `file_id` int(10) NOT NULL,
+  PRIMARY KEY (`user_id`,`file_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `eva_user_images_users`;
+CREATE TABLE IF NOT EXISTS `eva_user_images_users` (
+  `user_id` int(10) NOT NULL,
+  `file_id` int(10) NOT NULL,
+  `usage` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`user_id`,`file_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

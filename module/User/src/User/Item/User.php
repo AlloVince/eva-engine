@@ -88,6 +88,17 @@ class User extends AbstractItem
         ),
     );
 
+    protected $inverseRelationships = array(
+        'Avatar' => array(
+            'targetEntity' => 'File\Item\File',
+            'relationship' => 'OneToOne',
+            'joinColumn' => 'id',
+            'referencedColumn' => 'avatar_id',
+            'joinParameters' => array(
+            ),
+        ),
+    );
+
     protected $map = array(
         'create' => array(
             'getSalt()',
