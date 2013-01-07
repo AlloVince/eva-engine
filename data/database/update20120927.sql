@@ -79,7 +79,7 @@ ALTER TABLE `eva_event_events` DROP `recurrence_id`;
 ALTER TABLE `eva_blog_posts` ADD `flag` VARCHAR( 20 ) NULL AFTER `status`;
 ALTER TABLE `eva_user_users` ADD `flag` VARCHAR( 20 ) NULL AFTER `status`;
 ALTER TABLE `eva_group_groups` ADD `flag` VARCHAR( 20 ) NULL AFTER `status`;
-ALTER TABLE `eva_user_users` ADD `avatar_id` INT( 10 ) NOT NULL DEFAULT '0' AFTER `gender` 
+ALTER TABLE `eva_user_users` ADD `avatar_id` INT( 10 ) NOT NULL DEFAULT '0' AFTER `gender`;
 
 DROP TABLE IF EXISTS `eva_user_avatars`;
 CREATE TABLE IF NOT EXISTS `eva_user_avatars` (
