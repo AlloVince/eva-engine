@@ -8,6 +8,13 @@ use Eva\Api,
 
 class Calendar extends AbstractModel
 {
+    protected $evnetList;
+
+    public function getEventList()
+    {
+        return $this->eventList;
+    }
+
     public function getEventCalendar(array $params = array(), $items = array())
     {
         $calendar = new CalendarLib($params);
@@ -21,8 +28,8 @@ class Calendar extends AbstractModel
         
         if (!$items) {
             $itemModel = Api::_()->getModel('Event\Model\Event');
-            $items = $itemModel->setItemList($query)->getEventdataList();
-            $items = $items->toArray();
+            $this->eventList = $items = $itemModel->setItemList($query)->getEventdataList();
+            $items = $items ? $items->toArray() : array();
         }
 
         if (count($items) == 0) {
