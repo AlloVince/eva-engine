@@ -69,6 +69,7 @@ class User extends AbstractItem
             'countKey' => 'friendsCount',
             'joinParameters' => array(
                 'count' => true,
+                'relationshipStatus' => 'approved',
             ),
         ),
         'MyFriends' => array(
@@ -84,6 +85,9 @@ class User extends AbstractItem
             'inverseJoinColumns' => array(
                 'joinColumn' => 'friend_id',
                 'referencedColumn' => 'id',
+            ),
+            'inverseJoinParameters' => array(
+                'relationshipStatus' => 'approved',
             ),
         ),
     );
