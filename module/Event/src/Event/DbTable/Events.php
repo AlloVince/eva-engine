@@ -141,8 +141,8 @@ class Events extends TableGateway
         $orders = array(
             'idasc' => 'id ASC',
             'iddesc' => 'id DESC',
-            'timeasc' => 'startDatetimeUtc ASC',
-            'timedesc' => 'startDatetimeUtc DESC',
+            'timeasc' => 'createTime ASC',
+            'timedesc' => 'createTime DESC',
             'titleasc' => 'title ASC',
             'titledesc' => 'title DESC',
             'memberdesc' => 'memberCount DESC',

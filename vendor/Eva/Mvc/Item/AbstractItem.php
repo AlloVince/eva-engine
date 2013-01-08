@@ -339,7 +339,7 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     public function addRelationship($key, array $relationship)
     {
         if(isset($this->relationships[$key])){
-            throw new Exception\InvalidArgumentException(sprintf('Relationship %s already exists in %, failed to add same one.', $key, get_class($this)));
+        //    throw new Exception\InvalidArgumentException(sprintf('Relationship %s already exists in %, failed to add same one.', $key, get_class($this)));
         }
 
         $this->relationships[$key] = $relationship;

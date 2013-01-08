@@ -5,6 +5,7 @@ namespace User\DbTable;
 use Eva\Db\TableGateway\TableGateway;
 use Zend\Stdlib\Parameters;
 use Eva\Api;
+use Zend\Db\Sql\Expression;
 
 class Users extends TableGateway
 {
@@ -66,6 +67,25 @@ class Users extends TableGateway
             });
         }
 
+        if ($params->role) {
+            $roleModel = Api::_()->getModel('User\Model\Role');
+            $roleItem = $roleModel->getRole($params->role);
+
+            if ($roleItem->id) {
+                $roleUserDb = Api::_()->getDbTable('User\DbTable\RolesUsers');
+                $roleUserTabName = $roleUserDb->initTableName()->table;
+                $this->join(
+                    $roleUserTabName,
+                    "{$this->initTableName()->table}.id = $roleUserTabName.user_id",
+                    array('*'),
+                    'inner'
+                );
+                $this->where(array("$roleUserTabName.role_id" => $roleItem->id));
+            } else {
+                $this->setNoResult(true);
+            }    
+        }
+
         if ($params->rows) {
             $this->limit((int) $params->rows);
         }
@@ -82,7 +102,26 @@ class Users extends TableGateway
             'timedesc' => 'registerTime DESC',
             'nameasc' => 'userName ASC',
             'namedesc' => 'userName DESC',
+            'followdesc' => 'MemberCount DESC',
         );
+        
+        if($params->order == 'followdesc'){
+            $friendDb = Api::_()->getDbTable('User\DbTable\Friends');
+            $friendTabName = $friendDb->initTableName()->table;
+            $this->join(
+                $friendTabName,
+                "{$this->initTableName()->table}.id = $friendTabName.to_user_id",
+                array('*'),
+                'inner'
+            );
+            $this->columns(array(
+                '*',
+                'MemberCount' => new Expression("count('from_user_id')"),
+            ));
+            $this->group('to_user_id');
+            $this->order('MemberCount DESC');
+            unset($params->order);
+        }
 
         if($params->order){
             $order = $orders[$params->order];
