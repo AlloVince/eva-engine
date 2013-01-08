@@ -89,7 +89,14 @@ class Contacts extends AbstractModel
             'rows' => 1000,
         );
         $items = $userModel->setItemList($selectQuery)->getUserList(); 
-        $onSiteContacts = $items->toArray();
+        $onSiteContacts = $items->toArray(array(
+            'proxy' => array(
+                'User\Item\User::Avatar' => array(
+                    '*',
+                    'getThumb()'
+                ),
+            ),
+        ));
 
         if (!$onSiteContacts) {
             $res['outSiteContactsCount'] = count($outSiteContacts);
@@ -140,7 +147,7 @@ class Contacts extends AbstractModel
         if (!$contacts) {
             return array();
         }
-        
+
         $service = 'msn';  
 
         $userModel = Api::_()->getModel('User\Model\User');

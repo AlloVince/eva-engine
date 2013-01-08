@@ -102,3 +102,8 @@ CREATE TABLE IF NOT EXISTS `eva_core_newsletters` (
   `email` varchar(320) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+
+-----2013-01-08
+INSERT INTO `eva`.`eva_user_roles` (`id`, `roleKey`, `roleName`, `description`) VALUES (NULL, 'PAID_MEMBER', 'Paid Member', NULL);
