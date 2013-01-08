@@ -8,24 +8,158 @@ use Eva\Api,
 class Friend extends AbstractModel
 {
 
+    /*
+    * Status Change Rules:
+    * empty => pending       requestFriend()
+    * pending => approved    approveFriend()
+    * pending => refused     refuseFriend()
+    * approved => removed    unfriend()
+    * 
+    * anyStatus => blocked    blockFriend()
+    * 
+    */
+    protected $allowStatusChangeRules = array(
+        array('pending', 'approved'),
+        array('pending', 'refused'),
+        array('approved', 'removed'),
+        array('refused', 'pending'),
+        array('pending', 'blocked'),
+        array('approved', 'blocked'),
+        array('refused', 'blocked'),
+        array('removed', 'blocked'),
+        array('blocked', 'refused'),
+    );
+
     public function requestFriend()
     {
-    
+        $item = $this->getItem();
+
+        $fromId = $item->user_id;
+        $toId = $item->friend_id;
+        $requestUserId = $item->request_user_id;
+
+        if($fromId == $toId) {
+            return;
+        }
+        $this->trigger('request.pre');
+
+        $checkItem = clone $item;
+
+        if($checkItem->self(array('*')) && (
+            //Already sent request
+            $checkItem->relationshipStatus == 'pending' ||
+            //Already been friend
+            $checkItem->relationshipStatus == 'approved' ||
+            //Be blocked
+            $checkItem->relationshipStatus == 'blocked'
+        )) {
+            return;
+        }
+
+        $this->trigger('request');
+
+        //Status is refused or removed
+        if($item->relationshipStatus){
+
+            $item->relationshipStatus = 'pending';
+            $item->request_user_id = $requestUserId;
+            $item->getRequestTime();
+            $item->save();
+
+        } else {
+            $item->user_id = $fromId;
+            $item->friend_id = $toId;
+            $item->getRequestTime();
+            $item->relationshipStatus = 'pending';
+            $item->create();
+        }
+
+        $friendItem = clone $item;
+        $friendItem->user_id = $toId;
+        $friendItem->friend_id = $fromId;
+        $friendItem->relationshipStatus = 'pending';
+        if($friendItem->selfExist()){
+            $friendItem->save();
+        } else {
+            $friendItem->create();
+        }
+
+        $this->trigger('request.post');
     }
 
-    public function approvalFriend()
+    public function approveFriend()
     {
-    
+        $this->trigger('approve.pre');
+
+        $item = $this->getItem();
+        $item->self(array('*'));
+        if(!$item || !$this->isStatusChangeAllow('approved')){
+            return;
+        }
+
+        $this->trigger('approve');
+        $this->updateFriendStatus('approved');
+        $this->trigger('approve.post');
     }
 
     public function refuseFriend()
     {
-    
+        $this->trigger('refuse.pre');
+
+        $item = $this->getItem();
+        $item->self(array('*'));
+        if(!$item || !$this->isStatusChangeAllow('refused')){
+            return;
+        }
+
+        $this->trigger('refuse');
+        $this->updateFriendStatus('refused');
+        $this->trigger('refuse.post');
     }
 
     public function blockFriend()
     {
-    
+        $this->trigger('block.pre');
+
+        $item = $this->getItem();
+        $item->self(array('*'));
+        if(!$item || !$this->isStatusChangeAllow('blocked')){
+            return;
+        }
+
+        $this->trigger('block');
+        $this->updateFriendStatus('blocked');
+        $this->trigger('block.post');
+    }
+
+    public function unFriend()
+    {
+        $this->trigger('unfriend.pre');
+
+        $item = $this->getItem();
+        $item->self(array('*'));
+        if(!$item || !$this->isStatusChangeAllow('removed')){
+            return;
+        }
+
+        $this->trigger('unfriend');
+        $this->updateFriendStatus('removed');
+        $this->trigger('unfriend.post');
+    }
+
+    public function unblockFriend()
+    {
+        $this->trigger('unblock.pre');
+
+        $item = $this->getItem();
+        $item->self(array('*'));
+        if(!$item || !$this->isStatusChangeAllow('refused')){
+            return;
+        }
+
+        $this->trigger('unblock');
+        $this->updateFriendStatus('refused');
+        $this->trigger('unblock.post');
     }
 
     public function createFriend($data = null)
@@ -38,16 +172,17 @@ class Friend extends AbstractModel
 
         $this->trigger('create.pre');
 
-        $fromId = $item->from_user_id;
-        $toId = $item->to_user_id;
+        $fromId = $item->user_id;
+        $toId = $item->friend_id;
 
         if($fromId != $toId) {
             $item->self(array('*'));
 
             //No relationship, insert
             if(!$item->relationshipStatus){
-                $item->from_user_id = $fromId;
-                $item->to_user_id = $toId;
+                $item->user_id = $fromId;
+                $item->friend_id = $toId;
+                //$item->request_user_id = $fromId;
                 $item->getApprovalTime();
                 $item->relationshipStatus = 'approved';
                 $item->create();
@@ -57,8 +192,8 @@ class Friend extends AbstractModel
 
             //Already have relationship, update to approved
             if($item->relationshipStatus != 'approved'){
-                $item->from_user_id = $fromId;
-                $item->to_user_id = $toId;
+                $item->user_id = $fromId;
+                $item->friend_id = $toId;
                 $item->getApprovalTime();
                 $item->relationshipStatus = 'approved';
                 $item->save();
@@ -69,14 +204,14 @@ class Friend extends AbstractModel
 
         $friendItem = clone $item;
         $friendItem->setDataSource(array());
-        $friendItem->from_user_id = $toId;
-        $friendItem->to_user_id = $fromId;
+        $friendItem->user_id = $toId;
+        $friendItem->friend_id = $fromId;
         if($fromId != $toId) {
             $friendItem->self(array('*'));
 
             if(!$friendItem->relationshipStatus){
-                $friendItem->from_user_id = $toId;
-                $friendItem->to_user_id = $fromId;
+                $friendItem->user_id = $toId;
+                $friendItem->friend_id = $fromId;
                 $friendItem->getApprovalTime();
                 $friendItem->relationshipStatus = 'approved';
                 $friendItem->create();
@@ -85,13 +220,12 @@ class Friend extends AbstractModel
 
             //Already have relationship, update to approved
             if($friendItem->relationshipStatus != 'approved'){
-                $friendItem->from_user_id = $toId;
-                $friendItem->to_user_id = $fromId;
+                $friendItem->user_id = $toId;
+                $friendItem->friend_id = $fromId;
                 $friendItem->getApprovalTime();
                 $friendItem->relationshipStatus = 'approved';
                 $friendItem->save();
             }
-
         }
 
         $this->trigger('create.post');
@@ -105,13 +239,13 @@ class Friend extends AbstractModel
 
         $item = $this->getItem();
 
-        $fromId = $item->from_user_id;
-        $toId = $item->to_user_id;
+        $fromId = $item->user_id;
+        $toId = $item->friend_id;
 
         $item->remove();
 
-        $item->from_user_id = $toId;
-        $item->to_user_id = $fromId;
+        $item->user_id = $toId;
+        $item->friend_id = $fromId;
         $item->remove();
 
         $this->trigger('remove');
@@ -139,6 +273,48 @@ class Friend extends AbstractModel
         $this->trigger('list.postcache');
 
         return $item;
+    }
+
+    protected function isStatusChangeAllow($status)
+    {
+        $item = $this->getItem();
+        $allowChanges = $this->allowStatusChangeRules;
+        if(false === in_array(array($item->relationshipStatus, $status), $allowChanges)){
+            return false;
+        }
+        return true;
+    }
+
+    protected function updateFriendStatus($status)
+    {
+        $item = $this->getItem();
+        $fromId = $item->user_id;
+        $toId = $item->friend_id;
+
+        switch($status){
+            case 'approved' :
+            $item->getApprovalTime();
+            break;
+            case 'refused' : 
+            $item->getRefusedTime();
+            break;
+            case 'removed' :
+            $item->getRemovedTime();
+            break;
+            case 'blocked' :
+            $item->getBlockedTime();
+            break;
+            default:
+            break;
+
+        }
+        $item->relationshipStatus = $status;
+        $item->save();
+
+        $friendItem = clone $item;
+        $friendItem->user_id = $toId;
+        $friendItem->friend_id = $fromId;
+        $friendItem->save();
     }
 
 }

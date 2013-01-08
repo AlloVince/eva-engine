@@ -102,3 +102,9 @@ CREATE TABLE IF NOT EXISTS `eva_core_newsletters` (
   `email` varchar(320) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-----2013-01-08
+ALTER TABLE `eva_user_friends` CHANGE `from_user_id` `user_id` INT( 10 ) NOT NULL;
+ALTER TABLE `eva_user_friends` CHANGE `to_user_id` `friend_id` INT( 10 ) NOT NULL;
+ALTER TABLE `eva_user_friends` ADD `request_user_id` INT NOT NULL DEFAULT '0' AFTER `friend_id`;

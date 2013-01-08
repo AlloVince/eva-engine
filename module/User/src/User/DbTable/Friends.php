@@ -10,18 +10,18 @@ class Friends extends TableGateway
     protected $tableName ='friends';
 
     protected $primaryKey = array(
-        'from_user_id',
-        'to_user_id'
+        'user_id',
+        'friend_id'
     );
 
     public function setParameters(Parameters $params)
     {
-        if($params->from_user_id){
-            $this->where(array('from_user_id' => $params->from_user_id));
+        if($params->user_id){
+            $this->where(array('user_id' => $params->user_id));
         }
 
-        if($params->to_user_id){
-            $this->where(array('to_user_id' => $params->to_user_id));
+        if($params->friend_id){
+            $this->where(array('friend_id' => $params->friend_id));
         }
 
         if($params->relationshipStatus){

@@ -63,7 +63,7 @@ class User extends AbstractItem
         'FriendsCount' => array(
             'targetEntity' => 'User\Item\Friend',
             'relationship' => 'OneToMany',
-            'joinColumn' => 'from_user_id',
+            'joinColumn' => 'user_id',
             'referencedColumn' => 'id',
             'asCount' => true,
             'countKey' => 'friendsCount',
@@ -76,13 +76,13 @@ class User extends AbstractItem
             'relationship' => 'ManyToMany',
             'mappedBy' => 'Friends',
             'joinColumns' => array(
-                'joinColumn' => 'from_user_id',
+                'joinColumn' => 'user_id',
                 'referencedColumn' => 'id',
             ),
             'inversedBy' => 'User\Item\Friend',
             'inversedMappedBy' => 'Relation',
             'inverseJoinColumns' => array(
-                'joinColumn' => 'to_user_id',
+                'joinColumn' => 'friend_id',
                 'referencedColumn' => 'id',
             ),
         ),

@@ -13,43 +13,37 @@ class Friend extends AbstractItem
             'targetEntity' => 'User\Item\User',
             'relationship' => 'OneToOne',
             'joinColumn' => 'id',
-            'referencedColumn' => 'to_user_id',
+            'referencedColumn' => 'friend_id',
         ),
     );
 
     protected $map = array(
-        'create' => array(
-            'getRequestTime()',
-        ),
     );
 
 
     public function getRequestTime()
     {
-        if(!$this->requestTime) {
-            return $this->requestTime = \Eva\Date\Date::getNow();
-        }
+        return $this->requestTime = \Eva\Date\Date::getNow();
     }
 
     public function getApprovalTime()
     {
-        if(!$this->approvalTime) {
-            return $this->approvalTime = \Eva\Date\Date::getNow();
-        }
+        return $this->approvalTime = \Eva\Date\Date::getNow();
     }
 
     public function getRefusedTime()
     {
-        if(!$this->refusedTime) {
-            return $this->refusedTime = \Eva\Date\Date::getNow();
-        }
+        return $this->refusedTime = \Eva\Date\Date::getNow();
     }
 
     public function getBlockedTime()
     {
-        if(!$this->blockedTime) {
-            return $this->blockedTime = \Eva\Date\Date::getNow();
-        }
+        return $this->blockedTime = \Eva\Date\Date::getNow();
+    }
+
+    public function getRemovedTime()
+    {
+        return $this->removedTime = \Eva\Date\Date::getNow();
     }
 
 }
