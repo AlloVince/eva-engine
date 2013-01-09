@@ -31,12 +31,12 @@ set_include_path(implode(PATH_SEPARATOR, array(
 
 //require_once 'Eva/Loader/AutoloaderFactory.php';
 require_once EVA_LIB_PATH . '/Zend/library/Zend/Loader/AutoloaderFactory.php';
-require_once 'Eva/Loader/AutoloaderFactory.php';
-Eva\Loader\AutoloaderFactory::factory(array(
+require_once 'Zend/Loader/AutoloaderFactory.php';
+Zend\Loader\AutoloaderFactory::factory(array(
     'Zend\Loader\StandardAutoloader' => array(
         'autoregister_zf' => true
     )
 ));
-$loader = Eva\Loader\AutoloaderFactory::getRegisteredAutoloaders();
-$loader = $loader[Eva\Loader\AutoloaderFactory::STANDARD_AUTOLOADER];
+$loader = Zend\Loader\AutoloaderFactory::getRegisteredAutoloaders();
+$loader = $loader[Zend\Loader\AutoloaderFactory::STANDARD_AUTOLOADER];
 $loader->registerNamespace('Eva\\', EVA_PUBLIC_PATH . '/../vendor/Eva');
