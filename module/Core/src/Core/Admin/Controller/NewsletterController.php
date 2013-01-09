@@ -73,7 +73,7 @@ class NewsletterController extends RestfulModuleController
         
         $mail = new Mail();
         $message = $mail->getMessage();
-        $message->addFrom($config['mail']['from']['email'], $config['mail']['from']['name']);
+        //$message->addFrom($config['mail']['from']['email'], $config['mail']['from']['name']);
         
         $emails = explode(',', $bcc);
 
