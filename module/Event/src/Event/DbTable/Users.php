@@ -39,7 +39,7 @@ class Users extends \User\DbTable\Users
         if($params->order == 'eventcountdesc'){
             $this->columns(array(
                 '*',
-                'EventCount' => new Expression("count('event_id')"),
+                'EventCount' => new Expression("count(event_id)"),
             ));
             $this->group('user_id');
             $this->order('EventCount DESC');

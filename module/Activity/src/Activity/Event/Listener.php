@@ -33,8 +33,8 @@ class Listener implements ListenerAggregateInterface
      */
     public function attach(EventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach('activity.model.follow.create.post', array($this, 'onFollowUser'));
-        $this->listeners[] = $events->attach('activity.model.follow.remove.post', array($this, 'onUnfollowUser'));
+        //$this->listeners[] = $events->attach('activity.model.follow.create.post', array($this, 'onFollowUser'));
+        //$this->listeners[] = $events->attach('activity.model.follow.remove.post', array($this, 'onUnfollowUser'));
 
     }
 
@@ -60,8 +60,8 @@ class Listener implements ListenerAggregateInterface
         if($followItem->relationshipStatus == 'double') {
             $userModel = Api::_()->getModel('User\Model\Friend');
             $userModel->setItem(array(
-                'from_user_id' => $followItem->follower_id,
-                'to_user_id' => $followItem->user_id,
+                'user_id' => $followItem->follower_id,
+                'friend_id' => $followItem->user_id,
             ));
             $userModel->createFriend();
         }
@@ -73,8 +73,8 @@ class Listener implements ListenerAggregateInterface
         $followItem = $followModel->getItem();
         $userModel = Api::_()->getModel('User\Model\Friend');
         $userModel->setItem(array(
-            'from_user_id' => $followItem->follower_id,
-            'to_user_id' => $followItem->user_id,
+            'user_id' => $followItem->follower_id,
+            'friend_id' => $followItem->user_id,
         ));
         $userModel->removeFriend();
     }

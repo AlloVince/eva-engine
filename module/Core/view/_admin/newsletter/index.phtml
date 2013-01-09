@@ -1,5 +1,5 @@
 <?
-$title = $this->_('Newsletter List');
+$title = $this->_('Subscription List');
 $this->headTitle($title, 'SET');
 $this->textDelay('breadcrumbText', $title);
 
@@ -15,7 +15,7 @@ $lableMap = array(
 <div class="row">
     <div class="span10 listing-buttons">
         <div class="btn-group pull-right">
-            <a href="<?=$this->uri('/admin/core/newsletter/send')?>" class="btn btn-info"><?=$this->_('Send')?></a>
+            <a href="<?=$this->uri('/admin/core/newsletter/send')?>" class="btn btn-info"><?=$this->_('Send Newsletter To All')?></a>
         </div>
         <form action="<?=$this->uri('/admin/core/newsletter/')?>" method="post" class="pull-left" data-multiform="post">
             <input type="hidden" name="id" class="multiform-container-main" value="" />
@@ -40,8 +40,7 @@ $lableMap = array(
                         <th class="span1">
                         </th>
                         <th><?=$this->_('User Id')?></th>
-                        <th class="span1"><?=$this->_('Email')?></th>
-                        <th class="actions"><?=$this->_('Actions')?></th>
+                        <th><?=$this->_('Email')?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,7 +54,7 @@ $lableMap = array(
                             <a href="<?=$this->uri('/admin/user/' . $item['user_id'])?>" class="title"><?=$item['user_id'] ?></a>
                         </td>
                         <td>
-                            <?=$item['email'] ?>
+                            <a href="mailto:<?=$item['email'] ?>"><?=$item['email'] ?></a>
                         </td>
                     </tr>
                     <?endforeach;?>

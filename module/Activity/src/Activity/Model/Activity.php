@@ -57,6 +57,7 @@ class Activity extends AbstractModel
 
         $defaultParams = array(
             'user_id' => '',
+            'author_id' => '',
             'order' => 'iddesc',
             'page' => 1,
             'rows' => 20,

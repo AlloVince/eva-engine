@@ -21,6 +21,7 @@ class Friend extends AbstractModel
     protected $allowStatusChangeRules = array(
         array('pending', 'approved'),
         array('pending', 'refused'),
+        array('pending', 'removed'),
         array('approved', 'removed'),
         array('refused', 'pending'),
         array('pending', 'blocked'),
