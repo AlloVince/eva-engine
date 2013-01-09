@@ -110,15 +110,15 @@ class Users extends TableGateway
             $friendTabName = $friendDb->initTableName()->table;
             $this->join(
                 $friendTabName,
-                "{$this->initTableName()->table}.id = $friendTabName.to_user_id",
+                "{$this->initTableName()->table}.id = $friendTabName.friend_id",
                 array('*'),
                 'inner'
             );
             $this->columns(array(
                 '*',
-                'MemberCount' => new Expression("count('from_user_id')"),
+                'MemberCount' => new Expression("count('user_id')"),
             ));
-            $this->group('to_user_id');
+            $this->group('friend_id');
             $this->order('MemberCount DESC');
             unset($params->order);
         }
