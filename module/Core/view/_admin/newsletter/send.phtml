@@ -4,51 +4,72 @@ $title = 'Send Newsletter';
 
 $this->headTitle($title, 'SET');
 $this->textDelay('breadcrumbText', $title);
+
+if($this->form){
+	$form = $this->form;
+} else {
+    $form = new Core\Form\NewsletterForm();
+}
+
+$form
+->setView($this)
+->useSubFormGroup()
+->setMethod('post')
+->setAction($this->uri('/admin/core/newsletter/send/'))
+->bind($item)
+->prepare();
 ?>
-
-<input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
-<div id="group-create-succeed" class="alert alert-success hide">
-    <a href="#" data-dismiss="alert" class="close">x</a>
-    <h4 class="alert-heading"><?=$this->_('New Group Created')?></h4>
-</div>
-
-<div id="group-edit-succeed" class="alert alert-success hide">
-    <a href="#" data-dismiss="alert" class="close">x</a>
-    <h4 class="alert-heading"><?=$this->_('Group Edit Succeed')?></h4>
-</div>
-
-<div id="group-edit-failed" class="alert alert-error hide">
-    <a href="#" data-dismiss="alert" class="close">x</a>
-    <h4 class="alert-heading"><?=$this->_('Group Edit Failed')?></h4>
-</div>
-
 
 
 <div class="row">
-   <form method="post" action="/admin/core/newsletter/send">
-        <input type="hidden" value="post" name="_method"> 
+   <form <?=$this->formAttr($form)?> class="form">
+   <?=$form->restful();?>
         <div class="span10">
             <div class="slate">
                 <fieldset class="">
-                    <div class="control-group ">
-                        <label class="control-label" for="group-form-groupcreateform-groupname">Title</label>                        
-                        <div class="controls docs-input-sizes">
-                            <input type="text" value="" class="span9" id="group-form-groupcreateform-groupname" name="title">                            
-                        </div>
-                    </div>
-                    
-                    <div class="control-group ">
-                        <label class="control-label" for="group-form-groupcreateform-bcc">Bcc Email</label>                        
-                        <div class="controls docs-input-sizes">
-                            <textarea rows="5" class="span9" id="group-form-textform-bcc" name="bcc"><?=$this->bcc?></textarea>                            
-                        </div>
-                    </div>
+                            <div class="control-group <?=$form->isError('sender') ? 'error' : '';?> hide">
+                                <?=$form->helper('sender', 'label', array('class' => 'control-label'))?>
+                                <div class="controls">
+                                    <?=$form->helper('sender', array('class' => 'span6'))?>        
+                                    <div class="help-block"><?=$form->helper('sender', 'formElementErrors')?></div>
+                                </div>
+                            </div>
+                            <div class="control-group <?=$form->isError('recipient') ? 'error' : '';?> hide">
+                                <?=$form->helper('recipient', 'label', array('class' => 'control-label'))?>
+                                <div class="controls">
+                                    <?=$form->helper('recipient', array('class' => 'span6'))?>        
+                                    <div class="help-block"><?=$form->helper('recipient', 'formElementErrors')?></div>
+                                </div>
+                            </div>
+                            <div class="control-group <?=$form->isError('subject') ? 'error' : '';?>">
+                                <?=$form->helper('subject', 'label', array('class' => 'control-label'))?>
+                                <div class="controls">
+                                    <?=$form->helper('subject', array('class' => 'span6', 'value' => ''))?>        
 
-                    <div class="control-group ">
-                        <div class="controls" id="editor-left">
-                            <textarea rows="15" class="span9" id="group-form-textform-content" name="content"></textarea>                        
-                        </div>
-                    </div>
+                                    <div class="help-block"><?=$form->helper('subject', 'formElementErrors')?></div>
+                                </div>
+                            </div>
+                            <div class="control-group <?=$form->isError('bcc') ? 'error' : '';?>">
+                                <?=$form->helper('bcc', 'label', array('class' => 'control-label'), array('args' => array(null, 'abc')))?>
+                                <div class="controls">
+                                    <?=$form->helper('bcc', 'formTextarea', array('class' => 'span6', 'rows' => 5))?>     
+                                    <div class="help-block"><?=$form->helper('bcc', 'formElementErrors')?></div>
+                                </div>
+                            </div>
+                            <div class="control-group <?=$form->isError('content') ? 'error' : '';?>">
+                                <?=$form->helper('content', 'label', array('class' => 'control-label'), array('args' => array(null, 'abc')))?>
+                                <div class="controls">
+                                    <?=$form->helper('content', 'formTextarea', array('class' => 'span6', 'rows' => 10))?>        
+                                    <div class="help-block"><?=$form->helper('content', 'formElementErrors')?></div>
+                                </div>
+                            </div>
+                            <div class="control-group <?=$form->isError('attachment') ? 'error' : '';?>">
+                                <?=$form->helper('attachment', 'label', array('class' => 'control-label'))?>
+                                <div class="controls">
+                                    <?=$form->helper('attachment', array('class' => ''))?>        
+                                    <div class="help-block"><?=$form->helper('attachment', 'formElementErrors')?></div>
+                                </div>
+                            </div>
                 </fieldset>
             </div>
         </div><!--span10 end-->

@@ -52,40 +52,47 @@ class NewsletterController extends RestfulModuleController
         }
 
         return array(
-            'bcc' => $bcc,
+            'item' => array('bcc' => $bcc),
         ); 
     }
 
     public function restPostNewsletterSend()
     {
-        $params = $this->params()->fromPost();
-        
-        $subject = $params['title'];
-        $content = $params['content'];
-        $bcc     = $params['bcc'];
-        
-        if (!$subject || !$content || !$bcc) {
-            exit;
-        }
-        
-        $config = $this->getServiceLocator()->get('config');
-        $config['mail'];
-        
-        $mail = new Mail();
-        $message = $mail->getMessage();
-        //$message->addFrom($config['mail']['from']['email'], $config['mail']['from']['name']);
-        
-        $emails = explode(',', $bcc);
+        $request = $this->getRequest();
+        $postData = $request->getPost();
 
-        foreach ($emails as $email) {
-            $message->addBcc($email);
+        $form = new \Core\Form\NewsletterForm();
+        $form->bind($postData);
+        if ($form->isValid()) {
+            $item = $form->getData();
+
+            $file = array();
+            if($form->getFileTransfer()->isUploaded()) {
+                $form->getFileTransfer()->receive();
+                $files = $form->getFileTransfer()->getFileInfo();
+                $file = $files['attachment'];
+            }
+
+            $mail = new \Core\Mail();
+            $message = $mail->getMessage();
+            
+            $emails = explode(',', $item['bcc']);
+            foreach ($emails as $email) {
+                $message->addBcc($email);
+            }
+
+            $message->setSubject($item['subject'])
+                ->setBody($item['content']);
+
+            if($file){
+                $message->addAttachment($file['tmp_name']);
+            }
+            $mail->send();
+            
+            return $this->redirect()->toUrl('/admin/core/newsletter');
+
+        } else {
         }
-        
-        $message->setSubject($subject);
-        $message->setBody($content);
-        $mail->send($message);
-        
-        $this->redirect()->toUrl('/admin/core/newsletter');
     }
 
     public function restPostNewsletter()

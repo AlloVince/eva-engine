@@ -112,11 +112,12 @@ class Users extends TableGateway
                 $friendTabName,
                 "{$this->initTableName()->table}.id = $friendTabName.friend_id",
                 array('*'),
-                'inner'
+                'left'
             );
+            $this->where(array("$friendTabName.relationshipStatus" => 'approved'));
             $this->columns(array(
                 '*',
-                'MemberCount' => new Expression("count('user_id')"),
+                'MemberCount' => new Expression("count(`$friendTabName`.`user_id`)"),
             ));
             $this->group('friend_id');
             $this->order('MemberCount DESC');
