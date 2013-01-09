@@ -38,6 +38,7 @@ return array(
         'config_cache_enabled' => 0,
         'config_glob_paths'    => array(
             EVA_CONFIG_PATH . '/autoload/{,*.}{global,local}.config.php',
+            EVA_CONFIG_PATH . '/local.all.config.php',
         ),
         'cache_dir'            => EVA_ROOT_PATH . '/data/cache/config',
         'module_paths' => array(

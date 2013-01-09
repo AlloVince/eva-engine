@@ -17,7 +17,7 @@ if( version_compare(phpversion(), '5.3.0', '<') ) {
 }
 
 $config = include __DIR__ . '/config.inc.php';
-$configLocalFile = __DIR__ . '/../../../config/front/image.config.php';
+$configLocalFile = __DIR__ . '/../../../config/local.front.image.config.php';
 $configLocal = is_file($configLocalFile) ? include $configLocalFile : array();
 $config = $configLocal ? array_merge($config, $configLocal) : $config;
 
