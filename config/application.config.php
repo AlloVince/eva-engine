@@ -39,7 +39,7 @@ return array(
         'config_glob_paths'    => array(
             EVA_CONFIG_PATH . '/autoload/{,*.}{global,local}.config.php',
         ),
-        'cache_dir'            => EVA_CONFIG_PATH . '/cache',
+        'cache_dir'            => EVA_ROOT_PATH . '/data/cache/config',
         'module_paths' => array(
             EVA_ROOT_PATH . '/depends',
             EVA_MODULE_PATH,

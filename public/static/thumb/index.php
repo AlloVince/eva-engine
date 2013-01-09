@@ -9,14 +9,19 @@
  * @author    AlloVince
  */
 
-require_once __DIR__ . '/../../../vendor/EvaCloudImage/EvaCloudImage.php';
 error_reporting(E_ALL);
-
 // Check php version
 if( version_compare(phpversion(), '5.3.0', '<') ) {
     printf('PHP 5.3.0 is required, you have %s', phpversion());
     exit(1);
 }
 
-$cloudImage = new EvaCloudImage(null, include 'config.inc.php');
+$config = include __DIR__ . '/config.inc.php';
+$configLocalFile = __DIR__ . '/../../../config/front/image.config.php';
+$configLocal = is_file($configLocalFile) ? include $configLocalFile : array();
+$config = $configLocal ? array_merge($config, $configLocal) : $config;
+
+include $config['classPath'];
+
+$cloudImage = new EvaCloudImage(null, $config);
 $cloudImage->show();
