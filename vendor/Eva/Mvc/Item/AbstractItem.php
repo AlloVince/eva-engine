@@ -712,8 +712,8 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         $params = array(
             $joinLeftColumn => $this->$referencedLeftColumn
         );
-        if(isset($relationship['joinColumns']['joinParameters']) && is_array($relationship['joinColumns']['joinParameters'])){
-            $params = array_merge($params, $relationship['joinColumns']['joinParameters']);
+        if(isset($relationship['inverseJoinParameters']) && is_array($relationship['inverseJoinParameters'])){
+            $params = array_merge($params, $relationship['inverseJoinParameters']);
         }
         $middleItems = $middleItem->collections($params);
 
@@ -724,7 +724,6 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
             $rightItem = clone $relItem;
             $rightItem->clear();
             $rightItem->$referencedRightColumn = $middleItem->$joinRightColumn;
-
             $inversedMapKey = isset($relationship['inversedMappedBy']) ? $relationship['inversedMappedBy'] : get_class($middleItem);
             $rightItem->$inversedMapKey = $middleItem; 
             $relItem[] = $rightItem;

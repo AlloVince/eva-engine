@@ -108,6 +108,7 @@ return array(
     'view_helpers' => array(
         'invokables' => array(
             'evajs' => 'Core\Helper\Evajs',
+            'tagging' => 'Core\Helper\Tagging',
         ),  
     ),
 

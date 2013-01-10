@@ -72,7 +72,6 @@ class BlogController extends RestfulModuleController
                 )
             ),
         ));
-        p($item);
 
         if(isset($item['FileConnect'][0])){
             $item['FileConnect'] = $item['FileConnect'][0];
@@ -125,10 +124,9 @@ class BlogController extends RestfulModuleController
         $form->useSubFormGroup()
              ->bind($postData);
 
-        $flashMesseger = array();
-
         if ($form->isValid()) {
             $postData = $form->getData();
+
             $itemModel = Api::_()->getModel('Blog\Model\Post');
             $postId = $itemModel->setItem($postData)->savePost();
 
@@ -136,6 +134,7 @@ class BlogController extends RestfulModuleController
             $this->redirect()->toUrl('/admin/blog/' . $postData['id']);
 
         } else {
+            //p($form->getMessages(), 1);
         }
 
         return array(
