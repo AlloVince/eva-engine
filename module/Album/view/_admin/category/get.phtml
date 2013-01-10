@@ -8,11 +8,11 @@ $this->textDelay('breadcrumbText', $title);
 if($this->form){
 	$form = $this->form;
 } else {
-    $form = $item['id'] ? new Group\Form\CategoryEditForm() : new Group\Form\CategoryCreateForm();
+    $form = $item['id'] ? new Album\Form\CategoryEditForm() : new Album\Form\CategoryCreateForm();
 }
 $form->setView($this)
 ->setMethod($item['id'] ? 'put' : 'post')
-->setAction($this->uri('/admin/group/category/'))
+->setAction($this->uri('/admin/album/category/'))
 ->bind($item)
 ->prepare();
 ?>
@@ -43,9 +43,9 @@ $form->setView($this)
                 <div class="page-header">
                     <?if($item):?>
                     <div class="btn-group pull-right">
-                        <a href="<?=$this->uri('/admin/group/category/create')?>" class="btn"><?=$this->_('Create Category')?></a>
-                        <a href="<?=$this->uri('/admin/group/?category=' . $item['id'])?>" class="btn"><?=$this->_('View Category Posts')?></a>
-                        <a href="<?=$this->uri('/admin/group/category/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/group/category/' . $item['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
+                        <a href="<?=$this->uri('/admin/album/category/create')?>" class="btn"><?=$this->_('Create Category')?></a>
+                        <a href="<?=$this->uri('/admin/album/?category=' . $item['id'])?>" class="btn"><?=$this->_('View Category Albums')?></a>
+                        <a href="<?=$this->uri('/admin/album/category/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/album/category/' . $item['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
                     </div>
                     <?endif?>
                     <h2><?=$title?></h2>

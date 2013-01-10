@@ -230,6 +230,16 @@ class PostForm extends \Eva\Form\Form
                 'value' => 'local',
             ),
         ),
+        'flag' => array (
+            'name' => 'flag',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Flag',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
     );
 
     /**

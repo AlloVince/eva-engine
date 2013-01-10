@@ -185,6 +185,13 @@ $form->useSubFormGroup()
                             <div class="help-block"><?=$form->helper('language', 'formElementErrors')?></div>
                         </div>
                     </div>
+                    <div class="control-group <?=$form->isError('flag') ? 'error' : '';?>">
+                        <?=$form->helper('flag', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('flag', array('class' => 'span1'))?>        
+                            <div class="help-block"><?=$form->helper('flag', 'formElementErrors')?></div>
+                        </div>
+                    </div>
                 </fieldset>
             </div>
         </div><!--span5 end-->
