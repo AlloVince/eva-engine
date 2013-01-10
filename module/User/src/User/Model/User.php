@@ -46,8 +46,8 @@ class User extends AbstractModel
         $roleUserItem = $this->getItem('User\Item\RoleUser');
         $roleUserItem->user_id = $item->id;
         $roleUserItem->remove();
-        $item->save();
         */
+        $item->save();
 
         if($item->hasLoadedRelationships()){
             foreach($item->getLoadedRelationships() as $key => $relItem){
