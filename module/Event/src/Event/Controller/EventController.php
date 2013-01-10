@@ -44,6 +44,7 @@ class EventController extends RestfulModuleController
                         'getThumb()',
                     )
                 ),
+
             ), 
         ));
 

@@ -12,6 +12,10 @@ class EventCreateForm extends EventForm
                 'collection' => true,
                 'optionsCallback' => 'initCategories',
             ),
+            'Tags' => array(
+                'formClass' => 'Event\Form\TagsForm',
+                'collection' => true,
+            ),
         ),
     );
 

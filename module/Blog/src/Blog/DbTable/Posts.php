@@ -75,6 +75,26 @@ class Posts extends TableGateway
             }
         }
 
+        if($params->tag) {
+            $tagModel = \Eva\Api::_()->getModel('Blog\Model\Tag');
+            $tag = $tagModel->getTag($params->tag);
+
+            if($tag) {
+                $tagId = $tag['id'];
+                $tagPostTable = \Eva\Api::_()->getDbTable('Blog\DbTable\TagsPosts'); 
+                $tagPostTableName = $tagPostTable->initTableName()->getTable();
+
+                $this->join(
+                    $tagPostTableName,
+                    "id = $tagPostTableName.post_id",
+                    array('tag_id')
+                ); 
+                $this->where(array("$tagPostTableName.tag_id" => $tagId));
+            } else {
+                return false;
+            }
+        }
+
         $orders = array(
             'idasc' => 'id ASC',
             'iddesc' => 'id DESC',

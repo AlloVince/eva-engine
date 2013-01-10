@@ -21,6 +21,7 @@ $form->useSubFormGroup()
      ->bind($item)
      ->prepare();
 
+$tags = isset($item['Tags']) ? $item['Tags'] : array();
 ?>
 <div class="row">
     <form <?=$this->formAttr($form)?>>
@@ -159,7 +160,7 @@ $form->useSubFormGroup()
                     <div class="control-group <?=$form->isError('isRepeat') ? 'error' : '';?>">
                         <?=$form->helper('isRepeat', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper('isRepeat', array('class' => ''))?>        
+                            <?=$form->helper('isRepeat', 'formRadio', array('class' => ''))?>        
                             <div class="help-block"><?=$form->helper('isRepeat', 'formElementErrors')?></div>
                         </div>
                     </div>
@@ -245,6 +246,24 @@ $form->useSubFormGroup()
                         <div class="controls">
                             <?=$form->helper('registrationEnd', array('class' => ''))?>
                             <div class="help-block"><?=$form->helper('registrationEnd', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div><!--span5 end-->
+
+        <div class="span5">
+            <div class="slate">
+                <div class="page-header">
+                    <h3><?=$this->_('Tags')?></h3>
+                </div>
+
+                <fieldset class="form-horizontal">
+                    <div class="control-group">
+                        <label class="control-label">Tags</label>
+                        <div class="controls">
+                            <?$tagForm = $form->get('Tags')->get('0');?>
+                            <?=$tagForm->helper('tagName', array('id' => 'tagging', 'class' => 'input-block-level', 'value' => $this->tagging($tags)->toNameString()))?> 
                         </div>
                     </div>
                 </fieldset>
@@ -379,130 +398,135 @@ $form->useSubFormGroup()
 
 
 <script>
-    eva.ready(function(){
+eva.ready(function(){
+        eva.callback.connect = function(item, parentWindow){
+                $("#event-form-eventfileform-file-id").val(item.attr("data-connect-id"));
+                var data = $.parseJSON(item.attr('data-connect-json'));
+                $("#post-image").attr("src", data.Thumb);
+                $.fn.colorbox.close();
+        }
+        eva.loadcss(eva.s('/lib/js/jquery/colorbox/colorbox.css'));
+        eva.loader(eva.s('/lib/js/jquery/colorbox/jquery.colorbox.js'), function(){
+                $("#connect-image").colorbox({
+                        iframe:true,
+                        width:"80%",
+                        height:"80%"
+                });
+        });
 
-            eva.callback.connect = function(item, parentWindow){
-                    $("#event-form-eventfileform-file-id").val(item.attr("data-connect-id"));
-                    var data = $.parseJSON(item.attr('data-connect-json'));
-                    $("#post-image").attr("src", data.Thumb);
-                    $.fn.colorbox.close();
-            }
-            eva.loadcss(eva.s('/lib/js/jquery/colorbox/colorbox.css'));
-            eva.loader(eva.s('/lib/js/jquery/colorbox/jquery.colorbox.js'), function(){
-                    $("#connect-image").colorbox({
-                            iframe:true,
-                            width:"80%",
-                            height:"80%"
-                    });
-            });
+        eva.loadcss(eva.s('/lib/js/jquery/jquery.select2/select2.css'));
+        eva.loader(eva.s('/lib/js/jquery/jquery.select2/select2.js'), function(){
+                $('#tagging').select2({
+                        tags : <?=$this->json($this->tagging($tags)->toNameArray())?>
+                });
+        });
+
+        $("#save-draft").on('click', function(){
+                $("#blog-form-posteditform-status").val('draft');
+        });
+
+        var editor = $("#blog-form-textform-content");
+
+        var editorMd;
+        var mdInited = false;
+        var initMd = function(_editor){
+                if(true === mdInited) {
+                        return;
+                }
+                eva.loadcss(eva.s(['/lib/js/codemirror/lib/codemirror.css', '/lib/js/codemirror/theme/ambiance.css']));
+                eva.loader(eva.s(['/lib/js/codemirror/lib/codemirror.js', '/lib/js/codemirror/mode/xml/xml.js', '/lib/js/codemirror/mode/markdown/markdown.js', '/lib/js/showdown/showdown.js']), function(){
+                        mdInited = true;
+                        builtMdEditor(_editor);
+                });
+        }
+        var builtMdEditor = function(_editor){
+                if(!mdInited){
+                        initMd(_editor); 
+                        return;
+                }
+                editorMd = CodeMirror.fromTextArea(_editor[0], {
+                        "mode":"markdown",
+                        "theme":"ambiance",
+                        "lineNumbers":true,
+                        "lineWrapping":true,
+                        onChange : function(){
+                        }
+                });	
+        }
+        var removeMdEditor = function(){
+                if(!editorMd){
+                        return;
+                }
+                editorMd.toTextArea();
+        }
 
 
-            $("#save-draft").on('click', function(){
-                    $("#blog-form-posteditform-status").val('draft');
-            });
+        var editorHtml;
+        var htmlInited = false;
+        var initHtml = function(_editor){
+                if(true === htmlInited) {
+                        return;
+                }
+                eva.loader(eva.s(["/lib/js/tiny_mce/jquery.tinymce.js"]), function(){
+                        htmlInited = true;
+                        builtHtmlEditor(_editor);
+                });
+        }
+        var builtHtmlEditor = function(_editor){
+                if(!htmlInited){
+                        initHtml(_editor); 
+                        return;
+                }
 
-            var editor = $("#blog-form-textform-content");
+                var mceGlobelConfig = {
+                        mode : "textareas",
+                        theme : "advanced",
+                        plugins : "autolink,lists,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
 
-            var editorMd;
-            var mdInited = false;
-            var initMd = function(_editor){
-                    if(true === mdInited) {
-                            return;
-                    }
-                    eva.loadcss(eva.s(['/lib/js/codemirror/lib/codemirror.css', '/lib/js/codemirror/theme/ambiance.css']));
-                    eva.loader(eva.s(['/lib/js/codemirror/lib/codemirror.js', '/lib/js/codemirror/mode/xml/xml.js', '/lib/js/codemirror/mode/markdown/markdown.js', '/lib/js/showdown/showdown.js']), function(){
-                            mdInited = true;
-                            builtMdEditor(_editor);
-                    });
-            }
-            var builtMdEditor = function(_editor){
-                    if(!mdInited){
-                            initMd(_editor); 
-                            return;
-                    }
-                    editorMd = CodeMirror.fromTextArea(_editor[0], {
-                            "mode":"markdown",
-                            "theme":"ambiance",
-                            "lineNumbers":true,
-                            "lineWrapping":true,
-                            onChange : function(){
-                            }
-                    });	
-            }
-            var removeMdEditor = function(){
-                    if(!editorMd){
-                            return;
-                    }
-                    editorMd.toTextArea();
-            }
+                        // Theme options
+                        theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
+                        theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
+                        theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
+                        theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,spellchecker,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,blockquote,pagebreak,|,insertfile,insertimage",
+                        theme_advanced_toolbar_location : "top",
+                        theme_advanced_toolbar_align : "left",
+                        theme_advanced_statusbar_location : "bottom",
+                        theme_advanced_resizing : true,
 
+                        remove_linebreaks : false,
+                        extended_valid_elements : "pre[cols|rows|disabled|name|readonly|class]",
+                        script_url : eva.s('/lib/js/tiny_mce/tiny_mce.js'),
 
-            var editorHtml;
-            var htmlInited = false;
-            var initHtml = function(_editor){
-                    if(true === htmlInited) {
-                            return;
-                    }
-                    eva.loader(eva.s(["/lib/js/tiny_mce/jquery.tinymce.js"]), function(){
-                            htmlInited = true;
-                            builtHtmlEditor(_editor);
-                    });
-            }
-            var builtHtmlEditor = function(_editor){
-                    if(!htmlInited){
-                            initHtml(_editor); 
-                            return;
-                    }
+                        content_css: eva.s("/lib/css/typo/typo.min.css"),
+                        spellchecker_rpc_url : eva.s('/lib/js/tiny_mce/plugins/spellchecker/rpc.php')
+                };
 
-                    var mceGlobelConfig = {
-                            mode : "textareas",
-                            theme : "advanced",
-                            plugins : "autolink,lists,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+                var mceconfig = mceGlobelConfig;
+                editorHtml = _editor.tinymce(mceconfig);
+        }
 
-                            // Theme options
-                            theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
-                            theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
-                            theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
-                            theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,spellchecker,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,blockquote,pagebreak,|,insertfile,insertimage",
-                            theme_advanced_toolbar_location : "top",
-                            theme_advanced_toolbar_align : "left",
-                            theme_advanced_statusbar_location : "bottom",
-                            theme_advanced_resizing : true,
+        var removeHtmlEditor = function(_editor){
+                if(!editorHtml){
+                        return;
+                }
+                tinyMCE.execCommand('mceToggleEditor', false, _editor.attr('id'));
+        }
 
-                            remove_linebreaks : false,
-                            extended_valid_elements : "pre[cols|rows|disabled|name|readonly|class]",
-                            script_url : eva.s('/lib/js/tiny_mce/tiny_mce.js'),
-
-                            content_css: eva.s("/lib/css/typo/typo.min.css"),
-                            spellchecker_rpc_url : eva.s('/lib/js/tiny_mce/plugins/spellchecker/rpc.php')
-                    };
-
-                    var mceconfig = mceGlobelConfig;
-                    editorHtml = _editor.tinymce(mceconfig);
-            }
-
-            var removeHtmlEditor = function(_editor){
-                    if(!editorHtml){
-                            return;
-                    }
-                    tinyMCE.execCommand('mceToggleEditor', false, _editor.attr('id'));
-            }
-
-            var switchEditor = function(){
-                    var codeType = $("input[name='codeType']:checked").val();
-                    if(codeType == 'markdown'){
-                            removeHtmlEditor(editor);
-                            builtMdEditor(editor); 
-                        } else if(codeType == 'html'){
-                            removeMdEditor(editor);
-                            builtHtmlEditor(editor);
-                    }
-            }
-            switchEditor();
-            $("input[name='codeType']").on("change", function(){
-                    if(confirm('Content will be changed, are you sure ?')){
-                            switchEditor(); 
-                    }
-            });
-    });
+        var switchEditor = function(){
+                var codeType = $("input[name='codeType']:checked").val();
+                if(codeType == 'markdown'){
+                        removeHtmlEditor(editor);
+                        builtMdEditor(editor); 
+                    } else if(codeType == 'html'){
+                        removeMdEditor(editor);
+                        builtHtmlEditor(editor);
+                }
+        }
+        switchEditor();
+        $("input[name='codeType']").on("change", function(){
+                if(confirm('Content will be changed, are you sure ?')){
+                        switchEditor(); 
+                }
+        });
+});
 </script>

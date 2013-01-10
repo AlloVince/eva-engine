@@ -17,22 +17,6 @@ $form->setView($this)
 ->prepare();
 ?>
 
-<input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
-<div id="category-create-succeed" class="alert alert-success hide">
-    <a href="#" data-dismiss="alert" class="close">x</a>
-    <h4 class="alert-heading"><?=$this->_('New Category Created')?></h4>
-</div>
-
-<div id="category-edit-succeed" class="alert alert-success hide">
-    <a href="#" data-dismiss="alert" class="close">x</a>
-    <h4 class="alert-heading"><?=$this->_('Category Edit Succeed')?></h4>
-</div>
-
-<div id="category-edit-failed" class="alert alert-error hide">
-    <a href="#" data-dismiss="alert" class="close">x</a>
-    <h4 class="alert-heading"><?=$this->_('Category Edit Failed')?></h4>
-</div>
-
 <div class="row">
 
     <form <?=$this->formAttr($form)?>>

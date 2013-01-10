@@ -181,11 +181,22 @@ class EventForm extends \Eva\Form\Form
         ),
         'isRepeat' => array (
             'name' => 'isRepeat',
-            'type' => 'checkbox',
+            'type' => 'radio',
             'options' => array (
                 'label' => 'Repeat',
+                'value_options' => array (
+                    'yes' => array (
+                        'label' => 'Yes',
+                        'value' => 1,
+                    ),
+                    'no' => array (
+                        'label' => 'No',
+                        'value' => 0,
+                    ),
+                ),
             ),
             'attributes' => array (
+                'value' => '0',
             ),
         ),
         'repeatStartDate' => array (
@@ -758,6 +769,8 @@ class EventForm extends \Eva\Form\Form
                     'name' => 'InArray',
                     'options' => array (
                         'haystack' => array (
+                            '0',
+                            '1',
                         ),
                     ),
                 ),

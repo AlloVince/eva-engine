@@ -142,11 +142,6 @@ class Event extends AbstractModel
         
         $this->trigger('save.pre');
         
-        //Admin save item will remove all categories
-        $categoryEventItem = $this->getItem('Event\Item\CategoryEvent');
-        $categoryEventItem->event_id = $item->id;
-        $categoryEventItem->remove();
-        
         $item->save();
 
         if($item->hasLoadedRelationships()){
