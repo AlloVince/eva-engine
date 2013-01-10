@@ -130,6 +130,9 @@ CREATE TABLE IF NOT EXISTS `eva_blog_posts_files` (
   PRIMARY KEY (`post_id`,`file_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
 DROP TABLE IF EXISTS `eva_blog_tags`;
 CREATE TABLE IF NOT EXISTS `eva_blog_tags` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
@@ -139,7 +142,7 @@ CREATE TABLE IF NOT EXISTS `eva_blog_tags` (
   `orderNumber` int(10) NOT NULL DEFAULT '0',
   `count` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=142 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=143 ;
 
 DROP TABLE IF EXISTS `eva_blog_tags_posts`;
 CREATE TABLE IF NOT EXISTS `eva_blog_tags_posts` (
@@ -152,13 +155,12 @@ DROP TABLE IF EXISTS `eva_event_tags`;
 CREATE TABLE IF NOT EXISTS `eva_event_tags` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `tagName` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `linkTo` enum('book','tag','post','page') COLLATE utf8_unicode_ci DEFAULT NULL,
-  `parentId` int(10) DEFAULT NULL,
-  `rootId` int(10) DEFAULT NULL,
-  `orderNumber` int(10) DEFAULT NULL,
+  `parentId` int(10) NOT NULL DEFAULT '0',
+  `rootId` int(10) NOT NULL DEFAULT '0',
+  `orderNumber` int(10) NOT NULL DEFAULT '0',
   `count` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=139 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=141 ;
 
 DROP TABLE IF EXISTS `eva_event_tags_events`;
 CREATE TABLE IF NOT EXISTS `eva_event_tags_events` (
@@ -166,5 +168,24 @@ CREATE TABLE IF NOT EXISTS `eva_event_tags_events` (
   `event_id` int(10) NOT NULL,
   PRIMARY KEY (`tag_id`,`event_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `eva_user_tags`;
+CREATE TABLE IF NOT EXISTS `eva_user_tags` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `tagName` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `parentId` int(10) NOT NULL DEFAULT '0',
+  `rootId` int(10) NOT NULL DEFAULT '0',
+  `orderNumber` int(10) NOT NULL DEFAULT '0',
+  `count` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=142 ;
+
+DROP TABLE IF EXISTS `eva_user_tags_users`;
+CREATE TABLE IF NOT EXISTS `eva_user_tags_users` (
+  `user_id` int(10) NOT NULL,
+  `tag_id` int(10) NOT NULL,
+  PRIMARY KEY (`user_id`,`tag_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 
 
