@@ -102,6 +102,16 @@
                         </ul>
                         </li>
                         <?endif?>
+                        <?if($this->hasmodule('Album')):?>
+                        <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="collapse" data-target="#album-dropdown" href="#"><i class="icon-group"></i> <?=$this->_('Album')?> <b class="caret"></b></a>
+                        <ul id="group-dropdown" class="collapse">
+                            <li data-highlight-url="/admin/album/(\d+)*$"><a href="<?=$this->uri('/admin/album/')?>"><?=$this->_('Album Management')?></a></li>
+                            <li data-highlight-url="/admin/album/create"><a href="<?=$this->uri('/admin/album/create')?>"><?=$this->_('Create Album')?></a></li>
+                            <li data-highlight-url="/admin/album/category/(\d+|create|remove)*$"><a href="<?=$this->uri('/admin/album/category/')?>"><?=$this->_('Album Categories')?></a></li>
+                        </ul>
+                        </li>
+                        <?endif?>
                         <?if($this->hasmodule('User')):?>
                         <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="collapse" data-target="#user-dropdown" href="#"><i class="icon-user"></i> <?=$this->_('User')?> <b class="caret"></b></a>

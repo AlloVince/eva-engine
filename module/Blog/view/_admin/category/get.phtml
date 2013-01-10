@@ -45,7 +45,7 @@ $form->setView($this)
                     <div class="btn-group pull-right">
                         <a href="<?=$this->uri('/admin/blog/category/create')?>" class="btn"><?=$this->_('Create Category')?></a>
                         <a href="<?=$this->uri('/admin/blog/?category=' . $item['id'])?>" class="btn"><?=$this->_('View Category Posts')?></a>
-                        <a href="<?=$this->uri('/admin/blog/category/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/category/' . $item['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
+                        <a href="<?=$this->uri('/admin/blog/category/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/blog/category/' . $item['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
                     </div>
                     <?endif?>
                     <h2><?=$title?></h2>
