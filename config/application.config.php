@@ -4,6 +4,7 @@ return array(
         'Core',
         'Blog',
         'File',
+        'Album',
         'User',
         'Event',
         'Activity',

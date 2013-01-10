@@ -793,6 +793,11 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     {
         $dataClass = $this->getDataClass();
         $where = $this->primaryWhere();
+        if(!$where){
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Remove item %s required a where condition', get_class($this)
+            ));
+        }
         $dataClass->where($where)->remove();
         return true;
     }

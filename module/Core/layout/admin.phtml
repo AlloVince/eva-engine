@@ -54,7 +54,7 @@
                         <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="collapse" data-target="#website-dropdown" href="#"><i class="icon-sitemap"></i> <?=$this->_('Blog')?> <b class="caret"></b></a>
                         <ul id="website-dropdown" class="collapse">
-                            <li data-highlight-url="/admin/blog/(\d+|(remove.*))*$"><a href="<?=$this->uri('/admin/blog/')?>"><?=$this->_('Pages')?></a></li>
+                            <li data-highlight-url="/admin/blog/(\d+|(remove.*))*$"><a href="<?=$this->uri('/admin/blog/')?>"><?=$this->_('Posts')?></a></li>
                             <li data-highlight-url="/admin/blog/create$"><a href="<?=$this->uri('/admin/blog/create')?>"><?=$this->_('Add New Post')?></a></li>
                             <li data-highlight-url="/admin/blog/category/(\d+|create|remove)*$"><a href="<?=$this->uri('/admin/blog/category/')?>"><?=$this->_('Page Categories')?></a></li>
                             <li data-highlight-url="/admin/blog/comment/.*$"><a href="<?=$this->uri('/admin/blog/comment/')?>"><?=$this->_('Comments')?></a></li>
@@ -104,8 +104,8 @@
                         <?endif?>
                         <?if($this->hasmodule('Album')):?>
                         <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="collapse" data-target="#album-dropdown" href="#"><i class="icon-group"></i> <?=$this->_('Album')?> <b class="caret"></b></a>
-                        <ul id="group-dropdown" class="collapse">
+                        <a class="dropdown-toggle" data-toggle="collapse" data-target="#album-dropdown" href="#"><i class="icon-camera-retro"></i> <?=$this->_('Album')?> <b class="caret"></b></a>
+                        <ul id="album-dropdown" class="collapse">
                             <li data-highlight-url="/admin/album/(\d+)*$"><a href="<?=$this->uri('/admin/album/')?>"><?=$this->_('Album Management')?></a></li>
                             <li data-highlight-url="/admin/album/create"><a href="<?=$this->uri('/admin/album/create')?>"><?=$this->_('Create Album')?></a></li>
                             <li data-highlight-url="/admin/album/category/(\d+|create|remove)*$"><a href="<?=$this->uri('/admin/album/category/')?>"><?=$this->_('Album Categories')?></a></li>

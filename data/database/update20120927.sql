@@ -112,3 +112,59 @@ ALTER TABLE `eva_user_friends` ADD `request_user_id` INT NOT NULL DEFAULT '0' AF
 
 INSERT INTO `eva`.`eva_user_roles` (`id`, `roleKey`, `roleName`, `description`) VALUES (NULL, 'PAID_MEMBER', 'Paid Member', NULL);
 
+
+
+
+
+
+
+
+
+
+----2013-01-10
+
+DROP TABLE IF EXISTS `eva_blog_posts_files`;
+CREATE TABLE IF NOT EXISTS `eva_blog_posts_files` (
+  `post_id` int(10) NOT NULL,
+  `file_id` int(10) NOT NULL,
+  PRIMARY KEY (`post_id`,`file_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `eva_blog_tags`;
+CREATE TABLE IF NOT EXISTS `eva_blog_tags` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `tagName` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `parentId` int(10) NOT NULL DEFAULT '0',
+  `rootId` int(10) NOT NULL DEFAULT '0',
+  `orderNumber` int(10) NOT NULL DEFAULT '0',
+  `count` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=142 ;
+
+DROP TABLE IF EXISTS `eva_blog_tags_posts`;
+CREATE TABLE IF NOT EXISTS `eva_blog_tags_posts` (
+  `tag_id` int(10) NOT NULL,
+  `post_id` int(10) NOT NULL,
+  PRIMARY KEY (`tag_id`,`post_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `eva_event_tags`;
+CREATE TABLE IF NOT EXISTS `eva_event_tags` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `tagName` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `linkTo` enum('book','tag','post','page') COLLATE utf8_unicode_ci DEFAULT NULL,
+  `parentId` int(10) DEFAULT NULL,
+  `rootId` int(10) DEFAULT NULL,
+  `orderNumber` int(10) DEFAULT NULL,
+  `count` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=139 ;
+
+DROP TABLE IF EXISTS `eva_event_tags_events`;
+CREATE TABLE IF NOT EXISTS `eva_event_tags_events` (
+  `tag_id` int(10) NOT NULL,
+  `event_id` int(10) NOT NULL,
+  PRIMARY KEY (`tag_id`,`event_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
