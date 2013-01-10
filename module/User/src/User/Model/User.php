@@ -7,18 +7,6 @@ use Eva\Api,
 
 class User extends AbstractModel
 {
-    protected $map = array(
-        'small' => array(
-        
-        ),
-        'medium' => array(
-        
-        ),
-        'large' => array(
-        
-        )
-    );
-
     public function createUser(array $data = array())
     {
         if($data) {
@@ -54,10 +42,12 @@ class User extends AbstractModel
         $this->trigger('save.pre');
 
         //Admin save item will remove all user roles
+        /*
         $roleUserItem = $this->getItem('User\Item\RoleUser');
         $roleUserItem->user_id = $item->id;
         $roleUserItem->remove();
         $item->save();
+        */
 
         if($item->hasLoadedRelationships()){
             foreach($item->getLoadedRelationships() as $key => $relItem){

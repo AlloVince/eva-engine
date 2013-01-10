@@ -35,6 +35,9 @@ class User extends AbstractItem
                 'joinColumn' => 'role_id',
                 'referencedColumn' => 'id',
             ),
+            'inverseJoinParameters' => array(
+                'noLimit' => true,
+            ),
         ),
         'RoleUser' => array(
             'targetEntity' => 'User\Item\RoleUser',
@@ -88,6 +91,24 @@ class User extends AbstractItem
             ),
             'inverseJoinParameters' => array(
                 'relationshipStatus' => 'approved',
+            ),
+        ),
+        'Tags' => array(
+            'targetEntity' => 'User\Item\Tag',
+            'relationship' => 'ManyToMany',
+            'mappedBy' => 'Tags',
+            'joinColumns' => array(
+                'joinColumn' => 'user_id',
+                'referencedColumn' => 'id',
+            ),
+            'inversedBy' => 'User\Item\TagUser',
+            'inversedMappedBy' => 'TagUser',
+            'inverseJoinColumns' => array(
+                'joinColumn' => 'tag_id',
+                'referencedColumn' => 'id',
+            ),
+            'inverseJoinParameters' => array(
+                'noLimit' => true,
             ),
         ),
     );

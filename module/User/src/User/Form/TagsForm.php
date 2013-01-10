@@ -5,7 +5,6 @@
  * @link      https://github.com/AlloVince/eva-engine
  * @copyright Copyright (c) 2012 AlloVince (http://avnpc.com/)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Eva_Api.php
  * @author    AlloVince
  */
 
@@ -18,7 +17,7 @@ namespace User\Form;
  * @category   Eva
  * @package    Eva_Form
  */
-class ResetPasswordForm extends \Eva\Form\Form
+class TagsForm extends \Eva\Form\Form
 {
     /**
      * Form basic elements
@@ -26,34 +25,44 @@ class ResetPasswordForm extends \Eva\Form\Form
      * @var array
      */
     protected $mergeElements = array (
-        'code' => array (
-            'name' => 'code',
+        'id' => array (
+            'name' => 'id',
             'type' => 'hidden',
             'options' => array (
-                'label' => 'Verify Code',
+                'label' => 'Id',
             ),
             'attributes' => array (
                 'value' => '',
             ),
         ),
-        'inputPassword' => array (
-            'name' => 'inputPassword',
-            'type' => 'password',
+        'tagName' => array (
+            'name' => 'tagName',
+            'type' => 'text',
             'options' => array (
-                'label' => 'New Password',
+                'label' => 'Tags',
             ),
             'attributes' => array (
                 'value' => '',
             ),
         ),
-        'repeatPassword' => array (
-            'name' => 'repeatPassword',
-            'type' => 'password',
+        'parentId' => array (
+            'name' => 'parentId',
+            'type' => 'number',
             'options' => array (
-                'label' => 'Repeat Password',
+                'label' => 'Parent Id',
             ),
             'attributes' => array (
-                'value' => '',
+                'value' => '0',
+            ),
+        ),
+        'orderNumber' => array (
+            'name' => 'orderNumber',
+            'type' => 'number',
+            'options' => array (
+                'label' => 'Order Number',
+            ),
+            'attributes' => array (
+                'value' => '0',
             ),
         ),
     );
@@ -64,9 +73,9 @@ class ResetPasswordForm extends \Eva\Form\Form
      * @var array
      */
     protected $mergeFilters = array (
-        'code' => array (
-            'name' => 'code',
-            'required' => true,
+        'id' => array (
+            'name' => 'id',
+            'required' => false,
             'filters' => array (
             ),
             'validators' => array (
@@ -77,51 +86,56 @@ class ResetPasswordForm extends \Eva\Form\Form
                 ),
             ),
         ),
-
-        'inputPassword' => array (
-            'name' => 'inputPassword',
-            'required' => true,
+        'tagName' => array (
+            'name' => 'tagName',
+            'required' => false,
             'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
             ),
             'validators' => array (
+                'notEmpty' => array (
+                    'name' => 'NotEmpty',
+                    'options' => array (
+                    ),
+                ),
                 'stringLength' => array (
                     'name' => 'StringLength',
                     'options' => array (
-                        'min' => '6',
-                        'max' => '16',
+                        'max' => '20',
                     ),
                 ),
             ),
         ),
-        'repeatPassword' => array (
-            'name' => 'repeatPassword',
-            'required' => true,
+        'parentId' => array (
+            'name' => 'parentId',
+            'required' => false,
             'filters' => array (
             ),
             'validators' => array (
-                'equalTo' => array(
-                    'name' => 'Identical',
+                'notEmpty' => array (
+                    'name' => 'NotEmpty',
                     'options' => array (
-                        'token' => 'inputPassword',
-                        'messages' => array(
-                            \Zend\Validator\Identical::NOT_SAME => 'Password not match',
-                        ),
+                    ),
+                ),
+            ),
+        ),
+        'orderNumber' => array (
+            'name' => 'orderNumber',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+                'notEmpty' => array (
+                    'name' => 'NotEmpty',
+                    'options' => array (
                     ),
                 ),
             ),
         ),
     );
-
-    public function prepareData($data)
-    {
-        $data['password'] = $data['inputPassword'];
-        unset($data['inputPassword'], $data['repeatPassword']);
-        return $data;
-    }
-
-    public function beforeBind($data)
-    {
-        return $data;
-    }
-
 }
