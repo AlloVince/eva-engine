@@ -86,6 +86,26 @@ class Users extends TableGateway
             }    
         }
 
+        if($params->tag) {
+            $tagModel = \Eva\Api::_()->getModel('User\Model\Tag');
+            $tag = $tagModel->getTag($params->tag);
+
+            if($tag) {
+                $tagId = $tag['id'];
+                $tagUserTable = \Eva\Api::_()->getDbTable('User\DbTable\TagsUsers'); 
+                $tagUserTableName = $tagUserTable->initTableName()->getTable();
+
+                $this->join(
+                    $tagUserTableName,
+                    "id = $tagUserTableName.user_id",
+                    array('tag_id')
+                ); 
+                $this->where(array("$tagUserTableName.tag_id" => $tagId));
+            } else {
+                return false;
+            }
+        }
+
         if ($params->rows) {
             $this->limit((int) $params->rows);
         }

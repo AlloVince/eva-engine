@@ -27,9 +27,12 @@ $lableMap = array(
     <div class="span10">
         <div class="slate">
             <form <?=$this->formAttr($form)?> class="form-inline">
-                <?=$form->helper('keyword', array('class' => 'input-large', 'placeholder' => 'Keyword...'))?>
+                <?=$form->helper('keyword', array('class' => 'input-medium', 'placeholder' => 'Keyword...'))?>
                 <?=$form->helper('eventStatus', 'formSelect', array('class' => 'span2'))?>
                 <?=$form->helper('visibility', 'formSelect', array('class' => 'span2'))?>
+                <?=$form->helper('afterStartDay', array('class' =>'input-small datepicker', 'data-date-format' => 'yyyy-mm-dd', 'placeholder' => 'Start day'))?>
+                <?=$form->helper('beforeStartDay', array('class' => 'input-small datepicker', 'data-date-format' => 'yyyy-mm-dd', 'placeholder' => 'End day'))?>
+                <?=$form->helper('tag', 'formText', array('class' => 'span1', 'placeholder' => 'Tag'))?>
                 <button class="btn" type="submit"><?=$this->_('Filter Events')?></button>
             </form>
         </div>

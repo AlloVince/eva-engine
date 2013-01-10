@@ -82,6 +82,16 @@ class UserSearchForm extends UserForm
                 'label' => 'Industry',
             ),
         ),
+        'tag' => array(
+            'name' => 'tag',
+            'type' => 'text',
+            'options' => array(
+                'label' => 'Text',
+            ),
+            'attributes' => array(
+                'value' => '',
+            ),
+        ),
     );
 
 
