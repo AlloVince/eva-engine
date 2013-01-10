@@ -51,6 +51,27 @@ class Post extends AbstractItem
                 'joinColumn' => 'category_id',
                 'referencedColumn' => 'id',
             ),
+            'inverseJoinParameters' => array(
+                'noLimit' => true,
+            ),
+        ),
+        'Tags' => array(
+            'targetEntity' => 'Blog\Item\Tag',
+            'relationship' => 'ManyToMany',
+            'mappedBy' => 'Tags',
+            'joinColumns' => array(
+                'joinColumn' => 'post_id',
+                'referencedColumn' => 'id',
+            ),
+            'inversedBy' => 'Blog\Item\TagPost',
+            'inversedMappedBy' => 'TagPost',
+            'inverseJoinColumns' => array(
+                'joinColumn' => 'tag_id',
+                'referencedColumn' => 'id',
+            ),
+            'inverseJoinParameters' => array(
+                'noLimit' => true,
+            ),
         ),
     );
 

@@ -57,6 +57,11 @@ class BlogController extends RestfulModuleController
                 ),
                 'Categories' => array(
                 ),
+                'Tags' => array(
+                    'self' => array(
+                        '*',
+                    )
+                ),
             ),
             'proxy' => array(
                 'File\Item\File::PostCover' => array(
@@ -67,6 +72,7 @@ class BlogController extends RestfulModuleController
                 )
             ),
         ));
+        p($item);
 
         if(isset($item['FileConnect'][0])){
             $item['FileConnect'] = $item['FileConnect'][0];
@@ -82,7 +88,7 @@ class BlogController extends RestfulModuleController
         $postData = $this->params()->fromPost();
         $form = new Form\PostCreateForm();
         $form->useSubFormGroup()
-             ->bind($postData);
+        ->bind($postData);
 
         if ($form->isValid()) {
             $postData = $form->getData();

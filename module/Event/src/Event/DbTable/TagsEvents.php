@@ -1,19 +1,19 @@
 <?php
 
-namespace Blog\DbTable;
+namespace Event\DbTable;
 
 use Eva\Db\TableGateway\TableGateway;
 use Zend\Stdlib\Parameters;
 
-class TagsPosts extends TableGateway
+class TagsEvents extends TableGateway
 {
-    protected $tableName ='tags_posts';
-    protected $primaryKey = array('tag_id', 'post_id');
+    protected $tableName ='tags_events';
+    protected $primaryKey = array('tag_id', 'event_id');
 
     public function setParameters(Parameters $params)
     {
-        if($params->post_id){
-            $this->where(array('post_id' => $params->post_id));
+        if($params->event_id){
+            $this->where(array('event_id' => $params->event_id));
         }
 
         if($params->tag_id){
