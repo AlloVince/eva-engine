@@ -46,7 +46,7 @@ class UploadForm extends FileForm
                 'ignoreNoFile' => true,
             ),
             'filters' => array (
-                array (
+                'autoRename' => array (
                     'name' => '\Eva\Filter\File\AutoRename',
                     'options' => array(
                         'configkey' => 'default',
@@ -54,14 +54,6 @@ class UploadForm extends FileForm
                 ),
             ),
             'validators' => array (
-                /*`
-                array (
-                    'name' => 'File\Extension',
-                    'options' => array (
-                        'extension' => array('txt'),
-                    ),
-                ),
-                */
             ),
         ),
     );
