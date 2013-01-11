@@ -103,20 +103,6 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
     protected $filtersInited = false;
 
     /**
-    * File Transfer
-    *
-    * @var Eva\File\Transfer\TransferFactory
-    */
-    protected $fileTransfer;
-
-    /**
-    * File Transfer Options
-    *
-    * @var array
-    */
-    protected $fileTransferOptions = array();
-
-    /**
     * Sub Form Groups
     *
     * @var array
@@ -174,33 +160,6 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
         $this->init();
         $this->view = $view;
         return $this;
-    }
-
-
-    public function setFileTransferOptions($fileTransferOptions)
-    {
-        $this->fileTransferOptions = $fileTransferOptions;
-        return $this;
-    }
-
-    public function getFileTransferOptions()
-    {
-        return $this->fileTransferOptions;
-    }
-
-    public function setFileTransfer(TransferFactory $fileTransfer)
-    {
-        $this->fileTransfer = $fileTransfer;
-        return $this;
-    }
-
-    public function getFileTransfer()
-    {
-        if($this->fileTransfer){
-            return $this->fileTransfer;
-        }
-        $this->initFileTransfer();
-        return $this->fileTransfer = TransferFactory::factory($this->getFileTransferOptions());
     }
 
     public function setAutoElementId($autoElementId)
@@ -448,88 +407,6 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
         return $this->add($element);
     }
 
-    /*
-    protected function initFilters()
-    {
-        if(true === $this->filtersInited){
-            return $this;
-        }
-
-        $filters = $this->mergeFilters();
-
-        $formFactory  = $this->getFormFactory();
-        $inputFactory = $formFactory->getInputFilterFactory();
-
-        if (null === $this->filter) {
-            $inputFilter = $this->filter = new InputFilter();
-        } else {
-            $inputFilter = $this->filter;
-        }
-
-        foreach($filters as $name => $filter){
-            $input = $inputFactory->createInput($filter);
-            $inputFilter->add($input, $name);
-        }
-        $this->filtersInited = true;
-        return $this;
-    }
-    */
-
-    public function initFileTransfer()
-    {
-        $elements = $this->mergeElements();
-        $fileElements = array();
-        foreach($elements as $key => $element){
-            if(isset($element['type']) && $element['type'] == 'file'){
-                $fileElements[$key] = $element;
-            }
-        }
-
-        if(!$fileElements){
-            return $this;
-        }
-
-        $config = array(
-            'di' => array('instance' => array(
-                'Eva\File\Transfer\Adapter\Http' => array(
-                    'parameters' => array(
-                        'validators' => array(
-                        ),
-                        'filters' => array(
-                        ),
-                    ),
-                ),
-                'Eva\File\Transfer\Transfer' => array(
-                    'parameters' => array(
-                        'adapter' => 'Eva\File\Transfer\Adapter\Http',
-                    ),
-                ),
-            )
-        ));
-
-        $mergeFilters = $this->mergeFilters();
-        foreach($fileElements as $key => $element){
-            if(isset($mergeFilters[$key]['validators'])){
-                foreach($mergeFilters[$key]['validators'] as $validator){
-                    $config['di']['instance']['Eva\File\Transfer\Adapter\Http']['parameters']['validators'][] = array(
-                        $validator['name'], true, $validator['options'], $element['name']
-                    ); 
-                }
-            }
-            if(isset($mergeFilters[$key]['filters'])){
-                foreach($mergeFilters[$key]['filters'] as $filter){
-                    $config['di']['instance']['Eva\File\Transfer\Adapter\Http']['parameters']['filters'][$filter['name']] = $filter['options'];
-                }
-            }
-            if(isset($mergeFilters[$key]['options'])){
-                $config['di']['instance']['Eva\File\Transfer\Adapter\Http']['parameters']['options'] = $mergeFilters[$key]['options'];
-            }
-        }
-
-        $this->fileTransferOptions = $config;
-        return $this;
-    }
-
     public function getInputFilterSpecification()
     {
         return $this->mergeFilters();
@@ -585,22 +462,6 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
     {
         return sprintf('<input type="hidden" name="' . $inputName . '" value="%s">', $this->restfulMethod);
     }
-
-    public function isValid()
-    {
-        if(!$this->fileTransfer){
-            return parent::isValid();
-        }
-        $elementValid = parent::isValid();
-        $fileValid = $this->fileTransfer->isValid();
-        $result = $elementValid && $fileValid;
-        $this->isValid = $result;
-        if (!$result) {
-            $this->setMessages($this->fileTransfer->getMessages());
-        }
-        return $result;
-    }
-
 
     public function getData($flag = FormInterface::VALUES_NORMALIZED)
     {
