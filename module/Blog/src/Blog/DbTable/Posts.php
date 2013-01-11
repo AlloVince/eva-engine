@@ -35,6 +35,10 @@ class Posts extends TableGateway
             $this->where(array('user_id' => $params->user_id));
         }
 
+        if($params->flag){
+            $this->where(array('flag' => $params->flag));
+        }
+
         if($params->keyword){
             $keyword = $params->keyword;
             $this->where(function($where) use ($keyword){
