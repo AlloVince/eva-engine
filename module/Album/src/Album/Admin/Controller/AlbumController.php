@@ -95,6 +95,7 @@ class AlbumController extends RestfulModuleController
             $itemModel = Api::_()->getModel('Album\Model\Album');
             $user = \Core\Auth::getLoginUser('Auth_Admin');
             $postData['user_id'] = $user['id'];
+            $postData['user_name'] = $user['userName'];
             $albumId = $itemModel->setItem($postData)->createAlbum();
             $this->flashMessenger()->addMessage('album-create-succeed');
             $this->redirect()->toUrl('/admin/album/' . $albumId);
