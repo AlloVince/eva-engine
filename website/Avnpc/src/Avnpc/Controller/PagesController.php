@@ -38,6 +38,9 @@ class PagesController extends ActionController
                 ),
                 'Categories' => array(
                 ),
+                'Tags' => array(
+                    '*'
+                ),
             ),
             'proxy' => array(
                 'File\Item\File::PostCover' => array(

@@ -90,7 +90,7 @@ return array(
                 'options' => array(
                     'route' => '/thinking[/][:page][/]',
                     'constraints' => array(
-                        'page'     => '[0-9]+',
+                        'page'     => '[^/]+',
                     ),
                     'defaults' => array(
                         'controller' => 'Avnpc\Controller\IndexController',

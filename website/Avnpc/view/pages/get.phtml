@@ -10,6 +10,14 @@ $item = $this->item;
         <p class="copyright">日志未经声明，均为<a href="https://plus.google.com/104171418568283484752?rel=author">AlloVince</a>原创。版权采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/2.5/cn/" target="_blank">『 知识共享署名-非商业性使用 2.5 许可协议』</a>进行许可。</p>
         <article class="typo typocn">
         <?=$item['Text']['ContentHtml']?>
+        <?if($item['Tags']):?>
+        <hr />
+        <p>Tags :        
+        <?foreach($item['Tags'] as $tag):?>
+        <a href="<?=$this->uri('/thinking/'. $tag['tagName'])?>" class="label"><?=$tag['tagName']?></a>
+        <?endforeach?>
+        </p>
+        <?endif?>
         </article>
 
         <?if($item['Prev'] || $item['Next']):?>
