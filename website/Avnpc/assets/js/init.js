@@ -13,8 +13,8 @@ eva.ready(function(){
 	});
 
 	if($("#blog pre>code")[0]){
-		eva.loadcss(eva.s(['/assets/module/avnpc/js/github.css']));
-		eva.loader(eva.s(['/assets/module/avnpc/js/highlight.min.js']), function(){
+		eva.loadcss(eva.assets(['/module/avnpc/js/github.css']));
+		eva.loader(eva.assets(['/module/avnpc/js/highlight.min.js']), function(){
 			hljs.tabReplace = '    ';
 			hljs.initHighlightingOnLoad();
 		});
@@ -25,7 +25,7 @@ eva.ready(function(){
 	if($("#timeline-embed")[0]){
 		var $timeline = $("#timeline-embed");
 		$("body").addClass('timeline');
-		eva.loader(eva.s(['/assets/module/avnpc/timeline/js/storyjs-embed.js']), function(){
+		eva.loader(eva.assets(['/module/avnpc/timeline/js/storyjs-embed.js']), function(){
 			var minHeight = 550;
 			var height = $(window).height() > minHeight ? $(window).height() - 85 : minHeight;
 			var source = $timeline.html();
@@ -166,9 +166,9 @@ eva.story = function(){
 	}
 
 	eva.loader(eva.s([
-		'/assets/lib/js/jquery/jquery.masonry.js',
-		'/assets/lib/js/jquery/jquery.mousewheel.js',
-		'/assets/lib/js/jquery/jquery.jscrollpane.js'
+		'/lib/js/jquery/jquery.masonry.js',
+		'/lib/js/jquery/jquery.mousewheel.js',
+		'/lib/js/jquery/jquery.jscrollpane.js'
 	]), startStory);
 };
 
