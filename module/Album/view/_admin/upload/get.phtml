@@ -10,6 +10,7 @@ $form = new Album\Form\UploadForm();
 $form->setView($this)
 ->setMethod('post')
 ->setAction($this->uri('/admin/album/upload/'));
+p($form->get('upload'));
 ?>
 
 <div class="row">
@@ -55,7 +56,7 @@ $form->setView($this)
                             <div class="help-block"><?=$form->helper('upload', 'formElementErrors')?></div>
                         </div>
                     </div>
-<div class="control-group <?=$form->isError('upload') ? 'error' : '';?>">
+                    <div class="control-group <?=$form->isError('upload') ? 'error' : '';?>">
                         <?=$form->helper('upload', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
                             <?=$form->helper('upload', array('name' => 'upload[]', 'class' => 'fileuploader', 'multiple', 'data-url' => '/admin/file/'))?>

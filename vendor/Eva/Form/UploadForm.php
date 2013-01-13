@@ -146,9 +146,25 @@ class UploadForm extends Form implements UploadFormInterface
         $result = $elementValid && $fileValid;
         $this->isValid = $result;
         if (!$result) {
-            $this->fileTransferMessages = $fileTransferMessages = $this->fileTransfer->getMessages();
+            $fileTransferMessages = $this->fileTransfer->getMessages();
+            if($fileTransferMessages){
+                $this->fileTransferMessages = $fileTransferMessages = $this->resortFileTransferMessages($fileTransferMessages);
+            }
             $this->setMessages($fileTransferMessages);
         }
         return $result;
+    }
+
+    protected function resortFileTransferMessages(array $messages)
+    {
+        if(!$messages){
+            return $messages;
+        }
+        $resortedMessages = array();
+        foreach($messages as $key => $message){
+            $key = preg_replace('/_\d+_$/', '', $key);
+            $resortedMessages[$key][] = $message;
+        }
+        return $resortedMessages;
     }
 }
