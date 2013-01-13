@@ -90,6 +90,17 @@ class Group extends AbstractItem
             'joinParameters' => array(
             ),
         ),
+        'PostCount' => array(
+            'targetEntity' => 'Group\Item\GroupPost',
+            'relationship' => 'OneToMany',
+            'joinColumn' => 'group_id',
+            'referencedColumn' => 'id',
+            'asCount' => true,
+            'countKey' => 'postCount',
+            'joinParameters' => array(
+                'count' => true,
+            ),
+        ),
     );
 
     protected $map = array(

@@ -6,6 +6,7 @@ use Blog\Model\Post as PostModel;
 
 class Post extends PostModel
 {
+    protected $itemClass = 'Group\Item\Post';
     protected $groupPostPaginator;
 
     public function getGroupPostPaginator()
@@ -46,4 +47,5 @@ class Post extends PostModel
         }
         return $this;
     }
+
 }

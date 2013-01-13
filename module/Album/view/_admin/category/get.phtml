@@ -1,0 +1,132 @@
+<?
+$item = $this->item;
+$title = $item['id'] ? 'Edit Category' : 'Create Category';
+$title = $this->_($title);
+$this->headTitle($title, 'SET');
+$this->textDelay('breadcrumbText', $title);
+
+if($this->form){
+	$form = $this->form;
+} else {
+    $form = $item['id'] ? new Album\Form\CategoryEditForm() : new Album\Form\CategoryCreateForm();
+}
+$form->setView($this)
+->setMethod($item['id'] ? 'put' : 'post')
+->setAction($this->uri('/admin/album/category/'))
+->bind($item)
+->prepare();
+?>
+
+<input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
+<div id="category-create-succeed" class="alert alert-success hide">
+    <a href="#" data-dismiss="alert" class="close">x</a>
+    <h4 class="alert-heading"><?=$this->_('New Category Created')?></h4>
+</div>
+
+<div id="category-edit-succeed" class="alert alert-success hide">
+    <a href="#" data-dismiss="alert" class="close">x</a>
+    <h4 class="alert-heading"><?=$this->_('Category Edit Succeed')?></h4>
+</div>
+
+<div id="category-edit-failed" class="alert alert-error hide">
+    <a href="#" data-dismiss="alert" class="close">x</a>
+    <h4 class="alert-heading"><?=$this->_('Category Edit Failed')?></h4>
+</div>
+
+<div class="row">
+
+    <form <?=$this->formAttr($form)?>>
+        <?=$form->restful();?>
+        <?=$form->helper('id');?>
+        <div class="span5">
+            <div class="slate">
+                <div class="page-header">
+                    <?if($item):?>
+                    <div class="btn-group pull-right">
+                        <a href="<?=$this->uri('/admin/album/category/create')?>" class="btn"><?=$this->_('Create Category')?></a>
+                        <a href="<?=$this->uri('/admin/album/?category=' . $item['id'])?>" class="btn"><?=$this->_('View Category Albums')?></a>
+                        <a href="<?=$this->uri('/admin/album/category/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/album/category/' . $item['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
+                    </div>
+                    <?endif?>
+                    <h2><?=$title?></h2>
+                </div>
+                <fieldset class="">
+                    <div class="control-group <?=$form->isError('categoryName') ? 'error' : '';?>">
+                        <?=$form->helper('categoryName', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('categoryName', array('class' => 'span4'))?>        
+                            <div class="help-block"><?=$form->helper('categoryName', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError('parentId') ? 'error' : '';?>">
+                        <?=$form->helper('parentId', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?//=$form->helper('parentId', 'formSelect', array(
+                             //   'value_options' => $this->action('Blog\Api\Controller\CategoryController', 'selectAction'),
+                            //), array('replace' => false, 'i18n' => false))?>
+                            <div class="help-block"><?=$form->helper('parentId', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError('urlName') ? 'error' : '';?>">
+                        <?=$form->helper('urlName', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <div class="input-prepend input-append">
+                                <span class="add-on"><?=$this->serverUrl() . '/category/'?></span><?=$form->helper('urlName', array('class' => 'span1'))?><span class="add-on">/</span>
+                            </div>
+                            <div class="help-block"><?=$this->_('No input will create a random url')?></div>
+                            <div class="help-block"><?=$form->helper('urlName', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+
+                    <div class="control-group <?=$form->isError('description') ? 'error' : '';?>">
+                        <?=$form->helper('description', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('description', 'formTextarea', array('class' => 'span4'))?>        
+                            <div class="help-block"><?=$form->helper('description', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div><!--span5 end-->
+        
+        <?if($this->hasModule('File')):?>
+        <div class="span5">
+            <div class="slate">
+                <div class="page-header">
+                    <h2><?=$this->_('Category Image')?></h2>
+                </div>
+                <div class="well">
+                    <?if($item['File']):?>
+                    <img id="category-image" src="<?=$this->thumb($item['File']['Thumb'], array('h_250'))?>" alt="" />
+                    <?else:?>
+                    <img id="category-image" src="http://placehold.it/260x180" alt="" />
+                    <?endif?>
+                    <?//=$form->helper(array('FileConnect', 'file_id'), 'formHidden')?>
+                </div>
+                <a id="connect-image" href="<?=$this->uri('/api/file/')?>" class="btn"><?=$this->_('Select Image')?></a>
+            </div>
+        </div><!--span5 end-->
+        <?endif?>
+
+        <div class="span10 listing-buttons">
+            <button class="btn btn-info btn-large"><?=$this->_('Save')?></button>
+        </div>
+    </form>
+</div>
+
+<script>eva.ready(function(){
+        eva.callback.connect = function(item, parentWindow){
+                $("#file-form-fileconnectform-file-id").val(item.attr("data-connect-id"));
+                var data = $.parseJSON(item.attr('data-connect-json'));
+                $("#category-image").attr("src", data.Thumb);
+                $.fn.colorbox.close();
+        }
+        eva.loadcss(eva.s('/lib/js/jquery/colorbox/colorbox.css'));
+        eva.loader(eva.s('/lib/js/jquery/colorbox/jquery.colorbox.js'), function(){
+                $("#connect-image").colorbox({
+                        iframe:true,
+                        width:"80%",
+                        height:"80%"
+                });
+        });
+});</script>

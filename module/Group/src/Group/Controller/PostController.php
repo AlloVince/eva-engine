@@ -14,7 +14,7 @@
         public function indexAction()
         {
             $postData = $this->params()->fromPost();
-            $form = new \Event\Form\EventCreateForm();
+            $form = new \Epic\Form\PostCreateForm();
             $form->useSubFormGroup()
             ->bind($postData);
 
@@ -22,14 +22,14 @@
             if ($form->isValid()) {
                 $item = $form->getData();
                 $itemModel = Api::_()->getModel('Blog\Model\Post');
-
                 if($postData['group_id']) {
                     $this->groupId = $postData['group_id'];
+                    $groupId = $this->groupId;
                     $eventManager = $this->getServiceLocator()->get('Application')->getEventManager();
-                    $eventManager->attach('blog.model.post.create.post', function($event) use ($itemModel){
+                    $eventManager->attach('blog.model.post.create.post', function($event) use ($itemModel, $groupId){
                         $item = $itemModel->getItem();
                         $groupPostItem = $itemModel->getItem('Group\Item\GroupPost');
-                        $groupPostItem->group_id = $this->groupId;
+                        $groupPostItem->group_id = $groupId;
                         $groupPostItem->post_id = $item->id;
                         $groupPostItem->create();
                     });

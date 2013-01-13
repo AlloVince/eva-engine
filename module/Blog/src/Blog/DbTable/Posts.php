@@ -4,6 +4,7 @@ namespace Blog\DbTable;
 
 use Eva\Db\TableGateway\TableGateway;
 use Zend\Stdlib\Parameters;
+use Zend\Db\Sql\Expression;
 
 class Posts extends TableGateway
 {
@@ -18,6 +19,10 @@ class Posts extends TableGateway
             $this->page($params->page);
         }
 
+        if($params->noResult) {
+            $this->setNoResult(true);
+        }
+
         if($params->id){
             if(is_array($params->id)){
                 $this->where(array('id' => array_unique($params->id)));
@@ -28,6 +33,10 @@ class Posts extends TableGateway
 
         if($params->user_id){
             $this->where(array('user_id' => $params->user_id));
+        }
+
+        if($params->flag){
+            $this->where(array('flag' => $params->flag));
         }
 
         if($params->keyword){
@@ -70,6 +79,26 @@ class Posts extends TableGateway
             }
         }
 
+        if($params->tag) {
+            $tagModel = \Eva\Api::_()->getModel('Blog\Model\Tag');
+            $tag = $tagModel->getTag($params->tag);
+
+            if($tag) {
+                $tagId = $tag['id'];
+                $tagPostTable = \Eva\Api::_()->getDbTable('Blog\DbTable\TagsPosts'); 
+                $tagPostTableName = $tagPostTable->initTableName()->getTable();
+
+                $this->join(
+                    $tagPostTableName,
+                    "id = $tagPostTableName.post_id",
+                    array('tag_id')
+                ); 
+                $this->where(array("$tagPostTableName.tag_id" => $tagId));
+            } else {
+                return false;
+            }
+        }
+
         $orders = array(
             'idasc' => 'id ASC',
             'iddesc' => 'id DESC',
@@ -77,6 +106,8 @@ class Posts extends TableGateway
             'timedesc' => 'updateTime DESC',
             'titleasc' => 'title ASC',
             'titledesc' => 'title DESC',
+            'commentasc' => 'commentCount ASC',
+            'commentdesc' => 'commentCount DESC',
             'idarray' => 'FIELD(id, %s)',
         );
         if($params->order){

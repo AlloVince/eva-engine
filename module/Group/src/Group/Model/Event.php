@@ -7,6 +7,7 @@ use Event\Model\Event as EventModel;
 class Event extends EventModel
 {
     protected $groupEventPaginator;
+    protected $itemClass = 'Group\Item\Event';
 
     public function getGroupEventPaginator()
     {

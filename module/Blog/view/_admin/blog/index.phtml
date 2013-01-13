@@ -30,6 +30,7 @@ $lableMap = array(
                 <?=$form->helper('keyword', array('class' => 'input-large', 'placeholder' => 'Keyword...'))?>
                 <?=$form->helper('status', 'formSelect', array('class' => 'span2'))?>
                 <?=$form->helper('visibility', 'formSelect', array('class' => 'span2'))?>
+                <?=$form->helper('tag', 'formText', array('class' => 'span1', 'placeholder' => 'Tag'))?>
                 <?/*=$form->helper('category', 'formSelect', array(
                     'class' => 'span2',
                     'value_options' => $this->action('Blog\Api\Controller\CategoryController', 'selectAction'),

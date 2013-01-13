@@ -21,26 +21,8 @@ $form->useSubFormGroup()
      ->bind($item)
      ->prepare();
 
+$tags = isset($item['Tags']) ? $item['Tags'] : array();
 ?>
-
-<input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
-<div id="event-create-succeed" class="alert alert-success hide">
-    <a href="#" data-dismiss="alert" class="close">x</a>
-    <h4 class="alert-heading"><?=$this->_('New Event Created')?></h4>
-</div>
-
-<div id="event-edit-succeed" class="alert alert-success hide">
-    <a href="#" data-dismiss="alert" class="close">x</a>
-    <h4 class="alert-heading"><?=$this->_('Event Edit Succeed')?></h4>
-</div>
-
-<div id="event-edit-failed" class="alert alert-error hide">
-    <a href="#" data-dismiss="alert" class="close">x</a>
-    <h4 class="alert-heading"><?=$this->_('Event Edit Failed')?></h4>
-</div>
-
-
-
 <div class="row">
     <form <?=$this->formAttr($form)?>>
         <?=$form->restful();?>
@@ -66,6 +48,27 @@ $form->useSubFormGroup()
                         </div>
                     </div>
 
+                    <div class="datepair row">
+                        <div class="control-group controls-row">
+                            <div class="controls span3">
+                                <?=$form->helper('startDay', array('class' => 'input-small date start', 'data-date-format' => 'yyyy-mm-dd', 'placeholder' => 'Start Day'))?>        
+                                <?=$form->helper('startTime', array('class' => 'timepicker input-small time start', 'data-date-format' => 'yyyy-mm-dd', 'placeholder' => 'Start Time'))?>        
+                                <div class="help-block"><?=$form->helper('startDay', 'formElementErrors')?></div>
+                                <div class="help-block"><?=$form->helper('startTime', 'formElementErrors')?></div>
+                            </div>
+                            <div class="controls span3">
+                                <?=$form->helper('endDay', array('class' => 'input-small date end', 'data-date-format' => 'yyyy-mm-dd', 'placeholder' => 'End Day'))?>        
+                                <?=$form->helper('endTime', array('class' => 'timepicker input-small time end', 'data-date-format' => 'yyyy-mm-dd', 'placeholder' => 'End Day'))?>        
+                                <div class="help-block"><?=$form->helper('endDay', 'formElementErrors')?></div>
+                                <div class="help-block"><?=$form->helper('endTime', 'formElementErrors')?></div>
+                            </div>
+                            <div class="controls span3">
+                                <label><?=$form->helper('isFullDayEvent', 'formCheckbox', array('class' => 'inline'))?> All Day</label>
+                                <div class="help-block"><?=$form->helper('isFullDayEvent', 'formElementErrors')?></div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="control-group <?=$form->isError('urlName') ? 'error' : '';?>">
                         <?=$form->helper('urlName', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
@@ -79,7 +82,7 @@ $form->useSubFormGroup()
 
                     <div class="control-group <?=$form->isError(array('Text', 'content')) ? 'error' : '';?>">
                         <div id="editor-left" class="controls">
-                            <?=$form->helper(array('Text', 'content'), 'formTextarea', array('class' => 'span9', 'rows' => '15',))?>
+                            <?=$form->helper(array('Text', 'content'), 'formTextarea', array('class' => 'span9 editor-html', 'rows' => '15',))?>
                         </div>
                         <div id="editor-right" class="markdown-preview"></div>
                         <div class="help-block"><?=$form->helper(array('Text', 'content'), 'formElementErrors')?></div>
@@ -95,8 +98,22 @@ $form->useSubFormGroup()
                     <h3><?=$this->_('Event Setting')?></h3>
                 </div>
 
-
                 <fieldset class="form-horizontal">
+                    <div class="control-group <?=$form->isError('recommend') ? 'error' : '';?>">
+                        <?=$form->helper('recommend', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('recommend', 'formRadio', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('recommend', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+
+                    <div class="control-group <?=$form->isError('timezone') ? 'error' : '';?>">
+                        <?=$form->helper('timezone', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('timezone', array('class' => 'span2'))?>        
+                            <div class="help-block"><?=$form->helper('timezone', 'formElementErrors')?></div>
+                        </div>
+                    </div>
                     <div class="control-group <?=$form->isError('eventStatus') ? 'error' : '';?>">
                         <?=$form->helper('eventStatus', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
@@ -113,11 +130,11 @@ $form->useSubFormGroup()
                         </div>
                     </div>
 
-                    <div class="control-group <?=$form->isError('isFullDayEvent') ? 'error' : '';?>">
-                        <?=$form->helper('isFullDayEvent', 'label', array('class' => 'control-label'))?>
+                    <div class="control-group <?=$form->isError('memberEnable') ? 'error' : '';?>">
+                        <?=$form->helper('memberEnable', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper('isFullDayEvent', 'formSelect', array('class' => ''))?>
-                            <div class="help-block"><?=$form->helper('isFullDayEvent', 'formElementErrors')?></div>
+                            <?=$form->helper('memberEnable', 'formRadio', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('memberEnable', 'formElementErrors')?></div>
                         </div>
                     </div>
 
@@ -129,17 +146,10 @@ $form->useSubFormGroup()
                         </div>
                     </div>
 
-                    <div class="control-group <?=$form->isError('memberEnable') ? 'error' : '';?>">
-                        <?=$form->helper('memberEnable', 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper('memberEnable', 'formSelect', array('class' => ''))?>        
-                            <div class="help-block"><?=$form->helper('memberEnable', 'formElementErrors')?></div>
-                        </div>
-                    </div>
                 </fieldset>
             </div>
         </div><!--span5 end-->
-        
+
         <div class="span5">
             <div class="slate">
                 <div class="page-header">
@@ -147,6 +157,59 @@ $form->useSubFormGroup()
                 </div>
 
                 <fieldset class="form-horizontal">
+                    <div class="control-group <?=$form->isError('isRepeat') ? 'error' : '';?>">
+                        <?=$form->helper('isRepeat', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('isRepeat', 'formRadio', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('isRepeat', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError('repeatStartDate') ? 'error' : '';?>">
+                        <?=$form->helper('repeatStartDate', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('repeatStartDate', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('repeatStartDate', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError('repeatEndDate') ? 'error' : '';?>">
+                        <?=$form->helper('repeatEndDate', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('repeatEndDate', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('repeatEndDate', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError('frequency') ? 'error' : '';?>">
+                        <?=$form->helper('frequency', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('frequency', 'formSelect', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('frequency', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError('frequencyWeek') ? 'error' : '';?>">
+                        <?=$form->helper('frequencyWeek', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('frequencyWeek', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('frequencyWeek', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError('frequencyMonth') ? 'error' : '';?>">
+                        <?=$form->helper('frequencyMonth', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('frequencyMonth', 'formSelect', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('frequencyMonth', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError('interval') ? 'error' : '';?>">
+                        <?=$form->helper('interval', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('interval', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('interval', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+
+                    <div class="page-header">
+                        <h3><?=$this->_('Reminder Setting')?></h3>
+                    </div>
                     <div class="control-group <?=$form->isError('reminderType') ? 'error' : '';?>">
                         <?=$form->helper('reminderType', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
@@ -162,7 +225,7 @@ $form->useSubFormGroup()
                             <div class="help-block"><?=$form->helper('reminderTimeUnit', 'formElementErrors')?></div>
                         </div>
                     </div>
-                    
+
                     <div class="control-group <?=$form->isError('reminderTimeValue') ? 'error' : '';?>">
                         <?=$form->helper('reminderTimeValue', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
@@ -189,56 +252,24 @@ $form->useSubFormGroup()
             </div>
         </div><!--span5 end-->
 
-        <div class="span10">
+        <div class="span5">
             <div class="slate">
                 <div class="page-header">
-                    <h3><?=$this->_('Date')?></h3>
+                    <h3><?=$this->_('Tags')?></h3>
                 </div>
 
                 <fieldset class="form-horizontal">
-                 <div class="span4">   
-                    <div class="control-group <?=$form->isError('startDay') ? 'error' : '';?>">
-                        <?=$form->helper('startDay', 'label', array('class' => 'control-label'))?>
+                    <div class="control-group">
+                        <label class="control-label">Tags</label>
                         <div class="controls">
-                            <?=$form->helper('startDay', array('class' => 'datepicker span2', 'data-date-format' => 'yyyy-mm-dd'))?>        
-                            <div class="help-block"><?=$form->helper('startDay', 'formElementErrors')?></div>
+                            <?$tagForm = $form->get('Tags')->get('0');?>
+                            <?=$tagForm->helper('tagName', array('id' => 'tagging', 'class' => 'input-block-level', 'value' => $this->tagging($tags)->toNameString()))?> 
                         </div>
                     </div>
-        
-                   <div class="control-group <?=$form->isError('endDay') ? 'error' : '';?>">
-                        <?=$form->helper('endDay', 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper('endDay', array('class' => 'datepicker span2', 'data-date-format' => 'yyyy-mm-dd'))?>        
-                            <div class="help-block"><?=$form->helper('endDay', 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                    <div class="control-group <?=$form->isError('timezone') ? 'error' : '';?>">
-                        <?=$form->helper('timezone', 'label', array('class' => 'control-label'))?>
-                        <div class="controls">
-                            <?=$form->helper('timezone', array('class' => 'span2'))?>        
-                            <div class="help-block"><?=$form->helper('timezone', 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                </div>
-                 <div class="span4">   
-                    <div class="control-group <?=$form->isError('startTime') ? 'error' : '';?>">
-                        <div class="controls">
-                            <?=$form->helper('startTime', array('class' => 'timepicker span2', 'data-date-format' => 'hh-ii-ss'))?>        
-                            <div class="help-block"><?=$form->helper('startTime', 'formElementErrors')?></div>
-                        </div>
-                    </div>
-
-                   <div class="control-group <?=$form->isError('endTime') ? 'error' : '';?>">
-                        <div class="controls">
-                            <?=$form->helper('endTime', array('class' => 'timepicker span2', 'data-date-format' => 'hh-ii-ss'))?>        
-                            <div class="help-block"><?=$form->helper('endTime', 'formElementErrors')?></div>
-                        </div>
-                    </div>
-                </div>  
                 </fieldset>
             </div>
         </div><!--span5 end-->
-        
+
         <div class="span5">
             <div class="slate">
                 <div class="page-header">
@@ -254,7 +285,7 @@ $form->useSubFormGroup()
                         </div>
                     </div> 
 
-                     <div class="control-group <?=$form->isError('longitude') ? 'error' : '';?>">
+                    <div class="control-group <?=$form->isError('longitude') ? 'error' : '';?>">
                         <?=$form->helper('longitude', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
                             <?=$form->helper('longitude', array('class' => 'span3'))?>        
@@ -368,129 +399,134 @@ $form->useSubFormGroup()
 
 <script>
 eva.ready(function(){
-      
-    eva.callback.connect = function(item, parentWindow){
-        $("#event-form-eventfileform-file-id").val(item.attr("data-connect-id"));
-        var data = $.parseJSON(item.attr('data-connect-json'));
-        $("#post-image").attr("src", data.Thumb);
-        $.fn.colorbox.close();
-    }
-    eva.loadcss(eva.s('/lib/js/jquery/colorbox/colorbox.css'));
-    eva.loader(eva.s('/lib/js/jquery/colorbox/jquery.colorbox.js'), function(){
-        $("#connect-image").colorbox({
-            iframe:true,
-                width:"80%",
-                height:"80%"
-        });
-    });
-
-
-    $("#save-draft").on('click', function(){
-        $("#blog-form-posteditform-status").val('draft');
-    });
-
-    var editor = $("#blog-form-textform-content");
-
-    var editorMd;
-    var mdInited = false;
-    var initMd = function(_editor){
-        if(true === mdInited) {
-            return;
+        eva.callback.connect = function(item, parentWindow){
+                $("#event-form-eventfileform-file-id").val(item.attr("data-connect-id"));
+                var data = $.parseJSON(item.attr('data-connect-json'));
+                $("#post-image").attr("src", data.Thumb);
+                $.fn.colorbox.close();
         }
-        eva.loadcss(eva.s(['/lib/js/codemirror/lib/codemirror.css', '/lib/js/codemirror/theme/ambiance.css']));
-        eva.loader(eva.s(['/lib/js/codemirror/lib/codemirror.js', '/lib/js/codemirror/mode/xml/xml.js', '/lib/js/codemirror/mode/markdown/markdown.js', '/lib/js/showdown/showdown.js']), function(){
-            mdInited = true;
-            builtMdEditor(_editor);
+        eva.loadcss(eva.s('/lib/js/jquery/colorbox/colorbox.css'));
+        eva.loader(eva.s('/lib/js/jquery/colorbox/jquery.colorbox.js'), function(){
+                $("#connect-image").colorbox({
+                        iframe:true,
+                        width:"80%",
+                        height:"80%"
+                });
         });
-    }
-    var builtMdEditor = function(_editor){
-        if(!mdInited){
-            initMd(_editor); 
-            return;
-        }
-        editorMd = CodeMirror.fromTextArea(_editor[0], {
-            "mode":"markdown",
-                "theme":"ambiance",
-                "lineNumbers":true,
-                "lineWrapping":true,
-                onChange : function(){
+
+        eva.loadcss(eva.s('/lib/js/jquery/jquery.select2/select2.css'));
+        eva.loader(eva.s('/lib/js/jquery/jquery.select2/select2.js'), function(){
+                $('#tagging').select2({
+                        tags : <?=$this->json($this->tagging($tags)->toNameArray())?>
+                });
+        });
+
+        $("#save-draft").on('click', function(){
+                $("#blog-form-posteditform-status").val('draft');
+        });
+
+        var editor = $("#blog-form-textform-content");
+
+        var editorMd;
+        var mdInited = false;
+        var initMd = function(_editor){
+                if(true === mdInited) {
+                        return;
                 }
-        });	
-    }
-    var removeMdEditor = function(){
-        if(!editorMd){
-                return;
-            }
-            editorMd.toTextArea();
-    }
+                eva.loadcss(eva.s(['/lib/js/codemirror/lib/codemirror.css', '/lib/js/codemirror/theme/ambiance.css']));
+                eva.loader(eva.s(['/lib/js/codemirror/lib/codemirror.js', '/lib/js/codemirror/mode/xml/xml.js', '/lib/js/codemirror/mode/markdown/markdown.js', '/lib/js/showdown/showdown.js']), function(){
+                        mdInited = true;
+                        builtMdEditor(_editor);
+                });
+        }
+        var builtMdEditor = function(_editor){
+                if(!mdInited){
+                        initMd(_editor); 
+                        return;
+                }
+                editorMd = CodeMirror.fromTextArea(_editor[0], {
+                        "mode":"markdown",
+                        "theme":"ambiance",
+                        "lineNumbers":true,
+                        "lineWrapping":true,
+                        onChange : function(){
+                        }
+                });	
+        }
+        var removeMdEditor = function(){
+                if(!editorMd){
+                        return;
+                }
+                editorMd.toTextArea();
+        }
 
 
-    var editorHtml;
-    var htmlInited = false;
-    var initHtml = function(_editor){
-            if(true === htmlInited) {
-                return;
-            }
-            eva.loader(eva.s(["/lib/js/tiny_mce/jquery.tinymce.js"]), function(){
-                    htmlInited = true;
-                    builtHtmlEditor(_editor);
-            });
-    }
-    var builtHtmlEditor = function(_editor){
-            if(!htmlInited){
-                    initHtml(_editor); 
-                    return;
-            }
+        var editorHtml;
+        var htmlInited = false;
+        var initHtml = function(_editor){
+                if(true === htmlInited) {
+                        return;
+                }
+                eva.loader(eva.s(["/lib/js/tiny_mce/jquery.tinymce.js"]), function(){
+                        htmlInited = true;
+                        builtHtmlEditor(_editor);
+                });
+        }
+        var builtHtmlEditor = function(_editor){
+                if(!htmlInited){
+                        initHtml(_editor); 
+                        return;
+                }
 
-			var mceGlobelConfig = {
-				mode : "textareas",
-				theme : "advanced",
-				plugins : "autolink,lists,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+                var mceGlobelConfig = {
+                        mode : "textareas",
+                        theme : "advanced",
+                        plugins : "autolink,lists,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
 
-				// Theme options
-				theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
-				theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
-				theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
-				theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,spellchecker,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,blockquote,pagebreak,|,insertfile,insertimage",
-				theme_advanced_toolbar_location : "top",
-				theme_advanced_toolbar_align : "left",
-				theme_advanced_statusbar_location : "bottom",
-				theme_advanced_resizing : true,
-				
-				remove_linebreaks : false,
-				extended_valid_elements : "pre[cols|rows|disabled|name|readonly|class]",
-				script_url : eva.s('/lib/js/tiny_mce/tiny_mce.js'),
-				
-				content_css: eva.s("/lib/css/typo/typo.min.css"),
-				spellchecker_rpc_url : eva.s('/lib/js/tiny_mce/plugins/spellchecker/rpc.php')
-			};
+                        // Theme options
+                        theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
+                        theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
+                        theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
+                        theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,spellchecker,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,blockquote,pagebreak,|,insertfile,insertimage",
+                        theme_advanced_toolbar_location : "top",
+                        theme_advanced_toolbar_align : "left",
+                        theme_advanced_statusbar_location : "bottom",
+                        theme_advanced_resizing : true,
 
-            var mceconfig = mceGlobelConfig;
-            editorHtml = _editor.tinymce(mceconfig);
-    }
+                        remove_linebreaks : false,
+                        extended_valid_elements : "pre[cols|rows|disabled|name|readonly|class]",
+                        script_url : eva.s('/lib/js/tiny_mce/tiny_mce.js'),
 
-    var removeHtmlEditor = function(_editor){
-            if(!editorHtml){
-                return;
-            }
-            tinyMCE.execCommand('mceToggleEditor', false, _editor.attr('id'));
-    }
+                        content_css: eva.s("/lib/css/typo/typo.min.css"),
+                        spellchecker_rpc_url : eva.s('/lib/js/tiny_mce/plugins/spellchecker/rpc.php')
+                };
 
-    var switchEditor = function(){
-            var codeType = $("input[name='codeType']:checked").val();
-            if(codeType == 'markdown'){
-                    removeHtmlEditor(editor);
-                    builtMdEditor(editor); 
-            } else if(codeType == 'html'){
-                    removeMdEditor(editor);
-                    builtHtmlEditor(editor);
-            }
-    }
-    switchEditor();
-    $("input[name='codeType']").on("change", function(){
-            if(confirm('Content will be changed, are you sure ?')){
-                switchEditor(); 
-            }
-    });
+                var mceconfig = mceGlobelConfig;
+                editorHtml = _editor.tinymce(mceconfig);
+        }
+
+        var removeHtmlEditor = function(_editor){
+                if(!editorHtml){
+                        return;
+                }
+                tinyMCE.execCommand('mceToggleEditor', false, _editor.attr('id'));
+        }
+
+        var switchEditor = function(){
+                var codeType = $("input[name='codeType']:checked").val();
+                if(codeType == 'markdown'){
+                        removeHtmlEditor(editor);
+                        builtMdEditor(editor); 
+                    } else if(codeType == 'html'){
+                        removeMdEditor(editor);
+                        builtHtmlEditor(editor);
+                }
+        }
+        switchEditor();
+        $("input[name='codeType']").on("change", function(){
+                if(confirm('Content will be changed, are you sure ?')){
+                        switchEditor(); 
+                }
+        });
 });
 </script>

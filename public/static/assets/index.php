@@ -195,10 +195,11 @@ class EvaAssets
         $this->copy();
     }
 
-    public function __construct()
+    public function __construct($config)
     {
-        $this->libRootPath = realpath(__DIR__ . '/../lib');
-        $this->urlRootPath  = __DIR__;
+        $this->libRootPath = $config['libRootPath'];
+        $this->urlRootPath  = $config['urlRootPath'];
+        $this->cache = $config['cache'];
     }
 
     protected function getFileExtension($filePath)
@@ -515,5 +516,9 @@ class EvaAssets
 
 }
 
-$asset = new EvaAssets();
+$config = include __DIR__ . '/config.inc.php';
+$configLocalFile = EVA_CONFIG_PATH . '/local.front.assets.config.php';
+$configLocal = is_file($configLocalFile) ? include $configLocalFile : array();
+$config = $configLocal ? array_merge($config, $configLocal) : $config;
+$asset = new EvaAssets($config);
 $asset->run();

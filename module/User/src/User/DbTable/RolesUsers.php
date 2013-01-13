@@ -28,6 +28,10 @@ class RolesUsers extends TableGateway
             ));
         }
 
+        if($params->noLimit) {
+            $this->disableLimit();
+        }
+
         return $this;
     }
 }

@@ -74,6 +74,12 @@ class GroupUser extends AbstractModel
             $item->save();
         }
 
+        $countItem = $this->getItem('Group\Item\Count');
+        $countItem->group_id = $groupId;
+        $countItem->self(array('*'));
+        $countItem->memberCount += 1;
+        $countItem->save();
+
         $this->trigger('create');
         $this->trigger('create.post');
 
@@ -91,6 +97,12 @@ class GroupUser extends AbstractModel
         $groupId = $item->group_id;
 
         $item->remove();
+        
+        $countItem = $this->getItem('Group\Item\Count');
+        $countItem->group_id = $groupId;
+        $countItem->self(array('*'));
+        $countItem->memberCount -= 1;
+        $countItem->save();
 
         $this->trigger('remove');
         $this->trigger('remove.post');

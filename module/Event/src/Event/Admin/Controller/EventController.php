@@ -63,6 +63,11 @@ class EventController extends RestfulModuleController
                 'Category' => array(
                         '*',
                 ),
+                'Tags' => array(
+                    'self' => array(
+                        '*',
+                    ),
+                ),
             ),
         ));
         

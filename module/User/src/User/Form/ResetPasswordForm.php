@@ -100,12 +100,13 @@ class ResetPasswordForm extends \Eva\Form\Form
             ),
             'validators' => array (
                 'equalTo' => array(
-                    'name' => 'Eva\Validator\EqualTo',
-                    'injectdata' => true,
+                    'name' => 'Identical',
                     'options' => array (
-                        'field' => 'inputPassword',
+                        'token' => 'inputPassword',
+                        'messages' => array(
+                            \Zend\Validator\Identical::NOT_SAME => 'Password not match',
+                        ),
                     ),
-
                 ),
             ),
         ),

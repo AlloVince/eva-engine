@@ -90,6 +90,24 @@ class Event extends AbstractItem
             'joinParameters' => array(
             ),
         ),
+        'Tags' => array(
+            'targetEntity' => 'Event\Item\Tag',
+            'relationship' => 'ManyToMany',
+            'mappedBy' => 'Tags',
+            'joinColumns' => array(
+                'joinColumn' => 'event_id',
+                'referencedColumn' => 'id',
+            ),
+            'inversedBy' => 'Event\Item\TagEvent',
+            'inversedMappedBy' => 'TagEvent',
+            'inverseJoinColumns' => array(
+                'joinColumn' => 'tag_id',
+                'referencedColumn' => 'id',
+            ),
+            'inverseJoinParameters' => array(
+                'noLimit' => true,
+            ),
+        ),
     );
 
     protected $map = array(

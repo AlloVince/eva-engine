@@ -111,22 +111,12 @@ class EventForm extends \Eva\Form\Form
         ),
         'isFullDayEvent' => array (
             'name' => 'isFullDayEvent',
-            'type' => 'select',
+            'type' => 'checkbox',
             'options' => array (
-                'label' => 'Is Full Day Event',
-                'value_options' => array (
-                    'yes' => array (
-                        'label' => 'Yes',
-                        'value' => 1,
-                    ),
-                    'no' => array (
-                        'label' => 'No',
-                        'value' => 0,
-                    ),
-                ),
+                'label' => 'All Day',
             ),
             'attributes' => array (
-                'value' => '0',
+                'value' => '1',
             ),
         ),
         'eventHash' => array (
@@ -184,6 +174,118 @@ class EventForm extends \Eva\Form\Form
             'type' => 'number',
             'options' => array (
                 'label' => 'Timezone',
+            ),
+            'attributes' => array (
+                'value' => '0',
+            ),
+        ),
+        'isRepeat' => array (
+            'name' => 'isRepeat',
+            'type' => 'radio',
+            'options' => array (
+                'label' => 'Repeat',
+                'value_options' => array (
+                    'yes' => array (
+                        'label' => 'Yes',
+                        'value' => 1,
+                    ),
+                    'no' => array (
+                        'label' => 'No',
+                        'value' => 0,
+                    ),
+                ),
+            ),
+            'attributes' => array (
+                'value' => '0',
+            ),
+        ),
+        'repeatStartDate' => array (
+            'name' => 'repeatStartDate',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Repeat Start Date',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
+        'repeatEndDate' => array (
+            'name' => 'repeatEndDate',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Repeat End Date',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
+        'frequency' => array (
+            'name' => 'frequency',
+            'type' => 'select',
+            'options' => array (
+                'label' => 'Frequency',
+                'value_options' => array (
+                    'daily' => array (
+                        'label' => 'Daily',
+                        'value' => 'daily',
+                    ),
+                    'weekly' => array (
+                        'label' => 'Weekly',
+                        'value' => 'weekly',
+                    ),
+                    'monthly' => array (
+                        'label' => 'Monthly',
+                        'value' => 'monthly',
+                    ),
+                    'yearly' => array (
+                        'label' => 'Yearly',
+                        'value' => 'yearly',
+                    ),
+                    'other' => array (
+                        'label' => 'Other',
+                        'value' => 'other',
+                    ),
+                ),
+            ),
+            'attributes' => array (
+                'value' => 'daily',
+            ),
+        ),
+        'frequencyWeek' => array (
+            'name' => 'frequencyWeek',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Frequency Week',
+            ),
+            'attributes' => array (
+                'value' => '0',
+            ),
+        ),
+        'frequencyMonth' => array (
+            'name' => 'frequencyMonth',
+            'type' => 'select',
+            'options' => array (
+                'label' => 'Frequency Month',
+                'value_options' => array (
+                    'dayofmonth' => array (
+                        'label' => 'Day Of Month',
+                        'value' => 'dayofmonth',
+                    ),
+                    'dayofweek' => array (
+                        'label' => 'Day Of Week',
+                        'value' => 'dayofweek',
+                    ),
+                ),
+            ),
+            'attributes' => array (
+                'value' => 'dayofweek',
+            ),
+        ),
+        'interval' => array (
+            'name' => 'interval',
+            'type' => 'number',
+            'options' => array (
+                'label' => 'Repeat Interval',
             ),
             'attributes' => array (
                 'value' => '0',
@@ -351,17 +453,17 @@ class EventForm extends \Eva\Form\Form
         ),
         'memberEnable' => array (
             'name' => 'memberEnable',
-            'type' => 'select',
+            'type' => 'radio',
             'options' => array (
-                'label' => 'Member Enable',
+                'label' => 'Allow Join',
                 'value_options' => array (
-                    '0' => array (
-                        'label' => 'Disable',
-                        'value' => 0,
-                    ),
-                    '1' => array (
-                        'label' => 'Enable',
+                    'yes' => array (
+                        'label' => 'Yes',
                         'value' => 1,
+                    ),
+                    'no' => array (
+                        'label' => 'No',
+                        'value' => 0,
                     ),
                 ),
             ),
@@ -371,9 +473,19 @@ class EventForm extends \Eva\Form\Form
         ),
         'recommend' => array (
             'name' => 'recommend',
-            'type' => 'number',
+            'type' => 'radio',
             'options' => array (
-                'label' => 'Recommend',
+                'label' => 'Recommend Event',
+                'value_options' => array (
+                    'yes' => array (
+                        'label' => 'Yes',
+                        'value' => 1,
+                    ),
+                    'no' => array (
+                        'label' => 'No',
+                        'value' => 0,
+                    ),
+                ),
             ),
             'attributes' => array (
                 'value' => '0',
@@ -642,6 +754,143 @@ class EventForm extends \Eva\Form\Form
                 ),
             ),
         ),
+        'isRepeat' => array (
+            'name' => 'isRepeat',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+                'notEmpty' => array (
+                    'name' => 'NotEmpty',
+                    'options' => array (
+                    ),
+                ),
+                'inArray' => array (
+                    'name' => 'InArray',
+                    'options' => array (
+                        'haystack' => array (
+                            '0',
+                            '1',
+                        ),
+                    ),
+                ),
+            ),
+        ),
+        'repeatStartDate' => array (
+            'name' => 'repeatStartDate',
+            'required' => false,
+            'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+                'stringLength' => array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => NULL,
+                    ),
+                ),
+            ),
+        ),
+        'repeatEndDate' => array (
+            'name' => 'repeatEndDate',
+            'required' => false,
+            'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+                'stringLength' => array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => NULL,
+                    ),
+                ),
+            ),
+        ),
+        'frequency' => array (
+            'name' => 'frequency',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+                'inArray' => array (
+                    'name' => 'InArray',
+                    'options' => array (
+                        'haystack' => array (
+                            'daily',
+                            'weekly',
+                            'monthly',
+                            'yearly',
+                            'other',
+                        ),
+                    ),
+                ),
+            ),
+        ),
+        'frequencyWeek' => array (
+            'name' => 'frequencyWeek',
+            'required' => false,
+            'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+                'notEmpty' => array (
+                    'name' => 'NotEmpty',
+                    'options' => array (
+                    ),
+                ),
+                'stringLength' => array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => '7',
+                    ),
+                ),
+            ),
+        ),
+        'frequencyMonth' => array (
+            'name' => 'frequencyMonth',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+                'inArray' => array (
+                    'name' => 'InArray',
+                    'options' => array (
+                        'haystack' => array (
+                            'dayofmonth',
+                            'dayofweek',
+                        ),
+                    ),
+                ),
+            ),
+        ),
+        'interval' => array (
+            'name' => 'interval',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+                'notEmpty' => array (
+                    'name' => 'NotEmpty',
+                    'options' => array (
+                    ),
+                ),
+            ),
+        ),
         'longitude' => array (
             'name' => 'longitude',
             'required' => false,
@@ -873,14 +1122,4 @@ class EventForm extends \Eva\Form\Form
             ),
         ),
     );
-
-    public function getLanguages($element)
-    {
-        $translator = \Eva\Api::_()->getServiceManager()->get('translator');
-        $locale = $translator->getLocale();
-        $languages = \Eva\Locale\Data::getList($locale, 'language');
-        $element['options']['value_options'] = $languages;
-        $element['attributes']['value'] = $locale;
-        return $element;
-    }
 }

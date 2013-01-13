@@ -8,6 +8,28 @@ class Post extends AbstractItem
 {
     protected $dataSourceClass = 'Blog\DbTable\Posts';
 
+    protected $inverseRelationships = array(
+        'User' => array(
+            'targetEntity' => 'User\Item\User',
+            'relationship' => 'OneToOne',
+            'joinColumn' => 'id',
+            'referencedColumn' => 'user_id',
+            'joinParameters' => array(
+            ),
+        ),
+        'UserPostCount' => array(
+            'targetEntity' => 'Blog\Item\Post',
+            'relationship' => 'OneToMany',
+            'joinColumn' => 'user_id',
+            'referencedColumn' => 'id',
+            'asCount' => true,
+            'countKey' => 'postCount',
+            'joinParameters' => array(
+                'count' => true,
+            ),
+        ),
+    );
+
     protected $relationships = array(
         'Text' => array(
             'targetEntity' => 'Blog\Item\Text',
@@ -28,6 +50,27 @@ class Post extends AbstractItem
             'inverseJoinColumns' => array(
                 'joinColumn' => 'category_id',
                 'referencedColumn' => 'id',
+            ),
+            'inverseJoinParameters' => array(
+                'noLimit' => true,
+            ),
+        ),
+        'Tags' => array(
+            'targetEntity' => 'Blog\Item\Tag',
+            'relationship' => 'ManyToMany',
+            'mappedBy' => 'Tags',
+            'joinColumns' => array(
+                'joinColumn' => 'post_id',
+                'referencedColumn' => 'id',
+            ),
+            'inversedBy' => 'Blog\Item\TagPost',
+            'inversedMappedBy' => 'TagPost',
+            'inverseJoinColumns' => array(
+                'joinColumn' => 'tag_id',
+                'referencedColumn' => 'id',
+            ),
+            'inverseJoinParameters' => array(
+                'noLimit' => true,
             ),
         ),
     );

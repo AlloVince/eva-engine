@@ -44,6 +44,10 @@ class GroupsUsers extends TableGateway
             $this->limit((int) $params->rows);
         }
 
+        if($params->noLimit) {
+            $this->disableLimit();
+        }
+
         $orders = array(
             'timeasc' => 'requestTime ASC',
             'timedesc' => 'requestTime DESC',

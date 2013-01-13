@@ -72,7 +72,9 @@ return array(
             'version' => '1.0.0',
         ),
         'assets' => array(
-            'basePath' => '/static/assets/index.php',
+            'phpPath' => '/static/assets/index.php',
+            'cachePath' => '/static/assets',
+            'cache' => false,
             'merge' => false,
             'compress' => false,
             'version' => '1.0.0',
@@ -106,6 +108,7 @@ return array(
     'view_helpers' => array(
         'invokables' => array(
             'evajs' => 'Core\Helper\Evajs',
+            'tagging' => 'Core\Helper\Tagging',
         ),  
     ),
 

@@ -168,6 +168,16 @@ class UserForm extends \Eva\Form\Form
                 'value' => '',
             ),
         ),
+        'avatar_id' => array (
+            'name' => 'avatar_id',
+            'type' => 'hidden',
+            'options' => array (
+                'label' => 'Avatar',
+            ),
+            'attributes' => array (
+                'value' => '0',
+            ),
+        ),
         'timezone' => array (
             'name' => 'timezone',
             'type' => 'select',
@@ -214,6 +224,16 @@ class UserForm extends \Eva\Form\Form
             ),
             'attributes' => array (
                 'value' => 'offline',
+            ),
+        ),
+        'flag' => array (
+            'name' => 'flag',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Flag',
+            ),
+            'attributes' => array (
+                'value' => '',
             ),
         ),
     );

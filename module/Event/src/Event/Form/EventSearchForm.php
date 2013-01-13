@@ -130,6 +130,16 @@ class EventSearchForm extends EventForm
                 'value' => 10,
             ),
         ),
+        'tag' => array(
+            'name' => 'tag',
+            'type' => 'text',
+            'options' => array(
+                'label' => 'Text',
+            ),
+            'attributes' => array(
+                'value' => '',
+            ),
+        ),
     );
 
     public function prepareData($data)

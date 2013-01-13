@@ -11,14 +11,26 @@
     <?=$this->headMeta()?>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="<?=$this->link('/lib/css/fontawesome/css/font-awesome.css')?>" media="all" rel="stylesheet" type="text/css" />
-    <link href="<?=$this->link('/src/admin/css/admin.css')?>" media="all" rel="stylesheet" type="text/css" />
+
+    <?=$this->headMeta()?>
+    <?=$this->googleAnalytics()?>
     <?=$this->evajs()?>
-    <script src="<?=$this->link('/lib/js/labjs/labjs.min.js')?>"></script>
-    <script src="<?=$this->link('/lib/js/jquery/jquery.min.js')?>"></script>
-    <script src="<?=$this->link('/lib/js/jquery/jquery.validationEngine.js')?>"></script>
-    <script src="<?=$this->link('/eva/js/core.js')?>"></script>
-    <script src="<?=$this->link('/eva/js/ui.js')?>"></script>
+
+    <?=$this->headMeta()?>
+    <?=$this->headStyle()?>
+
+    <?$this->cssAssets(array(
+        '/lib/css/fontawesome/css/font-awesome.css',
+    ));?>
+    <link href="<?=$this->link('/src/admin/css/admin.css')?>" media="all" rel="stylesheet" type="text/css" />
+    <?$this->jsAssets(array(
+        '/lib/js/labjs/labjs.js',
+        '/lib/js/jquery/jquery.js',
+        '/module/core/js/core.js',
+        '/module/core/js/ui.js',
+    ));?>
+    <?=$this->headLink()?>
+    <?=$this->headScript()?>
     <script src="<?=$this->link('/src/admin/js/init.js')?>"></script>
 </head>
 
@@ -42,7 +54,7 @@
                         <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="collapse" data-target="#website-dropdown" href="#"><i class="icon-sitemap"></i> <?=$this->_('Blog')?> <b class="caret"></b></a>
                         <ul id="website-dropdown" class="collapse">
-                            <li data-highlight-url="/admin/blog/(\d+|(remove.*))*$"><a href="<?=$this->uri('/admin/blog/')?>"><?=$this->_('Pages')?></a></li>
+                            <li data-highlight-url="/admin/blog/(\d+|(remove.*))*$"><a href="<?=$this->uri('/admin/blog/')?>"><?=$this->_('Posts')?></a></li>
                             <li data-highlight-url="/admin/blog/create$"><a href="<?=$this->uri('/admin/blog/create')?>"><?=$this->_('Add New Post')?></a></li>
                             <li data-highlight-url="/admin/blog/category/(\d+|create|remove)*$"><a href="<?=$this->uri('/admin/blog/category/')?>"><?=$this->_('Page Categories')?></a></li>
                             <li data-highlight-url="/admin/blog/comment/.*$"><a href="<?=$this->uri('/admin/blog/comment/')?>"><?=$this->_('Comments')?></a></li>
@@ -90,6 +102,16 @@
                         </ul>
                         </li>
                         <?endif?>
+                        <?if($this->hasmodule('Album')):?>
+                        <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="collapse" data-target="#album-dropdown" href="#"><i class="icon-camera-retro"></i> <?=$this->_('Album')?> <b class="caret"></b></a>
+                        <ul id="album-dropdown" class="collapse">
+                            <li data-highlight-url="/admin/album/(\d+)*$"><a href="<?=$this->uri('/admin/album/')?>"><?=$this->_('Album Management')?></a></li>
+                            <li data-highlight-url="/admin/album/create"><a href="<?=$this->uri('/admin/album/create')?>"><?=$this->_('Create Album')?></a></li>
+                            <li data-highlight-url="/admin/album/category/(\d+|create|remove)*$"><a href="<?=$this->uri('/admin/album/category/')?>"><?=$this->_('Album Categories')?></a></li>
+                        </ul>
+                        </li>
+                        <?endif?>
                         <?if($this->hasmodule('User')):?>
                         <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="collapse" data-target="#user-dropdown" href="#"><i class="icon-user"></i> <?=$this->_('User')?> <b class="caret"></b></a>
@@ -101,6 +123,13 @@
                         </ul>
                         </li>
                         <?endif?>
+                        <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="collapse" data-target="#newsletter-dropdown" href="#"><i class="icon-envelope"></i> <?=$this->_('Newsletter')?> <b class="caret"></b></a>
+                        <ul id="newsletter-dropdown" class="collapse">
+                            <li data-highlight-url="/admin/core/newsletter/"><a href="<?=$this->uri('/admin/core/newsletter/')?>"><?=$this->_('Subscription List')?></a></li>
+                            <li data-highlight-url="/admin/core/newsletter/send/"><a href="<?=$this->uri('/admin/core/newsletter/send/')?>"><?=$this->_('Send Newsletter')?></a></li>
+                        </ul>
+                        </li>
                         <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="collapse" data-target="#setting-dropdown" href="#"><i class="icon-cogs"></i> <?=$this->_('Setting')?> <b class="caret"></b></a>
                         <ul id="setting-dropdown" class="collapse">

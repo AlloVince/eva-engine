@@ -53,7 +53,7 @@ $loader = $loader[AutoloaderFactory::STANDARD_AUTOLOADER];
 $loader->registerNamespace('Eva\\', EVA_LIB_PATH . '/Eva');
 
 $appGlobelConfig = include EVA_CONFIG_PATH . DIRECTORY_SEPARATOR . 'application.config.php';
-$appLocalConfig = EVA_CONFIG_PATH . DIRECTORY_SEPARATOR . 'application.local.config.php';
+$appLocalConfig = EVA_CONFIG_PATH . DIRECTORY_SEPARATOR . 'local.application.config.php';
 if(file_exists($appLocalConfig)){
     $appLocalConfig = include $appLocalConfig;
     $appGlobelConfig = array_merge($appGlobelConfig, $appLocalConfig);

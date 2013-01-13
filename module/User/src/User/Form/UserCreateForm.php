@@ -15,6 +15,10 @@ class UserCreateForm extends UserForm
                 'collection' => true,
                 'optionsCallback' => 'initRoles',
             ),
+            'Tags' => array(
+                'formClass' => 'User\Form\TagsForm',
+                'collection' => true,
+            ),
         ),
     );
 
@@ -81,6 +85,24 @@ class UserCreateForm extends UserForm
 
     public function beforeBind($data)
     {
+        if(isset($data['Tags'][0]['tagName'])){
+            $tagString = $data['Tags'][0]['tagName'];
+            $tags = array();
+            if(false === strpos($tagString, ',')) {
+                $tags[] = array(
+                    'tagName' => $tagString
+                );
+            } else {
+                $tagNames = explode(',', $tagString);
+                foreach($tagNames as $tag){
+                    $tags[] = array(
+                        'tagName' => $tag
+                    );
+                }
+            }
+            $data['Tags'] = $tags;
+        }
+
         //Data is array is for display
         if(isset($data['RoleUser']) && is_array($data)){
             $roleUsers = array();
@@ -90,7 +112,7 @@ class UserCreateForm extends UserForm
                 $role = $subForm->getRole()->toArray();
                 $roleUser['role_id'] = $role['id'];
                 foreach($data['RoleUser'] as $roleUserArray){
-                    if($roleUser['role_id'] == $roleUserArray['role_id']){
+                    if(isset($roleUser['role_id']) && isset($roleUserArray['role_id']) && $roleUser['role_id'] == $roleUserArray['role_id']){
                         $roleUser = array_merge($roleUser, $roleUserArray);
                         break;
                     }

@@ -8,6 +8,8 @@ use Eva\Api,
 class Event extends AbstractModel
 {
     protected $itemTableName = 'Event\DbTable\Events';
+    
+    protected $itemClass = 'Event\Item\Event';
 
     protected $userList;
 
@@ -139,11 +141,6 @@ class Event extends AbstractModel
         $item = $this->getItem();
         
         $this->trigger('save.pre');
-        
-        //Admin save item will remove all categories
-        $categoryEventItem = $this->getItem('Event\Item\CategoryEvent');
-        $categoryEventItem->event_id = $item->id;
-        $categoryEventItem->remove();
         
         $item->save();
 

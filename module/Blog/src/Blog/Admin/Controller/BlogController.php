@@ -57,6 +57,11 @@ class BlogController extends RestfulModuleController
                 ),
                 'Categories' => array(
                 ),
+                'Tags' => array(
+                    'self' => array(
+                        '*',
+                    )
+                ),
             ),
             'proxy' => array(
                 'File\Item\File::PostCover' => array(
@@ -82,7 +87,7 @@ class BlogController extends RestfulModuleController
         $postData = $this->params()->fromPost();
         $form = new Form\PostCreateForm();
         $form->useSubFormGroup()
-             ->bind($postData);
+        ->bind($postData);
 
         if ($form->isValid()) {
             $postData = $form->getData();
@@ -119,10 +124,9 @@ class BlogController extends RestfulModuleController
         $form->useSubFormGroup()
              ->bind($postData);
 
-        $flashMesseger = array();
-
         if ($form->isValid()) {
             $postData = $form->getData();
+
             $itemModel = Api::_()->getModel('Blog\Model\Post');
             $postId = $itemModel->setItem($postData)->savePost();
 
@@ -130,6 +134,7 @@ class BlogController extends RestfulModuleController
             $this->redirect()->toUrl('/admin/blog/' . $postData['id']);
 
         } else {
+            //p($form->getMessages(), 1);
         }
 
         return array(

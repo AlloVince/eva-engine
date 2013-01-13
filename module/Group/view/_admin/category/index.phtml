@@ -80,7 +80,7 @@ $form->init(array(
                             <input name="order" tabindex="<?=$key+1 ?>" type="text" class="span1 multiform-item-input" size="2" maxlength="3"  data-multiform="post" data-multiform-itemid="<?=$item['id'] ?>" value="<?=$item['orderNumber'] ? $item['orderNumber'] : "0" ?>" />
                         </td>
                         <td class="actions">
-                            <a href="<?=$this->uri('/admin/group/category/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/event/category', array('page' => $this->page)))); ?>" class="btn btn-small btn-danger"><?=$this->_('Delete')?></a>
+                            <a href="<?=$this->uri('/admin/group/category/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/group/category', array('page' => $this->page)))); ?>" class="btn btn-small btn-danger"><?=$this->_('Delete')?></a>
                             <a href="<?=$this->uri('/admin/group/?category=' . $item['id'])?>" class="btn btn-small"><?=$this->_('Search Posts')?></a>
                             <a href="<?=$this->uri('/admin/group/category/' . $item['id'])?>" class="btn btn-small"><?=$this->_('Edit')?></a>
                         </td>

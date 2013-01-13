@@ -102,7 +102,7 @@ class GroupForm extends \Eva\Form\Form
             'name' => 'memberEnable',
             'type' => 'select',
             'options' => array (
-                'label' => 'Member Enable',
+                'label' => 'Allow Join',
                 'value_options' => array (
                     '0' => array (
                         'label' => 'Disable',

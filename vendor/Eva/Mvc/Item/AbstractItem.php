@@ -339,7 +339,7 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     public function addRelationship($key, array $relationship)
     {
         if(isset($this->relationships[$key])){
-            throw new Exception\InvalidArgumentException(sprintf('Relationship %s already exists in %, failed to add same one.', $key, get_class($this)));
+        //    throw new Exception\InvalidArgumentException(sprintf('Relationship %s already exists in %, failed to add same one.', $key, get_class($this)));
         }
 
         $this->relationships[$key] = $relationship;
@@ -712,8 +712,8 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         $params = array(
             $joinLeftColumn => $this->$referencedLeftColumn
         );
-        if(isset($relationship['joinColumns']['joinParameters']) && is_array($relationship['joinColumns']['joinParameters'])){
-            $params = array_merge($params, $relationship['joinColumns']['joinParameters']);
+        if(isset($relationship['inverseJoinParameters']) && is_array($relationship['inverseJoinParameters'])){
+            $params = array_merge($params, $relationship['inverseJoinParameters']);
         }
         $middleItems = $middleItem->collections($params);
 
@@ -724,7 +724,6 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
             $rightItem = clone $relItem;
             $rightItem->clear();
             $rightItem->$referencedRightColumn = $middleItem->$joinRightColumn;
-
             $inversedMapKey = isset($relationship['inversedMappedBy']) ? $relationship['inversedMappedBy'] : get_class($middleItem);
             $rightItem->$inversedMapKey = $middleItem; 
             $relItem[] = $rightItem;
@@ -794,6 +793,11 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     {
         $dataClass = $this->getDataClass();
         $where = $this->primaryWhere();
+        if(!$where){
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Remove item %s required a where condition', get_class($this)
+            ));
+        }
         $dataClass->where($where)->remove();
         return true;
     }

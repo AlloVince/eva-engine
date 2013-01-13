@@ -1,6 +1,7 @@
 <?php
 return array(
-    'libPath' => __DIR__ . '/../../../vendor/EvaCloudImage/lib',  //PHPthumb library path
+    'classPath' => __DIR__ . '/../../../vendor/EvaCloudImage/EvaCloudImage.php',
+    'libPath' => __DIR__ . '/../../../vendor/EvaCloudImage/lib',
     'sourceRootPath' => __DIR__ . '/../upload',
     'thumbFileRootPath' => __DIR__ ,
     'thumbUrlRootPath' => __DIR__ . '/..',

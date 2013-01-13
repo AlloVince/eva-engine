@@ -50,7 +50,8 @@ class Assets extends \Zend\View\Helper\AbstractHelper
 
         $view = $this->getView();
         $config = $view->getHelperPluginManager()->getServiceLocator()->get('config');
-        $prefix = $config['site']['assets']['basePath'];
+        $config = $config['site']['assets'];
+        $prefix = $config['cache'] ? $config['cachePath'] : $config['phpPath'];
 
         if (is_string($file)){
             return $prefix . $file;

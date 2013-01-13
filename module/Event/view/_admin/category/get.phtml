@@ -17,22 +17,6 @@ $form->setView($this)
 ->prepare();
 ?>
 
-<input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
-<div id="category-create-succeed" class="alert alert-success hide">
-    <a href="#" data-dismiss="alert" class="close">x</a>
-    <h4 class="alert-heading"><?=$this->_('New Category Created')?></h4>
-</div>
-
-<div id="category-edit-succeed" class="alert alert-success hide">
-    <a href="#" data-dismiss="alert" class="close">x</a>
-    <h4 class="alert-heading"><?=$this->_('Category Edit Succeed')?></h4>
-</div>
-
-<div id="category-edit-failed" class="alert alert-error hide">
-    <a href="#" data-dismiss="alert" class="close">x</a>
-    <h4 class="alert-heading"><?=$this->_('Category Edit Failed')?></h4>
-</div>
-
 <div class="row">
 
     <form <?=$this->formAttr($form)?>>
@@ -45,7 +29,7 @@ $form->setView($this)
                     <div class="btn-group pull-right">
                         <a href="<?=$this->uri('/admin/event/category/create')?>" class="btn"><?=$this->_('Create Category')?></a>
                         <a href="<?=$this->uri('/admin/event/?category=' . $item['id'])?>" class="btn"><?=$this->_('View Category Posts')?></a>
-                        <a href="<?=$this->uri('/admin/event/category/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/category/' . $item['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
+                        <a href="<?=$this->uri('/admin/event/category/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/event/category/' . $item['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
                     </div>
                     <?endif?>
                     <h2><?=$title?></h2>

@@ -38,10 +38,19 @@ CREATE TABLE IF NOT EXISTS `eva_group_groups` (
   `groupName` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `status` enum('active','pending','deleted') COLLATE utf8_unicode_ci NOT NULL,
   `summary` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `memberEnable` tinyint(1) NOT NULL DEFAULT '1',
+  `memberLimit` int(5) DEFAULT NULL,
   `user_id` int(10) NOT NULL,
   `createTime` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `eva_group_groups_events`;
+CREATE TABLE IF NOT EXISTS `eva_group_groups_events` (
+  `group_id` int(11) NOT NULL,
+  `event_id` int(11) NOT NULL,
+  PRIMARY KEY (`group_id`,`event_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `eva_group_groups_files`;
 CREATE TABLE IF NOT EXISTS `eva_group_groups_files` (
@@ -49,6 +58,13 @@ CREATE TABLE IF NOT EXISTS `eva_group_groups_files` (
   `file_id` int(11) NOT NULL,
   PRIMARY KEY (`group_id`,`file_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `eva_group_groups_posts`;
+CREATE TABLE IF NOT EXISTS `eva_group_groups_posts` (
+  `group_id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL,
+  PRIMARY KEY (`group_id`,`post_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `eva_group_groups_users`;
 CREATE TABLE IF NOT EXISTS `eva_group_groups_users` (
@@ -63,3 +79,10 @@ CREATE TABLE IF NOT EXISTS `eva_group_groups_users` (
   `operator_id` int(10) NOT NULL,
   PRIMARY KEY (`user_id`,`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `eva_group_texts`;
+CREATE TABLE IF NOT EXISTS `eva_group_texts` (
+  `group_id` int(20) NOT NULL,
+  `content` longtext COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`group_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

@@ -19,6 +19,9 @@ class RoleUser extends AbstractItem
         $dataClass = $this->getDataClass();
         if(isset($this[0])){
             foreach($this as $item){
+                if(!$item['status']) {
+                    continue;
+                }
                 $item['user_id'] = $userId;
                 $dataClass->create($item);
             }
@@ -39,7 +42,6 @@ class RoleUser extends AbstractItem
                 $item['user_id'] = $userId;
                 $dataClass->where(array(
                     'user_id' => $userId,
-                    'role_id' => $item['role_id'],
                 ))->remove();
                 $dataClass->create($item);
             }

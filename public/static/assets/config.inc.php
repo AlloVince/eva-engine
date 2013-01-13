@@ -1,6 +1,6 @@
 <?php
 return array(
-    'libPath' => __DIR__ . '/../../../vendor/Assetic/src/',
-    'sourceRootPath' => __DIR__ . '/../upload',
+    'libRootPath' => __DIR__ . '/../lib',
+    'urlRootPath' => __DIR__,
     'cache' => false,
 );

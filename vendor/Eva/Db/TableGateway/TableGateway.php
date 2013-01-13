@@ -88,6 +88,12 @@ class TableGateway extends AbstractTableGateway  implements ServiceLocatorAwareI
         return $this->select ? $this->select : $this->sql->select();
     }
 
+    public function setSelect($select)
+    {
+        $this->select =  $select;
+        return $this;
+    }
+
     public function getUpdate()
     {
         return $this->update ? $this->update : $this->sql->update();
