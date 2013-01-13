@@ -25,6 +25,7 @@ config = {
 	dir : "",
 	f : "",
 	s : '',
+	assets : '',
 	ie : false
 },
 
@@ -82,6 +83,10 @@ methods = window.eva = {
 
 	sv : function(dir){
 		return methods.s(dir) + '?v=' + eva.config.version;
+	},
+
+	assets : function(dir){
+		return dirHandler(dir, config.assets);
 	},
 
 	p : function (m){

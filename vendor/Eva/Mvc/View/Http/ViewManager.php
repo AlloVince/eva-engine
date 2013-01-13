@@ -110,7 +110,9 @@ class ViewManager extends \Zend\Mvc\View\Http\ViewManager
             if(isset($configuration['router']['routes'][$routeMatchName]) 
                 && $routeConfiguration = $configuration['router']['routes'][$routeMatchName]
             ){
-                if(isset($routeConfiguration['type']) && $routeConfiguration['type'] === 'Eva\Mvc\Router\Http\ModuleRoute'){
+                if(isset($routeConfiguration['type'])
+                   && $routeConfiguration['type'] === 'Eva\Mvc\Router\Http\ModuleRoute'
+                   && class_exists($controllerName)){
                     $configuration['controller']['classes'][$controllerName] = $controllerName;
                 }
             }

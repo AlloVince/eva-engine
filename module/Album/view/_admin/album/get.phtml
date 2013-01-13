@@ -24,40 +24,30 @@ $form->useSubFormGroup()
 
 ?>
 
-<input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
-<div id="album-create-succeed" class="alert alert-success hide">
-    <a href="#" data-dismiss="alert" class="close">x</a>
-    <h4 class="alert-heading"><?=$this->_('New Album Created')?></h4>
-</div>
-
-<div id="album-edit-succeed" class="alert alert-success hide">
-    <a href="#" data-dismiss="alert" class="close">x</a>
-    <h4 class="alert-heading"><?=$this->_('Album Edit Succeed')?></h4>
-</div>
-
-<div id="album-edit-failed" class="alert alert-error hide">
-    <a href="#" data-dismiss="alert" class="close">x</a>
-    <h4 class="alert-heading"><?=$this->_('Album Edit Failed')?></h4>
-</div>
-
-
-
 <div class="row">
     <form <?=$this->formAttr($form)?>>
         <?=$form->restful();?>
         <?=$form->helper('id');?>
         <div class="span10">
             <div class="slate">
-                <div class="page-header">
-                    <?if($item['id']):?>
-                    <div class="btn-group pull-right">
-                        <a href="<?=$this->uri('/album/' . $item['urlName'])?>" class="btn"><?=$this->_('View')?></a>
-                        <a href="<?=$this->uri('/admin/album/create')?>" class="btn"><?=$this->_('Create New')?></a>
-                        <a href="<?=$this->uri('/admin/album/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/album/' . $item['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
-                    </div>
-                    <?endif?>
-                    <h2><?=$title?></h2>
+                <?if($item['id']):?>
+                <div class="btn-group pull-right">
+                    <a href="<?=$this->uri('/album/' . $item['urlName'])?>" class="btn"><?=$this->_('View')?></a>
+                    <a href="<?=$this->uri('/admin/album/create')?>" class="btn"><?=$this->_('Create New')?></a>
+                    <a href="<?=$this->uri('/admin/album/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/album/' . $item['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
                 </div>
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                    <a href="<?=$this->uri('/admin/album/' . $item['id'])?>"><?=$this->_('Album Basic Info')?></a>
+                    </li>
+                    <li><a href="<?=$this->uri('/admin/album/upload/' . $item['id'])?>"><?=$this->_('Upload Photo')?></a></li>
+                    <li><a href="<?=$this->uri('/admin/album/upload/' . $item['id'])?>"><?=$this->_('Photo Management')?></a></li>
+                </ul>
+                <?else:?>
+                    <div class="page-headr">
+                        <h2><?=$title?></h2>
+                    </div>
+                <?endif?>
                 <fieldset class="">
                     <div class="control-group <?=$form->isError('title') ? 'error' : '';?>">
                         <?=$form->helper('title', 'label', array('class' => 'control-label'))?>
@@ -118,7 +108,7 @@ $form->useSubFormGroup()
                 </fieldset>
             </div>
         </div><!--span5 end-->
-        
+
         <div class="span10">
             <div class="slate">
                 <div class="page-header">
@@ -154,130 +144,130 @@ $form->useSubFormGroup()
 
 
 <script>
-eva.ready(function(){
-      
-    eva.callback.connect = function(item, parentWindow){
-        $("#group-form-groupfileform-file-id").val(item.attr("data-connect-id"));
-        var data = $.parseJSON(item.attr('data-connect-json'));
-        $("#post-image").attr("src", data.Thumb);
-        $.fn.colorbox.close();
-    }
-    eva.loadcss(eva.s('/lib/js/jquery/colorbox/colorbox.css'));
-    eva.loader(eva.s('/lib/js/jquery/colorbox/jquery.colorbox.js'), function(){
-        $("#connect-image").colorbox({
-            iframe:true,
-                width:"80%",
-                height:"80%"
-        });
-    });
+    eva.ready(function(){
 
-
-    $("#save-draft").on('click', function(){
-        $("#blog-form-posteditform-status").val('draft');
-    });
-
-    var editor = $("#blog-form-textform-content");
-
-    var editorMd;
-    var mdInited = false;
-    var initMd = function(_editor){
-        if(true === mdInited) {
-            return;
-        }
-        eva.loadcss(eva.s(['/lib/js/codemirror/lib/codemirror.css', '/lib/js/codemirror/theme/ambiance.css']));
-        eva.loader(eva.s(['/lib/js/codemirror/lib/codemirror.js', '/lib/js/codemirror/mode/xml/xml.js', '/lib/js/codemirror/mode/markdown/markdown.js', '/lib/js/showdown/showdown.js']), function(){
-            mdInited = true;
-            builtMdEditor(_editor);
-        });
-    }
-    var builtMdEditor = function(_editor){
-        if(!mdInited){
-            initMd(_editor); 
-            return;
-        }
-        editorMd = CodeMirror.fromTextArea(_editor[0], {
-            "mode":"markdown",
-                "theme":"ambiance",
-                "lineNumbers":true,
-                "lineWrapping":true,
-                onChange : function(){
-                }
-        });	
-    }
-    var removeMdEditor = function(){
-        if(!editorMd){
-                return;
+            eva.callback.connect = function(item, parentWindow){
+                    $("#group-form-groupfileform-file-id").val(item.attr("data-connect-id"));
+                    var data = $.parseJSON(item.attr('data-connect-json'));
+                    $("#post-image").attr("src", data.Thumb);
+                    $.fn.colorbox.close();
             }
-            editorMd.toTextArea();
-    }
-
-
-    var editorHtml;
-    var htmlInited = false;
-    var initHtml = function(_editor){
-            if(true === htmlInited) {
-                return;
-            }
-            eva.loader(eva.s(["/lib/js/tiny_mce/jquery.tinymce.js"]), function(){
-                    htmlInited = true;
-                    builtHtmlEditor(_editor);
+            eva.loadcss(eva.s('/lib/js/jquery/colorbox/colorbox.css'));
+            eva.loader(eva.s('/lib/js/jquery/colorbox/jquery.colorbox.js'), function(){
+                    $("#connect-image").colorbox({
+                            iframe:true,
+                            width:"80%",
+                            height:"80%"
+                    });
             });
-    }
-    var builtHtmlEditor = function(_editor){
-            if(!htmlInited){
-                    initHtml(_editor); 
-                    return;
+
+
+            $("#save-draft").on('click', function(){
+                    $("#blog-form-posteditform-status").val('draft');
+            });
+
+            var editor = $("#blog-form-textform-content");
+
+            var editorMd;
+            var mdInited = false;
+            var initMd = function(_editor){
+                    if(true === mdInited) {
+                            return;
+                    }
+                    eva.loadcss(eva.s(['/lib/js/codemirror/lib/codemirror.css', '/lib/js/codemirror/theme/ambiance.css']));
+                    eva.loader(eva.s(['/lib/js/codemirror/lib/codemirror.js', '/lib/js/codemirror/mode/xml/xml.js', '/lib/js/codemirror/mode/markdown/markdown.js', '/lib/js/showdown/showdown.js']), function(){
+                            mdInited = true;
+                            builtMdEditor(_editor);
+                    });
+            }
+            var builtMdEditor = function(_editor){
+                    if(!mdInited){
+                            initMd(_editor); 
+                            return;
+                    }
+                    editorMd = CodeMirror.fromTextArea(_editor[0], {
+                            "mode":"markdown",
+                            "theme":"ambiance",
+                            "lineNumbers":true,
+                            "lineWrapping":true,
+                            onChange : function(){
+                            }
+                    });	
+            }
+            var removeMdEditor = function(){
+                    if(!editorMd){
+                            return;
+                    }
+                    editorMd.toTextArea();
             }
 
-			var mceGlobelConfig = {
-				mode : "textareas",
-				theme : "advanced",
-				plugins : "autolink,lists,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
 
-				// Theme options
-				theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
-				theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
-				theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
-				theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,spellchecker,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,blockquote,pagebreak,|,insertfile,insertimage",
-				theme_advanced_toolbar_location : "top",
-				theme_advanced_toolbar_align : "left",
-				theme_advanced_statusbar_location : "bottom",
-				theme_advanced_resizing : true,
-				
-				remove_linebreaks : false,
-				extended_valid_elements : "pre[cols|rows|disabled|name|readonly|class]",
-				script_url : eva.s('/lib/js/tiny_mce/tiny_mce.js'),
-				
-				content_css: eva.s("/lib/css/typo/typo.min.css"),
-				spellchecker_rpc_url : eva.s('/lib/js/tiny_mce/plugins/spellchecker/rpc.php')
-			};
-
-            var mceconfig = mceGlobelConfig;
-            editorHtml = _editor.tinymce(mceconfig);
-    }
-
-    var removeHtmlEditor = function(_editor){
-            if(!editorHtml){
-                return;
+            var editorHtml;
+            var htmlInited = false;
+            var initHtml = function(_editor){
+                    if(true === htmlInited) {
+                            return;
+                    }
+                    eva.loader(eva.s(["/lib/js/tiny_mce/jquery.tinymce.js"]), function(){
+                            htmlInited = true;
+                            builtHtmlEditor(_editor);
+                    });
             }
-            tinyMCE.execCommand('mceToggleEditor', false, _editor.attr('id'));
-    }
+            var builtHtmlEditor = function(_editor){
+                    if(!htmlInited){
+                            initHtml(_editor); 
+                            return;
+                    }
 
-    var switchEditor = function(){
-            var codeType = $("input[name='codeType']:checked").val();
-            if(codeType == 'markdown'){
-                    removeHtmlEditor(editor);
-                    builtMdEditor(editor); 
-            } else if(codeType == 'html'){
-                    removeMdEditor(editor);
-                    builtHtmlEditor(editor);
+                    var mceGlobelConfig = {
+                            mode : "textareas",
+                            theme : "advanced",
+                            plugins : "autolink,lists,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+
+                            // Theme options
+                            theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
+                            theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
+                            theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
+                            theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,spellchecker,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,blockquote,pagebreak,|,insertfile,insertimage",
+                            theme_advanced_toolbar_location : "top",
+                            theme_advanced_toolbar_align : "left",
+                            theme_advanced_statusbar_location : "bottom",
+                            theme_advanced_resizing : true,
+
+                            remove_linebreaks : false,
+                            extended_valid_elements : "pre[cols|rows|disabled|name|readonly|class]",
+                            script_url : eva.s('/lib/js/tiny_mce/tiny_mce.js'),
+
+                            content_css: eva.s("/lib/css/typo/typo.min.css"),
+                            spellchecker_rpc_url : eva.s('/lib/js/tiny_mce/plugins/spellchecker/rpc.php')
+                    };
+
+                    var mceconfig = mceGlobelConfig;
+                    editorHtml = _editor.tinymce(mceconfig);
             }
-    }
-    switchEditor();
-    $("input[name='codeType']").on("change", function(){
-            if(confirm('Content will be changed, are you sure ?')){
-                switchEditor(); 
+
+            var removeHtmlEditor = function(_editor){
+                    if(!editorHtml){
+                            return;
+                    }
+                    tinyMCE.execCommand('mceToggleEditor', false, _editor.attr('id'));
             }
+
+            var switchEditor = function(){
+                    var codeType = $("input[name='codeType']:checked").val();
+                    if(codeType == 'markdown'){
+                            removeHtmlEditor(editor);
+                            builtMdEditor(editor); 
+                        } else if(codeType == 'html'){
+                            removeMdEditor(editor);
+                            builtHtmlEditor(editor);
+                    }
+            }
+            switchEditor();
+            $("input[name='codeType']").on("change", function(){
+                    if(confirm('Content will be changed, are you sure ?')){
+                            switchEditor(); 
+                    }
+            });
     });
-});
 </script>
