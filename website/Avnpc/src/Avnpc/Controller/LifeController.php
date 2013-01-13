@@ -45,7 +45,9 @@ class LifeController extends ActionController
 					'content'      => $entry->getContent()
 				);
                 $edata = $this->entryHandler($edata);
-				$data[] = $edata;
+                if($edata){
+                    $data[] = $edata;
+                }
 			}
 			if($cache){
 			}
@@ -81,6 +83,7 @@ class LifeController extends ActionController
 			break;
 		case 'api.t.sina.com.cn':
 			case 'www.weibo.com':
+			case 'weibo.com':
 				$entry = $this->_weibo($entry);
 				$source = '微博';
 				break;
@@ -110,6 +113,10 @@ class LifeController extends ActionController
 				break;
 		}
 
+        if(!$entry){
+            return false;
+        }
+
 		$entry['type'] = $type;
 		$entry['source'] = $source;
 		return $entry;
@@ -135,6 +142,10 @@ class LifeController extends ActionController
 
 	protected function _weibo($entry)
 	{
+        $text = strip_tags($entry['content']);
+        if(false !== strpos($text, '@')){
+            return '';
+        }
 		$html = new \simple_html_dom();
 		$html->load($entry['content']);
 
@@ -149,10 +160,16 @@ class LifeController extends ActionController
 			$retweet->outertext = '<blockquote>' . $retweet->innertext . '</blockquote>';
 		}
 
-		$entry['content'] = (string) $html;
+        $ps = $html->find('p > p');
+        foreach($ps as $key => $p){
+            if(0 === strpos($p->innertext, '分享到: ')){
+                $p->outertext = '';
+            }
+        }
 
+		$entry['content'] = (string) $html;
+        $entry['content'] = preg_replace('/来自:[^<]+<br>/', '', $entry['content']);
 		return $entry;
-	
 	}
 
 	protected function _douban($entry)
@@ -188,7 +205,7 @@ class LifeController extends ActionController
 	protected function _twitter($entry)
 	{
 
-		$text = $entry['content'];
+        $text = strip_tags($entry['content']);
 		$text = preg_replace("/^(\w+:)/i", "", $text);		
 		$text = preg_replace("/(https*:\/\/[a-z0-9_\-\/\.]+)/i", "<a href=\"\${1}\" rel=\"nofollow\">\${1}</a>", $text);		
 		$text = preg_replace("/(\@\w+)/i", "<a href='http://twitter.com/\${1}'>\${1}</a>", $text);		

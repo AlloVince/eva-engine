@@ -113,10 +113,102 @@ return array(
                 ),
                 'priority' => 2,
             ),
+
+            'group' => array(
+                'type' => 'Segment',
+                'may_terminate' => true,
+                'priority' => 2,
+                'options' => array(
+                    'route' => '/groups[/]',
+                    'defaults' => array(
+                        'controller' => 'GroupController',
+                        'action' => 'index',
+                    ),
+                ),
+                'child_routes' => array(
+                    'action' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '[:action][/]',
+                            'constraints' => array(
+                                'action' => '[a-zA-Z]+',
+                            ),
+                        ),
+                        'may_terminate' => true,
+                    ),
+                    'group_id' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '[:group_id][/]',
+                            'constraints' => array(
+                                'group_id' => '[0-9]+',
+                            ),
+                            'defaults' => array(
+                                'action' => 'get',
+                            ),
+                        ),
+                        'may_terminate' => true,
+                        'child_routes' => array(
+                            'sub' => array(
+                                'type' => 'Segment',
+                                'options' => array(
+                                    'route' => '[:controller][/]',
+                                    'constraints' => array(
+                                        'controller' => 'blog|event|album',
+                                    ),
+                                    'defaults' => array(
+                                        'action' => 'groupIndex',
+                                    ),
+                                ),
+                                'may_terminate' => true,
+                                'child_routes' => array(
+                                    'id' => array(
+                                        'type' => 'Segment',
+                                        'options' => array(
+                                            'route' => '[:id][/]',
+                                            'constraints' => array(
+                                                'id' => '[0-9]+',
+                                            ),
+                                            'defaults' => array(
+                                                'action' => 'groupSingle',
+                                            ),
+                                        ),
+                                        'may_terminate' => true,
+                                        'child_routes' => array(
+                                            'edit' => array(
+                                                'type' => 'Segment',
+                                                'options' => array(
+                                                    'route' => '[edit][/]',
+                                                    'defaults' => array(
+                                                        'action' => 'groupEdit',
+                                                    ),
+                                                ),
+                                                'may_terminate' => true,
+                                            ), //group sub sub child : edit
+                                        ), //group sub sub children
+                                    ), //group sub sub child : id
+                                    'create' => array(
+                                        'type' => 'Segment',
+                                        'options' => array(
+                                            'route' => '[create][/]',
+                                            'defaults' => array(
+                                                'action' => 'groupCreate',
+                                            ),
+                                        ),
+                                        'may_terminate' => true,
+                                    ), //group sub sub child : id
+                                ), //group sub sub children
+                            ), //group sub child : controller
+                        ), //group children
+                    ), //group child action : group_id
+                ), //group children
+            ), //group
+
         ),
     ),
     'controllers' => array(
         'invokables' => array(
+            'Blog' => 'Avnpc\Controller\IndexController',
             'Avnpc\Controller\IndexController' => 'Avnpc\Controller\IndexController',
             'Avnpc\Controller\PagesController' => 'Avnpc\Controller\PagesController',
             'Avnpc\Controller\LifeController' => 'Avnpc\Controller\LifeController',
