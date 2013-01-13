@@ -41,8 +41,8 @@ eva.ready(function(){
 				lang:               'zh-cn',
 				source:             source,
 				embed_id:           'timeline-embed',
-				js:                 eva.s('/assets/module/avnpc/timeline/js/timeline.min.js'), 
-				css:                eva.s('/assets/module/avnpc/timeline/css/timeline.css') 
+				js:                 eva.assets('/module/avnpc/timeline/js/timeline.min.js'), 
+				css:                eva.assets('/module/avnpc/timeline/css/timeline.css') 
 			};
 			//console.log(config);
 			createStoryJS(config);
