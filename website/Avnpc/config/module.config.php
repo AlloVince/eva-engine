@@ -88,9 +88,9 @@ return array(
             'thinking' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/thinking[/][:page][/]',
+                    'route' => '/thinking[/][:tag][/]',
                     'constraints' => array(
-                        'page'     => '[^/]+',
+                        'tag'     => '[^/]+',
                     ),
                     'defaults' => array(
                         'controller' => 'Avnpc\Controller\IndexController',
@@ -98,6 +98,19 @@ return array(
                     ),
                 ),
                 'priority' => 2,
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'page' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '[:page]',
+                            'constraints' => array(
+                                'id' => '[0-9]+'
+                            ),
+                        ),
+                        'may_terminate' => true,
+                    ), //conversation end
+                )
             ),
             'proxy' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',

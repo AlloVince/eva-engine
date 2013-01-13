@@ -2,6 +2,9 @@
 $paginator = $this->paginator;
 if($paginator){
     $path = $paginator->getPath();
+    if($this->query['tag']){
+        $path .= $this->query['tag'] . '/';
+    }
     $queryKey = $paginator->getPageQueryKey();
     $baseQuery = $paginator->getBaseQuery();
     $paginator = $paginator->toArray();

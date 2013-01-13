@@ -1,13 +1,23 @@
 <?
+$tag = isset($this->query['tag']) ? $this->query['tag'] : '';
+$title = 'Just Fine - Story of AlloVince';
+$title = $tag ? $title . ' About ' . $tag : $title;
 if($this->paginator && $this->paginator->getCurrentPageNumber() > 1){
-    $this->headTitle('Just Fine - Story of AlloVince | page ' . $this->paginator->getCurrentPageNumber(), 'SET');
+    $this->headTitle($title . ' | page ' . $this->paginator->getCurrentPageNumber(), 'SET');
 } else {
-    $this->headTitle('Just Fine - Story of AlloVince', 'SET');
+    $this->headTitle($title, 'SET');
 }
-if($this->query['page'] == '1') {
+if($this->query['page'] == '1' && !$tag) {
     $this->headLink(array(
         'rel' => 'canonical',
         'href' => $this->uri('/')
+    ));
+}
+
+if($this->query['page'] == '1' && $tag) {
+    $this->headLink(array(
+        'rel' => 'canonical',
+        'href' => $this->uri('/thinking/' . $tag)
     ));
 }
 ?>

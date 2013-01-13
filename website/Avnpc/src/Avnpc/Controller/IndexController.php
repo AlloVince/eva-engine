@@ -12,17 +12,18 @@ class IndexController extends ActionController
 
     public function indexAction()
     {
-        $page = $this->params('page', 1);
-        $tag = '';
-        if(is_numeric($page)){
+        $tag = $this->params('tag');
+        $page = 1;
+        if(is_numeric($tag)){
             $query = array(
-                'tag' => $page
+                'page' => $tag
             );
+            $tag = '';
         } else {
             $query = array(
-                'page' => $page
+                'tag' => $tag,
+                'page' => $page = $this->params('page', 1)
             );
-            $tag = $page;
         }
 
         $form = new \Blog\Form\PostSearchForm();
