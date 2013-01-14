@@ -31,6 +31,3 @@
 [submodule "module/Core/assets/css"]
 	path = module/Core/assets/css
 	url = git://github.com/AlloVince/EvaBootstrap.git
-[submodule "vendor/Libs"]
-	path = vendor/Libs
-	url = git://github.com/AlloVince/evaengine-libs.git
