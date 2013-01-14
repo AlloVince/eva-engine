@@ -33,4 +33,4 @@
 	url = git://github.com/AlloVince/EvaBootstrap.git
 [submodule "vendor/Libs"]
 	path = vendor/Libs
-	url = git@github.com:AlloVince/evaengine-libs.git
+	url = git://github.com/AlloVince/evaengine-libs.git
