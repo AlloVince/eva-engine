@@ -163,8 +163,10 @@ class Album extends AbstractModel
         $subItem = $item->join('Count');
         $subItem->remove();
 
-        $subItem = $item->join('AlbumFile');
-        $subItem->remove();
+        $subDb =  Api::_()->getDbTable('Album\DbTable\AlbumsFiles');
+        $subDb->where(array(
+            'album_id' => $item->id,
+        ))->remove();
 
         $item->remove();
 

@@ -61,10 +61,10 @@ class Category extends AbstractModel
 
         $item = $this->getItem();
 
-        $subItem = $item->join('CategoryGroup');
-        foreach ($subItem as $groupUser) {
-            $groupUser->remove();
-        }
+        $subDb =  Api::_()->getDbTable('Group\DbTable\CategoriesGroups');
+        $subDb->where(array(
+            'category_id' => $item->id,
+        ))->remove();
 
         $item->remove();
 

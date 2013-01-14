@@ -164,14 +164,19 @@ class Event extends AbstractModel
 
         $subItem = $item->join('Text');
         $subItem->remove();
-
-        $subItem = $item->join('EventUser');
-        foreach ($subItem as $eventUser) {
-            $eventUser->remove();
-        }
-
-        $subItem = $item->join('EventFile');
+        
+        $subItem = $item->join('Count');
         $subItem->remove();
+
+        $subDb =  Api::_()->getDbTable('Event\DbTable\EventsUsers');
+        $subDb->where(array(
+            'event_id' => $item->id,
+        ))->remove();
+        
+        $subDb =  Api::_()->getDbTable('Event\DbTable\EventsFiles');
+        $subDb->where(array(
+            'event_id' => $item->id,
+        ))->remove();
 
         $item->remove();
 
