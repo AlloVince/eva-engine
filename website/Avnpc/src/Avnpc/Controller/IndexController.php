@@ -47,7 +47,7 @@ class IndexController extends ActionController
             'query' => $query,
         ));
         $view->setTemplate('avnpc/index');
-        if($this->params('page')){
+        if($this->params('page') || $tag){
             $this->pagecapture();
         } else {
             $this->pagecapture('index');
