@@ -15,10 +15,11 @@ class IndexController extends ActionController
         $tag = $this->params('tag');
         $page = 1;
         if(is_numeric($tag)){
-            $query = array(
-                'page' => $tag
-            );
             $tag = '';
+            $page = $tag;
+            $query = array(
+                'page' => $page
+            );
         } else {
             $query = array(
                 'tag' => $tag,
@@ -47,7 +48,7 @@ class IndexController extends ActionController
             'query' => $query,
         ));
         $view->setTemplate('avnpc/index');
-        if($this->params('page') || $tag){
+        if($page || $tag){
             $this->pagecapture();
         } else {
             $this->pagecapture('index');
