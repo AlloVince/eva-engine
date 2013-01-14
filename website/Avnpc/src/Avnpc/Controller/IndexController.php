@@ -16,7 +16,6 @@ class IndexController extends ActionController
         $page = 1;
         if(is_numeric($tag)){
             $tag = '';
-            $page = $tag;
             $query = array(
                 'page' => $page
             );
