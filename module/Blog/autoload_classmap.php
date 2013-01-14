@@ -1,6 +1,6 @@
 <?php
 return array(
-    'Markdown_Parser' => EVA_LIB_PATH . '/Libs/Markdown/Markdown_Parser.php',
-    'MarkdownExtra_Parser' => EVA_LIB_PATH . '/Libs/Markdown/MarkdownExtra_Parser.php',
+    'michelf\Markdown' => EVA_LIB_PATH . '/Libs/Markdown/Markdown.php',
+    'michelf\MarkdownExtra' => EVA_LIB_PATH . '/Libs/Markdown/MarkdownExtra.php',
     'RST_Parser' => EVA_LIB_PATH . '/Libs/RST_Parser/RST_Parser.php',
 );
