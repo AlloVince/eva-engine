@@ -3,6 +3,8 @@
 namespace Blog\Item;
 
 use Eva\Mvc\Item\AbstractItem;
+use michelf\Markdown;
+use michelf\MarkdownExtra;
 
 class Text extends AbstractItem
 {
@@ -22,8 +24,7 @@ class Text extends AbstractItem
             $rst = new \RST_Parser();
             return $this->ContentHtml = $rst->transform($this->content);
         } else {
-            $markdown = new \MarkdownExtra_Parser();
-            return $this->ContentHtml = $markdown->transform($this->content);
+            return $this->ContentHtml = MarkdownExtra::defaultTransform($this->content);
         }
     }
 

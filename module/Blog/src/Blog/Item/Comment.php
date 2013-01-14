@@ -3,6 +3,8 @@
 namespace Blog\Item;
 
 use Eva\Mvc\Item\AbstractItem;
+use michelf\Markdown;
+use michelf\MarkdownExtra;
 
 class Comment extends AbstractItem
 {
@@ -72,7 +74,7 @@ class Comment extends AbstractItem
         if($this->codeType == 'html'){
             return $this->ContentHtml = $this->content;
         } else{
-            $md = new \Markdown_Parser();
+            $md = new \Markdown();
             $md->no_markup = true;
             $md->no_entities = true;
             return $this->ContentHtml = $md->transform($this->content);
