@@ -22,9 +22,6 @@
 [submodule "vendor/ZendQueue"]
 	path = vendor/ZendQueue
 	url = git://github.com/zendframework/ZendQueue.git
-[submodule "vendor/Libs"]
-	path = vendor/Libs
-	url = git://github.com/AlloVince/evaengine-libs.git
 [submodule "vendor/Assetic"]
 	path = vendor/Assetic
 	url = git://github.com/kriswallsmith/assetic.git
