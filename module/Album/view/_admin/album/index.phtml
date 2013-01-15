@@ -85,6 +85,7 @@ $form
                             <a href="<?=$this->uri('/admin/album/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/album/', array('page' => $this->page)))); ?>" class="btn btn-small btn-danger"><?=$this->_('Delete')?></a>
                             <a href="<?=$this->uri('/album/' . $item['urlName'])?>" class="btn btn-small"><?=$this->_('View')?></a>
                             <a href="<?=$this->uri('/admin/album/' . $item['id'])?>" class="btn btn-small"><?=$this->_('Edit')?></a>
+                            <a href="<?=$this->uri('/admin/album/upload/' . $item['id'])?>" class="btn btn-small"><?=$this->_('Upload')?></a>
                         </td>
                     </tr>
                     <?endforeach;?>

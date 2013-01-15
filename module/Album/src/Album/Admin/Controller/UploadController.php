@@ -58,11 +58,10 @@ class UploadController extends RestfulModuleController
 
     public function restPostUpload()
     {
-        /*
+        $this->changeViewModel('json');
         $this->getServiceLocator()->get('Application')->getEventManager()->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER, function($event){
             $event->getResponse()->getHeaders()->addHeaderLine('Content-Type', 'text/plain');
         }, -10000);
-        */
 
         $postData = $this->params()->fromPost();
         $form = new Form\UploadForm();
@@ -107,13 +106,8 @@ class UploadController extends RestfulModuleController
                 }
             }
         } else {
-            p($form->getMessages());
+            //p($form->getMessages());
         }
-
-        return array(
-            'item' => array('id' => $this->params('id')),
-            'form' => $form
-        );
 
         return new JsonModel($response);
     }
