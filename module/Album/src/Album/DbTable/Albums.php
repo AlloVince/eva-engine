@@ -18,6 +18,14 @@ class Albums extends TableGateway
 
     public function setParameters(Parameters $params)
     {
+        if($params->id){
+            if(is_array($params->id)){
+                $this->where(array('id' => array_unique($params->id)));
+            } else {
+                $this->where(array('id' => $params->id));
+            }
+        }
+        
         if($params->page){
             $this->enableCount();
             $this->page($params->page);
