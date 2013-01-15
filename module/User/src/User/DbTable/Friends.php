@@ -17,11 +17,19 @@ class Friends extends TableGateway
     public function setParameters(Parameters $params)
     {
         if($params->user_id){
-            $this->where(array('user_id' => $params->user_id));
+            if(is_array($params->user_id)){
+                $this->where(array('user_id' => array_unique($params->user_id)));
+            } else {
+                $this->where(array('user_id' => $params->user_id));
+            }
         }
 
         if($params->friend_id){
-            $this->where(array('friend_id' => $params->friend_id));
+            if(is_array($params->friend_id)){
+                $this->where(array('friend_id' => array_unique($params->friend_id)));
+            } else {
+                $this->where(array('friend_id' => $params->friend_id));
+            }
         }
 
         if($params->relationshipStatus){
@@ -32,7 +40,7 @@ class Friends extends TableGateway
             $this->enableCount();
             $this->page($params->page);
         }
-        
+
         return $this;
     }
 }
