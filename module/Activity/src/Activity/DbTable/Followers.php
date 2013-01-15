@@ -22,11 +22,19 @@ class Followers extends TableGateway
         }
 
         if($params->user_id){
-            $this->where(array('user_id' => $params->user_id));
+            if(is_array($params->user_id)){
+                $this->where(array('user_id' => array_unique($params->user_id)));
+            } else {
+                $this->where(array('user_id' => $params->user_id));
+            }
         }
 
         if($params->follower_id){
-            $this->where(array('follower_id' => $params->follower_id));
+            if(is_array($params->follower_id)){
+                $this->where(array('follower_id' => array_unique($params->follower_id)));
+            } else {
+                $this->where(array('follower_id' => $params->follower_id));
+            }
         }
 
         return $this;
