@@ -8,8 +8,11 @@ $this->textDelay('breadcrumbText', $title);
 
 $form = new Album\Form\UploadForm();
 $form->setView($this)
+->useSubFormGroup()
 ->setMethod('post')
-->setAction($this->uri('/admin/album/upload/'));
+->setAction($this->uri('/admin/album/upload/'))
+->prepare();
+
 ?>
 
 <div class="row">
@@ -42,6 +45,7 @@ $form->setView($this)
 
     <form <?=$this->formAttr($form)?> enctype="multipart/form-data" class="">
         <?=$form->restful();?>
+        <?=$form->helper(array('AlbumFile', 'album_id'), 'formHidden', array('value' => $item['id']))?>
         <div class="span10">
             <div class="slate">
                 <div class="page-header">

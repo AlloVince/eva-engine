@@ -64,7 +64,7 @@ class AlbumFileForm extends \Eva\Form\Form
         ),
         'album_id' => array (
             'name' => 'album_id',
-            'required' => false,
+            'required' => true,
             'filters' => array (
             ),
             'validators' => array (

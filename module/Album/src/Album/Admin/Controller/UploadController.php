@@ -66,13 +66,19 @@ class UploadController extends RestfulModuleController
 
         $postData = $this->params()->fromPost();
         $form = new Form\UploadForm();
-        $form->bind($postData);
+        $form->useSubFormGroup()
+            ->bind($postData);
 
-        $itemModel = Api::_()->getModel('File\Model\File');
+        $itemModel = Api::_()->getModel('Album\Model\Upload');
 
         $response = array();
         if ($form->isValid() && $form->getFileTransfer()->isUploaded()) {
+            $item = $form->getData();
             if($form->getFileTransfer()->receive()){
+                $itemModel->setAlbum(array(
+                    'id' => $item['AlbumFile']['album_id']
+                ));
+
                 $files = $form->getFileTransfer()->getFileInfo();
                 $itemModel->setUploadFiles($files);
                 $itemModel->setConfigKey('default')->createFiles();
