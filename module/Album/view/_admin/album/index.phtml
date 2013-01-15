@@ -15,13 +15,6 @@ $form
 ->bind($this->query)
 ->prepare();
 
-$lableMap = array(
-    'draft' => '',
-    'active' => 'label-success',
-    'pending' => 'label-warning',
-    'deleted' => 'label-inverse',
-);
-
 ?>
 <div class="row">
     <div class="span10">
@@ -81,7 +74,6 @@ $lableMap = array(
                         </td>	
                         <td>
                             <a href="<?=$this->uri('/admin/album/' . $item['id'])?>" class="title"><?=$item['title'] ?></a>
-                            <span class="label <?=$lableMap[$item['status']]?>"><?=$this->_($item['status'])?></span>
                             <p>
                             <span class="meta"><?=$item['createTime'];?></span>
                             </p>

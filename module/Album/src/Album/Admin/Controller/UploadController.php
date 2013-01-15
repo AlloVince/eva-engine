@@ -101,7 +101,7 @@ class UploadController extends RestfulModuleController
                 }
             }
         } else {
-            //p($form->getMessages());
+            p($form->getMessages());
         }
 
         return array(
