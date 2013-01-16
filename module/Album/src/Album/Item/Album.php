@@ -89,6 +89,13 @@ class Album extends AbstractItem
             'getUrlName()',
         ),
     );
+    
+    public function getUrlName()
+    {
+        if(!$this->urlName) {
+            return $this->urlName = \Eva\Stdlib\String\Hash::uniqueHash();
+        }
+    }
 
     public function getCreateTime()
     {

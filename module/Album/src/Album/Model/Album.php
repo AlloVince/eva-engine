@@ -136,9 +136,10 @@ class Album extends AbstractModel
         $this->trigger('save.pre');
         
         //Admin save item will remove all categories
-        $categoryAlbumItem = $this->getItem('Album\Item\CategoryAlbum');
-        $categoryAlbumItem->album_id = $item->id;
-        $categoryAlbumItem->remove();
+        $categoryDb = Api::_()->getDbTable('Album\DbTable\CategoriesAlbums');
+        $categoryDb->where(array(
+            'album_id' => $item->id,
+        ))->remove();
 
         $item->save();
 
