@@ -13,6 +13,8 @@ class UploadController extends RestfulModuleController
     protected $renders = array(
         'restPostUpload' => 'upload/get',    
     );
+    
+    protected $album;
 
     public function restGetUpload()
     {
@@ -74,10 +76,16 @@ class UploadController extends RestfulModuleController
         if ($form->isValid() && $form->getFileTransfer()->isUploaded()) {
             $item = $form->getData();
             if($form->getFileTransfer()->receive()){
-                $itemModel->setAlbum(array(
-                    'id' => $item['AlbumFile']['album_id']
-                ));
 
+                if ($this->album) {
+                    $itemModel->setAlbum($this->album);
+                } else {
+                    $albumModel = Api::_()->getModel('Album\Model\Album');
+                    $album = $albumModel->getAlbum($item['AlbumFile']['album_id']);
+                    $itemModel->setAlbum($album);
+                    $this->album = $album;
+                }
+                
                 $files = $form->getFileTransfer()->getFileInfo();
                 $itemModel->setUploadFiles($files);
                 $itemModel->setConfigKey('default')->createFiles();

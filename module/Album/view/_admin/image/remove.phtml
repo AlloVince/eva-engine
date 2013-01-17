@@ -1,0 +1,35 @@
+<?
+$item = $this->item;
+$title = $this->_('Delete Album Image');
+$this->headTitle($title, 'SET');
+$form = new Album\Form\AlbumFileDeleteForm();
+
+$form->setView($this)
+->setMethod('delete')
+->setAction($this->uri('/admin/album/image/remove/'))
+->bind($item)
+->prepare();
+?>
+
+<?if($item):?>
+<div class="alert alert-block">
+   <h2 class="alert-heading"><?=$title?></h2>
+   <p><?=$this->_(array('Image will be deleted, are you sure?'))?></p>
+   <p>
+		<form class="form-horizontal" <?=$this->formAttr($form)?>>
+            <?=$form->restful();?>
+            <div class="hide">
+			<?=$this->formInput($form->get('album_id'));?>
+            <?=$this->formInput($form->get('file_id'));?>
+            </div>
+            <button class="btn btn-danger" type="submit"><?=$this->_('Delete')?></button>
+            <input name="callback" type="hidden" value="<?=$this->callback?>" />
+            <a class="btn" href="<?=$this->callback?>"><?=$this->_('Go Back')?></a>
+   		</form>
+	</p>
+</div>
+<?else:?>
+<div class="alert alert-success container">
+    <h2 class="alert-heading"<?=$this->_('>Image have been deleted')?></h2>
+</div>
+<?endif?>

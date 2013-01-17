@@ -5,7 +5,6 @@ class AlbumCreateForm extends AlbumForm
 {
     protected $subFormGroups = array(
         'default' => array(
-            'AlbumFile' => 'Album\Form\AlbumFileForm',
             'CategoryAlbum' => array(
                 'formClass' => 'Album\Form\CategoryAlbumForm',
                 'collection' => true,

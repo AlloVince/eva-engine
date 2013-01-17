@@ -30,6 +30,11 @@ class AlbumsFiles extends TableGateway
         if($params->file_id){
             $this->where(array('file_id' => $params->file_id));
         }
+        
+        if($params->page){
+            $this->enableCount();
+            $this->page($params->page);
+        }
 
         return $this;
     }

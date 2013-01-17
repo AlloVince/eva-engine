@@ -13,7 +13,7 @@ class AlbumController extends RestfulModuleController
         'restPostAlbum' => 'album/get',    
         'restDeleteAlbum' => 'remove/get',    
     );
-
+    
     public function restIndexAlbum()
     {
         $query = $this->getRequest()->getQuery();
@@ -54,12 +54,6 @@ class AlbumController extends RestfulModuleController
                         '*',
                     ),
                 ),
-                'File' => array(
-                    'self' => array(
-                        '*',
-                        'getThumb()',
-                    )
-                ),
                 'CategoryAlbum' => array(
                     'self' => array(
                         '*',
@@ -71,16 +65,20 @@ class AlbumController extends RestfulModuleController
                     )
                 ),
             ),
+            'proxy' => array(
+                'Album\Item\Album::Cover' => array(
+                    '*',
+                    'getThumb()'
+                ),
+            ),
         ));
-
-        if(isset($item['AlbumFile'][0])){
-            $item['AlbumFile'] = $item['AlbumFile'][0];
-        }
 
         return array(
             'item' => $item,
         );
     }
+    
+    
 
     public function restPostAlbum()
     {

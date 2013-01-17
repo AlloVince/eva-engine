@@ -7,6 +7,17 @@ use Eva\Mvc\Item\AbstractItem;
 class Album extends AbstractItem
 {
     protected $dataSourceClass = 'Album\DbTable\Albums';
+    
+    protected $inverseRelationships = array(
+        'Cover' => array(
+            'targetEntity' => 'File\Item\File',
+            'relationship' => 'OneToOne',
+            'joinColumn' => 'id',
+            'referencedColumn' => 'cover_id',
+            'joinParameters' => array(
+            ),
+        ),
+    );
 
     protected $relationships = array(
         'Count' => array(

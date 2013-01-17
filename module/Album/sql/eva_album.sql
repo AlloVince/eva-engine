@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS `eva_album_albums` (
   `visibility` enum('public','private','password') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'public',
   `description` text COLLATE utf8_unicode_ci,
   `visitPassword` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `cover_id` int(11) DEFAULT NULL,
   `user_id` int(10) NOT NULL,
   `user_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `orderNumber` int(10) DEFAULT NULL,
@@ -37,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `eva_album_categories` (
   `left` int(15) NOT NULL DEFAULT '0',
   `right` int(15) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS `eva_album_categories_albums`;
 CREATE TABLE IF NOT EXISTS `eva_album_categories_albums` (
@@ -52,4 +53,3 @@ CREATE TABLE IF NOT EXISTS `eva_album_counts` (
   `fileCount` int(5) NOT NULL DEFAULT '0',
   PRIMARY KEY (`album_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-

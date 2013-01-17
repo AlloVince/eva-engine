@@ -41,7 +41,7 @@ $form->useSubFormGroup()
                     <a href="<?=$this->uri('/admin/album/' . $item['id'])?>"><?=$this->_('Album Basic Info')?></a>
                     </li>
                     <li><a href="<?=$this->uri('/admin/album/upload/' . $item['id'])?>"><?=$this->_('Upload Photo')?></a></li>
-                    <li><a href="<?=$this->uri('/admin/album/upload/' . $item['id'])?>"><?=$this->_('Photo Management')?></a></li>
+                    <li><a href="<?=$this->uri('/admin/album/image/' . $item['id'])?>"><?=$this->_('Photo Management')?></a></li>
                 </ul>
                 <?else:?>
                     <div class="page-headr">
@@ -135,6 +135,24 @@ $form->useSubFormGroup()
                 <?endforeach?>
             </div>
         </div><!--span5 end-->
+        
+        <?if($this->hasModule('File')):?>
+        <div class="span5">
+            <div class="slate">
+                <div class="page-header">
+                    <h2><?=$this->_('Set Cover')?></h2>
+                </div>
+                <div class="well">
+                    <?if($item['Cover']):?>
+                    <img id="post-image" src="<?=$this->thumb($item['Cover']['Thumb'], array('h_250'))?>" alt="" />
+                    <?else:?>
+                    <img id="post-image" src="http://placehold.it/260x180" alt="" />
+                    <?endif?>
+                </div>
+                <a id="connect-image" href="<?=$this->uri('/admin/album/image/' . $item['id'])?>" class="btn"><?=$this->_('Select Image')?></a>
+            </div>
+        </div><!--span5 end-->
+        <?endif?>
 
         <div class="span10 listing-buttons">
             <button id="save-publish" class="btn btn-success btn-large"><?=$this->_('Save')?></button>

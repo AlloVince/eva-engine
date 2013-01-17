@@ -154,6 +154,23 @@ class Album extends AbstractModel
 
         return $item->id;
     }
+    
+    public function setAlbumCover($albumId = null, $fileId = null)
+    {
+        if (!$albumId || !$fileId) {
+            return false;
+        }
+        
+        $this->setItem(array(
+            'id' => $albumId,
+        ));
+
+        $item = $this->getItem();
+        $item->cover_id = $fileId;
+        $item->save();
+
+        return true;
+    }
 
     public function removeAlbum()
     {

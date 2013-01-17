@@ -1,0 +1,89 @@
+<?
+$item = $this->album;
+$title = 'Album Photo Management';
+$title = $this->_($title);
+$method = $item['id'] ? 'put' : 'post';
+$this->headTitle($title, 'SET');
+$this->textDelay('breadcrumbText', $title);
+$form = new Album\Form\UploadForm();
+$form->setView($this)
+->useSubFormGroup()
+->setMethod('post')
+->setAction($this->uri('/admin/album/upload/'))
+->prepare();
+
+?>
+
+<div class="row">
+    <div class="span10">
+        <div class="slate">
+            <?if($album['id']):?>
+            <div class="btn-group pull-right">
+                <a href="<?=$this->uri('/album/' . $item['urlName'])?>" class="btn"><?=$this->_('View')?></a>
+                <a href="<?=$this->uri('/admin/album/create')?>" class="btn"><?=$this->_('Create New')?></a>
+                <a href="<?=$this->uri('/admin/album/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/album/' . $item['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
+            </div>
+            <ul class="nav nav-tabs">
+                <li>
+                <a href="<?=$this->uri('/admin/album/' . $item['id'])?>"><?=$this->_('Album Basic Info')?></a>
+                </li>
+                <li><a href="<?=$this->uri('/admin/album/upload/' . $item['id'])?>"><?=$this->_('Upload Photo')?></a></li>
+                <li class="active"><a href="<?=$this->uri('/admin/album/image/' . $item['id'])?>"><?=$this->_('Photo Management')?></a></li>
+            </ul>
+            <?else:?>
+            <div class="page-headr">
+                <h2><?=$title?></h2>
+            </div>
+            <?endif?>
+            <fieldset class="">
+
+            </fieldset>
+        </div>
+    </div><!--span10 end-->
+    
+    <div class="span10">
+        <div class="slate">
+            <table class="orders-table table">
+                <thead>
+                    <tr>
+                        <th><?=$this->_('Image Name')?></th>
+                        <th class="span1">
+                        </th>
+                        <th class="actions"><?=$this->_('Actions')?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?if($items):?>
+                    <?foreach($items as $key=>$item):?>
+                    <?$item = $item['Image'];?>
+                    <tr class="">
+                        <td>
+                            <?=$item['title'] ?>
+                            <p>
+                            <span class="meta"><?=$item['user_name'] ?> <?=$item['createTime'];?></span>
+                            </p>
+                        </td>
+                        <td>
+                            <img src="<?=$this->thumb($item['Thumb'], array('w_50'))?>" alt="<?=$item['fileExtension']?>" />
+                        </td>	
+                        <td class="actions">
+                            <a href="<?=$this->uri('/admin/album/image/remove/' . $album['id'] . '?file_id=' . $item['id'],'c', array('c' => $this->uri('/admin/album/image/' . $this->album['id'], array('page' => $this->page)))); ?>" class="btn btn-small btn-danger"><?=$this->_('Delete')?></a>
+                            <?if($album['cover_id'] != $item['id']):?>
+                            <a href="<?=$this->uri('/admin/album/image/cover/' . $album['id'] . '?file_id=' . $item['id'], array('callback' => $this->uri('/admin/album/image/' . $this->album['id'], array('page' => $this->page)))); ?>" class="btn btn-small"><?=$this->_('Set Cover')?></a>
+                            <?endif;?>
+                        </td>
+                    </tr>
+                    <?endforeach;?>
+                    <?endif;?>
+                </tbody>
+            </table>
+        </div>
+    </div><!--span10 end-->
+    
+    <div class="span10">
+        <?if($this->paginator):?>
+        <?=$this->paginator->setPath('/admin/album/image/' . $album['id'])->setBaseQuery($this->query);?>
+        <?=$this->widget('Core', 'widgets/paginator', $this->vars())?>
+        <?endif;?>
+    </div>
+</div>
