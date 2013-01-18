@@ -49,17 +49,7 @@ class AlbumController extends RestfulModuleController
                 '*',
             ),
             'join' => array(
-                'Text' => array(
-                    'self' => array(
-                        '*',
-                    ),
-                ),
-                'CategoryAlbum' => array(
-                    'self' => array(
-                        '*',
-                    )
-                ),
-                'Category' => array(
+                'Count' => array(
                     'self' => array(
                         '*',
                     )

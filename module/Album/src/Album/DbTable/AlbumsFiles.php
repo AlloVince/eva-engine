@@ -23,6 +23,10 @@ class AlbumsFiles extends TableGateway
 
     public function setParameters(Parameters $params)
     {
+        if($params->noLimit) {
+            $this->disableLimit();
+        }
+        
         if($params->album_id){
             $this->where(array('album_id' => $params->album_id));
         }
@@ -34,6 +38,10 @@ class AlbumsFiles extends TableGateway
         if($params->page){
             $this->enableCount();
             $this->page($params->page);
+        }
+
+        if ($params->rows) {
+            $this->limit((int) $params->rows);
         }
 
         return $this;

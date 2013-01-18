@@ -56,7 +56,7 @@ class Album extends AbstractModel
             ));
         } elseif(is_string($albumIdOrUrlName)) {
             $this->setItem(array(
-                'albumKey' => $albumIdOrUrlName,
+                'urlName' => $albumIdOrUrlName,
             ));
         }
         $this->trigger('get.pre');
