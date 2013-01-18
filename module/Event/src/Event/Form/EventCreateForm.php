@@ -87,6 +87,31 @@ class EventCreateForm extends EventForm
 
     public function prepareData($data)
     {
+        if (isset($data['startDay'])) {
+            $time = new \DateTime($data['startDay']);
+            $data['startDay'] = $time->format('Y-m-d');
+        }
+        
+        if (isset($data['endDay'])) {
+            $time = new \DateTime($data['endDay']);
+            $data['endDay'] = $time->format('Y-m-d');
+        }
+
+        if (isset($data['endTime'])) {
+            $time = new \DateTime($data['endTime']);
+            $data['endTime'] = $time->format('H:i:s');
+        }
+        
+        if (isset($data['startTime'])) {
+            $time = new \DateTime($data['startTime']);
+            $data['startTime'] = $time->format('H:i:s');
+        }
+
+        if (isset($data['endTime'])) {
+            $startTime = new \DateTime($data['endTime']);
+            $data['endTime'] = $startTime->format('H:i:s');
+        }
+        
         if(isset($data['EventFile'])){
             $data['EventFile']['event_id'] = $data['id'];
         }

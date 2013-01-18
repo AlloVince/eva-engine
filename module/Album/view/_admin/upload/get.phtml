@@ -29,7 +29,7 @@ $form->setView($this)
                 <a href="<?=$this->uri('/admin/album/' . $item['id'])?>"><?=$this->_('Album Basic Info')?></a>
                 </li>
                 <li class="active"><a href="<?=$this->uri('/admin/album/upload/' . $item['id'])?>"><?=$this->_('Upload Photo')?></a></li>
-                <li><a href="<?=$this->uri('/admin/album/upload/' . $item['id'])?>"><?=$this->_('Photo Management')?></a></li>
+                <li><a href="<?=$this->uri('/admin/album/image/' . $item['id'])?>"><?=$this->_('Photo Management')?></a></li>
             </ul>
             <?else:?>
             <div class="page-headr">
