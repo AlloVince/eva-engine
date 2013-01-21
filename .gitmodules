@@ -34,3 +34,6 @@
 [submodule "vendor/Libs"]
 	path = vendor/Libs
 	url = git://github.com/AlloVince/evaengine-libs.git
+[submodule "vendor/Resque"]
+	path = vendor/Resque
+	url = git://github.com/chrisboulton/php-resque.git
