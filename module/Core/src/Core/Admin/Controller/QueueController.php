@@ -2,44 +2,42 @@
 
 namespace Core\Admin\Controller;
 
-use Eva\Mvc\Controller\RestfulModuleController,
-    Eva\View\Model\ViewModel;
+use Eva\Mvc\Controller\RestfulModuleController;
+use Eva\View\Model\ViewModel;
 
 class QueueController extends RestfulModuleController
 {
-    protected $addResources = array(
-    );
+   protected $addResources = array(
+      'job'
+   );
 
-    public function indexAction()
-    {
-        $request = $this->getRequest();
-        $queue = new \Core\Queue('Mongodb', array(
-            'adapterNamespace' => 'Core\Queue\Adapter',
-        ));
-        $queueList = $queue->getQueues();
+   public function restIndexQueue()
+   {
+      $queues = \Resque::queues();
+      foreach($queues as $key => $queue){
+         $queues[$key] = array(
+            'name' => $queue,
+            'size' => \Resque::size($queue),
+         );
+      }
 
-        foreach($queueList as $key => $item){
-            $queueList[$key] = array(
-                'name' => $item,
-                'debug' => $queue->debugInfo()
-            );
-        }
-        return array(
-            'items' => $queueList,
-        );
-    }
+      return array(
+         'items' => $queues,
+      );
+   }
 
-    public function restGetQueue()
-    {
-        $id = $this->params('id');
-        $queue = new \Core\Queue('Mongodb', array(
-            'adapterNamespace' => 'Core\Queue\Adapter',
-            'name' => $id,
-        ));
-        $item = $queue->debugInfo();
-        $item['count'] = $queue->count();
-        return array(
-            'item' => $item,
-        );
-    }
+   public function restGetQueueJob()
+   {
+      $jobId = $this->params()->fromQuery('job');
+      $status = new \Resque_Job_Status($jobId);
+      if(!$status->isTracking()) {
+         return array(
+            'status' => -1,
+         );
+      }
+
+      return array(
+         'status' => $status->get()
+      );
+   }
 }

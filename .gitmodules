@@ -37,3 +37,6 @@
 [submodule "vendor/Resque"]
 	path = vendor/Resque
 	url = git://github.com/chrisboulton/php-resque.git
+[submodule "vendor/Credis"]
+	path = vendor/Credis
+	url = git://github.com/colinmollenhour/credis.git

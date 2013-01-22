@@ -17,7 +17,7 @@ $this->textDelay('breadcrumbText', $title);
                         <th class="span1">
                         </th>
                         <th><?=$this->_('Queue Name')?></th>
-                        <th><?=$this->_('Queue Name')?></th>
+                        <th><?=$this->_('Jobs Count')?></th>
                         <th class="actions"><?=$this->_('Actions')?></th>
                     </tr>
                 </thead>
@@ -32,7 +32,7 @@ $this->textDelay('breadcrumbText', $title);
                             <a href="<?=$this->uri('/admin/core/queue/' . $item['name'])?>" class="title"><?=$item['name']?></a>
                         </td>
                         <td>
-                            <pre><?//=var_export($item['debug'])?></pre>
+                           <span class="label"><?=$item['size']?></span>
                         </td>
                         <td class="actions">
                             <a href="<?=$this->uri('/admin/core/queue/' . $item['name'])?>" class="btn btn-small"><?=$this->_('Run As Http')?></a>
