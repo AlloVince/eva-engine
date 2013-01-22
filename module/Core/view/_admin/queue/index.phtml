@@ -8,13 +8,17 @@ $this->textDelay('breadcrumbText', $title);
     <div class="span10">
         <div class="slate">
             <div class="page-header">
-                <h2><?=$title?></h2>
+               <div class="btn-group pull-right">
+                  <a class="btn" href="<?=$this->uri('/admin/core/queue/monitor/')?>"><i class="icon-eye-open"></i> Monitor</a>
+                  <a class="btn" href="<?=$this->uri('/admin/core/queue/run/?worker=all')?>"><i class="icon-fighter-jet"></i> Run Public Worker</a>
+               </div>
+               <h2><?=$title?></h2>
             </div>
 
             <table class="orders-table table">
-                <thead>
-                    <tr>
-                        <th class="span1">
+               <thead>
+                  <tr>
+                     <th class="span1">
                         </th>
                         <th><?=$this->_('Queue Name')?></th>
                         <th><?=$this->_('Jobs Count')?></th>
@@ -34,9 +38,10 @@ $this->textDelay('breadcrumbText', $title);
                         <td>
                            <span class="label"><?=$item['size']?></span>
                         </td>
-                        <td class="actions">
-                            <a href="<?=$this->uri('/admin/core/queue/' . $item['name'])?>" class="btn btn-small"><?=$this->_('Run As Http')?></a>
-                            <a href="<?=$this->uri('/admin/core/queue/' . $item['name'])?>" class="btn btn-small"><?=$this->_('Run As Commond')?></a>
+                        <td class="span4">
+                           <a href="<?=$this->uri('/admin/core/queue/fork/?queue=' . $item['name'])?>" class="btn btn-small"><?=$this->_('Add Worker')?></a>
+                           <a href="<?=$this->uri('/admin/core/queue/clear/?queue=' . $item['name'])?>" class="btn btn-small"><?=$this->_('Clear')?></a>
+                           <a href="<?=$this->uri('/admin/core/queue/add/?queue=' . $item['name'])?>" class="btn btn-small"><?=$this->_('Add Job')?></a>
                         </td>
                     </tr>
                     <?endforeach;?>
