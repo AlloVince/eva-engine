@@ -5,19 +5,19 @@ namespace Event\DbTable;
 use Eva\Db\TableGateway\TableGateway;
 use Zend\Stdlib\Parameters;
 
-class EventsActivities extends TableGateway
+class EventsAlbums extends TableGateway
 {
-    protected $tableName = 'events_activities';
+    protected $tableName = 'events_albums';
 
     protected $primaryKey = array(
         'event_id',
-        'message_id',
+        'album_id',
     );
     
     protected $uniqueIndex = array(
         array(
             'event_id',
-            'message_id',
+            'album_id',
         ),
     );
 
@@ -27,8 +27,8 @@ class EventsActivities extends TableGateway
             $this->where(array('event_id' => $params->event_id));
         }
 
-        if($params->message_id){
-            $this->where(array('message_id' => $params->message_id));
+        if($params->album_id){
+            $this->where(array('album_id' => $params->album_id));
         }
 
         if ($params->rows) {
@@ -41,8 +41,8 @@ class EventsActivities extends TableGateway
         }
 
         $orders = array(
-            'idasc' => 'message_id ASC',
-            'iddesc' => 'message_id DESC',
+            'idasc' => 'album_id ASC',
+            'iddesc' => 'album_id DESC',
         );
         if($params->order){
             $order = $orders[$params->order];
