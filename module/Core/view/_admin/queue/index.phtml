@@ -29,19 +29,23 @@ $this->textDelay('breadcrumbText', $title);
                     <?if($this->items):?>
                     <?foreach($this->items as $key=>$item):?>
                     <tr class="">
-                        <td>
-                            <input name="id" type="checkbox" class="multiform-item-checkbox"  data-multiform="post" data-multiform-itemid="<?=$key?>" value="<?=$key?>" />
-                        </td>	
-                        <td>
-                            <a href="<?=$this->uri('/admin/core/queue/' . $item['name'])?>" class="title"><?=$item['name']?></a>
-                        </td>
-                        <td>
-                           <span class="label"><?=$item['size']?></span>
-                        </td>
-                        <td class="span4">
+                       <td>
+                          <input name="id" type="checkbox" class="multiform-item-checkbox"  data-multiform="post" data-multiform-itemid="<?=$key?>" value="<?=$key?>" />
+                       </td>	
+                       <td>
+                          <a href="<?=$this->uri('/admin/core/queue/' . $item['name'])?>" class="title"><?=$item['name']?></a>
+                       </td>
+                       <td>
+                          <span class="label"><?=$item['size']?></span>
+                       </td>
+                       <td class="span4">
+                          <div class="btn-group pull-right">
                            <a href="<?=$this->uri('/admin/core/queue/fork/?queue=' . $item['name'])?>" class="btn btn-small"><?=$this->_('Add Worker')?></a>
-                           <a href="<?=$this->uri('/admin/core/queue/clear/?queue=' . $item['name'])?>" class="btn btn-small"><?=$this->_('Clear')?></a>
-                           <a href="<?=$this->uri('/admin/core/queue/add/?queue=' . $item['name'])?>" class="btn btn-small"><?=$this->_('Add Job')?></a>
+                           <a href="<?=$this->uri('/admin/core/queue/monitor/?queue=' . $item['name'])?>" class="btn btn-small"><?=$this->_('View Workers')?></a>
+                           <a href="<?=$this->uri('/admin/core/queue/add/?queue=' . $item['name'])?>" class="btn btn-small"><?=$this->_('Test Job')?></a>
+                           <a href="<?=$this->uri('/logs/' . $item['name'] . '.log')?>" class="btn btn-small" target="_blank"><?=$this->_('Log')?></a>
+                           <a href="<?=$this->uri('/admin/core/queue/clear/?queue=' . $item['name'])?>" class="btn btn-small"><?=$this->_('Clear Log')?></a>
+                           </div>
                         </td>
                     </tr>
                     <?endforeach;?>

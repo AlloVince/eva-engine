@@ -10,9 +10,11 @@ class QueueController extends RestfulModuleController
 {
     protected $addResources = array(
         'monitor',
+        'add',
         'job',
         'run',
         'clear',
+        'view',
         'kill',
     );
 
@@ -31,17 +33,41 @@ class QueueController extends RestfulModuleController
         );
     }
 
+    public function restGetQueueView()
+    {
+
+    }
+
+    public function restGetQueueAdd()
+    {
+        $this->changeViewModel('json');
+        $queue = $this->params()->fromQuery('queue', 'default');
+        $jobId = \Resque::enqueue($queue, 'Core\Jobs\TestJob', array('name' => $queue), true);
+        return new JsonModel(array(
+            'id' => $jobId
+        ));
+    }
+
+    public function restGetQueueClear()
+    {
+        $this->changeViewModel('json');
+        $queue = $this->params()->fromQuery('queue', 'default');
+        $res = \Resque_Stat::clear($queue);
+        return new JsonModel(array(
+            'res' => $res
+        ));
+    }
+
     public function restGetQueueRun()
     {
         $this->changeViewModel('json');
         $worker = $this->params()->fromQuery('worker', 'all');
         $path = realpath(EVA_ROOT_PATH . '/workers/worker');
         $command = "QUEUE=* php $path &";
-        p($command);
-        exit;
+        $out = popen("QUEUE=* php $path &", "r"); 
+        pclose($out);
         return new JsonModel(array(
-            //'res' => exec("QUEUE=* php $path &")
-            'res' => $command
+            'command' => $command
         ));
     }
 
@@ -60,7 +86,14 @@ class QueueController extends RestfulModuleController
             $this->changeViewModel('json');
             $pslist = array();
             $psData = array();
-            exec("ps -ux", $pslist);
+            $queue = $this->params()->fromQuery('queue');
+            $command = 'ps ux';
+            if($queue){
+                $command .= ' | grep "php ' . realpath(EVA_ROOT_PATH . '/workers') . '/worker" | grep -v grep';
+            } else {
+                $command .= ' | grep "php ' . realpath(EVA_ROOT_PATH . '/workers') . '" | grep -v grep';
+            }
+            exec($command, $pslist);
             $psCount = count($pslist);
             if($psCount <= 0){
                 return new JsonModel(array(
@@ -95,7 +128,8 @@ class QueueController extends RestfulModuleController
             } 
             $psData = \Eva\Stdlib\Arraylib\Sort::multiSortArray($psData, 'CPU', 'SORT_DESC');
             return new JsonModel(array(
-                'items' => $psData
+                'command' => $command,
+                'items' => $psData,
             ));
         }
         return array();
