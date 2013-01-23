@@ -87,6 +87,17 @@ class Album extends AbstractItem
             'joinParameters' => array(
             ),
         ),
+        'ImageCount' => array(
+            'targetEntity' => 'Album\Item\AlbumFile',
+            'relationship' => 'OneToMany',
+            'joinColumn' => 'album_id',
+            'referencedColumn' => 'id',
+            'asCount' => true,
+            'countKey' => 'imageCount',
+            'joinParameters' => array(
+                'count' => true,
+            ),
+        ),
     );
 
     protected $map = array(
