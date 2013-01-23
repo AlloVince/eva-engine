@@ -80,6 +80,17 @@ class PostSearchForm extends PostForm
                 'value' => '',
             ),
         ),
+
+        'rows' =>     array(
+            'name' => 'rows',
+            'type' => 'text',
+            'options' => array(
+                'label' => 'Rows',
+            ),
+            'attributes' => array(
+                'value' => 10,
+            ),
+        ),
     );
 
     protected $mergeFilters = array(
