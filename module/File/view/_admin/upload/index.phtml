@@ -14,21 +14,8 @@ $form->setView($this)
 ->setAction($this->uri('/api/file/'));
 ?>
 
-<input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
-<div id="file-upload-succeed" class="alert alert-success hide">
-    <a href="#" data-dismiss="alert" class="close">x</a>
-    <h4 class="alert-heading"><?=$this->_('Upload Succeed')?></h4>
-</div>
-
-<div id="file-upload-failed" class="alert alert-error hide">
-    <a href="#" data-dismiss="alert" class="close">x</a>
-    <h4 class="alert-heading"><?=$this->_('Upload Failed')?></h4>
-</div>
-
-
-
 <div class="row">
-    <form <?=$this->formAttr($form)?> enctype="multipart/form-data" class="">
+    <form <?=$this->formAttr($form)?> enctype="multipart/form-data" class="hide">
         <?=$form->restful();?>
         <div class="span10">
             <div class="slate">

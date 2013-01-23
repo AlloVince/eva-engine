@@ -61,10 +61,10 @@ class Category extends AbstractModel
 
         $item = $this->getItem();
 
-        $subItem = $item->join('CategoryEvent');
-        foreach ($subItem as $eventUser) {
-            $eventUser->remove();
-        }
+        $subDb =  Api::_()->getDbTable('Event\DbTable\CategoriesEvents');
+        $subDb->where(array(
+            'category_id' => $item->id,
+        ))->remove();
 
         $item->remove();
 

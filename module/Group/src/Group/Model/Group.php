@@ -141,9 +141,10 @@ class Group extends AbstractModel
         $this->trigger('save.pre');
         
         //Admin save item will remove all categories
-        $categoryGroupItem = $this->getItem('Group\Item\CategoryGroup');
-        $categoryGroupItem->group_id = $item->id;
-        $categoryGroupItem->remove();
+        $categoryDb = Api::_()->getDbTable('Group\DbTable\CategoriesGroups');
+        $categoryDb->where(array(
+            'group_id' => $item->id,
+        ))->remove();
 
         $item->save();
 
@@ -168,13 +169,18 @@ class Group extends AbstractModel
         $subItem = $item->join('Text');
         $subItem->remove();
         
-        $subItem = $item->join('GroupUser');
-        foreach ($subItem as $groupUser) {
-            $groupUser->remove();
-        }
-
-        $subItem = $item->join('GroupFile');
+        $subItem = $item->join('Count');
         $subItem->remove();
+
+        $subDb =  Api::_()->getDbTable('Group\DbTable\GroupsUsers');
+        $subDb->where(array(
+            'group_id' => $item->id,
+        ))->remove();
+
+        $subDb =  Api::_()->getDbTable('Group\DbTable\GroupsFiles');
+        $subDb->where(array(
+            'group_id' => $item->id,
+        ))->remove();
 
         $item->remove();
 

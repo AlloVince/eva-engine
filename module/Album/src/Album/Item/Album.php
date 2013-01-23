@@ -7,6 +7,17 @@ use Eva\Mvc\Item\AbstractItem;
 class Album extends AbstractItem
 {
     protected $dataSourceClass = 'Album\DbTable\Albums';
+    
+    protected $inverseRelationships = array(
+        'Cover' => array(
+            'targetEntity' => 'File\Item\File',
+            'relationship' => 'OneToOne',
+            'joinColumn' => 'id',
+            'referencedColumn' => 'cover_id',
+            'joinParameters' => array(
+            ),
+        ),
+    );
 
     protected $relationships = array(
         'Count' => array(
@@ -76,6 +87,17 @@ class Album extends AbstractItem
             'joinParameters' => array(
             ),
         ),
+        'ImageCount' => array(
+            'targetEntity' => 'Album\Item\AlbumFile',
+            'relationship' => 'OneToMany',
+            'joinColumn' => 'album_id',
+            'referencedColumn' => 'id',
+            'asCount' => true,
+            'countKey' => 'imageCount',
+            'joinParameters' => array(
+                'count' => true,
+            ),
+        ),
     );
 
     protected $map = array(
@@ -89,6 +111,13 @@ class Album extends AbstractItem
             'getUrlName()',
         ),
     );
+    
+    public function getUrlName()
+    {
+        if(!$this->urlName) {
+            return $this->urlName = \Eva\Stdlib\String\Hash::uniqueHash();
+        }
+    }
 
     public function getCreateTime()
     {

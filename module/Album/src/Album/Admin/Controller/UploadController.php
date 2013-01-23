@@ -13,6 +13,8 @@ class UploadController extends RestfulModuleController
     protected $renders = array(
         'restPostUpload' => 'upload/get',    
     );
+    
+    protected $album;
 
     public function restGetUpload()
     {
@@ -58,21 +60,32 @@ class UploadController extends RestfulModuleController
 
     public function restPostUpload()
     {
-        /*
+        $this->changeViewModel('json');
         $this->getServiceLocator()->get('Application')->getEventManager()->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER, function($event){
             $event->getResponse()->getHeaders()->addHeaderLine('Content-Type', 'text/plain');
         }, -10000);
-        */
 
         $postData = $this->params()->fromPost();
         $form = new Form\UploadForm();
-        $form->bind($postData);
+        $form->useSubFormGroup()
+            ->bind($postData);
 
-        $itemModel = Api::_()->getModel('File\Model\File');
+        $itemModel = Api::_()->getModel('Album\Model\Upload');
 
         $response = array();
         if ($form->isValid() && $form->getFileTransfer()->isUploaded()) {
+            $item = $form->getData();
             if($form->getFileTransfer()->receive()){
+
+                if ($this->album) {
+                    $itemModel->setAlbum($this->album);
+                } else {
+                    $albumModel = Api::_()->getModel('Album\Model\Album');
+                    $album = $albumModel->getAlbum($item['AlbumFile']['album_id']);
+                    $itemModel->setAlbum($album);
+                    $this->album = $album;
+                }
+                
                 $files = $form->getFileTransfer()->getFileInfo();
                 $itemModel->setUploadFiles($files);
                 $itemModel->setConfigKey('default')->createFiles();
@@ -103,11 +116,6 @@ class UploadController extends RestfulModuleController
         } else {
             //p($form->getMessages());
         }
-
-        return array(
-            'item' => array('id' => $this->params('id')),
-            'form' => $form
-        );
 
         return new JsonModel($response);
     }

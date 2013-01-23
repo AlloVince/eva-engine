@@ -8,9 +8,11 @@ $this->textDelay('breadcrumbText', $title);
 
 $form = new Album\Form\UploadForm();
 $form->setView($this)
+->useSubFormGroup()
 ->setMethod('post')
-->setAction($this->uri('/admin/album/upload/'));
-p($form->get('upload'));
+->setAction($this->uri('/admin/album/upload/'))
+->prepare();
+
 ?>
 
 <div class="row">
@@ -27,7 +29,7 @@ p($form->get('upload'));
                 <a href="<?=$this->uri('/admin/album/' . $item['id'])?>"><?=$this->_('Album Basic Info')?></a>
                 </li>
                 <li class="active"><a href="<?=$this->uri('/admin/album/upload/' . $item['id'])?>"><?=$this->_('Upload Photo')?></a></li>
-                <li><a href="<?=$this->uri('/admin/album/upload/' . $item['id'])?>"><?=$this->_('Photo Management')?></a></li>
+                <li><a href="<?=$this->uri('/admin/album/image/' . $item['id'])?>"><?=$this->_('Photo Management')?></a></li>
             </ul>
             <?else:?>
             <div class="page-headr">
@@ -41,8 +43,9 @@ p($form->get('upload'));
     </div><!--span10 end-->
 
 
-    <form <?=$this->formAttr($form)?> enctype="multipart/form-data" class="">
+    <form <?=$this->formAttr($form)?> enctype="multipart/form-data" class="hide">
         <?=$form->restful();?>
+        <?=$form->helper(array('AlbumFile', 'album_id'), 'formHidden', array('value' => $item['id']))?>
         <div class="span10">
             <div class="slate">
                 <div class="page-header">
@@ -73,8 +76,9 @@ p($form->get('upload'));
         </div>
     </form>
 
-    <form id="fileupload" <?=$this->formAttr($form)?> enctype="multipart/form-data" class="fileuploader">
+    <form id="fileupload" <?=$this->formAttr($form)?> enctype="multipart/form-data" class="">
         <?=$form->restful();?>
+        <?=$form->helper(array('AlbumFile', 'album_id'), 'formHidden', array('value' => $item['id']))?>
         <div class="span10 listing-buttons">
             <div class="btn-group pull-right">
                 <span class="btn fileinput-button">
@@ -189,7 +193,7 @@ p($form->get('upload'));
                 <td class="error"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
                 {% } else { %}
                 <td class="preview span2">{% if (file.thumbnail_url) { %}
-                    <a href="{%=file.url%}" title="{%=file.name%}" rel="gallery" download="{%=file.name%}"><img src="{%=file.thumbnail_url%}" class="span2" /></a>
+                    <a href="{%=file.url%}" title="{%=file.name%}" rel="gallery" download="{%=file.name%}"><img src="{%=eva.thumb(file.thumbnail_url, 'w_200')%}" class="span2" /></a>
                     {% } %}</td>
                 <td class="name">
                     <a href="{%=file.url%}" title="{%=file.name%}" rel="{%=file.thumbnail_url&&'gallery'%}" download="{%=file.name%}">{%=file.name%}</a>
@@ -206,3 +210,26 @@ p($form->get('upload'));
 
 <!-- The XDomainRequest Transport is included for cross-domain file deletion for IE8+ -->
 <!--[if gte IE 8]><script src="js/cors/jquery.xdr-transport.js"></script><![endif]-->
+
+
+<script>
+    eva.ready(function(){
+            eva.loadcss(eva.s(["/lib/js/upload/css/jquery.fileupload-ui.css"]));
+            eva.loader(eva.s([
+				"/lib/js/jstemplates/tmpl.js", 
+				"/lib/js/loadimage/load-image.js", 
+				"/lib/js/upload/js/vendor/jquery.ui.widget.js", 
+				"/lib/js/upload/js/jquery.iframe-transport.js",
+				"/lib/js/upload/js/jquery.fileupload.js", 
+				"/lib/js/upload/js/jquery.fileupload-fp.js", 
+				"/lib/js/upload/js/jquery.fileupload-ui.js", 
+				"/lib/js/upload/js/locale.js", 
+				"/lib/js/upload/js/main.js" 
+			]), function(){
+                    $("#fileuploader").fileupload({
+                            dataType: 'json',
+                    });
+            });
+            return false;
+    });
+</script>

@@ -56,7 +56,7 @@ class Album extends AbstractModel
             ));
         } elseif(is_string($albumIdOrUrlName)) {
             $this->setItem(array(
-                'albumKey' => $albumIdOrUrlName,
+                'urlName' => $albumIdOrUrlName,
             ));
         }
         $this->trigger('get.pre');
@@ -136,9 +136,10 @@ class Album extends AbstractModel
         $this->trigger('save.pre');
         
         //Admin save item will remove all categories
-        $categoryAlbumItem = $this->getItem('Album\Item\CategoryAlbum');
-        $categoryAlbumItem->album_id = $item->id;
-        $categoryAlbumItem->remove();
+        $categoryDb = Api::_()->getDbTable('Album\DbTable\CategoriesAlbums');
+        $categoryDb->where(array(
+            'album_id' => $item->id,
+        ))->remove();
 
         $item->save();
 
@@ -153,6 +154,23 @@ class Album extends AbstractModel
 
         return $item->id;
     }
+    
+    public function setAlbumCover($albumId = null, $fileId = null)
+    {
+        if (!$albumId || !$fileId) {
+            return false;
+        }
+        
+        $this->setItem(array(
+            'id' => $albumId,
+        ));
+
+        $item = $this->getItem();
+        $item->cover_id = $fileId;
+        $item->save();
+
+        return true;
+    }
 
     public function removeAlbum()
     {
@@ -163,8 +181,10 @@ class Album extends AbstractModel
         $subItem = $item->join('Count');
         $subItem->remove();
 
-        $subItem = $item->join('AlbumFile');
-        $subItem->remove();
+        $subDb =  Api::_()->getDbTable('Album\DbTable\AlbumsFiles');
+        $subDb->where(array(
+            'album_id' => $item->id,
+        ))->remove();
 
         $item->remove();
 

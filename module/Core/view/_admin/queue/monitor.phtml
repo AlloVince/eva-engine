@@ -1,0 +1,92 @@
+<?
+$title = $this->_('Workers Monitor');
+$this->headTitle($title, 'SET');
+$this->textDelay('breadcrumbText', $title);
+?>
+
+<div class="row">
+    <div class="span10">
+        <div class="slate">
+            <div class="page-header">
+               <div class="btn-group pull-right">
+                  <a class="btn" href="/admin/core/queue/"><i class="icon-arrow-left"></i> Back</a></li>
+                  <a class="btn" href="/admin/core/queue/monitor/"><i class="icon-eye-open"></i> All Workers</a></li>
+               </div>
+               <h2><?=$title?></h2>
+            </div>
+
+            <table class="orders-table table">
+               <thead>
+                  <tr>
+                     <th><?=$this->_('User')?></th>
+                     <th><?=$this->_('PID')?></th>
+                     <th><?=$this->_('%CPU')?></th>
+                     <th><?=$this->_('%MEM')?></th>
+                     <th><?=$this->_('VSZ')?></th>
+                     <th><?=$this->_('RSS')?></th>
+                     <th><?=$this->_('TTY')?></th>
+                     <th><?=$this->_('STAT')?></th>
+                     <th><?=$this->_('START')?></th>
+                     <th><?=$this->_('TIME')?></th>
+                     <th><?=$this->_('COMMAND')?></th>
+                     <th></th>
+                  </tr>
+               </thead>
+               <tbody id="monitor">
+               </tbody>
+            </table>
+         </div>
+      </div><!--span10 end-->
+</div>
+
+<script id="monitor-tmpl" type="text/x-tmpl">
+   {% for (var i=0, item; item=o.items[i]; i++) { %}
+   <tr>
+      <td>{%=item.USER%}</td>
+      <td>{%=item.PID%}</td>
+      <td>{%=item.CPU%}</td>
+      <td>{%=item.MEM%}</td>
+      <td>{%=item.VSZ%}</td>
+      <td>{%=item.RSS%}</td>
+      <td>{%=item.TTY%}</td>
+      <td>{%=item.STAT%}</td>
+      <td>{%=item.START%}</td>
+      <td>{%=item.TIME%}</td>
+      <td>{%=item.COMMAND%}</td>
+      <td><a href="<?=$this->uri('/admin/core/queue/kill/')?>{%=item.PID%}" class="action-kill btn btn-small">KILL</a></td>
+   </tr>
+   {% } %}
+</script>
+
+
+<script>
+   eva.ready(function(){
+         var libs = [
+         "/lib/js/jstemplates/tmpl.js", 
+         ];
+
+         var url = eva.parseUri();
+         var updatePs = function(){
+               $.ajax({
+                     url : url.path,
+                     dataType : 'json',
+                     data : { format : 'json' },
+                     success : function(response){
+                           var t = tmpl($("#monitor-tmpl").html(), response);
+                           $("#monitor").html(t);
+                     }
+               });
+         };
+         eva.loader(eva.s(libs), function(){
+               updatePs();
+               setInterval(updatePs, 5000);
+         });
+         $(document).on('click', '.action-kill', function(){
+               $(this).attr('disabled', 'disabled').html('Killing...');
+               $.ajax({
+                    url : $(this).attr('href')
+               });
+               return false;
+         });
+   });
+</script>

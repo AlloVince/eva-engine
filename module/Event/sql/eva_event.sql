@@ -83,3 +83,10 @@ CREATE TABLE IF NOT EXISTS `eva_event_texts` (
   `content` longtext COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`event_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `eva_event_events_albums`;
+CREATE TABLE IF NOT EXISTS `eva_event_events_albums` (
+  `event_id` int(11) NOT NULL,
+  `album_id` int(11) NOT NULL,
+  PRIMARY KEY (`event_id`,`album_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;

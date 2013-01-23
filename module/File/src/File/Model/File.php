@@ -8,8 +8,6 @@ use Eva\Api,
 
 class File extends AbstractModel
 {
-    protected $itemTableName = 'File\DbTable\Files';
-
     protected $lastFileId;
 
     protected $configKey;

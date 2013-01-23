@@ -37,7 +37,11 @@ class Token extends AbstractItem
     public function save($mapKey = 'save')
     {
         //Because refresh token will update primary key, need to get primary array first
-        $where = $this->getPrimaryArray();
+        $where = array(
+            'sessionId' => $this->sessionId,
+            'token' => $this->token,
+            'userHash' => $this->userHash,
+        );
         $dataClass = $this->getDataClass();
         $data = $this->toArray(
             isset($this->map['save']) ? $this->map['save'] : array()

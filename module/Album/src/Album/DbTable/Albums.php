@@ -13,11 +13,19 @@ class Albums extends TableGateway
     protected $primaryKey = 'id';
 
     protected $uniqueIndex = array(
-        'albumKey',
+        'urlName',
     );
 
     public function setParameters(Parameters $params)
     {
+        if($params->id){
+            if(is_array($params->id)){
+                $this->where(array('id' => array_unique($params->id)));
+            } else {
+                $this->where(array('id' => $params->id));
+            }
+        }
+        
         if($params->page){
             $this->enableCount();
             $this->page($params->page);
@@ -70,7 +78,7 @@ class Albums extends TableGateway
             }    
         }
 
-        if ($params->order == 'memberdesc' || $params->order == 'memberasc') {
+        if ($params->order == 'imagedesc' || $params->order == 'imageasc') {
             $albumCountDb = Api::_()->getDbTable('Album\DbTable\Counts');
             $albumCountTabName = $albumCountDb->initTableName()->table;
             $this->join(
@@ -90,10 +98,10 @@ class Albums extends TableGateway
             'iddesc' => 'id DESC',
             'timeasc' => 'createTime ASC',
             'timedesc' => 'createTime DESC',
-            'titleasc' => 'albumName ASC',
-            'titledesc' => 'albumName DESC',
-            'memberdesc' => 'memberCount DESC',
-            'memberasc' => 'memberCount ASC',
+            'titleasc' => 'title ASC',
+            'titledesc' => 'title DESC',
+            'imagedesc' => 'fileCount DESC',
+            'imageasc' => 'fileCount ASC',
         );
         if($params->order){
             $order = $orders[$params->order];

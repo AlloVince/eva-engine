@@ -386,6 +386,10 @@ class EvaAssets
 
         $mimeTypes = array(
             "ez" => "application/andrew-inset",
+            "ttf" => "font/ttf",
+            "otf" => "font/otf",
+            "woff" => "application/x-font-woff",
+            "eot" => "application/vnd.ms-fontobject",
             "hqx" => "application/mac-binhex40",
             "cpt" => "application/mac-compactpro",
             "doc" => "application/msword",
