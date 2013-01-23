@@ -5,53 +5,116 @@ $this->textDelay('breadcrumbText', $title);
 ?>
 
 <div class="row">
-    <div class="span10">
-        <div class="slate">
-            <div class="page-header">
-               <div class="btn-group pull-right">
-                  <a class="btn" href="<?=$this->uri('/admin/core/queue/monitor/')?>"><i class="icon-eye-open"></i> Monitor</a>
-                  <a class="btn" href="<?=$this->uri('/admin/core/queue/run/?worker=all')?>"><i class="icon-fighter-jet"></i> Run Public Worker</a>
-               </div>
-               <h2><?=$title?></h2>
+   <div class="span10">
+      <div class="slate">
+         <div class="page-header">
+            <div class="btn-group pull-right">
+               <a class="btn" href="<?=$this->uri('/admin/core/queue/monitor/')?>"><i class="icon-eye-open"></i> Monitor</a>
             </div>
+            <h2><?=$title?></h2>
+         </div>
 
-            <table class="orders-table table">
-               <thead>
-                  <tr>
-                     <th class="span1">
-                        </th>
-                        <th><?=$this->_('Queue Name')?></th>
-                        <th><?=$this->_('Jobs Count')?></th>
-                        <th class="actions"><?=$this->_('Actions')?></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?if($this->items):?>
-                    <?foreach($this->items as $key=>$item):?>
-                    <tr class="">
-                       <td>
-                          <input name="id" type="checkbox" class="multiform-item-checkbox"  data-multiform="post" data-multiform-itemid="<?=$key?>" value="<?=$key?>" />
-                       </td>	
-                       <td>
-                          <a href="<?=$this->uri('/admin/core/queue/' . $item['name'])?>" class="title"><?=$item['name']?></a>
-                       </td>
-                       <td>
-                          <span class="label"><?=$item['size']?></span>
-                       </td>
-                       <td class="span4">
-                          <div class="btn-group pull-right">
-                           <a href="<?=$this->uri('/admin/core/queue/fork/?queue=' . $item['name'])?>" class="btn btn-small"><?=$this->_('Add Worker')?></a>
-                           <a href="<?=$this->uri('/admin/core/queue/monitor/?queue=' . $item['name'])?>" class="btn btn-small"><?=$this->_('View Workers')?></a>
-                           <a href="<?=$this->uri('/admin/core/queue/add/?queue=' . $item['name'])?>" class="btn btn-small"><?=$this->_('Test Job')?></a>
-                           <a href="<?=$this->uri('/logs/' . $item['name'] . '.log')?>" class="btn btn-small" target="_blank"><?=$this->_('Log')?></a>
-                           <a href="<?=$this->uri('/admin/core/queue/clear/?queue=' . $item['name'])?>" class="btn btn-small"><?=$this->_('Clear Log')?></a>
-                           </div>
-                        </td>
-                    </tr>
-                    <?endforeach;?>
-                    <?endif;?>
-                </tbody>
-            </table>
-        </div>
-    </div><!--span10 end-->
+         <table class="orders-table table">
+            <thead>
+               <tr>
+                  <th><?=$this->_('Queue Name')?></th>
+                  <th class="actions"><?=$this->_('Actions')?></th>
+               </tr>
+            </thead>
+            <tbody id="queue-wrap">
+               <?if(0 && $this->items):?>
+               <?foreach($this->items as $key=>$item):?>
+               <tr class="">
+                  <td>
+                     <a href="<?=$this->uri('/admin/core/queue/monitor/?queue=' . $item['name'])?>" class="title"><?=$item['name']?></a>
+                     <span class="label"><span class="job-count" data-queue="<?=$item['name']?>"><?=$item['size']?></span> Jobs</span>
+                     <span class="label label-warning"><span class="worker-count" data-queue="<?=$item['name']?>"><?=$item['workers']?></span> Workers</span>
+                  </td>
+                  <td class="span4">
+                     <div class="btn-group pull-right">
+                        <a href="<?=$this->uri('/admin/core/queue/run/?queue=' . $item['name'])?>" class="ajax-call btn btn-small" data-queue="<?=$item['name']?>"><?=$this->_('Run Worker')?></a>
+                        <a href="<?=$this->uri('/admin/core/queue/monitor/?queue=' . $item['name'])?>" class="btn btn-small"><?=$this->_('View Workers')?></a>
+                        <a href="<?=$this->uri('/admin/core/queue/add/?queue=' . $item['name'])?>" class="ajax-call btn btn-small" data-queue="<?=$item['name']?>"><?=$this->_('Test Job')?></a>
+                        <a href="<?=$this->uri('/logs/' . $item['name'] . '.log')?>" class="btn btn-small" target="_blank"><?=$this->_('Log')?></a>
+                        <a href="<?=$this->uri('/admin/core/queue/clear/?queue=' . $item['name'])?>" class="btn btn-small"><?=$this->_('Clear Log')?></a>
+                     </div>
+                  </td>
+               </tr>
+               <?endforeach;?>
+               <?endif;?>
+            </tbody>
+         </table>
+      </div>
+   </div><!--span10 end-->
 </div>
+
+<script id="queue-tmpl" type="text/x-tmpl">
+   <tr>
+      <td>
+         <a href="<?=$this->uri('/admin/core/queue/monitor/')?>" class="title">Public Worker</a>
+         <span class="label label-success"><span class="worker-count">{%=o.publicWorkerCount%}</span> Workers</span>
+      </td>
+      <td class="span4">
+         <div class="btn-group pull-right">
+            <a href="<?=$this->uri('/admin/core/queue/run/')?>" class="ajax-call btn"><i class="icon-fighter-jet"></i> <?=$this->_('Run Public Worker')?></a>
+            <a class="btn" href="<?=$this->uri('/admin/core/queue/monitor/')?>"><i class="icon-eye-open"></i> Monitor</a>
+         </div>
+      </td>
+   </tr>
+   {% for (var i=0, item; item=o.items[i]; i++) { %}
+      <tr>
+         <td>
+            <a href="<?=$this->uri('/admin/core/queue/monitor/?queue=')?>{%=item.name%}" class="title">{%=item.name%}</a>
+            <span class="label"><span class="job-count">{%=item.size%}</span> Jobs</span>
+            <span class="label label-warning"><span class="worker-count">{%=item.workers%}</span> Workers</span>
+         </td>
+         <td class="span4">
+            <div class="btn-group pull-right">
+               <a href="<?=$this->uri('/admin/core/queue/run/?queue=')?>{%=item.name%}" class="ajax-call btn btn-small"><i class="icon-fighter-jet"></i> <?=$this->_('Run Worker')?></a>
+               <a href="<?=$this->uri('/admin/core/queue/monitor/')?>{%=item.name%}/" class="btn btn-small"><i class="icon-eye-open"></i> <?=$this->_('Monitor')?></a>
+               <a href="<?=$this->uri('/admin/core/queue/add/?queue=')?>{%=item.name%}" class="ajax-call btn btn-small"><?=$this->_('Test Job')?></a>
+               <a href="<?=$this->uri('/logs/')?>{%=item.name%}.log" class="btn btn-small" target="_blank"><?=$this->_('Log')?></a>
+               <a href="<?=$this->uri('/admin/core/queue/clear/?queue=')?>{%=item.name%}" class="btn btn-small"><?=$this->_('Clear Log')?></a>
+            </div>
+         </td>
+      </tr>
+      {% } %}
+</script>
+
+<script>
+   eva.ready(function(){
+         var libs = [
+         "/lib/js/jstemplates/tmpl.js", 
+         ];
+
+         var updateQueue = function(){
+               $.ajax({
+                     url : eva.d('/admin/core/queue/'),
+                     dataType : 'json',
+                     data : { format : 'json' },
+                     success : function(response){
+                           var t = tmpl($("#queue-tmpl").html(), response);
+                           $("#queue-wrap").html(t);
+                     }
+               });
+         };
+
+         eva.loader(eva.s(libs), function(){
+               updateQueue();
+               setInterval(updateQueue, 5000);
+         });
+         $(document).on('click', '.ajax-call', function(){
+               var btn = $(this);
+               var href = btn.attr('href');
+               btn.attr('disabled', 'disabled');
+               $.ajax({
+                     url : href,
+                     success : function(response){
+                           btn.removeAttr('disabled');
+                           updateQueue();
+                     }
+               });
+               return false;
+         });
+   });
+</script>

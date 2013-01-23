@@ -9,7 +9,8 @@ $this->textDelay('breadcrumbText', $title);
         <div class="slate">
             <div class="page-header">
                <div class="btn-group pull-right">
-                  <a class="btn" href="/admin/queue/monitor/"><i class="icon-eye-open"></i> Monitor</a></li>
+                  <a class="btn" href="/admin/core/queue/"><i class="icon-arrow-left"></i> Back</a></li>
+                  <a class="btn" href="/admin/core/queue/monitor/"><i class="icon-eye-open"></i> All Workers</a></li>
                </div>
                <h2><?=$title?></h2>
             </div>
@@ -52,7 +53,7 @@ $this->textDelay('breadcrumbText', $title);
       <td>{%=item.START%}</td>
       <td>{%=item.TIME%}</td>
       <td>{%=item.COMMAND%}</td>
-      <td><a href="<?=$this->uri('/admin/core/queue/kill/')?>{%=item.PID%}" class="btn btn-small">KILL</a></td>
+      <td><a href="<?=$this->uri('/admin/core/queue/kill/')?>{%=item.PID%}" class="action-kill btn btn-small">KILL</a></td>
    </tr>
    {% } %}
 </script>
@@ -64,9 +65,10 @@ $this->textDelay('breadcrumbText', $title);
          "/lib/js/jstemplates/tmpl.js", 
          ];
 
+         var url = eva.parseUri();
          var updatePs = function(){
                $.ajax({
-                     url : eva.d('/admin/core/queue/monitor/'),
+                     url : url.path,
                      dataType : 'json',
                      data : { format : 'json' },
                      success : function(response){
@@ -77,7 +79,14 @@ $this->textDelay('breadcrumbText', $title);
          };
          eva.loader(eva.s(libs), function(){
                updatePs();
-               setInterval(updatePs, 1000);
+               setInterval(updatePs, 5000);
+         });
+         $(document).on('click', '.action-kill', function(){
+               $(this).attr('disabled', 'disabled').html('Killing...');
+               $.ajax({
+                    url : $(this).attr('href')
+               });
+               return false;
          });
    });
 </script>
