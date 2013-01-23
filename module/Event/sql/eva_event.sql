@@ -84,9 +84,9 @@ CREATE TABLE IF NOT EXISTS `eva_event_texts` (
   PRIMARY KEY (`event_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-DROP TABLE IF EXISTS `eva_album_albums_files`;
-CREATE TABLE IF NOT EXISTS `eva_album_albums_files` (
+DROP TABLE IF EXISTS `eva_event_events_albums`;
+CREATE TABLE IF NOT EXISTS `eva_event_events_albums` (
+  `event_id` int(11) NOT NULL,
   `album_id` int(11) NOT NULL,
-  `file_id` int(11) NOT NULL,
-  PRIMARY KEY (`album_id`,`file_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  PRIMARY KEY (`event_id`,`album_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
