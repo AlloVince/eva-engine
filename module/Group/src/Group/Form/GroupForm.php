@@ -118,6 +118,17 @@ class GroupForm extends \Eva\Form\Form
                 'value' => 1,
             ),
         ),
+
+        'flag' => array (
+            'name' => 'flag',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Flag',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
     );
 
     /**
