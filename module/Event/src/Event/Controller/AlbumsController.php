@@ -13,7 +13,9 @@
 
         public function indexAction()
         {
-            $albumData = $this->params()->fromPost();
+            $request = $this->getRequest();
+            $albumData = $request->getQuery();
+            //$albumData = $this->params()->fromPost();
             $form = new \Epic\Form\AlbumCreateForm();
             $form->useSubFormGroup()
             ->bind($albumData);
