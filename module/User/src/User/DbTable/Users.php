@@ -55,7 +55,7 @@ class Users extends TableGateway
             $this->where(array('onlineStatus' => $params->onlineStatus));
         }
 
-        if($params->city || $params->country || $params->industry) {
+        if($params->city || $params->country || $params->industry || $params->interest) {
             $this->profileSelect($params);
         }
 
@@ -175,6 +175,10 @@ class Users extends TableGateway
 
         if($params->industry){
             $this->where(array("$profileTableName.industry" => $params->industry));
+        }
+
+        if($params->interest){
+            $this->where(array("$profileTableName.interest" => $params->interest));
         }
 
         return $this;
