@@ -1,6 +1,6 @@
 <?php
 
-namespace Event\DbTable;
+namespace Group\DbTable;
 
 use Eva\Db\TableGateway\TableGateway;
 use Zend\Stdlib\Parameters;
@@ -25,17 +25,17 @@ class Tags extends TableGateway
             $this->disableLimit();
         }
 
-        if ($params->order == 'eventcountdesc' || $params->order == 'eventcountasc') {
-            $eventTagTable = Api::_()->getDbTable('Event\DbTable\TagsEvents');
-            $eventTagTableName = $eventTagTable->initTableName()->getTable();
+        if ($params->order == 'groupcountdesc' || $params->order == 'groupcountasc') {
+            $groupTagTable = Api::_()->getDbTable('Group\DbTable\TagsGroups');
+            $groupTagTableName = $groupTagTable->initTableName()->getTable();
 
             $this->join(
-                $eventTagTableName,
-                "id = $eventTagTableName.tag_id"
+                $groupTagTableName,
+                "id = $groupTagTableName.tag_id"
             );
             $this->columns(array(
                 '*',
-                'EventCount' => new Expression("count(event_id)"),
+                'GroupCount' => new Expression("count(group_id)"),
             ));
             $this->group('tag_id');
         }

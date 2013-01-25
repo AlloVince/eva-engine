@@ -60,15 +60,15 @@ class GroupController extends RestfulModuleController
                         'getThumb()',
                     )
                 ),
-                'CategoryGroup' => array(
-                    'self' => array(
-                        '*',
-                    )
-                ),
                 'Category' => array(
                     'self' => array(
                         '*',
                     )
+                ),
+                'Tags' => array(
+                    'self' => array(
+                        '*',
+                    ),
                 ),
             ),
         ));

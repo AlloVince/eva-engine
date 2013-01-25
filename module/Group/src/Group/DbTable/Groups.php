@@ -42,6 +42,10 @@ class Groups extends TableGateway
                 return $where;
             });
         }
+        
+        if($params->flag){
+            $this->where(array('flag' => $params->flag));
+        }
 
         if($params->status){
             $this->where(array('status' => $params->status));
@@ -76,6 +80,26 @@ class Groups extends TableGateway
             } else {
                 $this->where(array("id" => 0));
             }    
+        }
+
+        if($params->tag) {
+            $tagModel = \Eva\Api::_()->getModel('Group\Model\Tag');
+            $tag = $tagModel->getTag($params->tag);
+
+            if($tag) {
+                $tagId = $tag['id'];
+                $tagPostTable = \Eva\Api::_()->getDbTable('Group\DbTable\TagsGroups'); 
+                $tagPostTableName = $tagPostTable->initTableName()->getTable();
+
+                $this->join(
+                    $tagPostTableName,
+                    "id = $tagPostTableName.group_id",
+                    array('tag_id')
+                ); 
+                $this->where(array("$tagPostTableName.tag_id" => $tagId));
+            } else {
+                return false;
+            }
         }
 
         if ($params->order == 'memberdesc' || $params->order == 'memberasc') {

@@ -101,6 +101,24 @@ class Group extends AbstractItem
                 'count' => true,
             ),
         ),
+        'Tags' => array(
+            'targetEntity' => 'Group\Item\Tag',
+            'relationship' => 'ManyToMany',
+            'mappedBy' => 'Tags',
+            'joinColumns' => array(
+                'joinColumn' => 'group_id',
+                'referencedColumn' => 'id',
+            ),
+            'inversedBy' => 'Group\Item\TagGroup',
+            'inversedMappedBy' => 'TagGroup',
+            'inverseJoinColumns' => array(
+                'joinColumn' => 'tag_id',
+                'referencedColumn' => 'id',
+            ),
+            'inverseJoinParameters' => array(
+                'noLimit' => true,
+            ),
+        ),
     );
 
     protected $map = array(
