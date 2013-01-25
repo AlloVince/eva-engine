@@ -143,7 +143,19 @@ class Events extends TableGateway
                 return false;
             }
         }
-        
+
+        if ($params->member_id) {
+            $eventUserDb = Api::_()->getDbTable('Event\DbTable\EventsUsers');
+            $eventUserTabName = $eventUserDb->initTableName()->table;
+            $this->join(
+                $eventUserTabName,
+                "{$this->table}.id = $eventUserTabName.event_id",
+                array('*'),
+                'inner'
+            );
+            $this->where(array("$eventUserTabName.user_id" => $params->member_id));
+        }
+
         if ($params->order == 'memberdesc' || $params->order == 'memberasc') {
             $eventCountDb = Api::_()->getDbTable('Event\DbTable\Counts');
             $eventCountTabName = $eventCountDb->initTableName()->table;

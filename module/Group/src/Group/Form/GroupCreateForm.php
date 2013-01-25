@@ -12,6 +12,10 @@ class GroupCreateForm extends GroupForm
                 'collection' => true,
                 'optionsCallback' => 'initCategories',
             ),
+            'Tags' => array(
+                'formClass' => 'Group\Form\TagsForm',
+                'collection' => true,
+            ),
         ),
     );
 
@@ -38,6 +42,24 @@ class GroupCreateForm extends GroupForm
     
     public function beforeBind($data)
     {
+        if(isset($data['Tags'][0]['tagName'])){
+            $tagString = $data['Tags'][0]['tagName'];
+            $tags = array();
+            if(false === strpos($tagString, ',')) {
+                $tags[] = array(
+                    'tagName' => $tagString
+                );
+            } else {
+                $tagNames = explode(',', $tagString);
+                foreach($tagNames as $tag){
+                    $tags[] = array(
+                        'tagName' => $tag
+                    );
+                }
+            }
+            $data['Tags'] = $tags;
+        }
+        
         //Data is array is for display
         if(isset($data['CategoryGroup']) && is_array($data)){
             $categoryGroups = array();

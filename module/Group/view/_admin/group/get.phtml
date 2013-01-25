@@ -22,6 +22,7 @@ $form->useSubFormGroup()
      ->bind($item)
      ->prepare();
 
+$tags = isset($item['Tags']) ? $item['Tags'] : array();
 ?>
 
 <input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
@@ -130,11 +131,37 @@ $form->useSubFormGroup()
                             <?=$form->helper('memberEnable', 'formSelect', array('class' => ''))?>        
                             <div class="help-block"><?=$form->helper('memberEnable', 'formElementErrors')?></div>
                         </div>
+                    </div>
+
+                    <div class="control-group <?=$form->isError('flag') ? 'error' : '';?>">
+                        <?=$form->helper('flag', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('flag', array('class' => 'span1'))?>        
+                            <div class="help-block"><?=$form->helper('flag', 'formElementErrors')?></div>
+                        </div>
                     </div> 
                 </fieldset>
             </div>
         </div><!--span5 end-->
         
+        <div class="span5">
+            <div class="slate">
+                <div class="page-header">
+                    <h3><?=$this->_('Tags')?></h3>
+                </div>
+
+                <fieldset class="form-horizontal">
+                    <div class="control-group">
+                        <label class="control-label">Tags</label>
+                        <div class="controls">
+                            <?$tagForm = $form->get('Tags')->get('0');?>
+                            <?=$tagForm->helper('tagName', array('id' => 'tagging', 'class' => 'input-block-level', 'value' => $this->tagging($tags)->toNameString()))?> 
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div><!--span5 end--> 
+
         <div class="span10">
             <div class="slate">
                 <div class="page-header">
@@ -206,6 +233,12 @@ eva.ready(function(){
         });
     });
 
+    eva.loadcss(eva.s('/lib/js/jquery/jquery.select2/select2.css'));
+    eva.loader(eva.s('/lib/js/jquery/jquery.select2/select2.js'), function(){
+        $('#tagging').select2({
+            tags : <?=$this->json($this->tagging($tags)->toNameArray())?>
+        });
+    });
 
     $("#save-draft").on('click', function(){
         $("#blog-form-posteditform-status").val('draft');
@@ -241,22 +274,22 @@ eva.ready(function(){
     }
     var removeMdEditor = function(){
         if(!editorMd){
-                return;
-            }
-            editorMd.toTextArea();
+            return;
+        }
+        editorMd.toTextArea();
     }
 
 
     var editorHtml;
     var htmlInited = false;
     var initHtml = function(_editor){
-            if(true === htmlInited) {
-                return;
-            }
-            eva.loader(eva.s(["/lib/js/tiny_mce/jquery.tinymce.js"]), function(){
-                    htmlInited = true;
-                    builtHtmlEditor(_editor);
-            });
+        if(true === htmlInited) {
+            return;
+        }
+        eva.loader(eva.s(["/lib/js/tiny_mce/jquery.tinymce.js"]), function(){
+            htmlInited = true;
+            builtHtmlEditor(_editor);
+        });
     }
     var builtHtmlEditor = function(_editor){
             if(!htmlInited){

@@ -86,3 +86,22 @@ CREATE TABLE IF NOT EXISTS `eva_group_texts` (
   `content` longtext COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`group_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+DROP TABLE IF EXISTS `eva_group_tags`;
+CREATE TABLE IF NOT EXISTS `eva_group_tags` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `tagName` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `parentId` int(10) NOT NULL DEFAULT '0',
+  `rootId` int(10) NOT NULL DEFAULT '0',
+  `orderNumber` int(10) NOT NULL DEFAULT '0',
+  `count` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `eva_group_tags_groups`;
+CREATE TABLE IF NOT EXISTS `eva_group_tags_groups` (
+  `tag_id` int(10) NOT NULL,
+  `group_id` int(10) NOT NULL,
+  PRIMARY KEY (`tag_id`,`group_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
