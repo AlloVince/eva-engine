@@ -197,6 +197,16 @@ class ProfileForm extends \Eva\Form\Form
                 'value' => '',
             ),
         ),
+        'interest' => array (
+            'name' => 'interest',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Interest',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
         'phoneBusiness' => array (
             'name' => 'phoneBusiness',
             'type' => 'text',
@@ -640,6 +650,26 @@ class ProfileForm extends \Eva\Form\Form
         ),
         'industry' => array (
             'name' => 'industry',
+            'required' => false,
+            'filters' => array (
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+                'stringLength' => array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => '255',
+                    ),
+                ),
+            ),
+        ),
+        'interest' => array (
+            'name' => 'interest',
             'required' => false,
             'filters' => array (
                 'stripTags' => array (
