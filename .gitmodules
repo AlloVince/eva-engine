@@ -37,3 +37,6 @@
 [submodule "vendor/Credis"]
 	path = vendor/Credis
 	url = git://github.com/colinmollenhour/credis.git
+[submodule "depends/ZendDeveloperTools"]
+	path = depends/ZendDeveloperTools
+	url = git://github.com/AlloVince/ZendDeveloperTools.git
