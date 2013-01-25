@@ -217,7 +217,7 @@ class EvaAssets
             case 'less' :
             //$filter = array(new LessphpFilter());
             $filter = array(new LessFilter('C:\Program Files\nodejs\node.exe', array('C:\Users\AlloVince\AppData\Roaming\npm\node_modules')));
-            $filter = array(new LessFilter('C:\Program Files\nodejs\node.exe'));
+            //$filter = array(new LessFilter('C:\Program Files\nodejs\node.exe'));
             break;
             default:
         }
