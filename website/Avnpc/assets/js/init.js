@@ -7,6 +7,13 @@ eva.ready(function(){
 		$(this).attr("target", "_blank");		
 	});
 
+	$("span[data-url-wrap]").each(function(){
+		$(this).wrapInner('<a href="' + $(this).attr('data-url-wrap') + '"></a>');
+	});
+
+	eva.loader('http:////s7.addthis.com/js/300/addthis_widget.js#pubid=allovince', function(){});
+	eva.loader('http://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit', function(){});
+
 	$(".agotime").each(function(){
 		var time = $(this);
 		time.html(moment(time.attr("datetime"), "YYYY-MM-DDTHH:mm:ss ZZ").fromNow());

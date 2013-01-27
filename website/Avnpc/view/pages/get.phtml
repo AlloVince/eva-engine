@@ -7,24 +7,49 @@ $item = $this->item;
         <div class="page-header large">
             <h2><a href="<?=$this->uri('/p/' . $item['id'])?>" rel="nofollow"><?=$item['title'] ?></a></h2>
         </div>
-        <p class="copyright">日志未经声明，均为<a href="https://plus.google.com/104171418568283484752?rel=author">AlloVince</a>原创。版权采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/2.5/cn/" target="_blank">『 知识共享署名-非商业性使用 2.5 许可协议』</a>进行许可。</p>
+
+        <p class="copyright">
+        <span class="pull-left">
+            日志未经声明，均为<a href="https://plus.google.com/104171418568283484752?rel=author">AlloVince</a>原创。版权采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/2.5/cn/" target="_blank">『 知识共享署名-非商业性使用 2.5 许可协议』</a>进行许可。
+        </span>
+        <span class="share-btn pull-left">
+            <span class="addthis_toolbox addthis_default_style ">
+                <a class="addthis_button_twitter"></a>
+                <a class="addthis_button_facebook"></a>
+                <a class="addthis_button_google_plusone_share"></a>
+                <a class="addthis_button_sinaweibo"></a>
+                <a class="addthis_button_douban"></a>
+            </span>
+            <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
+        </span>
+        <span class="pull-left">
+            <span id="google_translate_element"></span>
+            <script type="text/javascript">
+                function googleTranslateElementInit() {new google.translate.TranslateElement({pageLanguage: 'zh-CN', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');}
+            </script>
+        </span>
+
+
+        </p>
         <article class="typo typocn">
         <?=$item['Text']['ContentHtml']?>
         <?if($item['Tags']):?>
         <hr />
-        <p>Tags :        
+        <p> Tags :
         <?foreach($item['Tags'] as $tag):?>
-        <a href="<?=$this->uri('/thinking/'. $tag['tagName'])?>" class="label"><?=$tag['tagName']?></a>
+        <a href="<?=$this->uri('/thinking/'. $tag['tagName'])?>" class="label tag"><?=$tag['tagName']?></a>
         <?endforeach?>
         </p>
-        <div class="addthis_toolbox addthis_default_style">
-            <a class="addthis_button_facebook_follow" addthis:userid="allovince"></a>
-            <a class="addthis_button_twitter_follow" addthis:userid="AlloVince"></a>
-            <a class="addthis_button_linkedin_follow" addthis:userid="qianxu"></a>
-            <a class="addthis_button_google_follow" addthis:userid="104171418568283484752"></a>
-            <a class="addthis_button_rss_follow" addthis:userid="http://avnpc.com/feed"></a>
-        </div>
-        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=allovince"></script>
+        <p class="share"> Follow :
+        <span data-url-wrap="http://avnpc.com/feed/"><i class="icon-social-rss"></i></span>
+        <span data-url-wrap="https://github.com/AlloVince"><i class="icon-social-github-circled"></i></span>
+        <span data-url-wrap="http://www.facebook.com/allovince"><i class="icon-social-facebook-squared"></i></span>
+        <span data-url-wrap="https://twitter.com/intent/follow?source=followbutton&variant=1.0&screen_name=AlloVince"><i class="icon-social-twitter"></i></span>
+        <span data-url-wrap="https://plus.google.com/104171418568283484752"><i class="icon-social-googleplus-rect"></i></span>
+        <span data-url-wrap="http://weibo.com/avnpc"><i class="icon-social-weibo"></i></span>
+        <span data-url-wrap="http://www.linkedin.com/in/qianxu"><i class="icon-social-linkedin-squared"></i></span>
+        <span data-url-wrap="https://www.evernote.com/pub/allovince/Tech"><i class="icon-social-evernote"></i></span>
+        </p>
         <?endif?>
         </article>
 

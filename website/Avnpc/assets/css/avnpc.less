@@ -1,4 +1,4 @@
-@import "../../../eva/css/evabootstrap-fixed.less";
+@import "../../../../module/Core/assets/css/evabootstrap-fixed.less";
 
 @linkColor : #045999;
 @baseUrl : 'http://static.av2.me/';
@@ -157,13 +157,16 @@ a:hover {
 .copyright {
 	margin:10px 0 20px 0;
 	font-size:16px;
+	.clearfix();
 }
 
-
-
-
-
-
+.share-btn {
+	.inline-block();
+	margin-top:5px;
+	margin-right:5px;
+	height:20px;
+	line-height:30px;
+}
 
 
 
@@ -342,6 +345,90 @@ a:hover {
 
 }
 
+.tag {
+	@tagBgStartColor :  #F5F5F5;
+	@tagBgEndColor :  darken(@tagBgStartColor, 10%);
+	@tagFontColor : darken(@tagBgStartColor, 50%);
+	@tagBorderColor :  darken(@tagBgStartColor, 40%);
+	@tagFontSize:12px;
+	@tagPaddingTop:5px;
+	@tagArrowSize:(@tagFontSize + @tagPaddingTop * 2) / 1.414;
+	@tagHoleSize:5px;
+
+	.inline-block();
+    margin:0 0 7px 20px;
+    position:relative;
+    font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size:@tagFontSize;
+	height:@tagFontSize;
+	line-height:@tagFontSize;
+    font-weight:bold;
+    text-decoration:none;
+    color:@tagFontColor;
+    text-shadow:0px 1px 0px rgba(255,255,255,.4);
+    padding:@tagPaddingTop 12px;
+    border-top:1px solid @tagBorderColor;
+    border-right:1px solid @tagBorderColor;
+    border-bottom:1px solid @tagBorderColor;
+	.border-radius-right(0.25em);
+	#gradient > .vertical(@tagBgStartColor, @tagBgEndColor);
+	.box-shadow(inset 0 1px 0 #faeaba);
+	.box-shadow(0 1px 1px rgba(0,0,0,.1));
+    z-index:10;
+
+	&:before {
+		content:'';
+		//width = tag outer height / 1.414
+		width:	@tagArrowSize;
+		height:@tagArrowSize;
+		position:absolute;
+		left: (0 - @tagArrowSize)/2;
+		top:@tagPaddingTop - 2;
+		border-left:1px solid @tagBorderColor;
+		border-bottom:1px solid @tagBorderColor;
+		#gradient > .directional(@tagBgStartColor, @tagBgEndColor, left top);
+		.rotate(45deg);
+		.border-radius(0 0 0 0.25em);
+		z-index:1;
+	}
+
+	&:after {
+		content:'';
+		width:@tagHoleSize;
+		height:@tagHoleSize;
+		position:absolute;
+		left:(0 - @tagArrowSize)/3 + @tagHoleSize/2 + 1;
+		top:(@tagFontSize + @tagPaddingTop * 2)/2 - @tagHoleSize/2 - 1;
+		background:#fff;
+		border:1px solid @tagBorderColor;
+		.border-radius(4.167em);
+		.box-shadow(0 1px 0 #faeaba);
+		z-index:11;		
+	}
+
+	&:hover {
+		#gradient > .directional(lighten(@tagBgStartColor, 10%), lighten(@tagBgEndColor, 10%), top);
+		border-color:lighten(@tagBorderColor, 10%);
+		color:@linkColor !important;
+	}
+
+	&:hover:before {
+		#gradient > .directional(lighten(@tagBgStartColor, 10%), lighten(@tagBgEndColor, 10%), left top);
+		border-color:lighten(@tagBorderColor, 10%);
+	}
+}
+
+.share{
+	i {
+		font-size:20px;
+		color:#CCC;
+	}
+
+	a:hover i{
+		color:@linkColor;
+		text-decoration:none;
+	}
+}
 
 /*******************************
 *  Timeline
