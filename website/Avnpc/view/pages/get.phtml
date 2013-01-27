@@ -35,7 +35,7 @@ $item = $this->item;
         <?=$item['Text']['ContentHtml']?>
         <?if($item['Tags']):?>
         <hr />
-        <p> Tags :
+        <p class="tags"> Tags :
         <?foreach($item['Tags'] as $tag):?>
         <a href="<?=$this->uri('/thinking/'. $tag['tagName'])?>" class="label tag"><?=$tag['tagName']?></a>
         <?endforeach?>

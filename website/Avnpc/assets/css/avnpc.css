@@ -6639,7 +6639,7 @@ a:hover {
   font-weight: bolder;
 }
 
-.tag {
+.tags .tag {
   position: relative;
   z-index: 10;
   display: inline-block;
@@ -6680,7 +6680,7 @@ a:hover {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
 
-.tag:before {
+.tags .tag:before {
   position: absolute;
   top: 3px;
   left: -7.77934936350778px;
@@ -6706,7 +6706,7 @@ a:hover {
           transform: rotate(45deg);
 }
 
-.tag:after {
+.tags .tag:after {
   position: absolute;
   top: 7.5px;
   left: -1.686232909005187px;
@@ -6724,7 +6724,7 @@ a:hover {
           box-shadow: 0 1px 0 #faeaba;
 }
 
-.tag:hover {
+.tags .tag:hover {
   color: #045999 !important;
   background-color: #f5f5f5;
   background-image: -moz-linear-gradient(top, #ffffff, #f5f5f5);
@@ -6735,7 +6735,7 @@ a:hover {
   border-color: #a9a9a9;
 }
 
-.tag:hover:before {
+.tags .tag:hover:before {
   background-color: #f5f5f5;
   background-image: -moz-linear-gradient(left top, #ffffff, #f5f5f5);
   background-image: -webkit-linear-gradient(left top, #ffffff, #f5f5f5);
