@@ -4,4 +4,7 @@ return array(
     'urlRootPath' => __DIR__,
     'headers' => array('Access-Control-Allow-Origin: *'),
     'cache' => false,
+    'moduleMap' => array(
+        'zenddevelopertools'  => 'ZendDeveloperTools',
+    ),
 );

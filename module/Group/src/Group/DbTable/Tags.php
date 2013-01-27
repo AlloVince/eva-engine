@@ -4,6 +4,8 @@ namespace Group\DbTable;
 
 use Eva\Db\TableGateway\TableGateway;
 use Zend\Stdlib\Parameters;
+use Zend\Db\Sql\Expression;
+use Eva\Api;
 
 class Tags extends TableGateway
 {
@@ -45,6 +47,8 @@ class Tags extends TableGateway
             'iddesc' => 'id DESC',
             'nameasc' => 'tagName ASC',
             'namedesc' => 'tagName DESC',
+            'groupcountasc' => 'GroupCount ASC',
+            'groupcountdesc' => 'GroupCount DESC',
         );
 
         if($params->order){
