@@ -35,6 +35,7 @@ return array(
             'default',
             'sendmail',
             'sync',
+            'failed',
         ),
     ),
 

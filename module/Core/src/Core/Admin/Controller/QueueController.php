@@ -93,9 +93,9 @@ class QueueController extends RestfulModuleController
         $worker = $this->params()->fromQuery('worker', 'all');
         $path = realpath(EVA_ROOT_PATH . '/workers/worker');
         if($queue){
-            $command = "QUEUE=$queue php $path $queue &";
+            $command = "QUEUE=$queue VVERBOSE=1 php $path $queue &";
         } else {
-            $command = "QUEUE=* php $path &";
+            $command = "QUEUE=* php VVERBOSE=1 $path &";
         }
         $out = popen($command, "r"); 
         pclose($out);
