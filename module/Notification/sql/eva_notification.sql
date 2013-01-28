@@ -1,92 +1,59 @@
--- phpMyAdmin SQL Dump
--- version 3.4.5
--- http://www.phpmyadmin.net
---
--- 主机: localhost
--- 生成日期: 2012 年 09 月 28 日 11:24
--- 服务器版本: 5.5.16
--- PHP 版本: 5.3.8
-
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
---
--- 数据库: `eva`
---
-
--- --------------------------------------------------------
-
---
--- 表的结构 `eva_notification_indexes`
---
 
 DROP TABLE IF EXISTS `eva_notification_indexes`;
 CREATE TABLE IF NOT EXISTS `eva_notification_indexes` (
   `user_id` int(10) NOT NULL,
   `message_id` int(10) NOT NULL,
   `readFlag` tinyint(1) NOT NULL DEFAULT '0',
-  `messageTime` datetime NOT NULL,
+  `createTime` datetime NOT NULL,
+  `readTime` datetime DEFAULT NULL,
   PRIMARY KEY (`user_id`,`message_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `eva_notification_messages`
---
-
-DROP TABLE IF EXISTS `eva_notification_messages`;
-CREATE TABLE IF NOT EXISTS `eva_notification_messages` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `messageType` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'custom',
-  `template_id` int(10) NOT NULL DEFAULT '0',
-  `message_from_id` int(10) NOT NULL DEFAULT '0',
-  `subject` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `createTime` datetime NOT NULL,
-  `message` longtext COLLATE utf8_unicode_ci,
-  `attachments` text COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `eva_notification_messages_users`
---
-
-DROP TABLE IF EXISTS `eva_notification_messages_users`;
-CREATE TABLE IF NOT EXISTS `eva_notification_messages_users` (
-  `message_id` int(10) NOT NULL,
-  `user_id` int(10) NOT NULL,
-  `sendAs` enum('to','cc','bcc') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'to',
-  `sendBy` varchar(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'email',
-  `sendStatus` enum('waiting','sending','sent','failed') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'waiting',
-  `sendTime` datetime DEFAULT NULL,
-  `readFlag` tinyint(1) NOT NULL DEFAULT '0',
-  `readTime` datetime DEFAULT NULL,
-  PRIMARY KEY (`message_id`,`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `eva_notification_templates`
---
-
-DROP TABLE IF EXISTS `eva_notification_templates`;
-CREATE TABLE IF NOT EXISTS `eva_notification_templates` (
+DROP TABLE IF EXISTS `eva_notification_notifications`;
+CREATE TABLE IF NOT EXISTS `eva_notification_notifications` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `templateKey` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `subject` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `content` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `notificationKey` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `sendNotice` tinyint(1) NOT NULL DEFAULT '0',
+  `sendEmail` tinyint(1) NOT NULL DEFAULT '0',
+  `sendSms` tinyint(1) NOT NULL DEFAULT '0',
+  `sendPush` tinyint(1) NOT NULL DEFAULT '0',
+  `allowDisableNotice` tinyint(1) NOT NULL DEFAULT '0',
+  `allowDisableEmail` tinyint(1) NOT NULL DEFAULT '0',
+  `allowDisableSms` tinyint(1) NOT NULL DEFAULT '0',
+  `allowDisablePush` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+DROP TABLE IF EXISTS `eva_notification_notifications_users`;
+CREATE TABLE IF NOT EXISTS `eva_notification_notifications_users` (
+  `notification_id` int(10) NOT NULL,
+  `user_id` int(10) NOT NULL,
+  `noticeType` enum('notice','email','sms','push') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'notice',
+  `readFlag` tinyint(1) NOT NULL DEFAULT '0',
+  `createTime` datetime NOT NULL,
+  `sendTime` datetime DEFAULT NULL,
+  `readTime` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `eva_notification_usersettings`;
+CREATE TABLE IF NOT EXISTS `eva_notification_usersettings` (
+  `user_id` int(10) NOT NULL,
+  `notification_id` int(10) NOT NULL,
+  `disableNotice` tinyint(1) NOT NULL DEFAULT '0',
+  `disableEmail` tinyint(1) NOT NULL DEFAULT '0',
+  `disableSms` tinyint(1) NOT NULL DEFAULT '0',
+  `disablePush` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`user_id`,`notification_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
