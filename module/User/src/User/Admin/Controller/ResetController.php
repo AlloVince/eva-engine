@@ -68,29 +68,9 @@ class ResetController extends RestfulModuleController
         $form->bind($item);
 
         if ($form->isValid()) {
-
             $args = $form->getData();
             JobManager::setQueue('sendmail');
             JobManager::jobHandler('User\Jobs\ResetPassword', $args);
-            /*
-            $itemModel = Api::_()->getModel('User\Model\Reset');
-            $itemModel->setItem($form->getData());
-            $codeItem = $itemModel->resetRequest();
-            $userItem = $itemModel->getItem();
-
-            $mail = new \Core\Mail();
-            $mail->getMessage()
-            ->setSubject("Reset Password")
-            ->setData(array(
-                'user' => $userItem,
-                'code' => $codeItem,
-            ))
-            ->setTo($userItem->email, $userItem->userName)
-            ->setTemplatePath(EVA_MODULE_PATH . '/User/view/')
-            ->setTemplate('_admin/mail/reset');
-            $mail->send();
-            */
-            
             return $this->redirect()->toUrl($callback);
         } else {
         }
