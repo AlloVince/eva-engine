@@ -74,7 +74,7 @@ class Comment extends AbstractItem
         if($this->codeType == 'html'){
             return $this->ContentHtml = $this->content;
         } else{
-            $md = new \Markdown();
+            $md = new Markdown();
             $md->no_markup = true;
             $md->no_entities = true;
             return $this->ContentHtml = $md->transform($this->content);
