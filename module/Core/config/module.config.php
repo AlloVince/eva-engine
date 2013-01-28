@@ -28,7 +28,7 @@ return array(
     ),
 
     'queue' => array(
-        'enable' => 1,
+        'enable' => 0,
         'driver' => 'Mongodb',
         'dsn'    => 'mongodb://localhost:27017',
         'default_queues' => array(

@@ -5,6 +5,7 @@ use Eva\Api,
     Eva\Mvc\Controller\RestfulModuleController,
     Eva\View\Model\ViewModel,
     User\Form;
+use Core\JobManager;
 
 class ResetController extends RestfulModuleController
 {
@@ -68,6 +69,10 @@ class ResetController extends RestfulModuleController
 
         if ($form->isValid()) {
 
+            $args = $form->getData();
+            JobManager::setQueue('sendmail');
+            JobManager::jobHandler('User\Jobs\ResetPassword', $args);
+            /*
             $itemModel = Api::_()->getModel('User\Model\Reset');
             $itemModel->setItem($form->getData());
             $codeItem = $itemModel->resetRequest();
@@ -84,6 +89,7 @@ class ResetController extends RestfulModuleController
             ->setTemplatePath(EVA_MODULE_PATH . '/User/view/')
             ->setTemplate('_admin/mail/reset');
             $mail->send();
+            */
             
             return $this->redirect()->toUrl($callback);
         } else {
