@@ -74,12 +74,25 @@ class EvaAssets
     protected $headers;
 
     protected $defines = array(
-        //JS
-        'jquery' =>  '/js/jquery/jquery.js',
-        'bootstrap_js' => '/js/bootstrap/bootstrap.js',
-        //CSS
-        'bootstrap' => '/css/bootstrap/bootstrap.css',
+        /*
+        'jquery' =>  array(
+            'alias' => 'lib/js/jquery/jquery.js',
+            'footer' => 'return $.noConflict(true);'
+        ),
+        'jquery.cookie' =>  array(
+            'alias' => 'lib/js/jquery/jquery.cookie.js',
+            'depends' => array('jquery'),
+            'end' => "seajs.modify('cookie', function(require, exports, module) { module.exports = $.cookie })",
+        ),
+        'bootstrap' => array(
+            'alias' => 'lib/js/bootstrap/bootstrap.js',
+            'depends' => array('jquery'),
+            'header' => "var $ = require('jquery');\n",
+        ),
+        */
     );
+
+    protected $loaderJs = '';
 
     protected $assetManager;
 
@@ -192,7 +205,10 @@ class EvaAssets
                 header($header);
             }
         }
-        echo $fileAsset->dump();
+
+        $seajs = $this->seajs($sourcePath);
+
+        echo $seajs[0] . $fileAsset->dump() . $seajs[1];
     }
 
     public function run()
@@ -207,6 +223,38 @@ class EvaAssets
         $this->headers = $config['headers'];
         $this->cache = $config['cache'];
         $this->moduleMap = $config['moduleMap'];
+    }
+
+    protected function seajs($sourcePath)
+    {
+        $fileExt = $this->getFileExtension($sourcePath);
+        if(!$fileExt || $fileExt != 'js'){
+            return array('', '');
+        }
+
+        $url = $this->getCurrentUrl();
+        $url = parse_url($url);
+        $urlPath = ltrim($url['path'], '/');
+        //$prefix = '/static/assets/';
+        //$urlPath = str_replace($prefix, '', $urlPath);
+
+        $defines = $this->defines;
+        $defined = false;
+        foreach($defines as $jsName => $define){
+            if($define['alias'] === $urlPath){
+                $defined = true;
+                break;
+            }
+        }
+
+        $header = isset($define['header']) ? $define['header'] : '';
+        $footer = isset($define['footer']) ? $define['footer'] : '';
+        $depends = isset($define['depends']) ? "'" . implode("', '", $define['depends']) . "'" : '';
+
+        return true === $defined ? array(
+            "define('$urlPath', [$depends], function(require, exports, module) {\n $header",
+            "$footer \n});\n",
+        ) : array('', '');
     }
 
     protected function getFilterByFilename($sourcePath)
