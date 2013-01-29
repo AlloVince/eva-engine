@@ -1,19 +1,6 @@
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
-DROP TABLE IF EXISTS `eva_notification_indexes`;
-CREATE TABLE IF NOT EXISTS `eva_notification_indexes` (
-  `user_id` int(10) NOT NULL,
-  `message_id` bigint(20) NOT NULL,
-  `notification_id` int(5) NOT NULL,
-  `notificationKey` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `readFlag` tinyint(1) NOT NULL DEFAULT '0',
-  `createTime` datetime NOT NULL,
-  `readTime` datetime DEFAULT NULL,
-  `content` text COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`user_id`,`message_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
 DROP TABLE IF EXISTS `eva_notification_messages`;
 CREATE TABLE IF NOT EXISTS `eva_notification_messages` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -22,7 +9,7 @@ CREATE TABLE IF NOT EXISTS `eva_notification_messages` (
   `args` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `createTime` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
 DROP TABLE IF EXISTS `eva_notification_messages_users`;
 CREATE TABLE IF NOT EXISTS `eva_notification_messages_users` (
@@ -36,6 +23,20 @@ CREATE TABLE IF NOT EXISTS `eva_notification_messages_users` (
   `readTime` datetime DEFAULT NULL,
   PRIMARY KEY (`message_id`,`user_id`,`noticeType`),
   KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `eva_notification_notices`;
+CREATE TABLE IF NOT EXISTS `eva_notification_notices` (
+  `user_id` int(10) NOT NULL,
+  `message_id` bigint(20) NOT NULL,
+  `status` enum('active','deleted') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'active',
+  `notification_id` int(5) NOT NULL,
+  `notificationKey` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `readFlag` tinyint(1) NOT NULL DEFAULT '0',
+  `createTime` datetime NOT NULL,
+  `readTime` datetime DEFAULT NULL,
+  `content` text COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`user_id`,`message_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS `eva_notification_notifications`;
