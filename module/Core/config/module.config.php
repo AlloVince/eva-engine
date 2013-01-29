@@ -29,12 +29,15 @@ return array(
 
     'queue' => array(
         'enable' => 1,
+        'adapter' => 'Resque', //Maybe support gearman later
         'driver' => 'Mongodb',
         'dsn'    => 'mongodb://localhost:27017',
         'default_queues' => array(
             'default',
             'sendmail',
             'sync',
+            'notificate',
+            'sendnotice',
             'failed',
         ),
     ),

@@ -25,14 +25,14 @@ class Notification extends AbstractModel
             'sendAppleOsPush' => 0,
             'sendAndroidPush' => 0,
             'sendWindowsPush' => 0,
-            'sendCustomPush' => 0,
+            'sendCustomNotice' => 0,
             'allowDisableNotice' => 0,
             'allowDisableEmail' => 0,
             'allowDisableSms' => 0,
             'allowDisableAppleOsPush' => 0,
             'allowDisableAndroidPush' => 0,
             'allowDisableWindowsPush' => 0,
-            'allowDisableCustomPush' => 0,
+            'allowDisableCustomNotice' => 0,
         );
 
         $item = $this->getItem();
@@ -58,7 +58,7 @@ class Notification extends AbstractModel
             'disableAppleOsPush' => 0,
             'disableAndroidPush' => 0,
             'disableWindowsPush' => 0,
-            'disableCustomPush' => 0,
+            'disableCustomNotice' => 0,
         );
         if(!$this->user || !$this->user->id){
             return $this->mergeSetting($globalSetting, $defaultSetting);
@@ -67,14 +67,37 @@ class Notification extends AbstractModel
         $userSettingItem = $this->getItem('Notification\Item\Usersetting');
         $userSettingItem->user_id = $this->user->id;
         $userSettingItem->self(array('*'));
-        if($userSettingItem){
-            $userSettingItem = $userSettingItem->toArray();
-        
-        }
+        $userSetting = $userSettingItem ? $userSettingItem->toArray() : array();
+
+        return $this->mergeSetting($globalSetting, $userSetting);
     }
 
     protected function mergeSetting($globalSetting, $userSetting)
     {
+        $columns = array(
+            'Notice',
+            'Email',
+            'Sms',
+            'AppleOsPush',
+            'AndroidPush',
+            'WindowsPush',
+            'CustomNotice',
+        );
+
+        $setting = array();
+        foreach($columns as $columnName){
+            $allow = 0;
+            if($globalSetting["send$columnName"]){
+                $allow = 1;
+
+                if($globalSetting["allowDisable$columnName"] && $userSetting && $userSetting["disable$columnName"]){
+                    $allow = 0;
+                }
+            }
+            $setting["send$columnName"] = $allow;
+        }
+
+        return $setting;
     
     }
 

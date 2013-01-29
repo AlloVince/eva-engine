@@ -16,7 +16,6 @@ use Eva\Job\RelatedJobInterface;
 use Eva\Job\Exception;
 use Eva\Api;
 
-
 /**
  * Core Session
  *
@@ -39,7 +38,7 @@ class JobManager
         }
 
         $config = Api::_()->getConfig();
-        if(isset($config['queue']['enable']) && $config['queue']['enable'] && class_exists(Resque)){
+        if(isset($config['queue']['enable']) && $config['queue']['enable']){
             Resque::enqueue(self::$queue, $jobName, $args, true);
         } else {
             $job = new $jobName();

@@ -248,11 +248,27 @@ class Activity extends AbstractModel
         if($userNames){
             $userModel = \Eva\Api::_()->getModel('User\Model\User');
             $atuserItem = $this->getItem('Activity\Item\Atuser');
+            $atuserDataSource = array();
             foreach($userNames as $userName){
                 $user = $userModel->getUser($userName);
                 if(!$user) {
                     continue;
                 }
+
+                /*
+                $atuserDataSource[] = array(
+                    'user_id' => $user->id,
+                    'message_id' => $itemId,
+                    'messageType' => $item->messageType,
+                    'author_id' => $item->user_id,
+                    'root_user_id' => $item->root_user_id ? $item->root_user_id : 0,
+                );
+                $atuserItem->setDataSource($atuserDataSource);
+                foreach($atuserItem as $atuserItemSub){
+                    $atuserItemSub->create();
+                }
+                */
+
                 $atuserItem->user_id = $user->id;
                 $atuserItem->message_id = $itemId;
                 $atuserItem->messageType = $item->messageType;

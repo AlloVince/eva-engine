@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS `eva_notification_indexes` (
   `readFlag` tinyint(1) NOT NULL DEFAULT '0',
   `createTime` datetime NOT NULL,
   `readTime` datetime DEFAULT NULL,
+  `content` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`user_id`,`message_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -57,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `eva_notification_notifications` (
   `allowDisableWindowsPush` tinyint(1) NOT NULL DEFAULT '0',
   `allowDisableCustomNotice` tinyint(3) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
 DROP TABLE IF EXISTS `eva_notification_usersettings`;
 CREATE TABLE IF NOT EXISTS `eva_notification_usersettings` (
