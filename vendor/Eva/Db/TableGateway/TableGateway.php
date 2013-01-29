@@ -16,6 +16,7 @@ use Zend\Db\Adapter\Adapter,
     Zend\ServiceManager\ServiceLocatorAwareInterface,
     Zend\ServiceManager\ServiceLocatorInterface,
     Eva\Db\Exception;
+use Zend\Stdlib\Parameters;
 
 /**
  *
@@ -49,6 +50,27 @@ class TableGateway extends AbstractTableGateway  implements ServiceLocatorAwareI
     protected $serviceLocator;
 
     protected $noResult = false;
+
+    public function setParameters(Parameters $params)
+    {
+        if($params->page){
+            $this->enableCount();
+        }
+
+        if ($params->rows) {
+            $this->limit((int) $params->rows);
+        }
+
+        if($params->page){
+            $this->page($params->page);
+        }
+        
+        if ($params->noLimit) {
+            $this->disableLimit();
+        }
+
+        return $this;
+    }
 
     /**
     * Set the service locator.
