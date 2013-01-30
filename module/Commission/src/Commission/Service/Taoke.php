@@ -44,10 +44,13 @@ class Taoke
 
 	public function isResponseFailed($responseText, $responseCode = 200)
 	{
+        if(!$responseText){
+            return false;
+        }
 		if (strpos($responseText, "error") !== false) {
 			$errorResponse = $this->parseResponse($responseText);
-			$this->responseErrorCode = $errorResponse['error_code'];
-			$this->responseErrorMessage = $errorResponse['error_msg'];
+            $this->responseErrorCode = $errorResponse['error_response']['code'];
+            $this->responseErrorMessage = $errorResponse['error_response']['msg'];
 			return true;
 		}
 		return false;
@@ -100,7 +103,7 @@ class Taoke
 		$response = $client->send();
 		$responseText = $response->getBody();
         if ($this->isResponseFailed($responseText) === true) {
-            $responseErrorMessage = $this->getResponseErrorMessage();
+            $responseErrorMessage = $this->responseErrorMessage;
             $responseErrorMessage = $responseErrorMessage ? $responseErrorMessage : 'response error';
         } else {
             $product =  $this->parseResponse($responseText);
