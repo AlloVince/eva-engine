@@ -1,66 +1,82 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta charset="utf-8" />
-    <?=$this->headTitle()?>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta charset="utf-8" />
+        <?=$this->headTitle()?>
 
-	<!--[if lt IE 9]>
-	<meta http-equiv="PRAGMA" content="NO-CACHE" />
-    <script src="<?=$this->assets('/lib/js/html5shiv/html5shiv.min.js')?>"></script>
-    <![endif]-->
-	<link href="<?=$this->assets('/module/avnpc/favicon.ico')?>" type="image/x-icon" rel="icon" />
-    <link href="<?=$this->assets('/module/avnpc/favicon.ico')?>" type="image/x-icon" rel="shortcut icon" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="google-translate-customization" content="57dc079c218534fd-42464f1d5ef4bd60-gce0cb3eec7bd7989-a"></meta>
-    <?=$this->evajs()?>
-    <?=$this->googleAnalytics()?>
-    <?=$this->headMeta()?>
-    <?=$this->headStyle()?>
+        <!--[if lt IE 9]>
+        <meta http-equiv="PRAGMA" content="NO-CACHE" />
+        <script src="<?=$this->assets('/lib/js/html5shiv/html5shiv.min.js')?>"></script>
+        <![endif]-->
+        <link href="<?=$this->assets('/module/avnpc/favicon.ico')?>" type="image/x-icon" rel="icon" />
+        <link href="<?=$this->assets('/module/avnpc/favicon.ico')?>" type="image/x-icon" rel="shortcut icon" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="google-translate-customization" content="57dc079c218534fd-42464f1d5ef4bd60-gce0cb3eec7bd7989-a"></meta>
+        <?=$this->evajs()?>
+        <?=$this->googleAnalytics()?>
+        <?=$this->headMeta()?>
+        <?=$this->headStyle()?>
 
-    <?$this->cssAssets(array(
-        '/lib/css/fontawesome/css/font-awesome.css',
-        '/lib/font-social/css/fontello.css',
-        '/module/avnpc/css/avnpc.css'
-    ));?>
-    <!--[if IE 7]>
-    <?$this->cssAssets(array(
-        '/lib/font-social/css/fontello-ie7.css',
-    ));?>
-    <![endif]-->
+        <?$this->cssAssets(array(
+            '/lib/css/fontawesome/css/font-awesome.css',
+            '/lib/font-social/css/fontello.css',
+            '/module/avnpc/css/avnpc.css'
+        ));?>
+        <!--[if IE 7]>
+        <?$this->cssAssets(array(
+            '/lib/font-social/css/fontello-ie7.css',
+        ));?>
+        <![endif]-->
 
-    <?$this->jsAssets(array(
-        '/lib/js/labjs/labjs.js',
-        '/lib/js/jquery/jquery.js',
-        '/lib/js/moment/moment.js',
-        '/lib/js/moment/lang/zh-cn.js',
-        '/module/core/js/core.js',
-        '/module/avnpc/js/init.js',
-    ));?>
-    <?=$this->headLink()?>
-    <?=$this->headScript()?>
-	<link href='http://fonts.googleapis.com/css?family=Sarina|Great+Vibes' rel='stylesheet' type='text/css'>
-    <link rel="alternate" type="application/rss+xml" title="Just Fine - Story of AlloVince" href="<?=$this->uri('/feed');?>" />
-</head>
-<body>
-    <div id="page">
-        <!-- #header start-->
-        <header id="header" class="header">
-        <h1><a href="<?=$this->uri('/');?>">Just Fine</a></h1>
-        <p>— Story of <a href="https://plus.google.com/104171418568283484752?rel=author">AlloVince</a></p>
-        <nav id="menu">
-        <ul class="submenu">
-            <li><a href="<?=$this->uri('/'); ?>">Thinking</a></li>
-            <li><a href="<?=$this->uri('/life'); ?>">Life</a></li>
-            <li><a href="<?=$this->uri('/pages/projects'); ?>">Projects</a></li>
-            <li><a href="<?=$this->uri('/pages/about'); ?>">About</a></li>
-            <li><a href="<?=$this->uri('/feed/'); ?>"><i class="icon-rss"></i></a><a href="<?=$this->uri('/search/'); ?>"><i class="icon-search"></i></a></li>
-        </ul>
-        </nav>
-        <!-- #header end -->
-        </header>
-        <?=$this->content;?>
+        <?$this->jsAssets(array(
+            '/lib/js/labjs/labjs.js',
+            '/lib/js/jquery/jquery.js',
+            '/lib/js/moment/moment.js',
+            '/lib/js/moment/lang/zh-cn.js',
+            '/module/core/js/core.js',
+            '/module/avnpc/js/init.js',
+        ));?>
+        <?=$this->headLink()?>
+        <?=$this->headScript()?>
+        <link href='http://fonts.googleapis.com/css?family=Sarina|Great+Vibes' rel='stylesheet' type='text/css'>
+        <link rel="alternate" type="application/rss+xml" title="Just Fine - Story of AlloVince" href="<?=$this->uri('/feed');?>" />
+    </head>
+    <body>
+        <div id="page">
+            <!-- #header start-->
+            <header id="header" class="header">
+            <h1><a href="<?=$this->uri('/');?>">Just Fine</a></h1>
+            <p>— Story of <a href="https://plus.google.com/104171418568283484752?rel=author">AlloVince</a></p>
+            <nav id="menu">
+            <ul class="submenu">
+                <li><a href="<?=$this->uri('/'); ?>">Thinking</a></li>
+                <li><a href="<?=$this->uri('/life'); ?>">Life</a></li>
+                <li><a href="<?=$this->uri('/pages/projects'); ?>">Projects</a></li>
+                <li><a href="<?=$this->uri('/pages/about'); ?>">About</a></li>
+                <li><a href="<?=$this->uri('/feed/'); ?>"><i class="icon-rss"></i></a></li>
+            </ul>
+            </nav>
+            <!-- #header end -->
+            </header>
+            <?=$this->content;?>
+
+            <?
+            $form = new Avnpc\Form\SearchForm();
+            $form
+            ->setView($this)
+            ->setMethod('get')
+            ->setAction($this->uri('/search/'));
+        ?>
         <footer id="footer">
+        <form <?=$this->formAttr($form)?>  class="form form-search margin10h">
+            <div class="row-fluid">
+                <div class="input-append <?=$form->isError('q') ? 'error' : '';?>">
+                    <?=$form->helper('q', array('class' => 'search-query span2', 'placeholder' => ''))?>        
+                    <button class="btn"><i class="icon-search"></i> </button>
+                </div>
+            </div>
+        </form>
         </footer>
     </div>
 </body>

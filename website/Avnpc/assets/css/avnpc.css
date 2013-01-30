@@ -6337,6 +6337,12 @@ a:hover {
   color: #045999;
 }
 
+#footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+
 .page-content {
   max-width: 980px;
   padding: 130px 10px 30px 250px;
