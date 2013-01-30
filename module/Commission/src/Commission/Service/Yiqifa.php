@@ -41,6 +41,24 @@ class Yiqifa
 
     protected function getCpsData()
     {
+        $cache   = \Zend\Cache\StorageFactory::factory(array(
+            'adapter' => array(
+                'name' => 'filesystem',
+                'options' => array(
+                    'cacheDir' => EVA_ROOT_PATH . '/data/cache/other/',
+                ),
+            ),
+            'plugins' => array(
+                'serializer'
+            )
+        ));
+
+        $key = 'avnpc-cps-data';
+        $stores = $cache->getItem($key, $success);
+        if($success){
+            return $stores;
+        }
+
         $cpsFile = EVA_ROOT_PATH . '/data/databases/taoke.csv';
 
         if(false === file_exists($cpsFile)){
@@ -80,6 +98,7 @@ class Yiqifa
             fclose($handle);
         }
 
+        $cache->setItem($key, $stores);
         return $stores;
     }
 
