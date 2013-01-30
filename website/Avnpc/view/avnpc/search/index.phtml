@@ -1,0 +1,70 @@
+<?
+$title = 'Search in Just Fine';
+$this->headTitle($title, 'SET');
+
+$item = $this->item;
+$items = $this->items;
+if($this->form){
+	$form = $this->form;
+} else {
+    $form = new Avnpc\Form\SearchForm();
+}
+
+$form
+->setView($this)
+->useSubFormGroup()
+->setMethod('get')
+->setAction($this->uri('/search/'))
+->bind($item)
+->prepare();
+
+?>
+<div class="page-content">
+    <div class="row-fluid">
+    <form <?=$this->formAttr($form)?>  class="form form-search">
+        <div class="input-append <?=$form->isError('q') ? 'error' : '';?>">
+            <?=$form->helper('q', array('class' => 'search-query span6', 'placeholder' => '关键词 / 淘宝链接 / B2C商城链接 / Some Code'))?>        
+            <button class="btn"><i class="icon-search"></i> </button>
+        </div>
+        <div class="help-block"><?=$form->helper('q', 'formElementErrors')?></div>
+    </form>
+    </div>
+
+    <?if($item):?>
+    <div class="well">
+    <div class="media">
+        <a class="pull-left" href="#">
+            <img class="media-object" src="<?=$item['pic_url']?>" width="100">
+        </a>
+        <div class="media-body">
+            <h4 class="media-heading"><a href="<?=$item['click_url']?>"><?=$item['title']?></a></h4>
+            <div class="media">
+                <ul>
+                    <li>商铺: <a href="<?=$item['shop_click_url']?>" target="_blank"><?=$item['nick']?></a> <span class="label"><?=$item['item_location']?></span></li>
+                    <li>原价: ￥<?=$item['price']?></li>
+                    <li>佣金: ￥<?=$item['commission']?> <span class="label"><?=$item['commission_rate'] / 100?>%</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    </div>
+    <?endif?>
+
+    <?if($items):?>
+    <div class="vlist posts">
+        <?foreach($items as $key => $item):?>
+        <div class="item <?=$key == 0 ? 'first' : ''?>">
+            <div class="item-inline item-title">
+                <h3><a href="<?=$item['link']?>"><?=$item['htmlTitle']?></a></h3>
+                <p class="info"><?=$item['htmlSnippet']?></p>
+            </div>
+        </div>
+        <?endforeach;?>
+    </div>
+    <?if($this->paginator):?>
+    <?=$this->paginator->setPath('/thinking/')->setBaseQuery(array());?>
+    <?=$this->widget('Avnpc', 'widgets/paginator', $this->vars())?>
+    <?endif;?>
+    <?endif;?>
+
+</div>

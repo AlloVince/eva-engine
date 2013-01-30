@@ -26,7 +26,7 @@ return array(
                 'options' => array(
                     'route'    => '/',
                     'defaults' => array(
-                        'controller' => 'Avnpc\Controller\IndexController',
+                        'controller' => 'IndexController',
                         'action'     => 'index',
                     ),
                 ),
@@ -37,7 +37,7 @@ return array(
                 'options' => array(
                     'route' => '/feed[/]',
                     'defaults' => array(
-                        'controller' => 'Avnpc\Controller\FeedController',
+                        'controller' => 'FeedController',
                         'action' => 'index',
                     ),
                 ),
@@ -51,7 +51,7 @@ return array(
                         'id'     => '\d+',
                     ),
                     'defaults' => array(
-                        'controller' => 'Avnpc\Controller\PagesController',
+                        'controller' => 'PagesController',
                         'action' => 'get',
                     ),
                 ),
@@ -65,7 +65,20 @@ return array(
                         'id'     => '[a-zA-Z][a-zA-Z0-9_-]+',
                     ),
                     'defaults' => array(
-                        'controller' => 'Avnpc\Controller\PagesController',
+                        'controller' => 'PagesController',
+                        'action' => 'index',
+                    ),
+                ),
+                'priority' => 2,
+            ),
+            'search' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/search[/]',
+                    'constraints' => array(
+                    ),
+                    'defaults' => array(
+                        'controller' => 'SearchController',
                         'action' => 'index',
                     ),
                 ),
@@ -79,7 +92,7 @@ return array(
                         'id'     => '[a-zA-Z][a-zA-Z0-9_-]+',
                     ),
                     'defaults' => array(
-                        'controller' => 'Avnpc\Controller\LifeController',
+                        'controller' => 'LifeController',
                         'action' => 'index',
                     ),
                 ),
@@ -93,7 +106,7 @@ return array(
                         'tag'     => '[^/]+',
                     ),
                     'defaults' => array(
-                        'controller' => 'Avnpc\Controller\IndexController',
+                        'controller' => 'IndexController',
                         'action' => 'index',
                     ),
                 ),
@@ -120,126 +133,31 @@ return array(
                         'id'     => '[a-zA-Z][a-zA-Z0-9_-]+',
                     ),
                     'defaults' => array(
-                        'controller' => 'Avnpc\Controller\ProxyController',
+                        'controller' => 'ProxyController',
                         'action' => 'index',
                     ),
                 ),
                 'priority' => 2,
             ),
-
-            'group' => array(
-                'type' => 'Segment',
-                'may_terminate' => true,
-                'priority' => 2,
-                'options' => array(
-                    'route' => '/groups[/]',
-                    'defaults' => array(
-                        'controller' => 'GroupController',
-                        'action' => 'index',
-                    ),
-                ),
-                'child_routes' => array(
-                    'action' => array(
-                        'type' => 'Segment',
-                        'options' => array(
-                            'route' => '[:action][/]',
-                            'constraints' => array(
-                                'action' => '[a-zA-Z]+',
-                            ),
-                        ),
-                        'may_terminate' => true,
-                    ),
-                    'group_id' => array(
-                        'type' => 'Segment',
-                        'options' => array(
-                            'route' => '[:group_id][/]',
-                            'constraints' => array(
-                                'group_id' => '[0-9]+',
-                            ),
-                            'defaults' => array(
-                                'action' => 'get',
-                            ),
-                        ),
-                        'may_terminate' => true,
-                        'child_routes' => array(
-                            'sub' => array(
-                                'type' => 'Segment',
-                                'options' => array(
-                                    'route' => '[:controller][/]',
-                                    'constraints' => array(
-                                        'controller' => 'blog|event|album',
-                                    ),
-                                    'defaults' => array(
-                                        'action' => 'groupIndex',
-                                    ),
-                                ),
-                                'may_terminate' => true,
-                                'child_routes' => array(
-                                    'id' => array(
-                                        'type' => 'Segment',
-                                        'options' => array(
-                                            'route' => '[:id][/]',
-                                            'constraints' => array(
-                                                'id' => '[0-9]+',
-                                            ),
-                                            'defaults' => array(
-                                                'action' => 'groupSingle',
-                                            ),
-                                        ),
-                                        'may_terminate' => true,
-                                        'child_routes' => array(
-                                            'edit' => array(
-                                                'type' => 'Segment',
-                                                'options' => array(
-                                                    'route' => '[edit][/]',
-                                                    'defaults' => array(
-                                                        'action' => 'groupEdit',
-                                                    ),
-                                                ),
-                                                'may_terminate' => true,
-                                            ), //group sub sub child : edit
-                                        ), //group sub sub children
-                                    ), //group sub sub child : id
-                                    'create' => array(
-                                        'type' => 'Segment',
-                                        'options' => array(
-                                            'route' => '[create][/]',
-                                            'defaults' => array(
-                                                'action' => 'groupCreate',
-                                            ),
-                                        ),
-                                        'may_terminate' => true,
-                                    ), //group sub sub child : id
-                                ), //group sub sub children
-                            ), //group sub child : controller
-                        ), //group children
-                    ), //group child action : group_id
-                ), //group children
-            ), //group
-
         ),
     ),
     'controllers' => array(
         'invokables' => array(
-            'Blog' => 'Avnpc\Controller\IndexController',
-            'Avnpc\Controller\IndexController' => 'Avnpc\Controller\IndexController',
-            'Avnpc\Controller\PagesController' => 'Avnpc\Controller\PagesController',
-            'Avnpc\Controller\LifeController' => 'Avnpc\Controller\LifeController',
-            'Avnpc\Controller\FeedController' => 'Avnpc\Controller\FeedController',
-            'Avnpc\Controller\ProxyController' => 'Avnpc\Controller\ProxyController',
+            'IndexController' => 'Avnpc\Controller\IndexController',
+            'PagesController' => 'Avnpc\Controller\PagesController',
+            'LifeController' => 'Avnpc\Controller\LifeController',
+            'FeedController' => 'Avnpc\Controller\FeedController',
+            'ProxyController' => 'Avnpc\Controller\ProxyController',
+            'SearchController' => 'Avnpc\Controller\SearchController',
         ),
     ),
 
     'view_manager' => array(
+        'template_path_stack' => array(
+            'avnpc' => __DIR__ . '/../view',
+        ),
         'template_map' => array(
-            'blank' => __DIR__ . '/../view/blank.phtml',
-            'layout/layout' => __DIR__ . '/../layout/avnpc.phtml',
-            'avnpc/index' => __DIR__ . '/../view/index.phtml',
-            'avnpc/pages/get' => __DIR__ . '/../view/pages/get.phtml',
-            'avnpc/life/index' => __DIR__ . '/../view/life/index.phtml',
-            'avnpc/feed' => __DIR__ . '/../view/feed.phtml',
-            'error/index'   => __DIR__ . '/../view/error/index.phtml',
-            'error/404'   => __DIR__ . '/../view/error/index.phtml',
+            'layout/layout' => __DIR__ . '/../layout/layout.phtml',
         ),
     ),
 );

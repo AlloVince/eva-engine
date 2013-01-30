@@ -59,7 +59,6 @@ class LifeController extends ActionController
             'nextpage' => $continuation,
             'nextId' => $id,
         ));
-        $view->setTemplate('avnpc/life/index');
         $this->pagecapture();
         return $view;
     }

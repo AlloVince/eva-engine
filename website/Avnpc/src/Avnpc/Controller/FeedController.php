@@ -49,7 +49,6 @@ class FeedController extends ActionController
         $view = new FeedModel(array(
             'entries' => $items,
         ));
-        $view->setTemplate('avnpc/feed');
         return $view;
     }
 }

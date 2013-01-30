@@ -7,9 +7,6 @@ use Eva\Api,
 
 class IndexController extends ActionController
 {
-    protected $addResources = array(
-    );
-
     public function indexAction()
     {
         $tag = $this->params('tag');
@@ -45,7 +42,6 @@ class IndexController extends ActionController
             'paginator' => $paginator,
             'query' => $query,
         ));
-        $view->setTemplate('avnpc/index');
         if($this->params('page') || $this->params('tag')){
             $this->pagecapture();
         } else {
