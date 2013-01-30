@@ -195,3 +195,8 @@ CREATE TABLE IF NOT EXISTS `eva_user_tags_users` (
 ALTER TABLE `eva_file_files` CHANGE `fileServerKey` `fileServerKey` VARCHAR( 32 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'default';
 ALTER TABLE `eva_file_files` ADD `isEmbed` BOOLEAN NOT NULL DEFAULT FALSE AFTER `isImage` ,
 ADD `archive_id` INT( 10 ) NOT NULL DEFAULT '0' AFTER `isEmbed` ;
+
+
+----2013-01-28
+ALTER TABLE `eva_user_profiles` ADD `interest` VARCHAR( 255 ) NULL AFTER `industry`;
+ALTER TABLE `eva_activity_messages` ADD `sourceUrl` VARCHAR( 255 ) NULL AFTER `sourceName`; 
