@@ -1,0 +1,111 @@
+<?
+$title = $this->_('Notification List');
+$this->headTitle($title, 'SET');
+$this->textDelay('breadcrumbText', $title);
+if($this->form){
+	$form = $this->form;
+} else {
+    $form = new Notification\Form\NotificationSearchForm();
+}
+
+$form
+->setView($this)
+->setMethod('get')
+->setAction($this->uri('/admin/notification/'))
+->bind($this->query)
+->prepare();
+
+?>
+<div class="row">
+    <div class="span10">
+        <div class="slate">
+            <form <?=$this->formAttr($form)?> class="form-inline">
+                <?=$form->helper('keyword', array('class' => 'input-large', 'placeholder' => 'Keyword...'))?>
+                <button class="btn" type="submit"><?=$this->_('Filter Notifications')?></button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="span10 listing-buttons">
+        <div class="btn-group pull-right">
+            <a href="<?=$this->uri('/admin/notification/create')?>" class="btn btn-info"><?=$this->_('Add New Notification')?></a>
+        </div>
+    </div>
+
+    <div class="span10">
+        <div class="slate">
+            <div class="page-header">
+                <div class="btn-group pull-right">
+                    <span data-toggle="dropdown" class="btn dropdown-toggle">
+                        <?=$this->_('Order')?> <span class="caret"></span>
+                    </span>
+                    <ul class="dropdown-menu">
+                        <li><a href="<?=$this->uri('/admin/notification/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'idasc',),));?>" class=""><i class="icon-arrow-up"></i> <?=$this->_('Id')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/notification/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'iddesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Id')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/notification/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'titleasc',),));?>" class=""><i class="icon-arrow-up"></i> <?=$this->_('Title')?></a></li>
+                        <li><a href="<?=$this->uri('/admin/notification/', 'dq', array('Q' => $this->query, 'q' => array('order' => 'titledesc',),));?>" class=""><i class="icon-arrow-down"></i> <?=$this->_('Title')?></a></li>
+                    </ul>
+                </div>
+                <h2><?=$title?></h2>
+            </div>
+
+            <table class="orders-table table">
+                <thead>
+                    <tr>
+                        <th><?=$this->_('Notification Title')?></th>
+                        <th class="span3"><?=$this->_('Send Type')?></th>
+                        <th class="span2"><?=$this->_('Allow Disable')?></th>
+                        <th class="actions"><?=$this->_('Actions')?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?if($this->items):?>
+                    <?foreach($this->items as $key=>$item):?>
+                    <tr class="">
+                        <td>
+                            <a href="<?=$this->uri('/admin/notification/' . $item['id'])?>" class="title"><?=$item['title'] ?></a>
+                            <p>
+                            <span class="meta"><?=$item['notificationKey'] ?></span>
+                            </p>
+                        </td>
+                        <td>
+                           <p>Send Notice : <?=$item['sendNotice'] ?></p> 
+                           <p>Send Email : <?=$item['sendEmail'] ?></p> 
+                           <p>Send Sms : <?=$item['sendSms'] ?></p> 
+                           <p>Send Apple Os Push : <?=$item['sendAppleOsPush'] ?></p> 
+                           <p>Send Android Push : <?=$item['sendAndroidPush'] ?></p> 
+                           <p>Send Windows Push : <?=$item['sendWindowsPush'] ?></p> 
+                           <p>Send Custom Notice : <?=$item['sendCustomNotice'] ?></p> 
+                        </td>
+                        <td>
+                           <p>Notice : <?=$item['allowDisableNotice'] ?></p> 
+                           <p>Email : <?=$item['allowDisableEmail'] ?></p> 
+                           <p>Sms : <?=$item['allowDisableSms'] ?></p> 
+                           <p>Apple Os Push : <?=$item['allowDisableAppleOsPush'] ?></p> 
+                           <p>Android Push : <?=$item['allowDisableAndroidPush'] ?></p> 
+                           <p>Windows Push : <?=$item['allowDisableWindowsPush'] ?></p> 
+                           <p>Custom Notice : <?=$item['allowDisableCustomNotice'] ?></p> 
+                        </td>
+                        <td class="actions">
+                            <a href="<?=$this->uri('/admin/notification/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/notification/', array('page' => $this->page)))); ?>" class="btn btn-small btn-danger"><?=$this->_('Delete')?></a>
+                            <a href="<?=$this->uri('/admin/notification/' . $item['id'])?>" class="btn btn-small"><?=$this->_('Edit')?></a>
+                        </td>
+                    </tr>
+                    <?endforeach;?>
+                    <?endif;?>
+                </tbody>
+            </table>
+        </div>
+    </div><!--span10 end-->
+
+    <div class="span10">
+        <?if($this->paginator):?>
+        <?=$this->paginator->setPath('/admin/notification/')->setBaseQuery($this->query);?>
+        <?=$this->widget('Core', 'widgets/paginator', $this->vars())?>
+        <?endif;?>
+    </div>
+
+</div>

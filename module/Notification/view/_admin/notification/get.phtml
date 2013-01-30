@@ -1,0 +1,191 @@
+<?
+$item = $this->item;
+$title = $item['id'] ? 'Edit Notification' : 'Create Notification';
+$title = $this->_($title);
+$method = $item['id'] ? 'put' : 'post';
+$this->headTitle($title, 'SET');
+$this->textDelay('breadcrumbText', $title);
+
+if($this->form){
+	$form = $this->form;
+} else {
+    if($item['id']) {
+        $form = new Notification\Form\NotificationEditForm();
+    } else {
+        $form = new Notification\Form\NotificationCreateForm();
+    }
+}
+$form->useSubFormGroup()
+     ->setMethod($item['id'] ? 'put' : 'post')
+     ->setView($this)
+     ->setAction($this->uri('/admin/notification/'))
+     ->bind($item)
+     ->prepare();
+
+?>
+
+<div class="row">
+    <form <?=$this->formAttr($form)?>>
+        <?=$form->restful();?>
+        <?=$form->helper('id');?>
+        <div class="span10">
+            <div class="slate">
+                <?if($item['id']):?>
+                <div class="btn-group pull-right">
+                    <a href="<?=$this->uri('/admin/notification/create')?>" class="btn"><?=$this->_('Create New')?></a>
+                    <a href="<?=$this->uri('/admin/notification/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/notification/' . $item['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
+                </div>
+                <?else:?>
+                    <div class="page-headr">
+                        <h2><?=$title?></h2>
+                    </div>
+                <?endif?>
+                <fieldset class="">
+                    <div class="control-group <?=$form->isError('title') ? 'error' : '';?>">
+                        <?=$form->helper('title', 'label', array('class' => 'control-label'))?>
+                        <div class="controls docs-input-sizes">
+                            <?=$form->helper('title', array('class' => 'span9'))?>
+                            <div class="help-block"><?=$form->helper('title', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+
+                    <div class="control-group <?=$form->isError('notificationKey') ? 'error' : '';?>">
+                       <?=$form->helper('notificationKey', 'label', array('class' => 'control-label'))?>
+                        <div class="controls docs-input-sizes">
+                            <?=$form->helper('notificationKey', array('class' => 'span9'))?>
+                            <div class="help-block"><?=$form->helper('notificationKey', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div><!--span10 end-->
+
+        <div class="span5">
+            <div class="slate">
+                <div class="page-header">
+                    <h3><?=$this->_('Send Setting')?></h3>
+                </div>
+
+                <fieldset class="form-horizontal">
+
+                    <div class="control-group <?=$form->isError('sendNotice') ? 'error' : '';?>">
+    <?=$form->helper('sendNotice', 'label', array('class' => 'control-label'))?>
+    <div class="controls">
+        <?=$form->helper('sendNotice', 'formRadio', array('class' => ''))?>        
+        <div class="help-block"><?=$form->helper('sendNotice', 'formElementErrors')?></div>
+    </div>
+</div>
+<div class="control-group <?=$form->isError('sendEmail') ? 'error' : '';?>">
+    <?=$form->helper('sendEmail', 'label', array('class' => 'control-label'))?>
+    <div class="controls">
+        <?=$form->helper('sendEmail', 'formRadio', array('class' => ''))?>        
+        <div class="help-block"><?=$form->helper('sendEmail', 'formElementErrors')?></div>
+    </div>
+</div>
+<div class="control-group <?=$form->isError('sendSms') ? 'error' : '';?>">
+    <?=$form->helper('sendSms', 'label', array('class' => 'control-label'))?>
+    <div class="controls">
+        <?=$form->helper('sendSms', 'formRadio', array('class' => ''))?>        
+        <div class="help-block"><?=$form->helper('sendSms', 'formElementErrors')?></div>
+    </div>
+</div>
+<div class="control-group <?=$form->isError('sendAppleOsPush') ? 'error' : '';?>">
+    <?=$form->helper('sendAppleOsPush', 'label', array('class' => 'control-label'))?>
+    <div class="controls">
+        <?=$form->helper('sendAppleOsPush', 'formRadio', array('class' => ''))?>        
+        <div class="help-block"><?=$form->helper('sendAppleOsPush', 'formElementErrors')?></div>
+    </div>
+</div>
+<div class="control-group <?=$form->isError('sendAndroidPush') ? 'error' : '';?>">
+    <?=$form->helper('sendAndroidPush', 'label', array('class' => 'control-label'))?>
+    <div class="controls">
+        <?=$form->helper('sendAndroidPush', 'formRadio', array('class' => ''))?>        
+        <div class="help-block"><?=$form->helper('sendAndroidPush', 'formElementErrors')?></div>
+    </div>
+</div>
+<div class="control-group <?=$form->isError('sendWindowsPush') ? 'error' : '';?>">
+    <?=$form->helper('sendWindowsPush', 'label', array('class' => 'control-label'))?>
+    <div class="controls">
+        <?=$form->helper('sendWindowsPush', 'formRadio', array('class' => ''))?>        
+        <div class="help-block"><?=$form->helper('sendWindowsPush', 'formElementErrors')?></div>
+    </div>
+</div>
+<div class="control-group <?=$form->isError('sendCustomNotice') ? 'error' : '';?>">
+    <?=$form->helper('sendCustomNotice', 'label', array('class' => 'control-label'))?>
+    <div class="controls">
+        <?=$form->helper('sendCustomNotice', 'formRadio', array('class' => ''))?>        
+        <div class="help-block"><?=$form->helper('sendCustomNotice', 'formElementErrors')?></div>
+    </div>
+</div>
+                </fieldset>
+            </div>
+        </div><!--span5 end-->
+        
+        <div class="span5">
+            <div class="slate">
+                <div class="page-header">
+                    <h3><?=$this->_('Allow Disable Setting')?></h3>
+                </div>
+
+
+
+                <fieldset class="form-horizontal">
+
+                    <div class="control-group <?=$form->isError('allowDisableNotice') ? 'error' : '';?>">
+    <?=$form->helper('allowDisableNotice', 'label', array('class' => 'control-label'))?>
+    <div class="controls">
+        <?=$form->helper('allowDisableNotice', 'formRadio', array('class' => ''))?>        
+        <div class="help-block"><?=$form->helper('allowDisableNotice', 'formElementErrors')?></div>
+    </div>
+</div>
+<div class="control-group <?=$form->isError('allowDisableEmail') ? 'error' : '';?>">
+    <?=$form->helper('allowDisableEmail', 'label', array('class' => 'control-label'))?>
+    <div class="controls">
+        <?=$form->helper('allowDisableEmail', 'formRadio', array('class' => ''))?>        
+        <div class="help-block"><?=$form->helper('allowDisableEmail', 'formElementErrors')?></div>
+    </div>
+</div>
+<div class="control-group <?=$form->isError('allowDisableSms') ? 'error' : '';?>">
+    <?=$form->helper('allowDisableSms', 'label', array('class' => 'control-label'))?>
+    <div class="controls">
+        <?=$form->helper('allowDisableSms', 'formRadio', array('class' => ''))?>        
+        <div class="help-block"><?=$form->helper('allowDisableSms', 'formElementErrors')?></div>
+    </div>
+</div>
+<div class="control-group <?=$form->isError('allowDisableAppleOsPush') ? 'error' : '';?>">
+    <?=$form->helper('allowDisableAppleOsPush', 'label', array('class' => 'control-label'))?>
+    <div class="controls">
+        <?=$form->helper('allowDisableAppleOsPush', 'formRadio', array('class' => ''))?>        
+        <div class="help-block"><?=$form->helper('allowDisableAppleOsPush', 'formElementErrors')?></div>
+    </div>
+</div>
+<div class="control-group <?=$form->isError('allowDisableAndroidPush') ? 'error' : '';?>">
+    <?=$form->helper('allowDisableAndroidPush', 'label', array('class' => 'control-label'))?>
+    <div class="controls">
+        <?=$form->helper('allowDisableAndroidPush', 'formRadio', array('class' => ''))?>        
+        <div class="help-block"><?=$form->helper('allowDisableAndroidPush', 'formElementErrors')?></div>
+    </div>
+</div>
+<div class="control-group <?=$form->isError('allowDisableWindowsPush') ? 'error' : '';?>">
+    <?=$form->helper('allowDisableWindowsPush', 'label', array('class' => 'control-label'))?>
+    <div class="controls">
+        <?=$form->helper('allowDisableWindowsPush', 'formRadio', array('class' => ''))?>        
+        <div class="help-block"><?=$form->helper('allowDisableWindowsPush', 'formElementErrors')?></div>
+    </div>
+</div>
+<div class="control-group <?=$form->isError('allowDisableCustomNotice') ? 'error' : '';?>">
+    <?=$form->helper('allowDisableCustomNotice', 'label', array('class' => 'control-label'))?>
+    <div class="controls">
+        <?=$form->helper('allowDisableCustomNotice', 'formRadio', array('class' => ''))?>        
+        <div class="help-block"><?=$form->helper('allowDisableCustomNotice', 'formElementErrors')?></div>
+    </div>
+</div>
+                </fieldset>
+            </div>
+        </div><!--span5 end-->
+
+        <div class="span10 listing-buttons">
+            <button id="save-publish" class="btn btn-success btn-large"><?=$this->_('Save')?></button>
+        </div>
+    </form>
+</div>
