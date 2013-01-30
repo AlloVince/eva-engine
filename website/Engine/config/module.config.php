@@ -75,6 +75,22 @@ return array(
                 ),
                 'priority' => 2,
             ),
+
+            'taoke' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/taoke/[:action][/][:id][/]',
+                    'constraints' => array(
+                        'action'     => '[a-zA-Z]+',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'TaokeController',
+                        'action' => 'index',
+                    ),
+                ),
+                'priority' => 2,
+            ),
         ),
     ),
     'controllers' => array(
@@ -83,6 +99,7 @@ return array(
             'IndexController' => 'Engine\Controller\IndexController',
             'LoginController' => 'Engine\Controller\LoginController',
             'UserController' => 'Engine\Controller\UserController',
+            'TaokeController' => 'Engine\Controller\TaokeController',
         ),
     ),
 
