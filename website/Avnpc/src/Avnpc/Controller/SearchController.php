@@ -39,11 +39,12 @@ class SearchController extends ActionController
                     case 'detail.tmall.com':
 
                     if($urlQuery['id']){
-                        $item = $this->getCommission($urlQuery['id']);
+                        $item = $this->getTaokeCommission($urlQuery['id']);
                     }
 
                     break;
                     default:
+                    $item = $this->getCommissionLink($q);
                 }
 
             } else {
@@ -82,7 +83,14 @@ class SearchController extends ActionController
         return isset($res['items']) ? $res['items'] : array();
     }
 
-    protected function getCommission($pid, $nick = null)
+    protected function getCommissionLink($url)
+    {
+        $commission = new \Commission\Service\Yiqifa();
+        $item = $commission->getProduct($url);
+        return $item;
+    }
+
+    protected function getTaokeCommission($pid, $nick = null)
     {
         $commission = new \Commission\Service\Taoke();
         $item = $commission->getProduct($pid, $nick);
