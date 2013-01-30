@@ -15,7 +15,23 @@ class Notifications extends TableGateway
 
     public function setParameters(Parameters $params)
     {
-        parent::setParameter($params);
+        if($params->id){
+            if(is_array($params->id)){
+                $this->where(array('id' => array_unique($params->id)));
+            } else {
+                $this->where(array('id' => $params->id));
+            }
+        }
+
+        if($params->keyword){
+            $keyword = $params->keyword;
+            $this->where(function($where) use ($keyword){
+                $where->like('title', "%$keyword%");
+                return $where;
+            });
+        }
+
+        parent::setParameters($params);
         return $this;
     }
 }
