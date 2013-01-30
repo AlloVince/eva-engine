@@ -1,0 +1,30 @@
+<?
+$title = $this->_('EvaEngine');
+$this->headTitle($title, 'SET');
+$item = $this->item;
+?>
+<div class="container">
+    <div class="well">
+    <div class="media">
+        <a class="pull-left" href="#">
+            <img class="media-object" src="<?=$item['pic_url']?>" width="100">
+        </a>
+        <div class="media-body">
+            <h4 class="media-heading"><a href="<?=$item['click_url']?>"><?=$item['title']?></a></h4>
+            <div class="media">
+                <ul>
+                    <li>商铺: <a href="<?=$item['shop_click_url']?>" target="_blank"><?=$item['nick']?></a> <span class="label"><?=$item['item_location']?></span></li>
+                    <?if($price):?>
+                    <li>现价: ￥<?=$price?></li>
+                    <li>佣金: ￥<?=$price * $item['commission_rate'] / 10000 ?> <span class="label"><?=$item['commission_rate'] / 100?>%</span></li>
+                    <?else:?>
+                    <li>原价: ￥<?=$item['price']?></li>
+                    <li>佣金: ￥<?=$item['commission']?> <span class="label"><?=$item['commission_rate'] / 100?>%</span></li>
+                    <?endif?>
+                </ul>
+            </div>
+        </div>
+    </div>
+    </div>
+
+</div>
