@@ -61,7 +61,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'ErrorController' => 'Core\Controller\ErrorController',
-            'QueueController' => 'Core\Controller\QueueController',
+
         ),
     ),
 
