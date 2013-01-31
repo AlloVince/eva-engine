@@ -20,16 +20,9 @@ namespace Eva\Mvc\Service;
  */
 class ViewHelperManagerFactory extends \Zend\Mvc\Service\ViewHelperManagerFactory
 {
-    /**
-     * An array of helper configuration classes to ensure are on the helper_map stack.
-     *
-     * @var array
-     */
-    protected $defaultHelperMapClasses = array(
-        'Zend\Form\View\HelperConfig',
-        'Eva\I18n\View\HelperConfig',
-        'Zend\Navigation\View\HelperConfig',
-        'Eva\View\HelperConfig'
-    );
-
+    public function __construct()
+    {
+        $this->defaultHelperMapClasses[] = 'Eva\View\HelperConfig';
+        $this->defaultHelperMapClasses[] = 'Eva\I18n\View\HelperConfig';
+    }
 }
