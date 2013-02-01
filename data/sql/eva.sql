@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `eva_activity_messages` (
   `remoteId` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `remoteReferenceId` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 DROP TRIGGER IF EXISTS `messages_delete`;
 DELIMITER //
 CREATE TRIGGER `messages_delete` AFTER DELETE ON `eva_activity_messages`
@@ -169,7 +169,7 @@ CREATE TABLE IF NOT EXISTS `eva_album_albums` (
   `orderNumber` int(10) DEFAULT NULL,
   `createTime` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `eva_album_albums_files`;
 CREATE TABLE IF NOT EXISTS `eva_album_albums_files` (
@@ -249,7 +249,7 @@ CREATE TABLE IF NOT EXISTS `eva_blog_comments` (
   `parentId` int(10) DEFAULT '0',
   `commentRank` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1244 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `eva_blog_posts`;
 CREATE TABLE IF NOT EXISTS `eva_blog_posts` (
@@ -279,7 +279,7 @@ CREATE TABLE IF NOT EXISTS `eva_blog_posts` (
   `commentCount` int(10) NOT NULL DEFAULT '0',
   `viewCount` bigint(20) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=176 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `eva_blog_posts_files`;
 CREATE TABLE IF NOT EXISTS `eva_blog_posts_files` (
@@ -297,7 +297,7 @@ CREATE TABLE IF NOT EXISTS `eva_blog_tags` (
   `orderNumber` int(10) NOT NULL DEFAULT '0',
   `count` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=179 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `eva_blog_tags_posts`;
 CREATE TABLE IF NOT EXISTS `eva_blog_tags_posts` (
@@ -390,7 +390,7 @@ CREATE TABLE IF NOT EXISTS `eva_event_categories` (
   `left` int(15) NOT NULL DEFAULT '0',
   `right` int(15) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `eva_event_categories_events`;
 CREATE TABLE IF NOT EXISTS `eva_event_categories_events` (
@@ -450,7 +450,7 @@ CREATE TABLE IF NOT EXISTS `eva_event_events` (
   `createTime` datetime NOT NULL,
   `recommend` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=29 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `eva_event_events_activities`;
 CREATE TABLE IF NOT EXISTS `eva_event_events_activities` (
@@ -497,7 +497,7 @@ CREATE TABLE IF NOT EXISTS `eva_event_tags` (
   `orderNumber` int(10) NOT NULL DEFAULT '0',
   `count` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=142 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `eva_event_tags_events`;
 CREATE TABLE IF NOT EXISTS `eva_event_tags_events` (
@@ -560,7 +560,7 @@ CREATE TABLE IF NOT EXISTS `eva_file_files` (
   `user_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `createTime` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=53 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `eva_file_files_connections`;
 CREATE TABLE IF NOT EXISTS `eva_file_files_connections` (
@@ -597,7 +597,7 @@ CREATE TABLE IF NOT EXISTS `eva_group_categories` (
   `left` int(15) NOT NULL DEFAULT '0',
   `right` int(15) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `eva_group_categories_groups`;
 CREATE TABLE IF NOT EXISTS `eva_group_categories_groups` (
@@ -626,7 +626,7 @@ CREATE TABLE IF NOT EXISTS `eva_group_groups` (
   `user_id` int(10) NOT NULL,
   `createTime` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `eva_group_groups_events`;
 CREATE TABLE IF NOT EXISTS `eva_group_groups_events` (
@@ -703,7 +703,7 @@ CREATE TABLE IF NOT EXISTS `eva_message_conversations` (
   `isBulkMessage` tinyint(1) NOT NULL DEFAULT '0',
   `message_id` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 DROP TRIGGER IF EXISTS `conversations_delete`;
 DELIMITER //
 CREATE TRIGGER `conversations_delete` AFTER DELETE ON `eva_message_conversations`
@@ -748,7 +748,7 @@ CREATE TABLE IF NOT EXISTS `eva_message_messages` (
   `readFlag` tinyint(1) NOT NULL DEFAULT '0',
   `readTime` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `eva_movie_manufacturers`;
 CREATE TABLE IF NOT EXISTS `eva_movie_manufacturers` (
@@ -885,51 +885,77 @@ CREATE TABLE IF NOT EXISTS `eva_movie_staffs_manufacturers` (
   PRIMARY KEY (`staff_id`,`manufacturer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-DROP TABLE IF EXISTS `eva_notification_indexes`;
-CREATE TABLE IF NOT EXISTS `eva_notification_indexes` (
-  `user_id` int(10) NOT NULL,
+DROP TABLE IF EXISTS `eva_notification_messages`;
+CREATE TABLE IF NOT EXISTS `eva_notification_messages` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `notification_id` int(5) NOT NULL,
+  `notificationKey` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `args` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `createTime` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+DROP TABLE IF EXISTS `eva_notification_messages_users`;
+CREATE TABLE IF NOT EXISTS `eva_notification_messages_users` (
   `message_id` int(10) NOT NULL,
+  `user_id` int(10) NOT NULL,
+  `noticeType` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'notice',
+  `notification_id` int(5) NOT NULL,
+  `readFlag` tinyint(1) NOT NULL DEFAULT '0',
+  `createTime` datetime NOT NULL,
+  `sendTime` datetime DEFAULT NULL,
+  `readTime` datetime DEFAULT NULL,
+  PRIMARY KEY (`message_id`,`user_id`,`noticeType`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `eva_notification_notices`;
+CREATE TABLE IF NOT EXISTS `eva_notification_notices` (
+  `user_id` int(10) NOT NULL,
+  `message_id` bigint(20) NOT NULL,
+  `status` enum('active','deleted') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'active',
+  `notification_id` int(5) NOT NULL,
+  `notificationKey` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `readFlag` tinyint(1) NOT NULL DEFAULT '0',
   `createTime` datetime NOT NULL,
   `readTime` datetime DEFAULT NULL,
+  `content` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`user_id`,`message_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS `eva_notification_notifications`;
 CREATE TABLE IF NOT EXISTS `eva_notification_notifications` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(5) NOT NULL AUTO_INCREMENT,
   `notificationKey` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `sendNotice` tinyint(1) NOT NULL DEFAULT '0',
   `sendEmail` tinyint(1) NOT NULL DEFAULT '0',
   `sendSms` tinyint(1) NOT NULL DEFAULT '0',
-  `sendPush` tinyint(1) NOT NULL DEFAULT '0',
+  `sendAppleOsPush` tinyint(1) NOT NULL DEFAULT '0',
+  `sendAndroidPush` tinyint(1) NOT NULL DEFAULT '0',
+  `sendWindowsPush` tinyint(1) NOT NULL DEFAULT '0',
+  `sendCustomNotice` tinyint(3) NOT NULL DEFAULT '0',
   `allowDisableNotice` tinyint(1) NOT NULL DEFAULT '0',
   `allowDisableEmail` tinyint(1) NOT NULL DEFAULT '0',
   `allowDisableSms` tinyint(1) NOT NULL DEFAULT '0',
-  `allowDisablePush` tinyint(1) NOT NULL DEFAULT '0',
+  `allowDisableAppleOsPush` tinyint(1) NOT NULL DEFAULT '0',
+  `allowDisableAndroidPush` tinyint(1) NOT NULL DEFAULT '0',
+  `allowDisableWindowsPush` tinyint(1) NOT NULL DEFAULT '0',
+  `allowDisableCustomNotice` tinyint(3) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
-DROP TABLE IF EXISTS `eva_notification_notifications_users`;
-CREATE TABLE IF NOT EXISTS `eva_notification_notifications_users` (
-  `notification_id` int(10) NOT NULL,
-  `user_id` int(10) NOT NULL,
-  `noticeType` enum('notice','email','sms','push') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'notice',
-  `readFlag` tinyint(1) NOT NULL DEFAULT '0',
-  `createTime` datetime NOT NULL,
-  `sendTime` datetime DEFAULT NULL,
-  `readTime` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS `eva_notification_usersettings`;
 CREATE TABLE IF NOT EXISTS `eva_notification_usersettings` (
   `user_id` int(10) NOT NULL,
-  `notification_id` int(10) NOT NULL,
+  `notification_id` int(5) NOT NULL,
   `disableNotice` tinyint(1) NOT NULL DEFAULT '0',
   `disableEmail` tinyint(1) NOT NULL DEFAULT '0',
   `disableSms` tinyint(1) NOT NULL DEFAULT '0',
-  `disablePush` tinyint(1) NOT NULL DEFAULT '0',
+  `disableAppleOsPush` tinyint(1) NOT NULL DEFAULT '0',
+  `disableAndroidPush` tinyint(1) NOT NULL DEFAULT '0',
+  `disableWindowsPush` tinyint(1) NOT NULL DEFAULT '0',
+  `disableCustomNotice` tinyint(3) NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_id`,`notification_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -966,7 +992,7 @@ CREATE TABLE IF NOT EXISTS `eva_payment_logs` (
   `requestData` text COLLATE utf8_unicode_ci,
   `user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `eva_queue_queuemessages`;
 CREATE TABLE IF NOT EXISTS `eva_queue_queuemessages` (
@@ -1020,7 +1046,7 @@ CREATE TABLE IF NOT EXISTS `eva_user_codes` (
   `used_by_id` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `code` (`code`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `eva_user_fieldoptions`;
 CREATE TABLE IF NOT EXISTS `eva_user_fieldoptions` (
@@ -1031,7 +1057,7 @@ CREATE TABLE IF NOT EXISTS `eva_user_fieldoptions` (
   `order` smallint(6) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `field_id` (`field_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=75 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `eva_user_fields`;
 CREATE TABLE IF NOT EXISTS `eva_user_fields` (
@@ -1052,7 +1078,7 @@ CREATE TABLE IF NOT EXISTS `eva_user_fields` (
   `style` text COLLATE utf8_unicode_ci,
   `error` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `eva_user_fields_roles`;
 CREATE TABLE IF NOT EXISTS `eva_user_fields_roles` (
@@ -1141,7 +1167,7 @@ CREATE TABLE IF NOT EXISTS `eva_user_roles` (
   `roleName` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `description` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=15 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `eva_user_roles_users`;
 CREATE TABLE IF NOT EXISTS `eva_user_roles_users` (
@@ -1163,7 +1189,7 @@ CREATE TABLE IF NOT EXISTS `eva_user_tags` (
   `orderNumber` int(10) NOT NULL DEFAULT '0',
   `count` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=143 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `eva_user_tags_users`;
 CREATE TABLE IF NOT EXISTS `eva_user_tags_users` (
@@ -1215,7 +1241,7 @@ CREATE TABLE IF NOT EXISTS `eva_user_users` (
   PRIMARY KEY (`id`),
   KEY `userName` (`userName`),
   KEY `email` (`email`(255))
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=261 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `eva_video_videos`;
 CREATE TABLE IF NOT EXISTS `eva_video_videos` (
