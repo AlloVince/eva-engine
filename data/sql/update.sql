@@ -110,9 +110,6 @@ ALTER TABLE `eva_user_friends` CHANGE `from_user_id` `user_id` INT( 10 ) NOT NUL
 ALTER TABLE `eva_user_friends` CHANGE `to_user_id` `friend_id` INT( 10 ) NOT NULL;
 ALTER TABLE `eva_user_friends` ADD `request_user_id` INT NOT NULL DEFAULT '0' AFTER `friend_id`;
 
-INSERT INTO `eva`.`eva_user_roles` (`id`, `roleKey`, `roleName`, `description`) VALUES (NULL, 'PAID_MEMBER', 'Paid Member', NULL);
-
-
 
 
 

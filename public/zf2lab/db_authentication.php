@@ -10,7 +10,7 @@ $adapter = new Zend\Db\Adapter\Adapter(array(
     'driver' => 'pdo',
     'dsn' => 'mysql:dbname=eva;hostname=localhost',
     'username' => 'root',
-    'password' => '582tsost',
+    'password' => 'password',
     'driver_options' => array(
         PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
     ),
