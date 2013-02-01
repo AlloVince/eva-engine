@@ -1145,6 +1145,7 @@ CREATE TABLE IF NOT EXISTS `eva_user_profiles` (
   `zipcode` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `degree` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `industry` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `interest` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `phoneBusiness` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `phoneMobile` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `phoneHome` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -1158,7 +1159,7 @@ CREATE TABLE IF NOT EXISTS `eva_user_profiles` (
   `internalIm` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
   `otherIm` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS `eva_user_roles`;
 CREATE TABLE IF NOT EXISTS `eva_user_roles` (
