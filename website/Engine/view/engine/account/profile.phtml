@@ -1,0 +1,207 @@
+<?
+$item = $this->item;
+$title = 'Edit Profile';
+$title = $this->_($title);
+$this->headTitle($title, 'SET');
+
+if(!$this->form){
+    $form = new Engine\Form\AccountEditForm();
+    $form->useSubFormGroup();
+}
+
+$form->setMethod($item['id'] ? 'put' : 'post');
+$form->setView($this)
+    ->setAction($this->uri('/account/profile/'))
+     ->bind($item)
+     ->prepare();
+
+$tags = isset($item['Tags']) ? $item['Tags'] : array();
+?>
+
+<div class="container">
+    <div class="normal-page">
+        <div class="body grid-s5m0">
+
+            <div class="main-wrap"><div id="main" class="main">
+                    <div class="page-main">
+                        <div class="page-main-header">
+                            <h3><?=$this->_('Edit Profile')?></h3>
+                        </div>
+                        <form id="profile-edit-form" <?=$this->formAttr($form)?> class="form">
+                            <?=$form->restful();?>
+                            <?=$form->helper('id');?>
+                            <input type="hidden" name="callback" value="<?=$this->uri('/account/profile/')?>" />
+
+                            <fieldset class="form-horizontal">
+
+                                <div class="control-group <?=$form->isError('firstName') ? 'error' : '';?>">
+                                    <div class="controls">
+                                        <a class="" href="http://gravatar.com">
+                                            <img src="<?=$this->gravatarLink($item['email'], 175)?>" class="img-circle" alt="">
+                                        </a>
+                                        <p>
+                                        Change your avatar at <a href="http://gravatar.com">Gravatar.com</a>.
+                                        </p>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="control-group <?=$form->isError('firstName') ? 'error' : '';?>">
+                                    <?=$form->helper('firstName', 'label', array('class' => 'control-label'))?>
+                                    <div class="controls">
+                                        <?=$form->helper('firstName', array('class' => ''))?>        
+                                        <div class="help-block"><?=$form->helper('firstName', 'formElementErrors')?></div>
+                                    </div>
+                                </div>
+                                <div class="control-group <?=$form->isError('lastName') ? 'error' : '';?>">
+                                    <?=$form->helper('lastName', 'label', array('class' => 'control-label'))?>
+                                    <div class="controls">
+                                        <?=$form->helper('lastName', array('class' => ''))?>        
+                                        <div class="help-block"><?=$form->helper('lastName', 'formElementErrors')?></div>
+                                    </div>
+                                </div>
+                                <div class="control-group <?=$form->isError('gender') ? 'error' : '';?>">
+                                    <?=$form->helper('gender', 'label', array('class' => 'control-label'))?>
+                                    <div class="controls">
+                                        <?=$form->helper('gender', 'formSelect', array('class' => ''))?>        
+                                        <div class="help-block"><?=$form->helper('gender', 'formElementErrors')?></div>
+                                    </div>
+                                </div>
+
+                                <div class="control-group <?=$form->isError('language') ? 'error' : '';?>">
+                                    <?=$form->helper('language', 'label', array('class' => 'control-label'))?>
+                                    <div class="controls">
+                                        <?=$form->helper('language', 'formSelect', array('class' => 'select2 input-large'))?>        
+                                        <div class="help-block"><?=$form->helper('language', 'formElementErrors')?></div>
+                                    </div>
+                                </div>
+
+                                <div class="control-group <?=$form->isError(array('Profile', 'site')) ? 'error' : '';?>">
+                                    <?=$form->helper(array('Profile', 'site'), 'label', array('class' => 'control-label'))?>
+                                    <div class="controls">
+                                        <?=$form->helper(array('Profile', 'site'), array('class' => ''))?>        
+                                        <div class="help-block"><?=$form->helper(array('Profile', 'site'), 'formElementErrors')?></div>
+                                        <div class="help-block">Full url start by http://</div>
+                                    </div>
+                                </div>
+
+                                <div class="control-group <?=$form->isError(array('Profile', 'birthday')) ? 'error' : '';?>">
+                                    <?=$form->helper(array('Profile', 'birthday'), 'label', array('class' => 'control-label'))?>
+                                    <div class="controls">
+                                        <?=$form->helper(array('Profile', 'birthday'), array('class' => 'datepicker', 'data-date-format' => 'yyyy-mm-dd'))?>        
+                                        <div class="help-block"><?=$form->helper(array('Profile', 'birthday'), 'formElementErrors')?></div>
+                                    </div>
+                                </div>
+
+                                <div class="control-group <?=$form->isError(array('Profile', 'country')) ? 'error' : '';?>">
+                                    <?=$form->helper(array('Profile', 'country'), 'label', array('class' => 'control-label'))?>
+                                    <div class="controls">
+                                        <?=$form->helper(array('Profile', 'country'), 'formSelect', array('class' => 'select2 input-large'))?>        
+                                        <div class="help-block"><?=$form->helper(array('Profile', 'country'), 'formElementErrors')?></div>
+                                    </div>
+                                </div>
+                                <div class="control-group <?=$form->isError(array('Profile', 'address')) ? 'error' : '';?>">
+                                    <?=$form->helper(array('Profile', 'address'), 'label', array('class' => 'control-label'))?>
+                                    <div class="controls">
+                                        <?=$form->helper(array('Profile', 'address'), array('class' => ''))?>        
+                                        <div class="help-block"><?=$form->helper(array('Profile', 'address'), 'formElementErrors')?></div>
+                                    </div>
+                                </div>
+                                <div class="control-group <?=$form->isError(array('Profile', 'city')) ? 'error' : '';?>">
+                                    <?=$form->helper(array('Profile', 'city'), 'label', array('class' => 'control-label'))?>
+                                    <div class="controls">
+                                        <?=$form->helper(array('Profile', 'city'), 'formInput', array('class' => 'select2 input-large'))?>        
+                                        <div class="help-block"><?=$form->helper(array('Profile', 'city'), 'formElementErrors')?></div>
+                                    </div>
+                                </div>
+
+
+                                <div class="control-group <?=$form->isError(array('Profile', 'phoneMobile')) ? 'error' : '';?>">
+                                    <?=$form->helper(array('Profile', 'phoneMobile'), 'label', array('class' => 'control-label'))?>
+                                    <div class="controls">
+                                        <?=$form->helper(array('Profile', 'phoneMobile'), array('class' => ''))?>        
+                                        <div class="help-block"><?=$form->helper(array('Profile', 'phoneMobile'), 'formElementErrors')?></div>
+                                    </div>
+                                </div>
+
+                                <div class="control-group <?=$form->isError(array('Profile', 'interest')) ? 'error' : '';?>">
+                                    <?=$form->helper(array('Profile', 'interest'), 'label', array('class' => 'control-label'))?>
+                                    <div class="controls">
+                                        <?=$form->helper(array('Profile', 'interest'), 'formInput', array('class' => 'input-large select2'))?>        
+                                        <div class="help-block"><?=$form->helper(array('Profile', 'interest'), 'formElementErrors')?></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="control-group <?=$form->isError(array('Profile', 'industry')) ? 'error' : '';?>">
+                                    <?=$form->helper(array('Profile', 'industry'), 'label', array('class' => 'control-label'))?>
+                                    <div class="controls">
+                                        <?=$form->helper(array('Profile', 'industry'), array('class' => ''))?>        
+                                        <div class="help-block"><?=$form->helper(array('Profile', 'industry'), 'formElementErrors')?></div>
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label">Tags</label>
+                                    <div class="controls">
+                                        <?$tagForm = $form->get('Tags')->get('0');?>
+                                        <?=$tagForm->helper('tagName', array('id' => 'tagging', 'class' => 'input-large', 'value' => $this->tagging($tags)->toNameString()))?> 
+                                    </div>
+                                </div>
+
+                                <div class="control-group <?=$form->isError(array('Profile', 'bio')) ? 'error' : '';?>">
+                                    <?=$form->helper(array('Profile', 'bio'), 'label', array('class' => 'control-label'))?>
+                                    <div class="controls">
+                                        <?=$form->helper(array('Profile', 'bio'), 'formTextarea', array('class' => ''))?>        
+                                        <div class="help-block"><?=$form->helper(array('Profile', 'bio'), 'formElementErrors')?></div>
+                                    </div>
+                                </div>
+  
+                                <div class="form-actions">
+                                    <button id="save-publish" class="btn btn-success btn-large"><?=$this->_('Save')?></button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div><!--page-main end-->
+            </div></div><!-- #main end-->
+
+            <div class="sidebar">
+                <div class="page-side">
+                    <?=$this->widget('Epic', 'widgets/accountnav', $this->vars())?>
+                </div>
+            </div><!--sider end-->
+
+        </div><!-- #body end-->
+    </div><!-- normal end-->
+</div><!--container end-->
+
+<script>
+eva.ready(function(){
+        eva.loadcss(eva.s('/lib/js/jquery/jquery.select2/select2.css'));
+        eva.loader(eva.s('/lib/js/jquery/jquery.select2/select2.js'), function(){
+                $('#tagging').select2({
+                        tags : <?=$this->json($this->tagging($tags)->toNameArray())?>
+                });
+        });
+
+        var form = $("#profile-edit-form");
+        var uploader = $('#singlefileupload');
+        uploader.bind('fileuploaddone', function (e, data) {
+                var file = data.result[0];
+                form.find('input[name="avatar_id"]').val(file.id);
+                $("#avatar-view").hide();
+        });
+
+        $("#show-avatar-uploader").click(function(){
+                $("#avatar-uploader").show();
+                return false;
+        });
+
+        $("#delete-avatar").click(function(){
+                form.find('input[name="avatar_id"]').val('0');
+                $("#avatar-view").attr("src", $("#avatar-view").attr("data-default"));
+                $("#avatar-uploader").show();
+                return false;
+        });
+});
+</script>
