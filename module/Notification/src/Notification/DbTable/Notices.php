@@ -12,7 +12,24 @@ class Notices extends TableGateway
 
     public function setParameters(Parameters $params)
     {
-        parent::setParameter($params);
+        if($params->order == 'read'){
+            $this->order('readFlag ASC');
+            $this->order('createTime DESC');
+        } 
+        
+        if($params->status){
+            $this->where(array('status' => $params->status));
+        }
+        
+        if($params->readFlag){
+            $this->where(array('readFlag' => $params->readFlag));
+        }
+
+        if($params->user_id){
+            $this->where(array('user_id' => $params->user_id));
+        }
+
+        parent::setParameters($params);
         return $this;
     }
 }

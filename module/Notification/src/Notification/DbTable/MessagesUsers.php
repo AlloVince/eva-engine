@@ -12,7 +12,7 @@ class MessagesUsers extends TableGateway
 
     public function setParameters(Parameters $params)
     {
-        parent::setParameter($params);
+        parent::setParameters($params);
         return $this;
     }
 }
