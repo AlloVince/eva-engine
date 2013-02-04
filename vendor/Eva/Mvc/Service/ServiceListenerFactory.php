@@ -22,6 +22,7 @@ class ServiceListenerFactory extends \Zend\Mvc\Service\ServiceListenerFactory
         $this->defaultServiceConfig['factories']['ControllerPluginManager'] = 'Eva\Mvc\Service\ControllerPluginManagerFactory';
         $this->defaultServiceConfig['factories']['ViewHelperManager'] = 'Eva\Mvc\Service\ViewHelperManagerFactory';
         $this->defaultServiceConfig['factories']['ViewManager'] = 'Eva\Mvc\Service\ViewManagerFactory';
+        $this->defaultServiceConfig['factories']['Application'] = 'Eva\Mvc\Service\ApplicationFactory';
     
         $this->defaultServiceConfig['aliases']['Eva\Mvc\Controller\PluginManager'] = 'ControllerPluginManager';
     }
