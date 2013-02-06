@@ -76,9 +76,8 @@ class Privacy extends AbstractModel
         ));
         $this->trigger('get.pre');
 
-        $item = $this->getItem()->self(array('*'));
+        $item = $this->getItem()->self(array('*'))->toArray();
         if($item){
-            $item = $item->toArray();
             $item = \Zend\Json\Json::decode($item['setting'], \Zend\Json\Json::TYPE_ARRAY);
         }
 

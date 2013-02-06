@@ -67,6 +67,8 @@ class Friend extends AbstractModel
         $this->trigger('request.pre');
 
         $checkItem = clone $item;
+        $checkItem->friend_id = $fromId;
+        $checkItem->user_id = $toId;
 
         if($checkItem->self(array('*')) && (
             //Already sent request
@@ -151,7 +153,7 @@ class Friend extends AbstractModel
         }
 
         $this->trigger('block');
-        $this->updateFriendStatus('blocked');
+        $this->updateFriendStatus('blocked', false);
         $this->trigger('block.post');
     }
 
@@ -181,7 +183,7 @@ class Friend extends AbstractModel
         }
 
         $this->trigger('unblock');
-        $this->updateFriendStatus('refused');
+        $this->updateFriendStatus('refused', false);
         $this->trigger('unblock.post');
     }
 
@@ -308,7 +310,7 @@ class Friend extends AbstractModel
         return true;
     }
 
-    protected function updateFriendStatus($status)
+    protected function updateFriendStatus($status, $bothSide = true)
     {
         $item = $this->getItem();
         $fromId = $item->user_id;
@@ -334,10 +336,13 @@ class Friend extends AbstractModel
         $item->relationshipStatus = $status;
         $item->save();
 
-        $friendItem = clone $item;
-        $friendItem->user_id = $toId;
-        $friendItem->friend_id = $fromId;
-        $friendItem->save();
+        if(true === $bothSide){
+            $friendItem = clone $item;
+            $friendItem->user_id = $toId;
+            $friendItem->friend_id = $fromId;
+            $friendItem->save();
+            unset($friendItem);
+        }
     }
 
 }

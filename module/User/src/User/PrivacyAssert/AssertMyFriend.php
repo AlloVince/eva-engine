@@ -15,15 +15,7 @@ class AssertMyFriend extends AbstractAssertVisitor implements AssertionInterface
         }
 
         $friendship = \User\Model\Friend::checkFriendship($this->user['id'], $this->visitor['id']);
-        /*
-        $friendModel = Api::_()->getModel('User\Model\Friend');
-        $friendDb = $friendModel->getItem()->getDataClass();
-        $res = $friendDb->where(array(
-            'user_id' => $this->user['id'],
-            'friend_id' => $this->visitor['id'],
-            'relationshipStatus' => 'approved',
-        ))->find('one');
-        */
+
         return $friendship && $friendship['relationshipStatus'] == 'approved' ? true : false;
     }
 }
