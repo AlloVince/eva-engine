@@ -31,6 +31,28 @@ class Friend extends AbstractModel
         array('blocked', 'refused'),
     );
 
+    protected static $friendship;
+
+    public static function checkFriendship($userId, $checkUserId)
+    {
+        $innerCacheKey = "$userId-$checkUserId";
+        if(isset(self::$friendship[$innerCacheKey])){
+            return self::$friendship[$innerCacheKey];
+        }
+        $itemModel = clone Api::_()->getModel('User\Model\Friend');
+        $item = $itemModel->setItem(array(
+            'user_id' => $userId,
+            'friend_id' => $checkUserId,
+        ))->getItem()->self(array(
+            '*'
+        ));
+
+        $item = $item ? $item->toArray() : array();
+        self::$friendship[$innerCacheKey] = $item;
+        return $item;
+    }
+
+
     public function requestFriend()
     {
         $item = $this->getItem();
