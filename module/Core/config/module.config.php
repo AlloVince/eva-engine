@@ -32,6 +32,7 @@ return array(
         'adapter' => 'Resque', //Maybe support gearman later
         'driver' => 'Mongodb',
         'dsn'    => 'mongodb://localhost:27017',
+        'domain'    => 'http://avnpc.com/pages/eva-engine',
         'default_queues' => array(
             'default',
             'sendmail',

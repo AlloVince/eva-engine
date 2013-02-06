@@ -21,7 +21,7 @@ class Notices extends TableGateway
             $this->where(array('status' => $params->status));
         }
         
-        if($params->readFlag){
+        if($params->readFlag === 0 || $params->readFlag === 1){
             $this->where(array('readFlag' => $params->readFlag));
         }
 
