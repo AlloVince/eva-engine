@@ -199,3 +199,13 @@ ALTER TABLE `eva_user_profiles` ADD `interest` VARCHAR( 255 ) NULL AFTER `indust
 ALTER TABLE `eva_activity_messages` ADD `sourceUrl` VARCHAR( 255 ) NULL AFTER `sourceName`; 
 
 ALTER TABLE `eva_user_profiles` ADD `interest` VARCHAR( 255 ) NULL AFTER `industry` ;
+
+
+
+----2013-02-06
+DROP TABLE IF EXISTS `eva_user_privacysettings`;
+CREATE TABLE IF NOT EXISTS `eva_user_privacysettings` (
+  `user_id` int(10) NOT NULL,
+  `setting` text COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
