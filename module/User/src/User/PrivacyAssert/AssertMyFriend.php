@@ -14,6 +14,10 @@ class AssertMyFriend extends AbstractAssertVisitor implements AssertionInterface
             return false;
         }
 
+        //My friend should including me
+        if($this->user['id'] == $this->visitor['id']){
+            return true;
+        }
         $friendship = \User\Model\Friend::checkFriendship($this->user['id'], $this->visitor['id']);
 
         return $friendship && $friendship['relationshipStatus'] == 'approved' ? true : false;
