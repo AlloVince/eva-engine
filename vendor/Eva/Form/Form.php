@@ -232,7 +232,7 @@ class Form extends \Zend\Form\Form implements InputFilterProviderInterface
         return array();
     }
 
-    public function mergeFilters($childFilters = null)
+    public function mergeFilters($childFilters = array())
     {
         if($this->mergedFilters){
             return $this->mergedFilters;
