@@ -8,7 +8,7 @@ use Zend\Stdlib\Parameters;
 class Usersettings extends TableGateway
 {
     protected $tableName = 'usersettings';
-    protected $primaryKey = 'user_id';
+    protected $primaryKey = array('user_id', 'notification_id');
 
     public function setParameters(Parameters $params)
     {
