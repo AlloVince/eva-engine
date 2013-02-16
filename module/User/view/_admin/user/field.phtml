@@ -43,7 +43,7 @@ $form
                 </div>
                 <fieldset class="form-horizontal">
                     <?if($subForm = $form->get('CommonFields')):?>
-                    <?foreach($subForm->getElementsArray() as $element):?>
+                    <?foreach($subForm->getMergeElements() as $element):?>
                     <div class="control-group <?=$subForm->isError($element['name']) ? 'error' : '';?>">
                         <?=$subForm->helper($element['name'], 'label', array('class' => 'control-label'))?>
                         <div class="controls">
@@ -59,7 +59,7 @@ $form
                 </div>
                 <?$form = $form->get('UserRoleFields')?>
                 <fieldset class="form-horizontal">
-                    <?foreach($form->getElementsArray() as $element):?>
+                    <?foreach($form->getMergeElements() as $element):?>
                     <div class="control-group <?=$form->isError($element['name']) ? 'error' : '';?>">
                         <?=$form->helper($element['name'], 'label', array('class' => 'control-label'))?>
                         <div class="controls">
