@@ -359,6 +359,7 @@ class TableGateway extends AbstractTableGateway  implements ServiceLocatorAwareI
         $select->offset(null);
         //NOTE: no method could reset order here
         //$select->order(array());
+        $select->reset('order');
 
         $countColumnName = self::ROW_COUNT_COLUMN;
         if($this->primaryKey && is_string($this->primaryKey)){
