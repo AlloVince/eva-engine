@@ -391,7 +391,22 @@ $tags = isset($item['Tags']) ? $item['Tags'] : array();
                             <div class="help-block"><?=$form->helper(array('Profile', 'otherIm'), 'formElementErrors')?></div>
                         </div>
                     </div>
+    
+                    <div class="control-group <?=$form->isError(array('Profile', 'interest')) ? 'error' : '';?>">
+                        <?=$form->helper(array('Profile', 'interest'), 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper(array('Profile', 'interest'), array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper(array('Profile', 'interest'), 'formElementErrors')?></div>
+                        </div>
+                    </div>
 
+                    <div class="control-group <?=$form->isError(array('Profile', 'industry')) ? 'error' : '';?>">
+                        <?=$form->helper(array('Profile', 'industry'), 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper(array('Profile', 'industry'), array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper(array('Profile', 'industry'), 'formElementErrors')?></div>
+                        </div>
+                    </div>
                 </fieldset>
             </div>
         </div><!--span10 end-->
