@@ -20,7 +20,8 @@
             $form->useSubFormGroup()
             ->bind($albumData);
             
-            $callback = $this->params()->fromPost('callback', '/events/');
+            $callback = $albumData['callback'] ? $albumData['callback'] : 'events';
+            
             if ($form->isValid()) {
                 $item = $form->getData();
                 $itemModel = Api::_()->getModel('Album\Model\Album');
