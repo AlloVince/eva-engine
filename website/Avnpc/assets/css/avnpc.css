@@ -6337,6 +6337,10 @@ a:hover {
   color: #045999;
 }
 
+#blog {
+  padding-right: 15px;
+}
+
 #footer {
   position: fixed;
   bottom: 0;
@@ -6769,6 +6773,71 @@ a:hover {
 .share a:hover i {
   color: #045999;
   text-decoration: none;
+}
+
+/*******************************
+*  Toc
+*********************************/
+
+#toc {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 305px;
+  height: 100%;
+  padding: 10px 5px;
+  overflow: auto;
+  background: #FBFBFB;
+}
+
+#toc li {
+  list-style: none;
+}
+
+#toc .toc-h3 {
+  margin-left: 20px;
+}
+
+#toc .toc-h4 {
+  margin-left: 40px;
+}
+
+#toc a {
+  font-size: 14px;
+  color: #555;
+}
+
+#toc .toc-active a {
+  color: #045999;
+  border-bottom: 1px dashed #045999;
+}
+
+#toc .handler {
+  position: absolute;
+  top: 45%;
+  left: 0;
+  display: block;
+  width: 15px;
+  height: 50px;
+  color: #000;
+  text-align: center;
+  cursor: pointer;
+  background: #CCC;
+}
+
+#toc .handler i {
+  line-height: 50px;
+}
+
+#toc.min {
+  right: -300px;
+}
+
+#toc.shadow {
+  margin-left: 10px;
+  -webkit-box-shadow: 0 5px 5px rgba(0, 0, 0, 0.095);
+     -moz-box-shadow: 0 5px 5px rgba(0, 0, 0, 0.095);
+          box-shadow: 0 5px 5px rgba(0, 0, 0, 0.095);
 }
 
 /*******************************

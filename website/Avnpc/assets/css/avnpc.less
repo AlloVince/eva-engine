@@ -80,6 +80,10 @@ a:hover {
 	}
 }
 
+#blog {
+	padding-right:15px;
+}
+
 #footer {
 	position:fixed;
 	bottom:0;
@@ -444,6 +448,77 @@ a:hover {
 		color:@linkColor;
 		text-decoration:none;
 	}
+}
+
+
+/*******************************
+*  Toc
+*********************************/
+#toc {
+	position:fixed;
+	right:0;
+	top:0;
+	height:100%;
+	background:#FBFBFB;
+	padding:10px 5px;
+	//border:1px solid #DDD;
+	//border-left-width:4px;
+	//border-right:0;
+	overflow:auto;
+	width:305px; 
+
+	li {
+		//list-style:square outside none;
+		list-style:none;
+	}
+	
+	.toc-h2 {
+	}
+
+	.toc-h3 {
+		margin-left:20px;
+	}
+
+	.toc-h4 {
+		margin-left:40px;
+	}
+
+	a {
+		color:#555;
+		font-size:14px;
+	}
+
+	.toc-active a{
+		color:@linkColor;
+		border-bottom:1px dashed @linkColor;
+	}
+
+	.handler {
+		display:block;
+		position:absolute;
+		width:15px;
+		height:50px;
+		top:45%;
+		left:0;
+		background:#CCC;
+		cursor:pointer;
+		color:#000;
+		text-align:center;
+		i {
+			line-height:50px;
+		}
+	}
+
+
+}
+
+#toc.min {
+	right:-300px;
+}
+
+#toc.shadow {
+	margin-left:10px;
+	.box-shadow(0 5px 5px rgba(0,0,0,.095));
 }
 
 /*******************************

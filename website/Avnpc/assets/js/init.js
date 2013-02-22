@@ -27,6 +27,47 @@ eva.ready(function(){
 		});
 	}
 
+	//TODO: 检查至少有两级标题
+	var titles = $("#blog > article :header");
+	//eva.p($.unique(titles.toArray()));
+	if(titles.length > 4){
+		eva.loader(eva.assets(['/module/avnpc/js/jquery.toc.min.js', '/lib/js/jquery/jquery.jscrollpane.js']), function(){
+			var toc = $('<div id="toc" class="typo typocn shadow"></div>').appendTo('body');
+			toc.toc({
+				'selectors': 'h1,h2,h3,h4', //elements to use as headings
+				'container': '#blog > article', //element to find all selectors in
+				'onHighlight': function(el) {
+					var offset = $(el).position();
+					toc.data('jsp').scrollTo(0, offset.top - 20);
+				},
+				'smoothScrolling': true
+			});
+			toc.jScrollPane({
+				animateScroll: true
+			});	
+			toc.append('<span class="handler"><i class="icon-angle-left"></i></span>');
+
+			var handler = toc.find('.handler');
+			handler.on('click', function(){
+				if(toc.is(':animated')){
+					return false;
+				}
+				if(toc.hasClass('min')){
+					toc.animate({right:0}, "fast", function(){
+						toc.toggleClass('min');
+						handler.find('i').toggleClass('icon-angle-left icon-angle-right');
+					});				
+				} else {
+					toc.animate({right:'-300px'}, "fast", function(){
+						toc.toggleClass('min');
+						handler.find('i').toggleClass('icon-angle-left icon-angle-right');
+					});				
+				}
+			});
+		});
+
+	}
+
 	eva.story();
 
 	if($("#timeline-embed")[0]){
