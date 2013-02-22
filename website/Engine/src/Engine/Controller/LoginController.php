@@ -1,19 +1,39 @@
 <?php
 namespace Engine\Controller;
 
-use Eva\Api,
-    Eva\Mvc\Controller\RestfulModuleController,
-    Eva\View\Model\ViewModel;
+use Eva\Mvc\Controller\ActionController;
+use Eva\View\Model\ViewModel;
+use Eva\Api;
+use Core\Auth;
 
-class LoginController extends RestfulModuleController
+class LoginController extends ActionController
 {
+    protected $addResources = array(
+    );
+
+    public function logoutAction()
+    {
+        $callback = $this->params()->fromQuery('callback');
+        if(!$callback && $this->getRequest()->getServer('HTTP_REFERER')){
+            $callback = $this->getRequest()->getServer('HTTP_REFERER');
+        }
+        $callback = $callback ? $callback : '/';
+        $model = new ViewModel();
+        $auth = Auth::factory();
+        $auth->getAuthStorage()->clear();
+        $this->cookie()->clear('realm');
+        return $this->redirect()->toUrl($callback);
+    }
 
     public function indexAction()
     {
         $request = $this->getRequest();
         if (!$request->isPost()) {
-            return;
+            return array(
+                'query' => $this->params()->fromQuery()
+            );
         }
+            
         $item = $request->getPost();
         $form = new \User\Form\LoginForm();
         $form->bind($item);
@@ -44,12 +64,13 @@ class LoginController extends RestfulModuleController
         return array(
             'form' => $form,
             'item' => $item,
+            'query' => $this->params()->fromQuery(),
         );
     }
 
     public function autoAction()
     {
-        $callback = $this->params()->fromQuery('callback', '/');
+        $callback = $this->params()->fromQuery('callback', '/dashboard/');
         $realm = $this->cookie()->crypt(false)->read('realm');
 
         if(!$realm){
@@ -67,12 +88,8 @@ class LoginController extends RestfulModuleController
             $this->cookie()->clear('realm');
         }
         return $this->redirect()->toUrl($callback);
-        /*
-        $viewModel = new ViewModel();
-        $viewModel->setTemplate('blank');
-        return $viewModel;
-        */
     }
+
 
     public function oauthAction()
     {

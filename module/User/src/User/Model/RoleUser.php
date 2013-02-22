@@ -7,9 +7,28 @@ use Eva\Api,
 
 class RoleUser extends AbstractModel
 {
+    public function getRoleUserList(array $itemListParameters = array(), $map = null)
+    {
+        $this->trigger('list.precache');
+
+        $this->trigger('list.pre');
+
+        $item = $this->getItemList();
+        if($map){
+            $item = $item->toArray($map);
+        }
+
+        $this->trigger('get');
+
+        $this->trigger('list.post');
+        $this->trigger('list.postcache');
+
+        return $item;
+    } 
+
     public function getRoleUser($userId = null, $roleId = null, array $map = array())
     {
-        
+
         if ($userId && $roleId) {
             $this->setItem(array(
                 'user_id' => $userId,
@@ -39,7 +58,7 @@ class RoleUser extends AbstractModel
 
         return $itemId;
     }
-    
+
     public function upgradeRoleUser($userId, $roleKey, $days)
     {
         $roleModel = Api::_()->getModel('User\Model\Role');

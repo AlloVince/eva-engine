@@ -25,7 +25,6 @@
         '/module/core/js/core.js',
         '/module/core/js/ui.js',
     ));?>
-    <script src="<?=$this->link('/src/admin/js/init.js')?>"></script>
     <?=$this->headLink()?>
     <?=$this->headScript()?>
 
@@ -59,8 +58,8 @@
                             <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?=$this->loginUser['userName']?> <b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Profile</a></li>
-                                <li><a href="#">Setting</a></li>
+                                <li><a href="<?=$this->uri('/account/profile/')?>">Profile</a></li>
+                                <li><a href="<?=$this->uri('/account/setting/')?>">Setting</a></li>
                                 <li class="divider"></li>
                                 <li><a href="<?=$this->uri('/user/logout/')?>">Logout</a></li>
                             </ul>

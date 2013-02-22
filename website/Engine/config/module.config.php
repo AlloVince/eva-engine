@@ -76,17 +76,45 @@ return array(
                 'priority' => 2,
             ),
 
-            'taoke' => array(
+            'logout' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/taoke/[:action][/][:id][/]',
+                    'route' => '/logout[/]',
                     'constraints' => array(
                         'action'     => '[a-zA-Z]+',
-                        'id'     => '[0-9]+',
                     ),
                     'defaults' => array(
-                        'controller' => 'TaokeController',
+                        'controller' => 'LoginController',
+                        'action' => 'logout',
+                    ),
+                ),
+                'priority' => 2,
+            ),
+
+            'reset' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/reset[/][:action][/]',
+                    'constraints' => array(
+                        'action'     => '[a-zA-Z]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'ResetController',
                         'action' => 'index',
+                    ),
+                ),
+                'priority' => 2,
+            ),
+
+            'account' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/account/[:action][/]',
+                    'constraints' => array(
+                        'action'     => '[a-zA-Z-]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'AccountController',
                     ),
                 ),
                 'priority' => 2,
@@ -99,7 +127,8 @@ return array(
             'IndexController' => 'Engine\Controller\IndexController',
             'LoginController' => 'Engine\Controller\LoginController',
             'UserController' => 'Engine\Controller\UserController',
-            'TaokeController' => 'Engine\Controller\TaokeController',
+            'ResetController' => 'Engine\Controller\ResetController',
+            'AccountController' => 'Engine\Controller\AccountController',
         ),
     ),
 

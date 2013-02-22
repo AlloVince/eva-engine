@@ -90,7 +90,6 @@ class UserController extends RestfulModuleController
             $postData = $form->getData();
             $itemModel = Api::_()->getModel('User\Model\User');
             $itemId = $itemModel->setItem($postData)->createUser();
-            $this->flashMessenger()->addMessage('item-create-succeed');
             $this->redirect()->toUrl('/admin/user/' . $itemId);
 
         } else {
@@ -113,9 +112,10 @@ class UserController extends RestfulModuleController
             $postData = $form->getData();
             $itemModel = Api::_()->getModel('User\Model\User');
 
+            unset($postData['password'], $postData['oldPassword']);
+
             $itemId = $itemModel->setItem($postData)->saveUser();
 
-            $this->flashMessenger()->addMessage('item-edit-succeed');
             $this->redirect()->toUrl('/admin/user/' . $postData['id']);
         } else {
             //$this->flashMessenger()->addMessage('');

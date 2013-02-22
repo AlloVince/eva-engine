@@ -1,66 +1,33 @@
 <?php
 namespace Engine\Controller;
 
-use Eva\Api,
-    Eva\Mvc\Controller\RestfulModuleController,
-    Core\Auth,
-    Eva\View\Model\ViewModel;
+use Eva\Api;
+use Eva\Mvc\Controller\ActionController;
+use Eva\View\Model\ViewModel;
+use Zend\Mvc\MvcEvent;
+use Core\Auth;
+use Oauth\OauthService;
 
-class UserController extends RestfulModuleController
+class UserController extends ActionController
 {
+    protected $user;
 
-    public function registerAction()
+    public function userAction()
     {
-        $request = $this->getRequest();
-        if (!$request->isPost()) {
-            return;
+        if($this->user){
+            return $this->user;
         }
 
-        $item = $request->getPost();
-
-        $oauth = new \Oauth\OauthService();
-        $accessToken = array();
-        if($oauth->getStorage()->getAccessToken()) {
-            $oauth->setServiceLocator($this->getServiceLocator());
-            $oauth->initByAccessToken();
-            $accessToken = $oauth->getAdapter()->getAccessToken();
+        $userId = $this->getEvent()->getRouteMatch()->getParam('id');
+        if(!$userId){
+            return array();
         }
-
-        $form = $accessToken ? new \User\Form\QuickRegisterForm : new \User\Form\RegisterForm();
-        $form->bind($item);
-        if ($form->isValid()) {
-            $callback = $this->params()->fromPost('callback');
-            $callback = $callback ? $callback : '/';
-
-            $item = $form->getData();
-            $itemModel = Api::_()->getModel('User\Model\Register');
-            $itemModel->setItem($item)->register();
-
-            $userItem = $itemModel->getItem();
-            $codeItem = $itemModel->getItem('User\Item\Code');
-
-            $this->redirect()->toUrl($callback);
-        } else {
+        $userModel = Api::_()->getModel('User\Model\User');
+        $user = $userModel->getUser($userId);
+        if(!$user){
+            return array();
         }
-        return array(
-            'token' => $accessToken,
-            'form' => $form,
-            'item' => $item,
-        );
-    }
-
-    public function pricingAction()
-    {
-        $user = Auth::getLoginUser();
-
-        if(isset($user['isSuperAdmin']) || !$user){
-            exit;
-        } 
-
-        $itemModel = Api::_()->getModel('User\Model\User');
-        $item = $itemModel->getUser($user['id']);
-
-        $item = $item->toArray(array(
+        $user = $user->toArray(array(
             'self' => array(
                 '*',
             ),
@@ -71,60 +38,108 @@ class UserController extends RestfulModuleController
                 'Roles' => array(
                     '*'
                 ),
-                'Account' => array('*'),
+                'FriendsCount' => array(
+                ),
+                'Tags' => array(
+                    '*'
+                ),
+            ),
+            'proxy' => array(
+                'User\Item\User::Avatar' => array(
+                    '*',
+                    'getThumb()'
+                ),
+                'User\Item\User::Header' => array(
+                    '*',
+                    'getThumb()'
+                ),
+                'Oauth\Item\Accesstoken::Oauth' => array(
+                    '*'
+                ),
+                'Blog\Item\Post::UserPostCount' => array(
+                ),
+                'Event\Item\EventUser::EventCount' => array(
+                ),
             ),
         ));
-
-        return array(
-            'item' => $item,
-        );
+        return $this->user = $user;
     }
 
-    public function contactsAction()
+    protected function attachDefaultListeners()
     {
+        parent::attachDefaultListeners();
+        $events = $this->getServiceLocator()->get('Application')->getEventManager();
+        $events->attach(MvcEvent::EVENT_RENDER, array($this, 'setUserToView'), 100);
     }
 
-    public function inviteAction()
+    public function setUserToView($event)
     {
-        $id = $this->getEvent()->getRouteMatch()->getParam('id');
-        $adapter = $this->params()->fromQuery('service');
-
-        $user = Auth::getLoginUser();
-
-        if(isset($user['isSuperAdmin']) || !$user){
-            exit;
-        } 
-
-        if(!$adapter){
-            throw new \Contacts\Exception\InvalidArgumentException(sprintf(
-                'No contacts service key found'
+        $user = $this->userAction();
+        $viewModel = $this->getEvent()->getViewModel();
+        $viewModel->setVariables(array(
+            'user' => $user,
+            'viewAsGuest' => 1
+        ));
+        $viewModelChildren = $viewModel->getChildren();
+        foreach($viewModelChildren as $childViewModel){
+            $childViewModel->setVariables(array(
+                'user' => $user,
+                'viewAsGuest' => 1
             ));
         }
+    }
 
-        $config = $this->getServiceLocator()->get('config');
-        $import = new \Contacts\ContactsImport($adapter, false, array(
-            'cacheConfig' => $config['cache']['contacts_import'],
-        ));
-        $contacts = $import->getStorage()->loadContacts();
+    public function registerAction()
+    {
+        $request = $this->getRequest();
+        if ($request->isPost()) {
 
-        $itemModel = \Eva\Api::_()->getModel('Contacts\Model\Contacts');
-        $itemModel->setUser($user);
-        $itemModel->setService($adapter);
-        $contacts = $itemModel->getUserContactsInfo($contacts);
+            $item = $request->getPost();
 
-        if ($id == 'add') {
-            $count = isset($contacts['onSiteContactsCount']) ? $contacts['onSiteContactsCount'] : 0;
-            $contacts = isset($contacts['onSiteContacts']) ? $contacts['onSiteContacts'] : array();
+            $oauth = new \Oauth\OauthService();
+            $accessToken = array();
+            if($oauth->getStorage()->getAccessToken()) {
+                $oauth->setServiceLocator($this->getServiceLocator());
+                $oauth->initByAccessToken();
+                $accessToken = $oauth->getAdapter()->getAccessToken();
+            }
+
+            $form = $accessToken ? new \User\Form\QuickRegisterForm : new \User\Form\RegisterForm();
+            $form->bind($item);
+            if ($form->isValid()) {
+                $callback = $this->params()->fromPost('callback');
+                $callback = $callback ? $callback : '/';
+
+                $item = $form->getData();
+                $itemModel = Api::_()->getModel('User\Model\Register');
+                $itemModel->setItem($item)->register();
+
+                $userItem = $itemModel->getItem();
+                $codeItem = $itemModel->getItem('User\Item\Code');
+                $mail = new \Core\Mail();
+                $mail->getMessage()
+                    ->setSubject("Please Confirm Your Email Address")
+                    ->setData(array(
+                        'user' => $userItem,
+                        'code' => $codeItem,
+                    ))
+                    ->setTo($userItem->email, $userItem->userName)
+                    ->setTemplatePath(Api::_()->getModulePath('User') . '/view/')
+                    ->setTemplate('mail/active');
+                $mail->send();
+
+                $this->redirect()->toUrl($callback);
+            } else {
+            }
+            return array(
+                'token' => $accessToken,
+                'form' => $form,
+                'item' => $item,
+            );
         } else {
-            $count = isset($contacts['outSiteContactsCount']) ? $contacts['outSiteContactsCount'] : 0;
-            $contacts = isset($contacts['outSiteContacts']) ? $contacts['outSiteContacts'] : array();
+            return array(
+                'item' => $this->getRequest()->getQuery()
+            );
         }
-
-        return array(
-            'id'       => $id,
-            'count'    => $count,
-            'contacts' => $contacts,
-            'service'  => $adapter,
-        );
     }
 }

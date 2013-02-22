@@ -17,12 +17,14 @@ class UploadForm extends \File\Form\UploadForm
     protected $mergeFilters = array(
         'upload' => array (
             'validators' => array (
+                /*
                 'fileExtension' => array (
                     'name' => 'File\Extension',
                     'options' => array (
                         'extension' => array('jpg', 'png', 'jpeg'),
                     ),
                 ),
+                */
             ),
         ),
     );

@@ -59,7 +59,6 @@ class Module implements ConsoleBannerProviderInterface
 
    public function onBootstrap($e)
    {
-      Api::_()->setEvent($e);
       $event = $e->getApplication()->getEventManager();
 
       if(!Api::_()->isModuleLoaded('User')){

@@ -24,19 +24,9 @@ return array(
         //'DoctrineModule',
         //'DoctrineORMModule',
     ),
-    'service_manager' => array(
-        'use_defaults' => true,
-        'factories'    => array(
-            'ServiceListener' => 'Eva\Mvc\Service\ServiceListenerFactory',
-            'translator' => 'Eva\I18n\Translator\TranslatorServiceFactory',
-        ),
-    ),
-    'protected_module_namespace' => array(
-        'Admin', 'Api'   
-    ),
-    'use_module_template_path_stack' => true,
     'module_listener_options' => array( 
-        'config_cache_enabled' => 0,
+        'config_cache_enabled' => false,
+        'config_cache_key' => 'module-config-cache',
         'config_glob_paths'    => array(
             EVA_CONFIG_PATH . '/autoload/{,*.}{global,local}.config.php',
             EVA_CONFIG_PATH . '/local.all.config.php',
@@ -47,5 +37,18 @@ return array(
             EVA_MODULE_PATH,
             EVA_ROOT_PATH . '/website',
         ),
+        'module_map_cache_enabled' => false,
+        'module_map_cache_key' => 'module-map-cache',
+        'check_dependencies' => true,
+    ),
+
+    'service_manager' => array(
+        'factories'    => array(
+            'ServiceListener' => 'Eva\Mvc\Service\ServiceListenerFactory',
+            'translator' => 'Eva\I18n\Translator\TranslatorServiceFactory',
+        ),
+    ),
+    'protected_module_namespace' => array(
+        'Admin', 'Api'   
     ),
 );

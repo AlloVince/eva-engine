@@ -70,7 +70,7 @@ class RegisterForm extends UserForm
                 'stringLength' => array (
                     'name' => 'StringLength',
                     'options' => array (
-                        'min' => '2',
+                        'min' => '5',
                         'max' => '20',
                     ),
                 ),
@@ -139,11 +139,13 @@ class RegisterForm extends UserForm
             'filters' => array (
             ),
             'validators' => array (
-                'equalTo' => array(
-                    'name' => 'Eva\Validator\EqualTo',
-                    'injectdata' => true,
+                 'equalTo' => array(
+                    'name' => 'Identical',
                     'options' => array (
-                        'field' => 'inputPassword',
+                        'token' => 'inputPassword',
+                        'messages' => array(
+                            \Zend\Validator\Identical::NOT_SAME => 'Password not match',
+                        ),
                     ),
                 ),
             ),

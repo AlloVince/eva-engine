@@ -9,9 +9,37 @@ use User\Item\User;
 class Notice extends AbstractModel
 {
 
-    public function markAsRead()
+    public function markAsRead($items)
     {
-    
+        if (!$items) {
+            return;
+        }
+
+        foreach ($items as $item) {
+            if ($item->readFlag == 1) {
+                continue;
+            }
+
+            $item->readFlag = 1;
+            $item->save();
+        } 
+    }
+
+    public function getNotice($messageId, $userId, array $map = array())
+    {
+        $this->setItem(array(
+            'message_id' => $messageId,
+            'user_id' => $userId,
+        ));
+
+        $item = $this->getItem();
+        if($map){
+            $item = $item->toArray($map);
+        } else {
+            $item = $item->self(array('*'));
+        }
+
+        return $item;
     }
 
     public function getNoticeList(array $map = array())

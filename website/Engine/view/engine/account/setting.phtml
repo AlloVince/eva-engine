@@ -1,0 +1,121 @@
+<?
+$item = $this->item;
+$title = 'Account Setting';
+$title = $this->_($title);
+$this->headTitle($title, 'SET');
+
+$emailForm = $this->emailForm ? $this->emailForm : new User\Form\ChangeEmailForm();
+$emailForm
+->setView($this)
+->useSubFormGroup()
+->setMethod('post')
+->setAction($this->uri('/account/changeemail/'))
+->bind($item)
+->prepare();
+
+$pwForm = $this->pwForm ? $this->pwForm : new User\Form\ChangePasswordForm();
+$pwForm
+->setView($this)
+->useSubFormGroup()
+->setMethod('post')
+->setAction($this->uri('/account/changepassword/'))
+->bind($item)
+->prepare();
+
+?>
+
+<div class="container">
+    <div class="normal-page">
+        <div class="body grid-s5m0">
+
+            <div class="main-wrap"><div id="main" class="main">
+                    <div class="page-main">
+                        <div class="page-main-header">
+                            <h3><?=$this->_('Account Setting')?></h3>
+                        </div>
+                        <div class="accordion">
+                            <div class="accordion-group">
+                                <div class="accordion-heading">
+                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                                        Change Password
+                                    </a>
+                                </div>
+                                <div id="collapseOne" class="accordion-body collapse in">
+                                    <div class="accordion-inner">
+
+                                        <form <?=$this->formAttr($pwForm)?> class="form">
+                                            <?=$pwForm->restful();?>
+                                            <?=$pwForm->helper('id', array('class' => ''))?>
+                                            <div class="control-group <?=$pwForm->isError('verifyPassword') ? 'error' : '';?>">
+                                                <?=$pwForm->helper('verifyPassword', 'label', array('class' => 'control-label'))?>
+                                                <div class="controls">
+                                                    <?=$pwForm->helper('verifyPassword', array('class' => ''))?>        
+                                                    <div class="help-block"><?=$pwForm->helper('verifyPassword', 'formElementErrors')?></div>
+                                                </div>
+                                            </div>
+                                            <div class="control-group <?=$pwForm->isError('inputPassword') ? 'error' : '';?>">
+                                                <?=$pwForm->helper('inputPassword', 'label', array('class' => 'control-label'))?>
+                                                <div class="controls">
+                                                    <?=$pwForm->helper('inputPassword', array('class' => ''))?>        
+                                                    <div class="help-block"><?=$pwForm->helper('inputPassword', 'formElementErrors')?></div>
+                                                </div>
+                                            </div>
+                                            <div class="control-group <?=$pwForm->isError('repeatPassword') ? 'error' : '';?>">
+                                                <?=$pwForm->helper('repeatPassword', 'label', array('class' => 'control-label'))?>
+                                                <div class="controls">
+                                                    <?=$pwForm->helper('repeatPassword', array('class' => ''))?>        
+                                                    <div class="help-block"><?=$pwForm->helper('repeatPassword', 'formElementErrors')?></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-action">
+                                                <button class="btn">Change</button>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-group">
+                                <div class="accordion-heading">
+                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+                                        Change Email
+                                    </a>
+                                </div>
+                                <div id="collapseTwo" class="accordion-body collapse">
+                                    <div class="accordion-inner">
+
+                                        <form <?=$this->formAttr($emailForm)?> class="form form-inline">
+                                            <?=$emailForm->restful();?>
+                                            <?=$emailForm->helper('id', array('class' => ''))?>
+                                            <div class="control-group <?=$emailForm->isError('email') ? 'error' : '';?>">
+                                                <?=$emailForm->helper('email', 'label', array('class' => 'control-label'))?>
+                                                <div class="controls">
+                                                    <?=$emailForm->helper('email', array('class' => '', 'value' => '', 'placeholder' => $item['email']))?>        
+                                                    <div class="help-block"><?=$emailForm->helper('email', 'formElementErrors')?></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-action">
+                                                <button class="btn">Change</button>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div><!--page-main end-->
+            </div></div><!-- #main end-->
+
+            <div class="sidebar">
+                <div class="page-side">
+                    <?=$this->widget('Epic', 'widgets/accountnav', $this->vars())?>
+                </div>
+            </div><!--sider end-->
+
+        </div><!-- #body end-->
+    </div><!-- normal end-->
+</div><!--container end-->

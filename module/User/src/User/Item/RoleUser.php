@@ -38,11 +38,11 @@ class RoleUser extends AbstractItem
         }
         $dataClass = $this->getDataClass();
         if(isset($this[0])){
+            $dataClass->where(array(
+                'user_id' => $userId,
+            ))->remove();
             foreach($this as $item){
                 $item['user_id'] = $userId;
-                $dataClass->where(array(
-                    'user_id' => $userId,
-                ))->remove();
                 $dataClass->create($item);
             }
         }
@@ -53,23 +53,23 @@ class RoleUser extends AbstractItem
         if (!$this->user_id || !$this->role_id) {
             return;
         }
-        
+
         $dataClass = $this->getDataClass();
         $item['user_id'] = $this->user_id;
         $dataClass->where(array(
             'user_id' => $this->user_id,
             'role_id' => $this->role_id,
         ))->remove();
-        
+
         $dataClass->create($this->toArray());
     }
-    
+
     public function saveRoleUser()
     {
         if (!$this->user_id || !$this->role_id) {
             return;
         }
-        
+
         $dataClass = $this->getDataClass();
         $dataClass->where(array(
             'user_id' => $this->user_id,

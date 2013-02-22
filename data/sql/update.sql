@@ -110,9 +110,6 @@ ALTER TABLE `eva_user_friends` CHANGE `from_user_id` `user_id` INT( 10 ) NOT NUL
 ALTER TABLE `eva_user_friends` CHANGE `to_user_id` `friend_id` INT( 10 ) NOT NULL;
 ALTER TABLE `eva_user_friends` ADD `request_user_id` INT NOT NULL DEFAULT '0' AFTER `friend_id`;
 
-INSERT INTO `eva`.`eva_user_roles` (`id`, `roleKey`, `roleName`, `description`) VALUES (NULL, 'PAID_MEMBER', 'Paid Member', NULL);
-
-
 
 
 
@@ -200,3 +197,15 @@ ADD `archive_id` INT( 10 ) NOT NULL DEFAULT '0' AFTER `isEmbed` ;
 ----2013-01-28
 ALTER TABLE `eva_user_profiles` ADD `interest` VARCHAR( 255 ) NULL AFTER `industry`;
 ALTER TABLE `eva_activity_messages` ADD `sourceUrl` VARCHAR( 255 ) NULL AFTER `sourceName`; 
+
+ALTER TABLE `eva_user_profiles` ADD `interest` VARCHAR( 255 ) NULL AFTER `industry` ;
+
+
+
+----2013-02-06
+DROP TABLE IF EXISTS `eva_user_privacysettings`;
+CREATE TABLE IF NOT EXISTS `eva_user_privacysettings` (
+  `user_id` int(10) NOT NULL,
+  `setting` text COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

@@ -13,6 +13,8 @@ namespace Eva\Mvc\View\Http;
 
 use Zend\EventManager\EventManagerInterface;
 use Zend\Mvc\MvcEvent;
+use Zend\Mvc\View\Http\CreateViewModelListener;
+use Zend\Mvc\View\Http\InjectViewModelListener;
 
 /**
  * Eva Mvc View Bootstrap Manager
@@ -54,10 +56,9 @@ class ViewManager extends \Zend\Mvc\View\Http\ViewManager
         $routeNotFoundStrategy   = $this->getRouteNotFoundStrategy();
         $exceptionStrategy       = $this->getExceptionStrategy();
         $mvcRenderingStrategy    = $this->getMvcRenderingStrategy();
-        $createViewModelListener = new \Zend\Mvc\View\Http\CreateViewModelListener();
+        $createViewModelListener = new CreateViewModelListener();
         $injectTemplateListener  = new InjectTemplateListener();
-        $injectViewModelListener = new \Zend\Mvc\View\Http\InjectViewModelListener();
-        $sendResponseListener    = new \Zend\Mvc\View\SendResponseListener();
+        $injectViewModelListener = new InjectViewModelListener();
 
         $this->registerMvcRenderingStrategies($events);
         $this->registerViewStrategies();
@@ -65,28 +66,14 @@ class ViewManager extends \Zend\Mvc\View\Http\ViewManager
         $events->attach($routeNotFoundStrategy);
         $events->attach($exceptionStrategy);
         $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($injectViewModelListener, 'injectViewModel'), -100);
+        $events->attach(MvcEvent::EVENT_RENDER_ERROR, array($injectViewModelListener, 'injectViewModel'), -100);
         $events->attach($mvcRenderingStrategy);
-        $events->attach($sendResponseListener);
 
         $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($createViewModelListener, 'createViewModelFromArray'), -80);
         $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($routeNotFoundStrategy, 'prepareNotFoundViewModel'), -90);
         $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($createViewModelListener, 'createViewModelFromNull'), -80);
         $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($injectTemplateListener, 'injectTemplate'), -90);
         $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($injectViewModelListener, 'injectViewModel'), -100);
-
-        $application  = $event->getApplication();
-        $services     = $application->getServiceManager();
-        $config       = $services->get('Configuration');
-        $events       = $application->getEventManager();
-        $sharedEvents = $events->getSharedManager();
-
-        //Fixed config instanceof here
-        $this->config   = isset($config['view_manager']) && (is_array($config['view_manager']) || $config['view_manager'] instanceof ArrayAccess)
-        //$this->config   = isset($config['view_manager']) && (is_array($config['view_manager']) || $config['view_manager'] instanceof \Zend\Config\Config)
-                        ? $config['view_manager'] 
-                        : array();
-        $this->services = $services;
-        $this->event    = $event;
     }
 
     public function attach(EventManagerInterface $events)

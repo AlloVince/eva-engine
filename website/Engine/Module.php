@@ -3,6 +3,15 @@ namespace Engine;
 
 class Module
 {
+    public function getDependencyModules()
+    {
+        return array(
+            'Blog',
+            'Oauth',
+        );
+    }
+
+
     public function getAutoloaderConfig()
     {
         return array(

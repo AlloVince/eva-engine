@@ -10,6 +10,4 @@ class Usersetting extends AbstractItem
 
     protected $map = array(
     );
-
-
 }

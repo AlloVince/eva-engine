@@ -5,14 +5,23 @@ namespace Notification\Model;
 use Eva\Api;
 use Eva\Mvc\Model\AbstractModel;
 use User\Item\User;
+use Notification\Item\Notification as NotificationItem;
 
 class Notification extends AbstractModel
 {
     protected $user;
+    
+    protected $notification;
 
     public function setUser(User $user)
     {
         $this->user = $user;
+        return $this;
+    }
+    
+    public function setNotification(NotificationItem $notification)
+    {
+        $this->notification = $notification;
         return $this;
     }
 
@@ -35,7 +44,7 @@ class Notification extends AbstractModel
             'allowDisableCustomNotice' => 0,
         );
 
-        $item = $this->getItem();
+        $item = $this->notification;
         if($item->id){
             $item = $item->toArray();
         }
@@ -66,9 +75,10 @@ class Notification extends AbstractModel
 
         $userSettingItem = $this->getItem('Notification\Item\Usersetting');
         $userSettingItem->user_id = $this->user->id;
+        $userSettingItem->notification_id = $this->notification->id;
         $userSettingItem->self(array('*'));
         $userSetting = $userSettingItem ? $userSettingItem->toArray() : array();
-
+        
         return $this->mergeSetting($globalSetting, $userSetting);
     }
 

@@ -36,7 +36,7 @@
                     });
                 }
                 $postId = $itemModel->setItem($item)->createEventdata();
-                $this->redirect()->toUrl($callback);
+                $this->redirect()->toUrl($callback . $postId);
 
             } else {
 

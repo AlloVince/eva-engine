@@ -25,8 +25,8 @@ class Tokens extends TableGateway
             $this->where(array('token' => $params->token));
         }
 
-        if($params->userid){
-            $this->where(array('userid' => $params->userid));
+        if($params->user_id){
+            $this->where(array('user_id' => $params->user_id));
         }
 
         return $this;
