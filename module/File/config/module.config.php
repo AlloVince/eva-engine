@@ -15,7 +15,7 @@ return array(
                 'pathlevel' => 3, 
                 'urlroot' => EVA_PUBLIC_PATH,
                 'domain' => '',
-                'thumburl' => 'http://s.zf2.com/thumb/',
+                'thumburl' => 'http://s.zf2.com/thumb/thumb/d/',
             ),
         ),
     ),

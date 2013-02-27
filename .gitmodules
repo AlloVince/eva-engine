@@ -40,3 +40,6 @@
 [submodule "depends/ZendDeveloperTools"]
 	path = depends/ZendDeveloperTools
 	url = git://github.com/AlloVince/ZendDeveloperTools.git
+[submodule "vendor/EvaThumber"]
+	path = vendor/EvaThumber
+	url = https://github.com/AlloVince/EvaThumber.git
