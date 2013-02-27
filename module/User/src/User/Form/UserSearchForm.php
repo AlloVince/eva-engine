@@ -92,6 +92,16 @@ class UserSearchForm extends UserForm
                 'value' => '',
             ),
         ),
+        'page' =>     array(
+            'name' => 'page',
+            'type' => 'text',
+            'options' => array(
+                'label' => 'Page',
+            ),
+            'attributes' => array(
+                'value' => 1,
+            ),
+        ),
     );
 
 
@@ -102,5 +112,14 @@ class UserSearchForm extends UserForm
         $countries = \Eva\Locale\Data::getList($locale, 'territory');
         $element['options']['value_options'] = $countries;
         return $element;
+    }
+
+    public function prepareData($data)
+    {
+        if(!$data['page']){
+            $data['page'] = 1;
+        }
+
+        return $data;
     }
 }
