@@ -31,11 +31,11 @@ eva.ready(function(){
 	var titles = $("#blog > article :header");
 	//eva.p($.unique(titles.toArray()));
 	if(titles.length > 4){
-		eva.loader(eva.assets(['/module/avnpc/js/jquery.toc.min.js', '/lib/js/jquery/jquery.jscrollpane.js']), function(){
-			var toc = $('<div id="toc" class="typo typocn shadow"></div>').appendTo('body');
+		eva.loader(eva.assets(['/module/avnpc/js/jquery.toc.min.js', '/lib/js/jquery/jquery.jscrollpane.min.js']), function(){
+			var toc = $('<div id="toc" class="typo typocn min"></div>').appendTo('body');
 			toc.toc({
 				'selectors': 'h1,h2,h3,h4', //elements to use as headings
-				'container': '#blog > article', //element to find all selectors in
+				'container': '#blog', //element to find all selectors in
 				'onHighlight': function(el) {
 					var offset = $(el).position();
 					toc.data('jsp').scrollTo(0, offset.top - 20);
@@ -43,27 +43,52 @@ eva.ready(function(){
 				'smoothScrolling': true
 			});
 			toc.jScrollPane({
-				animateScroll: true
+				//animateScroll: true
 			});	
 			toc.append('<span class="handler"><i class="icon-angle-left"></i></span>');
 
 			var handler = toc.find('.handler');
+			var openToc = function(){
+				if(toc.is(':animated')){
+					return false;
+				}
+				if(toc.hasClass('min')){
+					handler.hide();
+					toc.animate({right:0}, "fast", function(){
+						toc.toggleClass('min');
+						handler.find('i').toggleClass('icon-angle-left icon-angle-right');
+						handler.show();
+					});				
+				}		
+			}
+			var closeToc = function(){
+				if(toc.is(':animated')){
+					return false;
+				}
+				if(!toc.hasClass('min')){
+					handler.hide();
+					toc.animate({right:'-300px'}, "fast", function(){
+						toc.toggleClass('min');
+						handler.find('i').toggleClass('icon-angle-left icon-angle-right');
+						handler.show();
+					});				
+				}
+			}
 			handler.on('click', function(){
 				if(toc.is(':animated')){
 					return false;
 				}
 				if(toc.hasClass('min')){
-					toc.animate({right:0}, "fast", function(){
-						toc.toggleClass('min');
-						handler.find('i').toggleClass('icon-angle-left icon-angle-right');
-					});				
+					openToc();
 				} else {
-					toc.animate({right:'-300px'}, "fast", function(){
-						toc.toggleClass('min');
-						handler.find('i').toggleClass('icon-angle-left icon-angle-right');
-					});				
+					closeToc();
 				}
 			});
+
+			//show by default
+			if($(document).width() - 1200 > 300){
+				openToc();
+			}
 		});
 
 	}

@@ -57,14 +57,18 @@ $.fn.toc = function(options) {
     }
     timeout = setTimeout(function() {
       var top = $(window).scrollTop(),
-        highlighted;
-      for (var i = 0, c = headingOffsets.length; i < c; i++) {
-        if (headingOffsets[i] >= top) {
-          $('li', self).removeClass(activeClassName);
+        highlighted,
+		i = 0;
+		if(top > headingOffsets[0]){
+	      for (i, c = headingOffsets.length; i < c; i++) {
+			  if (headingOffsets[i] >= top) {
+				  break;
+			  }	
+		} 
+		 $('li', self).removeClass(activeClassName);
           highlighted = $('li:eq('+(i-1)+')', self).addClass(activeClassName);
           opts.onHighlight(highlighted);
-          break;
-        }
+
       }
     }, 50);
   };

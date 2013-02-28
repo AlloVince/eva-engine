@@ -129,7 +129,7 @@ a:hover {
 	height:25px;
 	line-height:25px;
 	margin-bottom:10px;
-	h2, h3, h4, h5, h6 {
+	h1, h2, h3, h4, h5, h6 {
 		line-height:25px;
 		font-size:15px;
 	}
@@ -137,7 +137,7 @@ a:hover {
 
 .page-header.bordered{
 	border-bottom:1px solid #EBEBEB;
-	h2, h3, h4, h5, h6 {
+	h1, h2, h3, h4, h5, h6 {
 		border-bottom:1px solid @linkColor;
 		.wordbreak();
 	}	
@@ -150,7 +150,7 @@ a:hover {
 	min-height:40px;
 	margin-bottom:25px;
 	color:@linkColor;
-	h2, h3 {
+	h1, h2, h3 {
 		font-size:30px;
 		line-height:40px;
 	}
@@ -459,38 +459,55 @@ a:hover {
 	right:0;
 	top:0;
 	height:100%;
-	background:#FBFBFB;
-	padding:10px 5px;
-	//border:1px solid #DDD;
-	//border-left-width:4px;
-	//border-right:0;
+	padding:10px 15px;
 	overflow:auto;
-	width:305px; 
+	width:285px; 
+	//border:1px solid #CCC;
 
 	li {
-		//list-style:square outside none;
 		list-style:none;
-	}
-	
-	.toc-h2 {
-	}
-
-	.toc-h3 {
-		margin-left:20px;
-	}
-
-	.toc-h4 {
-		margin-left:40px;
+		text-align:right;
 	}
 
 	a {
-		color:#555;
-		font-size:14px;
+		max-width:200px;
+		text-align:right;
+		background:#999;
+		.inline-block();
+		margin-bottom:5px;
+		padding:2px 10px;
+		.border-radius(5px);
+		color:#FFF;
+		font-size:12px;
+		text-decoration:none;
+		.wordbreak();
+		.opacity(70);
 	}
 
-	.toc-active a{
-		color:@linkColor;
-		border-bottom:1px dashed @linkColor;
+	.toc-active a, a:hover{
+		background:#000;
+		padding-right:20px;
+		.opacity(100);
+		.transition(all .5s ease-in-out);
+	}
+	
+	.toc-h1 a{
+		width:200px;
+		border-right:20px solid #AA0000;
+	}
+	.toc-h2 a{
+		width:180px;
+		border-right:15px solid #440066;
+	}
+
+	.toc-h3 a{
+		max-width:160px;
+		border-right:10px solid #669900;
+	}
+
+	.toc-h4 a{
+		max-width:140px;
+		border-right:5px solid #CCC;
 	}
 
 	.handler {
@@ -499,7 +516,7 @@ a:hover {
 		width:15px;
 		height:50px;
 		top:45%;
-		left:0;
+		right:0;
 		background:#CCC;
 		cursor:pointer;
 		color:#000;
@@ -509,16 +526,24 @@ a:hover {
 		}
 	}
 
-
+	.jspTrack, .jspDrag {
+		background: #FFF;
+	}
 }
 
 #toc.min {
 	right:-300px;
+
+	.handler {
+		background:#AA0000;
+		color:#FFF;
+		left:0;
+	}
 }
 
 #toc.shadow {
-	margin-left:10px;
-	.box-shadow(0 5px 5px rgba(0,0,0,.095));
+	//margin-left:10px;
+	//.box-shadow(0 5px 5px rgba(0,0,0,.095));
 }
 
 /*******************************
