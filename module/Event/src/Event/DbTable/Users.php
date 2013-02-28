@@ -33,7 +33,11 @@ class Users extends \User\DbTable\Users
             $inSelect->columns(array('user_id'));
             $select->where->in('id', $inSelect);
             $this->setSelect($select);
-            */
+             */
+
+            if($params->eventRole){
+                $this->where(array("$eventsUsersTableName.role" => $params->eventRole)); 
+            }
         }
 
         if($params->order == 'eventcountdesc'){
@@ -41,7 +45,7 @@ class Users extends \User\DbTable\Users
                 '*',
                 'EventCount' => new Expression("count(event_id)"),
             ));
-            $this->group('user_id');
+            $this->group("$eventsUsersTableName.user_id");
             $this->order('EventCount DESC');
             unset($params->order);
         }
