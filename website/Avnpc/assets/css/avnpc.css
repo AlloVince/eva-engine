@@ -6341,6 +6341,16 @@ a:hover {
   padding-right: 15px;
 }
 
+#blog .typo h1 {
+  font-size: 2.2em;
+  font-weight: normal;
+}
+
+#blog .typo h2 {
+  font-size: 1.8em;
+  font-weight: normal;
+}
+
 #footer {
   position: fixed;
   bottom: 0;

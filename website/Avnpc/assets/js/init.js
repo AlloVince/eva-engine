@@ -38,7 +38,7 @@ eva.ready(function(){
 				'container': '#blog', //element to find all selectors in
 				'onHighlight': function(el) {
 					var offset = $(el).position();
-					toc.data('jsp').scrollTo(0, offset.top - 20);
+					toc.data('jsp').scrollTo(0, offset.top - 200);
 				},
 				'smoothScrolling': true
 			});
