@@ -27,6 +27,8 @@ class Message extends AbstractModel
 
         $item = $this->getItem();
         
+        $this->trigger('create.pre'); 
+
         $itemId = $item->create();
         
         if($item->hasLoadedRelationships()){
@@ -34,6 +36,10 @@ class Message extends AbstractModel
                 $relItem->create();
             }
         }
+
+        $this->trigger('create');
+
+        $this->trigger('create.post');
 
         return $itemId;
     }
