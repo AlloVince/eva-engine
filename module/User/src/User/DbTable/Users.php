@@ -35,6 +35,10 @@ class Users extends TableGateway
             $this->where(array('id' => $params->id));
         }
 
+        if($params->excludeId){
+            $this->where(array('id != ' . $params->excludeId));
+        }
+
         if($params->columns) {
             $this->columns($params->columns);
         }
