@@ -28,10 +28,6 @@ class Users extends TableGateway
             });
         }
 
-        if($params->excludeId){
-            $this->where(array("id != " . $params->excludeId));
-        }
-        
         if($params->id){
             if(is_array($params->id)){
                 $params->id = array_unique($params->id);
