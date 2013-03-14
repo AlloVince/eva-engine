@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?=$this->language?>" lang="<?=$this->language?>">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta charset="utf-8" />
+    <?=$this->headTitle()?>
+	<!--[if lt IE 9]>
+	<meta http-equiv="PRAGMA" content="NO-CACHE" />
+    <script src="<?=$this->link('/lib/js/html5shiv/html5shiv.min.js')?>"></script>
+	<![endif]-->
+    <?=$this->headMeta()?>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?=$this->headStyle()?>
+    <?$this->cssAssets(array(
+        '/lib/css/fontawesome/css/font-awesome.css',
+        '/lib/font-social/css/fontello.css',
+        '/module/epic/css/main.css',
+    ));?>
+    <?=$this->evajs()?>
+    <?$this->jsAssets(array(
+        '/lib/js/labjs/labjs.js',
+        '/lib/js/jquery/jquery.js',
+        '/lib/js/jquery/jquery.cookie.js',
+        '/lib/js/jquery/jquery.validationEngine.js',
+        '/lib/js/moment/moment.js',
+        '/module/core/js/core.js',
+        '/module/core/js/ui.js',
+        '/module/epic/js/init.js',
+    ));?>
+    <?=$this->headLink()?>
+    <?=$this->headScript()?>
+</head>
+
+<body class="epicsns">
+
+
+    <header id="header">
+    <div class="navbar navbar-inverse">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <a class="brand pull-left" href="<?=$this->uri('/dashboard/')?>"><img src="<?=$this->assets('/module/epic/css/img/logo.png')?>" alt="logo"></a>	
+                <div class="nav-collapse">
+                    <ul class="nav nav-main">
+                        <li data-highlight-url="^/home/?$"><a href="<?=$this->url('home')?>"><?=$this->_('My Page')?></a></li>
+                        <li class="" data-highlight-url="^/pages/magazine/?$"><a href="http://www.epicurissimo-mag.com/"><?=$this->_('Magazine')?></a></li>
+                        <li class="" data-highlight-url="^/event.*"><a href="<?=$this->uri('/events/')?>"><?=$this->_('Events')?></a></li>
+                        <li class="" data-highlight-url="^/group.*"><a href="<?=$this->uri('/groups/')?>"><?=$this->_('Groups')?></a></li>
+                        <li class="" data-highlight-url="^/user.*"><a href="<?=$this->uri('/users/')?>"><?=$this->_('Members')?></a></li>
+                        <li class="" data-highlight-url="^/share.*$"><a href="<?=$this->uri('/share/')?>"><?=$this->_('Share')?></a></li>
+                    </ul>
+                    <ul class="nav pull-right">
+                        <li>
+                        <form action="<?=$this->uri('/users/list/')?>" class="form top-search">
+                            <div class="top-search-wrap">
+                                <button type="submit" class="btn submit"><i class="icon-search"></i></button>
+                                <div class="input-append">
+                                    <input style="width: 109px;border-right: 0px solid #AAA !important;" name="keyword" type="text" class="input-mini search-query">
+                                </div>
+                            </div>
+                            <!--
+                            <div class="btn-group">
+                                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <span class="caret"></span>
+                                    <span class="current"><?=$this->_('Users');?></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#" data-url="/users/list/"><?=$this->_('Users');?></a></li>
+                                    <li><a href="#" data-url="/events/list/"><?=$this->_('Events');?></a></li>
+                                    <li><a href="#" data-url="/groups/list/"><?=$this->_('Groups');?></a></li>
+                                </ul>
+                            </div>
+                            -->
+                        </form>
+                        </li>
+                        <?if($this->hasModule('User')):?>
+                        <?if($this->loginUser):?>
+                        <li>
+                        <a href="<?=$this->uri('/messages/')?>" class="nav-icon notice-count notice-count-message"><i class="icon-envelope-alt"></i><span class="count-number badge badge-important hide"></span></a>
+                        </li>
+                        <li>
+                        <a href="<?=$this->uri('/notifications/')?>" class="nav-icon notice-count notice-count-notification"><i class="icon-bell-alt"></i><span class="count-number badge badge-important hide"></span></a>
+                        </li>
+                        <li class="dropdown">
+                        <a href="<?=$this->uri('/notification/request/')?>" class="nav-icon notice-count notice-count-request dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i><span class="count-number badge badge-important hide"></span></a>
+                        <script id="notice-count-request" type="text/x-tmpl">
+                            {% if(o.items.length > 0) { %}
+                                <ul class="dropdown-menu dropdown-menu-text">
+                                    {% for (var i=0, item; item=o.items[i]; i++) { %}
+                                        <li><p><a href="<?=$this->uri('/user/')?>{%=item.User.userName%}">{%=item.User.userName%}</a> sent a friend request. <a href="<?=$this->uri('/user/')?>{%=item.User.userName%}">Process Request</a></p></li>
+                                    {% } %}
+                            </ul>
+                            {% } %}
+                        </script>
+
+                        </li>
+                        <li class="dropdown">
+                        <a href="#" class="dropdown-toggle nav-last username" data-toggle="dropdown"><?=$this->loginUser['userName']?> <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="<?=$this->uri('/my/event/')?>"><i class="icon-calendar"></i> <?=$this->_('My Events');?></a></li>
+                            <li><a href="<?=$this->uri('/my/friend/')?>"><i class="icon-user"></i> <?=$this->_('My Friends');?></a></li>
+                            <li><a href="<?=$this->uri('/my/blog/')?>"><i class="icon-paste"></i> <?=$this->_('My Blog');?></a></li>
+                            <li><a href="<?=$this->uri('/my/album/')?>"><i class="icon-picture"></i> <?=$this->_('My Albums');?></a></li>
+                            <li><a href="<?=$this->uri('/my/group/')?>"><i class="icon-group"></i> <?=$this->_('My Groups');?></a></li>
+                            <li class="divider"></li>
+                            <li><a href="<?=$this->uri('/account/profile/')?>"><?=$this->_('Profile');?></a></li>
+                            <li><a href="<?=$this->uri('/account/setting/')?>"><?=$this->_('Setting');?></a></li>
+                            <li><a href="<?=$this->uri('/account/membership/')?>"><?=$this->_('Membership');?></a></li>
+                            <li class="divider"></li>
+                            <li><a href="<?=$this->uri('/logout/?callback=/login/')?>"><?=$this->_('Logout');?></a></li>
+                        </ul>
+                        </li>
+                        <?else:?>
+                        <li data-highlight-url="/register/*"><a href="/register/"><?=$this->_('Sign up')?></a></li>
+                        <li data-highlight-url="/login/*"><a href="/login/"><?=$this->_('Login')?></a></li>
+                        <?endif?>
+                        <?endif?>
+
+                    </ul>
+                </div><!-- /.nav-collapse -->
+            </div>
+        </div><!-- /navbar-inner -->
+    </div><!-- /navbar -->
+
+    </header>
+
+    <div id="page" class="page">
+        <?=$this->layout()->content;?>
+    </div><!-- #page end-->
+
+    <footer id="footer" class="footer"><div class="container">
+        <nav id="navbar_footer" class="">
+        <ul class="nav pull-right">
+            <li>
+            Copyright 2012 Epicurissimo　| 　 
+            <div class="btn-group dropup pull-right">
+                <a class="btn dropdown-toggle btn-small btn-inverse" data-toggle="dropdown" href="#">Language
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu pull-right">
+                    <li><a href="<?=$this->uri('/language/en')?>">English</a></li>
+                    <li><a href="<?=$this->uri('/language/fr')?>">Français</a></li>
+                    <li><a href="<?=$this->uri('/language/zh')?>">中文</a></li>
+                    <li><a href="<?=$this->uri('/language/zh-TW')?>">繁体中文</a></li>
+                </ul>
+            </div>
+
+            </li>
+        </ul>
+        </nav>
+        <nav class="">
+        <ul class="nav pull-left">
+            <li class="first"><a href="<?=$this->uri('/')?>"><?=$this->_('My Epicurissimo')?></a>|</li><li>
+            <a href="<?=$this->uri('/pages/terms')?>"><?=$this->_('Terms & Conditions')?></a>|</li><li>
+            <a href="<?=$this->uri('/pages/privacy')?>"><?=$this->_('Privacy Policy')?></a>|</li><li>
+            <a href="<?=$this->uri('/pages/contact')?>" class="last"><?=$this->_('Contact')?></a>|</li><li>
+            <a href="<?=$this->uri('/pages/help')?>" class="last"><?=$this->_('Help')?></a>|</li><li>
+            　<?=$this->_('Your Current Location')?> : <span id="current-location"></span> <a href="<?=$this->uri('/my/city')?>">[<?=$this->_('Switch Your City')?>]</a></li>
+        </ul>
+        </nav>
+        <div class="clearfix"></div>
+        <p>
+        </p>
+    </div></footer><!-- #footer end-->
+
+
+
+    <script>
+        eva.init(eva_config);
+    </script>
+</body>
+</html>

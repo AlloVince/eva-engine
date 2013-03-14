@@ -1,0 +1,108 @@
+<?
+$title = 'Mail to Group Members';
+$this->headTitle($title, 'SET');
+$user = $this->user;
+$item = $this->event;
+
+if($this->form){
+	$form = $this->form;
+} else {
+    $form = new Core\Form\SendEmailForm();
+}
+
+$subject = $this->event ? "Group {$this->item['groupName']} Schedule an New Event {$this->event['title']}" : null;
+
+$form
+->setView($this)
+->useSubFormGroup()
+->setMethod('post')
+->setAction($this->uri('/group/' . $this->item['groupKey'] . '/sendmail/'))
+->bind($item)
+->prepare();
+?>
+
+<div class="container">
+    <header class="group-header">
+        <?=$this->widget('Epic', 'widgets/groupnav', $this->vars())?> 
+    </header>
+</div>
+
+<div class="container">
+    <div class="page-bg">
+        <div class="row">
+
+            <div class="span8">
+                <div class="group-main">
+
+                    <?=$this->widget('Epic', 'widgets/groupcard', $this->vars())?>  
+
+                        <?if(count($this->members) > 1 && $this->user['id'] == $this->item['user_id']):?>
+
+                        <form <?=$this->formAttr($form)?> class="form">
+                            <div class="page-header border-header">
+                                <h3>Select Members</h3>
+                            </div>
+
+                            <?=$form->restful();?>
+                            <div class="control-group <?=$form->isError('sender') ? 'error' : '';?>">
+                                <?foreach($this->members as $member):?>
+                                <?if($member['role'] == 'admin'){continue;}?>
+                                <span>
+                                    <input type="checkbox" value="<?=$member['user_id']?>" name="user_id[]" checked="checked">
+                                    <a href="<?=$this->uri('/user/' . $member['User']['userName'])?>">
+                                        <img src="<?=$member['User']['Avatar'] ? $this->thumb($member['User']['Avatar']['Thumb'], array('h_175', 'w_175', 'c_fill')) :  $this->assets('/module/epic/img/default_avatar.png')?>" alt="userface"  width="30" height="30" />
+                                        <?=$member['User']['userName']?>
+                                    </a>
+                                </span>
+                                <?endforeach;?>
+                            </div>
+
+                            <div class="page-header border-header">
+                                <h3>Email Content</h3>
+                            </div>
+
+                            <div class="control-group <?=$form->isError('recipient') ? 'error' : '';?> hide">
+                                <?=$form->helper('recipient', 'label', array('class' => 'control-label'))?>
+                                <div class="controls">
+                                    <?=$form->helper('recipient', array('class' => 'input-block-level'))?>        
+                                    <div class="help-block"><?=$form->helper('recipient', 'formElementErrors')?></div>
+                                </div>
+                            </div>
+                            <div class="control-group <?=$form->isError('subject') ? 'error' : '';?>">
+                                <?=$form->helper('subject', 'label', array('class' => 'control-label'))?>
+                                <div class="controls">
+                                    <?=$form->helper('subject', array('class' => 'input-block-level', 'value' => $subject))?>        
+
+                                    <div class="help-block"><?=$form->helper('subject', 'formElementErrors')?></div>
+                                </div>
+                            </div>
+                            <div class="control-group <?=$form->isError('content') ? 'error' : '';?>">
+                                <?=$form->helper('content', 'label', array('class' => 'control-label','value' => $this->widget('Epic', 'mail/groupevent', $this->vars())),array('args' => array(null, 'abc')))?>
+                                <div class="controls">
+                                    <?=$form->helper('content', 'formTextarea', array('class' => 'input-block-level', 'rows' => 10))?>        
+                                    <div class="help-block"><?=$form->helper('content', 'formElementErrors')?></div>
+                                </div>
+                            </div>
+                            <div class="control-group <?=$form->isError('attachment') ? 'error' : '';?>">
+                                <?=$form->helper('attachment', 'label', array('class' => 'control-label'))?>
+                                <div class="controls">
+                                    <?=$form->helper('attachment', array('class' => ''))?>        
+                                    <div class="help-block"><?=$form->helper('attachment', 'formElementErrors')?></div>
+                                </div>
+                            </div>
+
+                            <div class="form-action">
+                                <button class="btn  btn-large">Send Email</button>
+                            </div>
+                        </form> 
+                        <?endif;?> 
+
+                </div><!--group main end-->
+            </div><!--page main left end-->
+            <div class="span4">
+                <?=$this->widget('Epic', 'widgets/groupside', $this->vars())?>  
+            </div>
+
+        </div><!--page main right end-->
+    </div><!-- page-bg end-->
+</div><!--container end-->

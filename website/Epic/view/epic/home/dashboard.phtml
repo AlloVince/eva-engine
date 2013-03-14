@@ -1,0 +1,316 @@
+<?
+$this->headTitle('Epicurissimo compass | communauté privé pour les pros et les connaisseur du gastronomie et vin', 'SET');
+$user = $this->user;
+$items = $this->items;
+$viewAsGuest = $this->viewAsGuest;
+$form = new Activity\Form\MessageCreateForm();
+$form->useSubFormGroup()
+     ->setMethod('post')
+     ->setView($this)
+     ->setAction($this->uri('/activity/'))
+     ->prepare();
+$tags = $this->tags;
+$maxFontsize = 16;
+$minFontsize = 9;
+if($tags) {
+    $maxTagCount = $tags[0]['GroupCount'];
+    $minTagCount = $tags[count($tags) - 1]['GroupCount'];
+} else {
+    $maxTagCount = 1;
+    $minTagCount = 1;
+}
+?>
+
+<div class="page-inner">
+    <div class="container">
+        <div class="page-bg">
+            <div class="row">
+                <div class="span8">
+                    <div class="dashboard-main">
+
+                    <?=$this->widget('Epic', 'components/banner_dashboard')?>  
+
+                    <div class="event-grid">
+                        <header class="event-grid-header">
+                        <small class="pull-right">Feature Cities: 
+                            <a href="<?=$this->uri('/events/list/', array('city' => 'Paris','order' => 'timedesc'));?>">Paris</a>
+                            <a href="<?=$this->uri('/events/list/', array('city' => 'London','order' => 'timedesc'));?>">London</a>
+                            <a href="<?=$this->uri('/events/list/', array('city' => 'New York','order' => 'timedesc'));?>">New York</a>
+                            <a href="<?=$this->uri('/events/list/', array('city' => 'Shanghai','order' => 'timedesc'));?>">Shanghai</a>
+                        </small>
+                        <div class="page-header border-header">
+                            <h3><?=$this->_('New Events');?> </h3><a href="<?=$this->uri('/my/city/')?>" class="switch">[<span class="my-city"><?=$this->_('Switch City');?></span>]</a>
+                        </div>
+                        <ul class="event-new-nav nav nav-pills collapsed">
+                            <li class="active"><a href="<?=$this->uri('/events/list/', array('order' => 'timedesc'));?>"><?=$this->_('All Cities');?></a> |</li>
+                            <li><a href="<?=$this->uri('/events/list/', array('city' => 'mycity', 'order' => 'timedesc'));?>" class="my-city-url"><?=$this->_('My City');?></a> |</li>
+                            <li><a href="<?=$this->uri('/events/list/', array('category' => 'dining','order' => 'timedesc'));?>">Dining</a> | </li>
+                            <li><a href="<?=$this->uri('/events/list/', array('category' => 'wine','order' => 'timedesc'));?>">Wine</a> | </li>
+                            <li><a href="<?=$this->uri('/events/list/', array('category' => 'food','order' => 'timedesc'));?>">Food</a> | </li>
+                            <li><a href="<?=$this->uri('/events/list/', array('category' => 'nightlife','order' => 'timedesc'));?>">Nightlife</a> | </li>
+                            <li><a href="<?=$this->uri('/events/list/', array('category' => 'culture','order' => 'timedesc'));?>">Culture</a> | </li>
+                            <li><a href="<?=$this->uri('/events/list/', array('category' => 'cocktail','order' => 'timedesc'));?>">Cocktail</a> | </li>
+                            <li><a href="<?=$this->uri('/events/list/', array('category' => 'tasting','order' => 'timedesc'));?>">Tasting</a> | </li>
+                            <li><a href="<?=$this->uri('/events/list/', array('category' => 'cooking','order' => 'timedesc'));?>">Cooking</a> | </li>
+                            <li><a href="<?=$this->uri('/events/list/', array('category' => 'education','order' => 'timedesc'));?>">Education</a> | </li>
+                            <li><a href="<?=$this->uri('/events/list/', array('category' => 'organic-biologic-food','order' => 'timedesc'));?>"><?=$this->_('Organic & Biologic food');?></a> | </li>
+                            <li><a href="<?=$this->uri('/events/list/', array('category' => 'spirit','order' => 'timedesc'));?>">Spirit</a> | </li>
+                            <li><a href="<?=$this->uri('/events/list/', array('category' => 'travel','order' => 'timedesc'));?>">Travel</a> | </li>
+                            <li><a href="<?=$this->uri('/events/list/', array('category' => 'exhibition','order' => 'timedesc'));?>">Exhibition</a> | </li>
+                            <li><a href="<?=$this->uri('/events/list/', array('category' => 'other','order' => 'timedesc'));?>"><?=$this->_('Other');?></a> | </li>
+                            <li class="more"><a href="#"><?=$this->_('More');?></a> </li>
+                        </ul>
+                        </header>
+                        <div class="event-new-wrap loaded">
+                        <script id="event-new" type="text/x-tmpl" data-url="<?=$this->uri('/data/event/', array('order' => 'timedesc','rows' => 6))?>">
+                        <div class="event-new grid-3columns">
+                            {% if(o.items.length > 0) { %}
+                            {% for (var i=0, item; item=o.items[i]; i++) { %}
+                            <div class="event media">
+                                <a class="pull-left" href="<?=$this->uri('/event/')?>{%=item.urlName%}">
+                                    {% if(item.File) { %}
+                                    <img  src="{%=eva.thumb(item.File.Thumb, 'c_fill,h_90,w_90')%}" width="90" height="90" class="media-object img-rounded"/>
+                                    {% } else { %}
+                                    <img  src="<?=$this->assets('/module/epic/img/event-default.png')?>" width="90" height="90" class="media-object img-rounded"/>
+                                    {% } %}
+                                </a>
+                                <div class="media-body">
+                                    <h4 class="media-heading"><a href="<?=$this->uri('/event/')?>{%=item.urlName%}">{%=item.title%}</a></h4>
+                                    <div class="media">
+                                        <p class="lowlight">City : {%=item.city%}.</p>
+                                        <p class="lowlight">Start at : {%=item.startDay%}.</p>
+                                        <p class="lowlight">{%=item.Count.memberCount%} members joined.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% } %}
+                            {% } %}
+                        </div>
+                        </script>
+                        </div>
+                        <div class="event-new-wrap"></div>
+                        <div class="event-new-wrap"></div>
+                        <div class="event-new-wrap"></div>
+                        <div class="event-new-wrap"></div>
+                        <div class="event-new-wrap"></div>
+                        <div class="event-new-wrap"></div>
+                        <div class="event-new-wrap"></div>
+                        <div class="event-new-wrap"></div>
+                        <div class="event-new-wrap"></div>
+                        <div class="event-new-wrap"></div>
+                        <div class="event-new-wrap"></div>
+                        <div class="event-new-wrap"></div>
+                        <div class="event-new-wrap"></div>
+                        <div class="event-new-wrap"></div>
+                        <div class="event-new-wrap"></div>
+                        <div class="event-new-wrap"></div>
+                        <div class="event-new-wrap"></div>
+                    </div><!--event grid end-->
+
+
+                    <div class="event-grid">
+                        <header class="event-grid-header">
+                        <small class="pull-right"> 
+                            <a href="<?=$this->uri('/users/');?>"><?=$this->_('More');?></a>
+                        </small>
+                        <div class="page-header border-header">
+                            <h3><?=$this->_('Members');?></h3>
+                        </div>
+                        </header>
+                        <div class="">
+                        <script type="text/x-tmpl" data-url="<?=$this->uri('/data/user/', array('flag' => 1, 'rows' => 6))?>">
+                        <div class="event-new grid-3columns">
+                            {% if(o.items.length > 0) { %}
+                            {% for (var i=0, item; item=o.items[i]; i++) { %}
+                                <div class="event media">
+                                    <a href="<?=$this->uri('/user/')?>{%=item.userName%}" title="" class="pull-left">
+                                        {% if(item.Avatar.Thumb) { %}
+                                            <img src="{%=eva.thumb(item.Avatar.Thumb, 'c_fill,h_50,w_50')%}" alt="" class="img-rounded" width="50" height="50" />
+                                            {% } else { %}
+                                            <img src="<?=$this->assets('/module/epic/img/default_avatar.png')?>" alt="" class="img-rounded" width="50" height="50" />
+                                            {% } %}
+                                    </a>
+                                    <div class="media-body">
+                                        <h4 class="media-heading"><a href="<?=$this->uri('/user/')?>{%=item.userName%}">{%=item.userName%}</a></h4>
+                                    <div class="media">
+                                        <p class="lowlight">Host <span class="highlight">{%=item.EventCount%}</span> Events</p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% } %}
+                            {% } %}
+                        </div>
+                        </script>
+                        </div>
+                    </div><!--event grid end-->
+
+                </div><!--dashboard main-->
+
+
+                </div><!--left span8 end-->
+                <div class="span4">
+                    <div class="dashboard-side">
+                    <?if($user):?>
+                    <div class="usercard media">
+                        <a class="pull-left" href="<?=$this->uri('/user/' . $user['userName'])?>">
+                            <img src="<?=$user['Avatar'] ? $this->thumb($user['Avatar']['Thumb'], array('h_120', 'w_120', 'c_fill')) :  $this->assets('/module/epic/img/default_avatar.png')?>" alt=""  width="120" height="120" class="media-object img-polaroid"/>
+                        </a>
+                        <div class="media-body">
+                            <h4 class="media-heading"><a href="<?=$this->uri('/user/' . $user['userName'])?>"><?=$user['userName']?></a></h4>
+                            <div class="media">
+ <p>
+ <a href="<?=$this->uri('/my/event/')?>"><i class="icon-calendar"></i> <span class="highlight"><?=$user['EventCount']['eventCount']?></span> <?=$this->_('joined events');?>.</a>
+                                </p>
+                                <p>
+                                <a href="<?=$this->uri('/my/event/')?>"><i class="icon-user"></i> <span class="highlight"><?=$user['FriendsCount']['friendsCount']?></span> <?=$this->_('friends');?></a>
+                                </p>
+                                <div class="row-fluid">
+                                    <div class="span6"><a href="<?=$this->uri('/my/group/')?>" class=""><a href="<?=$this->uri('/my/album/')?>"><i class="icon-picture"></i> <?=$this->_('My Albums');?></a></div>
+                                        <div class="span6"><a href="<?=$this->uri('/my/blog/')?>" class=""><i class="icon-paste"></i> <?=$this->_('My Blog');?></a></div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span6"><a href="<?=$this->uri('/my/group/')?>" class=""><a href="<?=$this->uri('/my/group/')?>" class="pull-left"><i class="icon-group"></i> <?=$this->_('My Groups');?></a></div>
+                                        <div class="span6"><a href="<?=$this->uri('/my/city/')?>"  class=""><i class="icon-pushpin"></i> <?=$this->_('My City');?></a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                    <?endif?>
+
+                    <script id="side-blog-list" type="text/x-tmpl" data-url="<?=$this->uri('/data/blog/', array('user_id' => 1, 'rows' => 3))?>">
+                        <div class="page-header border-header">
+                            <h4><?=$this->_('News');?></h4>
+                        </div>
+                        <div class="side-blog-list">
+                            {% if(o.items.length > 0) { %}
+                                {% for (var i=0, item; item=o.items[i]; i++) { %}
+                                    <div class="item">
+                                        <div class="item-inline item-text">
+                                            <div class="text-content">
+                                                <div class="item-title">
+                                                    <a href="<?=$this->uri('/pages/')?>{%=item.urlName%}">{%=item.title%}</a>
+                                                </div>
+                                                <p>{%=item.Text.Preview%}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% } %}
+                                {% } %}
+                        </div>
+                    </script>
+
+                    <script id="side-subscription" type="text/x-tmpl" data-url="<?=$this->uri('/data/newsletter/', array('user_id' => $this->user['id']))?>">
+                        <div class="side-subscription">
+                            <p><?=$this->_('Subscribe here to receive our free e-newsletters and notifications');?>:</p>
+                            <form method="post" action="/core/newsletter/">
+                                <?=$this->callback()?>
+                                {% if(o.item.user_id) { %} 
+                                    <input type="hidden" value="delete" name="_method"> 
+                                    <button class="btn btn-orange btn-block"><i class="icon-mini icon-envelope-alt"></i> <?=$this->_('Unsubscription Newsletters');?></button>
+                                    {% }else{ %}
+                                    <input type="hidden" value="post" name="_method"> 
+                                    <button class="btn btn-orange btn-block"><i class="icon-mini icon-envelope-alt"></i> <?=$this->_('Subscription Newsletters');?></button>
+                                    {% } %}
+                            </form>
+                        </div>
+                    </script>
+
+                        <div class="page-header border-header">
+                            <h4><?=$this->_('Topics');?> <small class="lowlight"><?=$this->_('We are talking about');?>...</small></h4>
+                        </div>
+
+<script id="swfobj"  type="text/x-tmpl">
+    <tags>
+    <?if($tags):?>
+    <?foreach($tags as $key => $tag):
+    $fontsize = $minFontsize + ($maxFontsize - $minFontsize) * (1- ($maxTagCount - $tag['GroupCount'])/($maxTagCount - $minTagCount));
+    ?>
+    <a href='<?=$this->serverUrl() . $this->uri('/groups/list/?tag=' . $tag['tagName'])?>' title='<?=$tag['GroupCount']?>' style='font-size: <?=$fontsize?>pt;'><?=$tag['tagName']?></a>
+    <?endforeach?>
+    <?endif?>
+    </tags>
+</script>
+
+ <?=$this->widget('Epic', 'components/ad_dashboard')?>
+
+
+                </div><!--dashboard side-->
+
+            </div><!--right span4 end-->
+            </div><!--row end-->
+        </div><!--profil-main end-->
+    </div><!--container end-->
+</div><!--page inner end-->
+
+<!-- Modal -->
+<div id="welcome-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-header typo">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="welcome-modal">Complete Your Profile</h3>
+    </div>
+    <div class="modal-body typo">
+        <p>In order to meet people with same interest and access to 10,000+ decision makers, please upload your Icon and complete your proifile, so as to let people find you quickly.</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <a class="btn btn-danger" href="<?=$this->uri('/account/profile/')?>">Go to your profile page</a>
+    </div>
+</div>
+
+
+<script>
+eva.ready(function(){
+        $(".more a").on('click', function(){
+                $(this).parentsUntil('.nav').parent().removeClass('collapsed');
+                return false;
+        });
+
+        eva.loader(eva.assets('/lib/js/swfobject/swfobject.js'), function(){
+                var params = {}
+                var flashvars = {
+                	"wmode": "transparent",
+                	"allowScriptAccess": "always",
+                	"tcolor": "0x7F5F46",
+                	"tcolor2": "0x7F5F46",
+                	"hicolor": "0xF0F0F0",
+                	"tspeed": "100",
+                	"distr": "true",
+                	"mode": "tags"
+                };
+                flashvars.tagcloud = $("#swfobj").html();
+
+                var attributes = {
+                	bgcolor : "#F0F0F0"
+                };
+                swfobject.embedSWF(eva.assets('/module/epic/swf/tagcloud.swf'), "swfobj", "330", "330", "9.0.0", eva.assets('/module/epic/swf/expressInstall.swf'), flashvars, params, attributes);
+
+            });
+        $(".event-new-nav li:not(:last) a").on('click', function(){
+                var link = $(this);
+                var index = link.parent().index();
+                var wraps = $(".event-new-wrap");
+                $(".event-new-nav li").removeClass('active');
+                link.parent().addClass('active');
+                if(wraps.eq(index).hasClass('loaded')) {
+                        wraps.hide();
+                        wraps.eq(index).show();
+                } else {
+                    wraps.eq(index).load($(this).attr('href') + ' .event-list', function(){
+                        wraps.hide();
+                        wraps.eq(index).addClass('loaded').show();
+                    });
+                }
+                return false;
+        });
+
+        if($(".usercard img[src$='default_avatar.png']")[0]){
+                eva.userReady(function(){
+                        $('#welcome-modal').modal({
+                                backdrop : false,
+                                show : true
+                        });
+                });
+        }
+
+});
+</script>

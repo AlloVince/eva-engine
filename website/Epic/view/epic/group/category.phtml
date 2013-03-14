@@ -1,0 +1,74 @@
+<?
+$title = $this->category['title'] . ' Groups Discussion';
+$title = $this->_($title);
+$this->headTitle($title, 'SET');
+$items = $this->items;
+
+$form = new Group\Form\GroupUserForm();
+$form
+->setView($this)
+->useSubFormGroup()
+->setMethod('post')
+->setAction($this->uri('/group/join/'))
+->prepare();
+
+$unjoinForm = clone $form;
+$unjoinForm->setMethod('delete');
+
+
+$groupSearchForm = $this->form ? $this->form : new Epic\Form\GroupSearchForm();
+$groupSearchForm->setView($this)
+     ->setMethod('get')
+     ->setAction($this->uri('/groups/list/'))
+     ->prepare();
+
+?>
+
+<div class="container">
+    <header class="group-header">
+        <?=$this->widget('Epic', 'widgets/groupnav', $this->vars())?> 
+    </header>
+</div>
+
+<div class="container">
+    <div class="page-bg">
+        <div class="row">
+
+            <div class="span8">
+                <div class="group-main">
+
+                    <?=$this->widget('Epic', 'components/banner_group')?>  
+
+                        <div class="blog-list vlist">
+                            <?foreach($items as $item):?>
+                            <div class="item">
+                                <div class="item-title"><h2><a href="<?=$this->uri('/group/' . $item['Group']['groupKey'] . '/blog/info/' . $item['urlName'])?>"><?=$item['title']?></a></h2></div>
+                                <div class="item-meta">
+                                    <p class="pull-right"><i class="icon-comment"></i> Comments (<span class="highlight"><?=$item['commentCount']?></span>)</p>
+                                    <p class="pull-left">
+                                    <time class="agotime" data-jstime="<?=$this->datetime()->jsTime($item['createTime'])?>" datetime="<?=$this->datetime()->isoTime($item['createTime'])?>"><?=$this->datetime($item['createTime'])?></time>
+                                    </p>
+                                </div>
+                                <div class="item-inline item-text">
+                                    <?if($item['PostCover']):?>
+                                    <div class="item-image pull-left">
+                                        <p><a href="<?=$item['PostCover'][0]['Thumb']?>"><img src="<?=$this->thumb($item['PostCover'][0]['Thumb'], array('w_200'))?>" alt="" class="img-polaroid" /></a></p>
+                                    </div>
+                                    <?endif?>
+
+                                    <?=$this->subText($item['Text']['ContentHtml'], 250)?>
+                                </div>
+                            </div>
+                            <?endforeach?>
+                        </div><!--activity-list end-->
+                </div><!--group main end-->
+            </div><!--page main left end-->
+            <div class="span4">
+               <?=$this->widget('Epic', 'widgets/groupsside', $this->vars())?> 
+            </div>
+
+        </div><!--page main right end-->
+    </div><!-- page-bg end-->
+</div><!--container end-->
+
+

@@ -1,0 +1,10 @@
+<ul class="nav nav-tabs nav-stacked">
+    <li data-highlight-url="^/messages.*"><a href="<?=$this->uri('/messages/')?>"><i class="icon-envelope-alt"></i> <?=$this->_('My Messages');?></a></li>
+    <!--<li data-highlight-url="^/(my/event/?)|(/events/.*)"><a href="<?=$this->uri('/my/event/')?>"><i class="icon-calendar"></i> <?=$this->_('My Events');?></a></li>-->
+    <li data-highlight-url="^/(my/event/?)|(/events/.*)"><a href="<?=$this->uri('/my/event/upcoming/')?>"><i class="icon-calendar"></i> <?=$this->_('My Events');?></a></li>
+    <li data-highlight-url="^/my/friend/?$"><a href="<?=$this->uri('/my/friend/')?>"><i class="icon-user"></i> <?=$this->_('My Friends');?></a></li>
+    <li data-highlight-url="^(/my/blog/?)|(/blog.*)$"><a href="<?=$this->uri('/my/blog/')?>"><i class="icon-paste"></i> <?=$this->_('My Blog');?></a></li>
+    <li data-highlight-url="^(/my/album/?)|(/album.*)"><a href="<?=$this->uri('/my/album/')?>"><i class="icon-picture"></i> <?=$this->_('My Albums');?></a></li>
+    <li data-highlight-url="^(/my/group/?)|(/groups.*)$"><a href="<?=$this->uri('/my/group/')?>"><i class="icon-group"></i> <?=$this->_('My Groups');?></a></li>
+    <li data-highlight-url="^(/my/city/?)$"><a href="<?=$this->uri('/my/city/')?>"><i class="icon-pushpin"></i> <?=$this->_('My City');?></a></li>
+</ul>

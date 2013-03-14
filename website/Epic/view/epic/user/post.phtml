@@ -1,0 +1,26 @@
+<?
+$title = $this->item['title']  . ' - Blogs';
+$this->headTitle($title, 'SET');
+$item = $this->item;
+?>
+<div class="page-inner">
+    <div class="container">
+        <?=$this->widget('Epic', 'widgets/profilenav', $this->vars())?>
+    </div><!-- above container end -->
+    <div class="container">
+        <div class="profile-main">
+            <div class="row">
+                <div class="span8">
+                    <?=$this->widget('Epic', 'widgets/profilemeta', $this->vars())?>
+
+                    <div class="profile-activities">
+                        <?=$this->widget('Epic', 'epic/user/post-template', $this->vars())?>
+                    </div><!--profile-activities end-->
+                </div><!--left span8 end-->
+                <div class="span4">
+                    <?=$this->widget('Epic', 'widgets/profileside', $this->vars())?>
+                </div><!--right span4 end-->
+            </div><!--row end-->
+        </div><!--profil-main end-->
+    </div><!--container end-->
+</div><!--page inner end-->

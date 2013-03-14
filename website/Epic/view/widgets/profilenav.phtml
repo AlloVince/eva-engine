@@ -1,0 +1,28 @@
+<?
+$user = $this->user;
+$viewAsGuest = $this->viewAsGuest;
+?>
+<div class="profile-cover"
+    <?if($user['Header']):?>
+    style="background-image:url(<?=$this->thumb($user['Header'][0]['Thumb'], array('h_250', 'w_1200', 'c_fill'))?>);"
+    <?endif?>
+>
+<?if($viewAsGuest):?>
+<ul class="nav profile-nav">
+    <li class="" data-highlight-url="^/user/\w+/?$"><a href="<?=$this->uri('/user/' . $user['userName'])?>"><?=$this->_('Profile')?></a></li>
+    <li class="" data-highlight-url="^/user/\w+/blog/?"><a href="<?=$this->uri('/user/' . $user['userName'] . '/blog/')?>"><?=$this->_('Blog')?></a></li>
+    <li class="" data-highlight-url="^/user/\w+/albums/?"><a href="<?=$this->uri('/user/' . $user['userName'] . '/albums/')?>"><?=$this->_('Album')?></a></li>
+    <li class="" data-highlight-url="^/user/\w+/event/?"><a href="<?=$this->uri('/user/' . $user['userName'] . '/events/')?>"><?=$this->_('Event')?></a></li>
+    <li class="" data-highlight-url="^/user/\w+/group/?"><a href="<?=$this->uri('/user/' . $user['userName'] . '/groups/')?>"><?=$this->_('Group')?></a></li>
+</ul>
+<?else:?>
+<ul class="nav profile-nav">
+    <li class="" data-highlight-url="^/home/?"><a href="<?=$this->uri('/home/')?>"><?=$this->_('My Epicurissimo')?></a></li>
+    <li class="" data-highlight-url="^/my/blog/?"><a href="<?=$this->uri('/my/blog/')?>"><?=$this->_('My Blog')?></a></li>
+    <li class="" data-highlight-url="^/my/album/?"><a href="<?=$this->uri('/my/album/')?>"><?=$this->_('My Albums')?></a></li>
+    <li class="" data-highlight-url="^/my/event/?"><a href="<?=$this->uri('/my/event/')?>"><?=$this->_('My Events')?></a></li>
+    <li class="" data-highlight-url="^/my/group/?"><a href="<?=$this->uri('/my/group/')?>"><?=$this->_('My Groups')?></a></li>
+</ul>
+<?endif?>
+<p class="profile-url"><a href="<?=$this->serverUrl() . '/user/' . $user['userName']?>"><?=$this->serverUrl() . '/user/' . $user['userName']?></a></p>
+</div>

@@ -1,0 +1,56 @@
+<?
+$item = $this->item;
+?>
+
+<div class="page-header border-header">
+    <h3><?=$this->_($item['title']);?></h3>
+</div>
+<article class="typo">
+<?=$item['Text']['ContentHtml']?>
+</article>
+
+<div class="neighbors">
+    <?if(isset($item['Next']) && $item['Next']):?>
+    <a href="<?=$this->uri('/user/' . $item['user_id'] . '/blog/' . $item['Next']['urlName'])?>" class="pull-right" title="<?=$this->escapeHtmlAttr($item['Next']['title'])?>"><?=$item['Next']['title']?>»</a>
+    <?endif;?>
+    <?if(isset($item['Prev']) && $item['Prev']):?>
+    <a href="<?=$this->uri('/user/' . $item['user_id'] . '/blog/' . $item['Prev']['urlName'])?>" class="pull-left" title="<?=$this->escapeHtmlAttr($item['Prev']['title'])?>">«<?=$item['Prev']['title']?></a>
+    <?endif;?>
+</div>
+
+<div class="comments">
+    <div class="page-header border-header">
+        <h4>Comments</h4>
+    </div>
+    <?=$this->widget('Blog', 'comment/embed_login', $this->vars())?>
+    <?if(count($this->comments) > 0):?>
+    <div class="vlist texts img50">
+        <?foreach($this->comments as $key => $comment):?>
+        <div id="comment<?=$comment['id']?>" class="media">
+            <?if($comment['User']):?>
+            <a class="pull-left" href="<?=$this->uri('/user/' . $comment['User']['userName'])?>">
+                <img src="<?=$comment['User']['Avatar'] ? $this->thumb($comment['User']['Avatar']['Thumb'], array('h_50', 'w_50', 'c_fill')) :  $this->assets('/module/epic/img/default_avatar.png')?>" alt=""  width="50" height="50" class="thumbnail media-object" />
+            </a>
+            <?else:?>
+            <span class="pull-left">
+                <img class="thumbnail media-object" alt="<?=$comment['user_name']?>" src="<?=$this->gravatarLink($comment['email'], 50)?>" />
+            </span>
+            <?endif?>
+            <div class="media-body">
+                <h4 class="media-heading lowlight">
+                    <?if($comment['User']):?>
+                    <a href="<?=$this->uri('/user/' . $comment['User']['userName'])?>"><?=$comment['user_name']?></a>
+                    <?else:?>
+                    <?=$comment['user_name']?>
+                    <?endif?>
+                    <time datetime="<?=$this->datetime()->isoTime($comment['createTime'])?>" data-jstime="<?=$this->datetime()->jsTime($comment['createTime'])?>" class="agotime"><?=$this->datetime($comment['createTime'])?></time></h4>
+                <div class="well typo typocn">
+                    <?=$comment['ContentHtml']?>
+                </div>
+            </div>
+        </div>
+
+        <?endforeach?>
+    </div>
+    <?endif?>
+</div><!-- comments end-->

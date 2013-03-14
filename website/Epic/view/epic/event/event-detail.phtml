@@ -1,0 +1,84 @@
+<?
+$joinForm = new Event\Form\EventUserForm();
+$joinForm
+->setView($this)
+->setMethod('post')
+->setAction($this->uri('/event/join/'))
+->prepare();
+
+$unjoinForm = clone $joinForm;
+$unjoinForm->setMethod('delete');
+?>
+<div class="event-detail media">
+    <a class="pull-left" href="<?=$this->uri('/event/' . $item['urlName']);?>">
+        <?if($item['File']):?>
+        <img class="media-object" src="<?=$this->thumb($item['File'][0]['Thumb'], array('c_fill', 'h_240', 'w_240'))?>" width="240" />
+        <?else:?>
+        <img class="media-object" src="<?=$this->assets('/module/epic/img/event-default-l.png')?>" width="240" />
+        <?endif?>
+    </a>
+    <div class="media-body">
+        <h4 class="media-heading"><a href="<?=$this->uri('/event/' . $item['urlName']);?>"><?=$item['title'];?></a></h4>
+        <div class="media typo">
+            <dl class="dl-horizontal">
+                <dt>Start Time:</dt>
+                <dd><?=$item['startDay']?> <?=$item['startTime'] ? $item['startTime'] : null?></dd>
+                <dt>End Time:</dt>
+                <dd><?=$item['endDay']?> <?=$item['endTime'] ? $item['endTime'] : null?></dd>
+                <dt>City:</dt>
+                <dd><?=$item['city']?></dd>
+                <?if($item['location']):?>
+                <dt>Location:</dt>
+                <dd><?=$item['location']?></dd>
+                <?endif?>
+                <?if($item['Tags']):?>
+                <dt>Tags:</dt>
+                <dd>
+                <?foreach($item['Tags'] as $tag):?>
+                <a href="<?=$this->uri('/events/list/?tag=' . $tag['tagName']);?>" class="label"><?=$tag['tagName']?></a>
+                <?endforeach?>
+                </dd>
+                <?endif?>
+                <dt>Event Owner</dt>
+                <dd><?=$item['user_name']?></dd>
+            </dl>
+            <p><span class="highlight"><?=$item['Count']['memberCount']?></span> Members Joined</p>
+            <p>
+            <form <?=$this->formAttr($unjoinForm)?> class="event-checker event-quit-form hide" data-checker="<?=$item['id']?>">
+                <?=$unjoinForm->restful();?>
+                <?=$unjoinForm->helper('event_id', 'formHidden', array('class' => '', 'value' => $item['id']))?>
+                <?=$unjoinForm->helper('user_id', array('class' => ''))?>
+                <?=$this->callback()?>
+                <button class="btn btn-small item-action-main btn btn-orange icon-minus-sign"> <?=$this->_('Quit')?></button>
+            </form>
+            <form <?=$this->formAttr($joinForm)?> class="event-checker event-join-form hide" data-checker="<?=$item['id']?>">
+                <?=$joinForm->restful();?>
+                <?=$joinForm->helper('event_id', 'formHidden', array('class' => '', 'value' => $item['id']))?>
+                <?=$joinForm->helper('user_id', array('class' => ''))?>
+                <?=$this->callback()?>
+                <button class="btn btn-small item-action-main btn btn-orange icon-user"> <?=$this->_('RVSP')?></button>
+            </form>
+            <span class="event-edit-btn event-checker hide" data-checker="<?=$item['id']?>"><a href="<?=$this->uri('/events/edit/' . $item['id'])?>" class="btn btn-small ">Edit</a></span>
+            <span class="event-remove-btn event-checker hide" data-checker="<?=$item['id']?>"><a href="<?=$this->uri('/events/remove/' . $item['id'])?>" class="btn btn-small ">Delete</a></span>
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="page-header border-header">
+    <h3>Attending</h3>
+</div>
+
+<div class="side-user-list">
+    <ul class="thumbnails">
+        <?if($this->members):?>
+        <?foreach($this->members as $member):?>
+        <li>
+        <a class="thumbnail" href="<?=$this->uri('/user/' . $member['User']['userName'])?>">
+            <img src="<?=$member['User']['Avatar'] ? $this->thumb($member['User']['Avatar']['Thumb'], array('h_30', 'w_30', 'c_fill')) :  $this->assets('/module/epic/img/default_avatar.png')?>" alt="userface"  width="30" height="30" />
+        </a>
+        </li>
+        <?endforeach;?>
+        <?endif;?>
+    </ul>
+</div>

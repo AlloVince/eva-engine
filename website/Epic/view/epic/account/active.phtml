@@ -1,0 +1,28 @@
+<? 
+$title = $this->_('Confirm Email');
+$this->headTitle($title, 'SET');
+
+$code = $this->code;
+$messages = $this->messages;
+
+?>
+<div class="container">
+
+	<header class="page-header">
+    <h2 class=""><?=$title?></h2>
+	</header>
+
+    <div class="well">
+        <?if($this->code > 0):?>
+        <div class="alert alert-success">
+            <strong>Email Confirmed</strong>
+            <p><a href="<?=$this->uri('/login/')?>">Click to login</a></p>
+        </div>
+        <?else:?>
+       <div class="alert">
+           <strong><?=$messages?></strong>
+        </div>
+        <?endif?>
+    </div>
+
+</div>

@@ -1,0 +1,168 @@
+<?
+$item = $this->item;
+$title = 'Membership';
+$title = $this->_($title);
+$this->headTitle($title, 'SET');
+
+if(!$this->form){
+    $form = new Epic\Form\AccountEditForm();
+    $form->useSubFormGroup();
+}
+
+$form->setMethod($item['id'] ? 'put' : 'post');
+$form->setView($this)
+    ->setAction($this->uri('/account/setting/'))
+     ->bind($item)
+     ->prepare();
+
+?>
+
+<div class="container">
+    <div class="normal-page">
+        <div class="body grid-s5m0">
+
+            <div class="main-wrap"><div id="main" class="main">
+                    <div class="page-main">
+                        <div class="page-main-header">
+                            <h3><?=$this->_('Membership')?></h3>
+                        </div>
+
+<?$this->options = array(
+    'Name1',
+    'Name2',
+    'Name3',
+)?>	
+<?$this->plans = array(
+    array(
+        'title' => 'Free',
+        'price' => 0,
+        'per' => 'Mo',
+        'Options' => array(
+            '100',
+            '200',
+            '300'
+        ),
+    ),
+    array(
+        'title' => 'Micro',
+        'price' => 16,
+        'per' => 'Mo',
+        'Options' => array(
+            '100',
+            '200',
+            '300'
+        ),
+    ),
+    array(
+        'title' => 'Small',
+        'price' => 30,
+        'per' => '3M',
+        'Options' => array(
+            '100',
+            '200',
+            '300'
+        ),
+    ),
+    array(
+        'title' => 'Medium',
+        'price' => 45,
+        'per' => '6M',
+        'Options' => array(
+            '100',
+            '200',
+            '300'
+        ),
+    ),
+    array(
+        'title' => 'Large',
+        'price' => 85,
+        'per' => 'Year',
+        'Options' => array(
+            '100',
+            '200',
+            '300'
+        ),
+    ),
+)?>
+		<!-- Plans Start -->
+		<div class="plans">
+			
+			<!-- Plan header Start -->
+			<header class="plan-header">
+				<div class="plan-row">
+					<?if($this->options):?>
+					<?foreach($this->options as $option):?>
+					<div class="cell">
+                        <?=$this->_($option);?>
+					</div>
+					<?endforeach;?>
+					<?endif;?>
+				</div>
+			</header>
+			<!-- Plan header end -->
+			
+
+			<?if($this->plans):?>
+			<!-- Plan data Start -->
+            <div class="plan-data">
+				
+				<?foreach($this->plans as $i => $plan):?>
+				<!-- Plan row Start -->
+                <div class="plan-row plan_<?=$i?> <?=$i == 2 ? 'mainplan' : null?>">
+                    <div class="plan-wrap">
+						<div class="planname">
+							<h3><?=$this->_($plan['title']);?></h3>
+							<?if($plan['price'] == 0):?>
+							<p class="planprice"><span class="price"><?=$this->_('FREE')?></span></p>
+							<?else:?>
+                            <p class="planprice">$<span class="price"><?=$plan['price']?></span> / <?=$this->_($plan['per'])?></p>
+                            <a href="<?=$this->uri('/my/upgrade/', array('callback' => $this->serverUrl() . '/account/membership/', 'adapter' => 'paypalec', 'plan' => $plan['title']))?>" class="btn btn-plan btn-success"><?=$this->_('Upgrade')?></a>
+							<?endif?>
+						</div>
+						
+						<?if($plan['Options']):?>
+						<?foreach($plan['Options'] as $option):?>
+							<div class="cell">
+								<?if($option == 'Supported'):?>
+                                <i class="icon-ok"></i>
+								<?elseif($option == 'Not Supported'):?>
+                                <i class="icon-remove"></i>
+								<?else:?>
+									<?=$this->_($option);?>
+								<?endif?>
+							</div>
+						<?endforeach;?>
+						<?endif;?>
+
+                        <div class="cell last">
+                        <?if($plan['price'] == 0):?>
+                            <a href="<?=$this->uri('/account/membership/');?>" class="btn btn-plan btn-success"><?=$this->_('More')?></a>
+                        <?else:?>
+                            <a href="<?=$this->uri('/my/upgrade/', array('callback' => $this->serverUrl() . '/account/membership/', 'adapter' => 'alipayec', 'plan' => $plan['title']))?>" class="btn btn-plan btn-success"><?=$this->_('Upgrade')?></a>
+                        <?endif;?>
+						</div>
+					</div>
+				<!-- Plan row End -->
+				</div>
+				<?endforeach;?>
+
+			<!-- Plan data End -->
+			</div>
+			<?endif;?>
+		</div>
+		<!-- Plans End -->
+
+
+
+                    </div><!--page-main end-->
+            </div></div><!-- #main end-->
+
+            <div class="sidebar">
+                <div class="page-side">
+                    <?=$this->widget('Epic', 'widgets/accountnav', $this->vars())?>
+                </div>
+            </div><!--sider end-->
+
+        </div><!-- #body end-->
+    </div><!-- normal end-->
+</div><!--container end-->

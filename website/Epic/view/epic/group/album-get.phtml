@@ -1,0 +1,49 @@
+<?
+$title = 'Groups';
+$this->headTitle($title, 'SET');
+$user = $this->user;
+$item = $this->event;
+?>
+
+<div class="container">
+    <header class="group-header">
+        <?=$this->widget('Epic', 'widgets/groupnav', $this->vars())?> 
+    </header>
+</div>
+
+<div class="container">
+    <div class="page-bg">
+        <div class="row">
+
+            <div class="span8">
+                <div class="group-main">
+
+                    <?=$this->widget('Epic', 'widgets/groupcard', $this->vars())?>  
+  
+                                <div class="album-photos">
+                                    <?if(count($items) > 0 )?>
+                                    <?for($i=0;$i< ceil(count($items) / 4);$i++):?>
+                                    <div class="row-fluid stack-row">
+                                        <?for($j= ($i * 4);$j< (4 * ($i+1));$j++):?>
+                                        <?if(isset($items[$j])){$item = $items[$j]['Image'];}else{continue;}?>
+                                        <div class="thumbnail span3">
+                                            <a href="<?=$this->thumb($item['Thumb'], array('w_1024'))?>"  class="gallery"  rel="event-album">
+                                                <?if(isset($item['Thumb']) && $item['Thumb']):?>
+                                                <img src="<?=$this->thumb($item['Thumb'], array('c_fill', 'w_180', 'h_180'))?>" width="100%" class="" />
+                                                <?endif?>
+                                            </a>
+                                        </div>
+                                        <?endfor;?>
+                                    </div>
+                                    <?endfor;?>
+                                </div><!--album-list end-->
+
+                </div><!--group main end-->
+            </div><!--page main left end-->
+            <div class="span4">
+                <?=$this->widget('Epic', 'widgets/groupside', $this->vars())?>  
+            </div>
+
+        </div><!--page main right end-->
+    </div><!-- page-bg end-->
+</div><!--container end-->

@@ -1,0 +1,221 @@
+<?
+$user = $this->user;
+$viewAsGuest = $this->viewAsGuest;
+$form = new Activity\Form\FollowForm();
+$form
+->setView($this)
+->useSubFormGroup()
+->setMethod('post')
+->setAction($this->uri('/activity/follow'))
+->prepare();
+
+$unfollowForm = clone $form;
+$unfollowForm->setMethod('delete');
+
+$friendForm = new User\Form\FriendForm();
+$friendForm
+->setView($this)
+->useSubFormGroup()
+->setMethod('post')
+->setAction($this->uri('/relationship/request/'))
+->prepare();
+
+$approveForm = clone $friendForm;
+$approveForm->setAction($this->uri('/relationship/approve/'));
+
+$refuseForm = clone $friendForm;
+$refuseForm->setAction($this->uri('/relationship/refuse/'));
+
+$unfriendForm = clone $friendForm;
+$unfriendForm->setAction($this->uri('/relationship/unfriend/'));
+
+$blockForm = clone $friendForm;
+$blockForm->setAction($this->uri('/relationship/block/'));
+
+$unblockForm = clone $friendForm;
+$unblockForm->setAction($this->uri('/relationship/unblock/'));
+
+function checkOauth($key, $user)
+{
+    if(!isset($user['Oauth'])) {
+        return false;
+    }
+    $oauth = $user['Oauth'];
+    foreach($oauth as $oauthinfo){
+        if($key === $oauthinfo['adapterKey']) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function personalRole($roles)
+{
+    if(!$roles){
+        return false;
+    }
+    $allowRoles =  array (
+        'CORPORATE_MEMBER',
+        'CONNOISSEUR_MEMBER',
+        'PROFESSIONAL_MEMBER',
+    );
+    foreach($roles as $role){
+        if(in_array($role['roleKey'], $allowRoles)){
+            return $role['roleName'];
+        }
+    }
+}
+
+function isPaidRole($roles)
+{
+    if(!$roles){
+        return false;
+    }
+    foreach($roles as $role){
+        if($role['roleKey'] == 'PAID_MEMBER'){
+            return $role;
+        }
+    }
+    return false;
+}
+?>
+<div class="thumbnail profile-face">
+    <a href="<?=$viewAsGuest ? $this->uri('/user/' . $user['userName']) : $this->uri('/account/profile/')?>">
+        <img src="<?=$user['Avatar'] ? $this->thumb($user['Avatar']['Thumb'], array('h_175', 'w_175', 'c_fill')) :  $this->assets('/module/epic/img/default_avatar.png')?>" alt=""  width="175" height="175" />
+    </a>
+    <div class="caption">
+        <a class="highlight highlight-large" href="<?=$this->uri('/my/friend/')?>"><?=$user['FriendsCount']['friendsCount']?></a> <?=$this->_('Friends');?> 
+    </div>
+</div>
+
+<div class="profile-intro">
+    <div class="profile-title">
+        <h2><?=$user['userName']?></h2>
+        <small class="profile-level"><?=$this->_(personalRole($user['Roles']))?>
+            <?if(isPaidRole($user['Roles'])):?>
+            <a href="<?=$this->uri('/account/membership/')?>" title="VIP User"><i class="icon-trophy"></i></a>
+            <?endif?>
+        </small>
+        <?if($user['onlineStatus'] == 'online'):?>
+        <span class="label label-success"><?=$this->_('Online');?></span> 
+        <?else:?>
+        <span class="label"><?=$this->_('Offline');?></span> 
+        <?endif?>
+    </div>
+
+    <table class="table-condensed">
+        <tbody>
+            <tr>
+                <td><?=$this->_('City');?> : 
+                    <?if($user['Profile']['city']):?>
+                    <?=$user['Profile']['city']?>
+                    <?endif?>
+                </td>
+                <td colspan="2"><?=$this->_('Website');?> : 
+                    <?if($user['Profile']['site']):?>
+                    <a href="<?=$user['Profile']['site']?>"><?=$user['Profile']['site']?></a>
+                    <?endif?>
+                </td>
+            </tr>
+            <tr>
+                <td><?=$this->_('Country');?> : 
+                    <?if($user['Profile']['country']):?>
+                    <?=$this->locale('territory', $user['Profile']['country'])?>
+                    <?endif?>
+                </td>
+                <td><?=$this->_('Birthday');?> : 
+                    <?if($user['Profile']['birthday'] && $user['Profile']['birthday'] != '0000-00-00'):?>
+                    <?=$user['Profile']['birthday']?>
+                    <?else:?>
+                    <?=$this->_('Secret');?> 
+                    <?endif?>
+                </td>
+                <td><?=$this->_('Events');?> : <a href="<?=$viewAsGuest ? $this->uri('/user/' . $user['userName'] . '/events/') : $this->uri('/my/event/')?>"><?=$user['EventCount']['eventCount']?></a> <?=$this->_('Times');?></td>
+            </tr>
+            <?if($user['Tags']):?>
+            <tr>
+                <td colspan="3"><?=$this->_('Tags');?> : 
+                    <?foreach($user['Tags'] as $tag):?>
+                    <a href="<?=$this->uri('/users/list/?tag=' . $tag['tagName']);?>" class="tag"><?=$tag['tagName']?></a>
+                    <?endforeach?>
+                </td>
+            </tr>
+            <?endif?>
+            <?if(0 && $user['Profile']['bio']):?>
+            <tr>
+                <td colspan="3"><?=$this->_('Bio');?> : 
+                    <?=$user['Profile']['bio']?>
+                </td>
+            </tr>
+            <?endif?>
+            <tr>
+                <td colspan="3" class="social">
+                    <?=$this->_('Social Networking');?> : 
+                    <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'facebook',))?>"><span class="icon-social-facebook-rect <?=checkOauth('facebook', $user) ? 'highlight' : ''?>"></span></a>
+                    <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'twitter', 'version' => 1))?>"><span class="icon-social-twitter <?=checkOauth('twitter', $user) ? 'highlight' : ''?>"></span></a>
+                    <a href="<?=$this->uri('/oauth/', array('r' => $this->serverUrl() . '/login/oauth/', 'service' => 'flickr', 'version' => 1))?>"><span class="icon-social-flickr <?=checkOauth('flickr', $user) ? 'highlight' : ''?>"></span></a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" class="form-buttons">
+                    <?if($viewAsGuest):?>
+                    <form <?=$this->formAttr($form)?> class="follow-form pull-left">
+                        <?=$form->restful();?>
+                        <?=$form->helper('user_id', array('class' => '', 'value' => $this->user['id']))?>
+                        <?=$form->helper('follower_id', array('class' => ''))?>
+                        <?=$this->callback()?>
+                        <button class="btn btn-brown btn-mini"><i class="icon-mini icon-plus"></i> <?=$this->_('Follow');?></button>
+                    </form>
+                    <form <?=$this->formAttr($unfollowForm)?> class="unfollow-form hide follow-check pull-left" data-url="<?=$this->uri('/data/isfollower/')?>">
+                        <?=$unfollowForm->restful();?>
+                        <?=$unfollowForm->helper('user_id', array('class' => '', 'value' => $this->user['id']))?>
+                        <?=$unfollowForm->helper('follower_id', array('class' => ''))?>
+                        <?=$this->callback()?>
+                        <button class="btn btn-brown btn-mini" href="<?=$this->uri('/activity/follow/')?>"><i class="icon-mini icon-minus"></i> <?=$this->_('Unfollow');?></button>
+                    </form>
+                    <form <?=$this->formAttr($friendForm)?> class="friend-form pull-left friend-check relationship-form hide showon-removed showon-refused"  data-url="<?=$this->uri('/data/isfriend/')?>">
+                        <?=$friendForm->restful();?>
+                        <?=$friendForm->helper('friend_id', array('class' => '', 'value' => $this->user['id']))?>
+                        <?=$this->callback()?>
+                        <button class="btn btn-orange btn-mini"><i class="icon-mini icon-plus"></i> <?=$this->_('Add Friend');?></button>
+                    </form>
+                    <form <?=$this->formAttr($approveForm)?> class="approve-form pull-left relationship-form hide showon-pending">
+                        <?=$approveForm->restful();?>
+                        <?=$approveForm->helper('friend_id', array('class' => '', 'value' => $this->user['id']))?>
+                        <?=$this->callback()?>
+                        <button class="btn btn-orange btn-mini"><i class="icon-mini icon-ok"></i> <?=$this->_('Approve Request');?></button>
+                    </form>
+                    <form <?=$this->formAttr($refuseForm)?> class="refuse-form pull-left relationship-form hide showon-pending">
+                        <?=$refuseForm->restful();?>
+                        <?=$refuseForm->helper('friend_id', array('class' => '', 'value' => $this->user['id']))?>
+                        <?=$this->callback()?>
+                        <button class="btn btn-orange btn-mini"><i class="icon-mini icon-remove"></i> <?=$this->_('Refuse');?></button>
+                    </form>
+                    <form <?=$this->formAttr($unfriendForm)?> class="unfriend-form pull-left relationship-form hide showon-approved">
+                        <?=$unfriendForm->restful();?>
+                        <?=$unfriendForm->helper('friend_id', array('class' => '', 'value' => $this->user['id']))?>
+                        <?=$this->callback()?>
+                        <button class="btn btn-orange btn-mini" data-text="Cancel Request"><i class="icon-mini icon-remove"></i> <?=$this->_('Unfriend');?></button>
+                    </form>
+                    <form <?=$this->formAttr($blockForm)?> class="block-form pull-left relationship-form showon-removed hide showon-refused">
+                        <?=$blockForm->restful();?>
+                        <?=$blockForm->helper('friend_id', array('class' => '', 'value' => $this->user['id']))?>
+                        <?=$this->callback()?>
+                        <button class="btn btn-gray btn-mini"><i class="icon-mini icon-remove"></i> <?=$this->_('Block');?></button>
+                    </form>
+                    <form <?=$this->formAttr($unblockForm)?> class="unblock-form pull-left relationship-form hide  showon-blocked">
+                        <?=$unblockForm->restful();?>
+                        <?=$unblockForm->helper('friend_id', array('class' => '', 'value' => $this->user['id']))?>
+                        <?=$this->callback()?>
+                        <button class="btn btn-gray btn-mini"><i class="icon-mini icon-undo"></i> <?=$this->_('Unblock');?></button>
+                    </form>
+                    <a class="btn btn-gray btn-mini" href="<?=$this->uri('/messages/send/' . $this->user['userName'])?>"><i class="icon-mini icon-envelope-alt"></i> <?=$this->_('Send Message');?></a>
+                    <?else:?>
+                    <a class="btn btn-gray btn-mini" href="<?=$this->uri('/user/' . $this->user['userName'])?>"><i class="icon-mini icon-eye-open"></i> <?=$this->_('View As Guest');?></a>
+                    <?endif?>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div><!--profile-intro end-->

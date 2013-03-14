@@ -1,0 +1,5 @@
+﻿<flash_project name="tagcloud_as3" version="1">
+    <project_file path="./tagcloud.fla" filetype="fla" profile="" def_file="true" />
+    <project_file path="./com/roytanck/wpcumulus/Tag.as" filetype="as" />
+    <project_file path="./com/roytanck/wpcumulus/TagCloud.as" filetype="as" />
+</flash_project>

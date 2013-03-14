@@ -1,0 +1,92 @@
+<?
+$item = $this->item;
+$title = 'My Groups';
+$title = $this->_($title);
+$this->headTitle($title, 'SET');
+
+$unjoinForm = new Group\Form\GroupUserForm();
+$unjoinForm
+->setView($this)
+->useSubFormGroup()
+->setMethod('delete')
+->setAction($this->uri('/group/join/'))
+->prepare();
+?>
+
+<div class="container">
+    <div class="normal-page">
+        <div class="body grid-s5m0">
+
+            <div class="main-wrap"><div id="main" class="main">
+                    <div class="page-main">
+                        <div class="row">
+                            <div class="span6">
+                                <div class="page-main-header">
+                                    <span class="pull-right">
+                                        <a href="<?=$this->uri('/groups/list/')?>" class="btn btn-small btn-gray"><i class="icon-search"></i> Find a Group</a>
+                                        <a href="<?=$this->uri('/groups/create/')?>" class="btn btn-small btn-orange role-checker" data-role="PAID_MEMBER|CORPORATE_MEMBER"><i class="icon-plus"></i> Start a Group</a>
+                                    </span>
+                                    <h3><?=$this->_($title)?></h3>
+                                </div>
+                                <div class="blog-list vlist">
+                                    <?foreach($items as $item):?>
+                                    <?if(isset($item['Group']['id'])) {$group = $item['Group'];}else{continue;}?> 
+                                    <div class="item">
+                                        <div class="item-title"><h2><a href="<?=$this->uri('/group/' . $group['groupKey'])?>"><?=$group['groupName']?></a></h2></div>
+                                        <div class="item-meta">
+                                            <?if($item['user_id'] == $group['user_id']):?>
+                                            <p class="pull-right hide"><i class="icon-comment"></i> <?=$this->_('Members')?> (<span class="highlight">0</span>)</p>
+                                            <p class="pull-right"><a href="<?=$this->uri('/groups/edit/' . $group['id'])?>"><i class="icon-edit"></i> Edit</a> <a href="<?=$this->uri('/groups/remove/' . $group['id'])?>"><i class="icon-remove"></i> Delete</a></p>
+                                            <?else:?>
+                                            <p class="pull-right">
+                                            <form <?=$this->formAttr($unjoinForm)?> class="pull-right">
+                                                <?=$unjoinForm->restful();?>
+                                                <?=$unjoinForm->helper('group_id', 'formHidden', array('class' => '', 'value' => $group['id']))?>
+                                                <?=$unjoinForm->helper('user_id', array('class' => ''))?>
+                                                <?=$this->callback()?>
+                                                <button class="btn btn-small item-action-main"><?=$this->_('Quit')?></button>
+                                            </form>
+                                            </p>
+                                            <?endif;?>
+                                            <p class="pull-left">
+                                            <time class="agotime" data-jstime="<?=$this->datetime()->jsTime($item['requestTime'])?>" datetime="<?=$this->datetime()->isoTime($item['requestTime'])?>"><?=$this->datetime($item['requestTime'])?></time>
+                                            </p>
+                                        </div>
+                                        <div class="item-inline item-text">
+                                                <?if($group['File']):?>
+                                                <div class="item-image pull-left">
+                                                    <p><a href="<?=$group['File'][0]['Thumb']?>"><img src="<?=$this->thumb($group['File'][0]['Thumb'], array('w_200'))?>" alt="" class="img-polaroid" /></a></p>
+                                                </div>
+                                                <?endif?>
+
+                                                <?=$this->subText($group['Text']['content'], 250)?>
+                                        </div>
+                                    </div>
+                                    <?endforeach?>
+                                </div><!--activity-list end-->
+                                <?if($this->paginator):?>
+                                <?=$this->paginator->setPath('/my/group/')->setBaseQuery($this->query);?>
+                                <?=$this->widget('Core', 'widgets/paginator', $this->vars())?>
+                                <?endif;?>
+
+                            </div><!--page main left end-->
+                            <div class="span3">
+                                <div class="page-extra">
+                                    <?=$this->widget('Epic', 'widgets/userextra', $this->vars())?>
+                                </div>
+                            </div><!--page main right end-->
+                        </div>
+
+                    </div><!--page-main end-->
+            </div></div><!-- #main end-->
+
+            <div class="sidebar">
+                <div class="page-side">
+                    <?=$this->widget('Epic', 'widgets/userside')?>
+                </div>
+            </div><!--sider end-->
+
+        </div><!-- #body end-->
+    </div><!-- normal end-->
+</div><!--container end-->
+

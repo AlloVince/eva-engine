@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?=$this->language?>" lang="<?=$this->language?>">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta charset="utf-8" />
+    <?=$this->headTitle()?>
+	<!--[if lt IE 9]>
+	<meta http-equiv="PRAGMA" content="NO-CACHE" />
+    <script src="<?=$this->link('/lib/js/html5shiv/html5shiv.min.js')?>"></script>
+	<![endif]-->
+    <?=$this->headMeta()?>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='http://fonts.googleapis.com/css?family=Philosopher' rel='stylesheet' type='text/css'>
+    <link href="<?=$this->link('/lib/css/fontawesome/css/font-awesome.css')?>" media="all" rel="stylesheet" type="text/css" />
+    <link href="<?=$this->assets('/module/epic/css/epic.css')?>" media="all" rel="stylesheet" type="text/css" />
+    <?=$this->evajs()?>
+    <?=$this->headStyle()?>
+    <?$this->cssAssets(array(
+        '/lib/css/fontawesome/css/font-awesome.css',
+        '/lib/css/LigatureSymbols/style.css',
+        '/module/epic/css/epic.css',
+    ));?>
+    <?=$this->evajs()?>
+    <?$this->jsAssets(array(
+        '/lib/js/labjs/labjs.js',
+        '/lib/js/jquery/jquery.js',
+        '/lib/js/jquery/jquery.cookie.js',
+        '/lib/js/jquery/jquery.validationEngine.js',
+        '/module/core/js/core.js',
+        '/module/core/js/ui.js',
+        '/module/epic/js/init.js',
+    ));?>
+    <?=$this->headLink()?>
+    <?=$this->headScript()?>
+</head>
+
+<body class="prereg">
+
+
+    <header id="header">
+    <div class="container">
+        <div class="navbar navbar-inverse"><div class="navbar-inner">
+                <?$view =$this->layout()->getChildren();$id = $view[0]->id;?>
+                <!--<a class="brand" href="/">Epicurissimo</a>-->
+                <a class="brand" href="/"><img src="<?=$this->assets('/module/epic/css/img/logo.png')?>" alt="logo"></a>	
+                <ul class="nav nav-main">
+                    <li><a href="/"><?=$this->_('My Epicurissimo')?></a></li>
+                    <li class="<?=$id == 'connoisseur' ? 'active' : ''?>"><a href="/reg/connoisseur"><?=$this->_('Connoisseur')?></a></li>
+                    <li class="<?=$id == 'professional' ? 'active' : ''?>"><a href="/reg/professional"><?=$this->_('Professional')?></a></li>
+                    <li class="<?=$id == 'corporate' ? 'active' : ''?>"><a href="/reg/corporate"><?=$this->_('Corporate')?></a></li>
+                    <li class="<?=$id ? '' : 'active'?>"><a href="/pages/about"><?=$this->_('About Us')?></a></li>
+                </ul>
+        </div></div>
+    </div>
+    </header>
+
+    <div id="page" class="page">
+        <?=$this->layout()->content;?>
+    </div><!-- #page end-->
+
+    <footer id="footer" class="footer"><div class="container">
+        <nav id="navbar_footer" class="">
+        <ul class="nav pull-right">
+            <li>
+            Copyright 2012 Epicurissimo　| 　 
+            <div class="btn-group dropup pull-right">
+                <a class="btn dropdown-toggle btn-small btn-inverse" data-toggle="dropdown" href="#">Language
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu pull-right">
+                    <li><a href="<?=$this->uri('/language/en')?>">English</a></li>
+                    <li><a href="<?=$this->uri('/language/fr')?>">Français</a></li>
+                    <li><a href="<?=$this->uri('/language/zh')?>">中文</a></li>
+                    <li><a href="<?=$this->uri('/language/zh-TW')?>">繁体中文</a></li>
+                </ul>
+            </div>
+            <!--
+            <select id="lang">
+                <option value="">Language</option>
+                <option value="<?=$this->uri('/language/en')?>">English</option>
+                <option value="<?=$this->uri('/language/fr')?>">Français</option>
+                <option value="<?=$this->uri('/language/zh')?>">中文</option>
+                <option value="<?=$this->uri('/language/zh-TW')?>">繁体中文</option>
+            </select>
+            -->
+            </li>
+        </ul>
+        </nav>
+        <nav class="">
+        <ul class="nav pull-left">
+            <li class="first"><a href="<?=$this->uri('/')?>"><?=$this->_('My Epicurissimo')?></a>|</li><li>
+            <a href="<?=$this->uri('/pages/terms')?>"><?=$this->_('Terms & Conditions')?></a>|</li><li>
+            <a href="<?=$this->uri('/pages/privacy')?>"><?=$this->_('Privacy Policy')?></a>|</li><li>
+            <a href="<?=$this->uri('/pages/help')?>"><?=$this->_('Help')?></a>|</li><li>
+            <a href="<?=$this->uri('/pages/contact')?>" class="last"><?=$this->_('Contact')?></a></li>
+        </ul>
+        </nav>
+        <div class="clearfix"></div>
+        <p>
+        </p>
+    </div></footer><!-- #footer end-->
+
+    <script>
+        eva.init(eva_config);
+        eva.ready(function(){
+            $("input[type='checkbox'], input[type='radio']").css("margin-right", "10px");
+            $("input[type='radio']").parent().addClass('span1').parent().wrapInner('<div class="row"></div>');
+            $("input[type='radio']:not(:first)").parent().css("margin-left", "5px");
+            $("#change-city a").on("click", function(){
+                window.location.href = "/city/?city=" + $(this).html()
+                return false;
+            });
+        
+        });
+    </script>
+</body>
+</html>

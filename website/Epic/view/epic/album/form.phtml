@@ -1,0 +1,231 @@
+<?
+$item = $this->item;
+$formAction = $this->formAction;
+$form = $this->form;
+if(!$formAction){
+    $formAction = $item['id'] ? $this->uri('/albums/edit/') : $this->uri('/albums/create/');
+}
+$method = $item['id'] ? 'put' : 'post';
+$formExt = $this->formExt;
+
+if(!$form) {
+    $form = $item['id'] ? new Epic\Form\AlbumEditForm() : new Epic\Form\AlbumCreateForm();
+}
+$form->setAction($formAction)
+->useSubFormGroup()
+->setMethod($method)
+->setView($this)
+->bind($item)
+->prepare();
+$tags = isset($item['Tags']) ? $item['Tags'] : array();
+
+
+$uploadForm = new Album\Form\UploadForm();
+$uploadForm->setView($this)
+->useSubFormGroup()
+->setMethod('post')
+->setAction($this->uri('/albums/upload/'))
+->prepare();
+
+?>
+
+<div class="row-fluid">
+    <?if($item['id']):?>
+    <ul id="album-form-nav" class="nav nav-pills">
+        <li class="active"><a href="#album-basic-form"  data-toggle="tab"><?=$this->_('Album Basic Info')?></a></li>
+        <li><a href="#album-upload-form" data-toggle="tab"><?=$this->_('Upload Photo')?></a></li>
+        <li><a href="<?=$this->uri('/albums/photo/' . $item['id'])?>"><?=$this->_('Photo Management')?></a></li>
+    </ul>
+    <?endif?>
+    <div class="tab-content">
+        <form id="album-basic-form" <?=$this->formAttr($form)?> class="form album-create-form tab-pane active">
+            <?=$form->restful();?>
+            <?=$form->helper('id');?>
+            <?=$formExt?>
+            <?if($this->callbackInput):?>
+            <?=$this->callbackInput;?>
+            <?endif;?>
+            <fieldset class="">
+                <div class="control-group <?=$form->isError('title') ? 'error' : '';?>">
+                    <?=$form->helper('title', 'label', array('class' => 'control-label'))?>
+                    <div class="controls docs-input-sizes">
+                        <?=$form->helper('title', array('class' => 'input-block-level'))?>
+                        <div class="help-block"><?=$form->helper('title', 'formElementErrors')?></div>
+                    </div>
+                </div>
+
+                <div class="control-group <?=$form->isError('urlName') ? 'error' : '';?> hide">
+                    <?=$form->helper('urlName', 'label', array('class' => 'control-label'))?>
+                    <div class="controls">
+                        <div class="input-prepend input-append">
+                            <span class="add-on"><?=$this->serverUrl() . '/album/'?></span><?=$form->helper('urlName', array('class' => 'span6'))?><span class="add-on">/</span>
+                        </div>
+                        <div class="help-block"><?=$this->_('No input will create a random url')?></div>
+                        <div class="help-block"><?=$form->helper('urlName', 'formElementErrors')?></div>
+                    </div>
+                </div>
+
+                <div class="control-group <?=$form->isError('description') ? 'error' : '';?>">
+                    <div id="editor-left" class="controls">
+                        <?=$form->helper('description', 'formTextarea', array('class' => 'input-block-level', 'rows' => '15',))?>
+                    </div>
+                    <div id="editor-right" class="markdown-preview"></div>
+                    <div class="help-block"><?=$form->helper('description', 'formElementErrors')?></div>
+
+                </div>
+            </fieldset>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-info btn-large"><?=$this->_('Next Step');?></button>
+            </div>
+        </form>
+
+
+        <form id="album-upload-form" <?=$this->formAttr($uploadForm)?> enctype="multipart/form-data" class="tab-pane">
+            <?=$uploadForm->restful();?>
+            <?=$uploadForm->helper(array('AlbumFile', 'album_id'), 'formHidden', array('value' => $item['id']))?>
+            <div class="clearfix">
+                <div class="btn-group pull-right">
+                    <span class="btn fileinput-button">
+                        <i class="icon-plus icon-white"></i>
+                        <span><?=$this->_('Add files')?>...</span>
+                        <input type="file" name="upload[]" multiple>
+                    </span>
+                </div>
+                <div class="btn-group pull-left fileupload-buttonbar">
+                    <span class="btn"><input type="checkbox" class="toggle"></span>
+                    <button type="reset" class="btn cancel">
+                        <i class="icon-ban-circle icon-white"></i>
+                        <span><?=$this->_('Cancel')?></span>
+                    </button>
+                </div>
+            </div>
+
+            <fieldset class="">
+                <!-- The loading indicator is shown during file processing -->
+                <div class="fileupload-loading"></div>
+                <!-- The table listing the files available for upload/download -->
+                <table role="presentation" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th class="span1"></th>
+                            <th class="span1"><?=$this->_('Preview')?></th>
+                            <th class="span1"><?=$this->_('Name')?></th>
+                            <th><?=$this->_('Size')?></th>
+                            <th><?=$this->_('Process')?></th>
+                            <th><?=$this->_('Actions')?></th>
+                        </tr>
+                    </thead>
+                    <tbody class="files">
+                    </tbody>
+                </table>
+            </fieldset>
+
+            <div class="fileupload-buttonbar">
+                <!-- The global progress information -->
+                <div class="fileupload-progress fade">
+                    <!-- The global progress bar -->
+                    <div class="progress progress-success progress-striped active" style="height:5px;" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                        <div class="bar" style="width:0%;"></div>
+                    </div>
+                    <!-- The extended global progress information -->
+                    <div class="progress-extended">&nbsp;</div>
+                </div>
+                <button type="submit" class="btn start btn-block">
+                    <i class="icon-upload icon-white"></i>
+                    <span><?=$this->_('Start upload')?></span>
+                </button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+<!-- The template to display files available for upload -->
+<script id="template-upload" type="text/x-tmpl">
+    {% for (var i=0, file; file=o.files[i]; i++) { %}
+        <tr class="template-upload fade">
+            <td class=""></td>
+            <td class="preview"><span class="fade"></span></td>
+            <td class="name"><span>{%=file.name%}</span></td>
+            <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+            <td class="error">
+                {% if (file.error) { %}
+                    <span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}
+                    {% } else if (o.files.valid && !i) { %}
+                    <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"  style="width:80px;height:5px;"><div class="bar" style="width:0%;height:5px;"></div></div>
+                    {% } %}
+            </td>
+            <td>
+                {% if (!o.options.autoUpload) { %}
+                    <span class="start">
+                        <button class="btn">
+                            <i class="icon-upload icon-white"></i>
+                        </button>
+                    </span>
+                    {% } %}
+                {% if (!i) { %}
+                    <span class="cancel">
+                        <button class="btn">
+                            <i class="icon-ban-circle icon-white"></i>
+                        </button>
+                    </span>
+                    {% } %}
+            </td>
+        </tr>
+        {% } %}
+</script>
+<!-- The template to display files available for download -->
+<script id="template-download" type="text/x-tmpl">
+    {% for (var i=0, file; file=o.files[i]; i++) { %}
+        <tr class="template-download fade">
+            <td class="delete"><input type="checkbox" name="delete" value="1"></td>
+            {% if (file.error) { %}
+                <td class="preview"></td>
+                <td class="name"><span>{%=file.name%}</span></td>
+                <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+                <td class="error"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
+                {% } else { %}
+                <td class="preview">{% if (file.thumbnail_url) { %}
+                    <a href="{%=file.url%}" title="{%=file.name%}" rel="gallery" download="{%=file.name%}"><img src="{%=eva.thumb(file.thumbnail_url, 'w_100')%}" /></a>
+                    {% } %}</td>
+                <td class="name">
+                    {%=file.name%}
+                </td>
+                <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+                <td class="error"><div class="progress progress-success" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"  style="width:80px;height:5px;"><div class="bar" style="width:100%;height:5px;"></div></div></td>
+                {% } %}
+            <td class="delete">
+                <a class="btn" href="<?=$this->uri('/admin/file/')?>{%=file.id%}" target="_blank"><i class="icon-ban-circle icon-white"></i></a>
+            </td>
+        </tr>
+        {% } %}
+</script>
+
+<!-- The XDomainRequest Transport is included for cross-domain file deletion for IE8+ -->
+<!--[if gte IE 8]><script src="js/cors/jquery.xdr-transport.js"></script><![endif]-->
+
+
+<script>
+    eva.ready(function(){
+
+            eva.loadcss(eva.s(["/lib/js/upload/css/jquery.fileupload-ui.css"]));
+            eva.loader(eva.s([
+            "/lib/js/jstemplates/tmpl.js", 
+            "/lib/js/loadimage/load-image.js", 
+            "/lib/js/upload/js/vendor/jquery.ui.widget.js", 
+            "/lib/js/upload/js/jquery.iframe-transport.js",
+            "/lib/js/upload/js/jquery.fileupload.js", 
+            "/lib/js/upload/js/jquery.fileupload-fp.js", 
+            "/lib/js/upload/js/jquery.fileupload-ui.js", 
+            //"/lib/js/upload/js/locale.js", 
+            "/lib/js/upload/js/main.js" 
+            ]), function(){
+                    $("#album-upload-form").fileupload({
+                            dataType: 'json',
+                    });
+            });
+            return false;
+    });
+</script>
+
