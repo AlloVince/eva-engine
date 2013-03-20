@@ -24,7 +24,7 @@ $form
     <div class="control-group <?=$form->isError('content') ? 'error' : '';?>">
         <div class="controls">
             <?=$form->helper('content', 'formTextarea', array('class' => 'input-block-level', 'rows' => 3))?>        
-            <button type="submit" class="btn btn-block"><?=$this->_('Leave Comment');?></button>
+            <button type="submit" class="btn btn-large"><?=$this->_('Leave Comment');?></button>
             <div class="help-block"><?=$form->helper('content', 'formElementErrors')?></div>
             <?=$this->callback()?>
         </div>

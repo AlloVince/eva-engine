@@ -18,6 +18,10 @@ class FileController extends RestfulModuleController
     {
         $query = $this->getRequest()->getQuery();
 
+        if (!$query['page']) {
+            $query['page'] = 1;
+        }
+
         $form = new Form\FileSearchForm();
         $form->bind($query);
         if($form->isValid()){
