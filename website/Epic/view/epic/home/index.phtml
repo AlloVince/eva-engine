@@ -1,0 +1,159 @@
+<?
+$this->headTitle('Epicurissimo compass | communauté privé pour les pros et les connaisseur du gastronomie et vin', 'SET');
+$user = $this->user;
+$items = $this->items;
+$viewAsGuest = $this->viewAsGuest;
+$form = new Activity\Form\MessageCreateForm();
+$form->useSubFormGroup()
+     ->setMethod('post')
+     ->setView($this)
+     ->setAction($this->uri('/activity/'))
+     ->prepare();
+?>
+
+<div class="page-inner">
+    <div class="container">
+        <?=$this->widget('Epic', 'widgets/profilenav', $this->vars())?>
+    </div><!-- above container end -->
+    <div class="container">
+        <div class="profile-main">
+            <div class="row">
+                <div class="span8">
+                    <?=$this->widget('Epic', 'widgets/profilemeta', $this->vars())?>
+
+                    <div class="profile-activities">
+                        <?if(!$viewAsGuest):?>
+                        <div class="row">
+                            <form id="activity-form" <?=$this->formAttr($form)?> class="activity-box span7">
+                                <?=$form->helper('messageType', 'formHidden', array('class' => ''))?>        
+                                <?=$form->helper('reference_id', array('class' => ''))?>
+                                <?=$form->helper(array('MessageFile', 'file_id'), 'formHidden', array('class' => ''))?>
+                                <input name="callback" type="hidden" value="<?=$this->uri('/home/')?>" />
+                                <div class="page-header">
+                                    <h3><?=$this->_('Say something');?>...</h3>
+                                </div>
+                                <fieldset class="form">
+                                    <div class="activity-box-wrap">
+                                        <div class="activity-box-content">
+                                            <?=$form->helper('content', 'formTextarea', array('class' => '', 'rows' => 5))?>        
+                                        </div>
+                                        <div class="activity-box-buttons">
+                                            <a id="activity-box-image-button" class="activity-box-func activity-box-text" href="javascript:;" data-activity-text="Share Photo."><i class="icon-mini icon-picture"></i> <?=$this->_('Photo');?></a>
+                                            <a id="activity-box-video-button" class="activity-box-func" href="javascript:;" data-placement="bottom" rel="popover"><i class="icon-mini icon-facetime-video"></i> <?=$this->_('Video');?></a>
+                                            <label id="activity-box-sync-twitter" class="activity-box-func" title="Sync to Twitter"><i class="icon-mini icon-twitter"></i><input type="checkbox" /></label>
+                                            There are <span class="highlight highlight-large activity-box-count">140</span> letters left <button type="submit" class="btn btn-light-brown btn-large"><?=$this->_('Submit');?></button>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                            </form>
+
+
+                        </div>
+                        <?endif?>
+
+                        <div class="page-header border-header">
+                            <h3><?=$this->_('New Activities');?></h3>
+                        </div>
+
+                        <?if($items):?>
+                        <div class="activity-list vlist">
+                            <?foreach($items as $item):?>
+                            <div class="item">
+                                <a href="<?=$this->uri('/user/' . $item['User']['userName'])?>" title="" class="item-absolute item-userface">
+                                    <img src="<?=$item['User']['Avatar'] ? $this->thumb($item['User']['Avatar']['Thumb'], array('h_60', 'w_60', 'c_fill')) :  $this->assets('/module/epic/img/default_avatar.png')?>" alt=""  width="60" height="60" class="img-rounded" />
+                                </a>
+                                <div class="item-inline item-text span6">
+                                    <div class="item-content">
+                                        <div class="item-title"><a href="<?=$this->uri('/user/' . $item['User']['userName'])?>" class="item-user"><?=$item['User']['userName']?></a> Said:</div>
+                                        <p><?=$item['ContentHtml']?></p>
+                                        <?if($item['File']):?>
+                                        <div class="item-image">
+                                            <p><a href="<?=$item['File'][0]['Thumb']?>" class="item-preview image" data-preview-type="image" data-url="<?=$this->thumb($item['File'][0]['Thumb'], array('w_400'))?>" data-width="400"><img src="<?=$this->thumb($item['File'][0]['Thumb'], array('w_200'))?>" alt="" class="img-polaroid" /></a></p>
+                                        </div>
+                                        <?endif?>
+
+                                        <?if($item['Video']):$video = $item['Video'];?>
+                                        <div class="item-video">
+                                            <?if($video['thumbnail']):?>
+                                            <a href="<?=$video['url']?>" class="item-preview video" data-preview-type="video" data-url="<?=$video['swf']?>" data-width="<?=$video['width']?>" data-height="<?=$video['height']?>"><img src="<?=$video['thumbnail']?>" alt="video preview" class="img-polaroid" width="200" /><i class="icon-play btn-play"></i></a>
+                                            <?else:?>
+                                            <a href="<?=$video['url']?>" class="item-preview video" data-preview-type="video" data-url="<?=$video['swf']?>" data-width="<?=$video['width']?>" data-height="<?=$video['height']?>"><div class="video-no-preview"></div><i class="icon-play btn-play"></i></a>
+                                            <?endif?>
+                                        </div>
+                                        <?endif?>
+
+                                        <?if(isset($item['ForwardActivity']) && $item['ForwardActivity']): $subItem = $item['ForwardActivity'];?>
+                                        <div class="well">
+                                            <p><?=$subItem['ContentHtml']?></p>
+                                            <?if($subItem['File']):?>
+                                            <div class="item-image">
+                                                <p><a href="<?=$subItem['File'][0]['Thumb']?>"><img src="<?=$this->thumb($subItem['File'][0]['Thumb'], array('w_200'))?>" alt="" class="img-polaroid" /></a></p>
+                                            </div>
+                                            <?endif?>
+                                            <div class="item-action">
+                                                <p class="pull-right"><a href="<?=$this->uri('/feed/' . $subItem['messageHash'])?>" class="" data-activity-comment="<?=$subItem['id']?>"><i class="icon-comment"></i> Comments (<span class="highlight"><?=$subItem['commentedCount']?></span>)</a></p>
+                                                <p class="pull-left">
+                                                <a href="<?=$this->uri('/feed/' . $subItem['messageHash'])?>"><time class="agotime" data-jstime="<?=$this->datetime()->jsTime($subItem['createTime'])?>" datetime="<?=$this->datetime()->isoTime($subItem['createTime'])?>"><?=$this->datetime($subItem['createTime'])?></time></a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <?endif?>
+
+                                        <div class="item-action">
+                                            <p class="pull-right">
+                                            <a href="javascript:;" class="item-func remove <?=$viewAsGuest ? 'hide' : ''?>"><i class="icon-remove"></i> Delete</a>
+                                            <a href="javascript:;" class="item-func comment" data-activity-comment="<?=$item['id']?>"><i class="icon-comment"></i> Comments (<span class="highlight"><?=$item['commentedCount']?></span>)</a>
+                                            </p>
+                                            <p class="pull-right hide"><a href="#activity-form" class="item-func reference" data-activity-reference="<?=$item['id']?>" data-activity-text="@<?=$item['User']['userName']?> "><i class="icon-share-alt"></i> RT (<span class="highlight"><?=$item['transferredCount']?></span>)</a></p>
+                                            <p class="pull-left">
+                                            <a href="<?=$this->uri('/feed/' . $item['messageHash'])?>" class="item-id"><time class="agotime" data-jstime="<?=$this->datetime()->jsTime($item['createTime'])?>" datetime="<?=$this->datetime()->isoTime($item['createTime'])?>"><?=$this->datetime($item['createTime'])?></time></a>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="item-remove-ajax">
+                                    </div>
+                                    <div class="item-sub-ajax">
+                                    </div>
+                                </div>
+                            </div>
+                            <?endforeach?>
+
+                            <?if($this->paginator):?>
+                            <?=$this->paginator->setPath('/home/')->setBaseQuery($this->query);?>
+                            <?=$this->widget('Core', 'widgets/paginator', $this->vars())?>
+                            <?endif;?>
+                        </div><!--activity-list end-->
+                        <?endif?>
+
+
+                    </div><!--profile-activities end-->
+                </div><!--left span8 end-->
+                <div class="span4">
+                    <?=$this->widget('Epic', 'widgets/profileside', $this->vars())?>
+                </div><!--right span4 end-->
+            </div><!--row end-->
+        </div><!--profil-main end-->
+    </div><!--container end-->
+</div><!--page inner end-->
+
+<div id="video-popover" class="popover bottom">
+    <div class="arrow"></div>
+    <h3 class="popover-title">Add Video
+        <span class="close">×</span>
+    </h3>
+    <div class="popover-content">
+        <div class="form">
+            <div class="input-append">
+                <input name="url" class="input-medium" type="text" placeholder="Video Url..." />
+                <button id="add-video" class="btn" type="button">Add</button>
+            </div>
+        </div>
+        <div class="ajax-video-preview">
+            <p>Support video sites: Youtube, Youku</p>
+        </div>
+    </div>
+</div>
+<?=$this->widget('File', 'file/index')?>
+<script src="<?=$this->assets('/module/epic/js/feed.js')?>"></script>

@@ -1,0 +1,19 @@
+<?
+$title = $this->item['title'] . ' - Event';
+$this->headTitle($title, 'SET');
+?>
+
+<div class="container">
+    <div class="page-bg">
+        <div class="row">
+            <div class="span4">
+                <?=$this->widget('Epic', 'widgets/eventside', $this->vars())?> 
+            </div><!--page main right end-->
+            <div class="span8">
+                <div class="event-main">
+                <?=$this->widget('Epic', 'epic/event/get-template', $this->vars())?> 
+                </div><!--event main end-->
+            </div><!--page main left end-->
+        </div>
+    </div><!-- page-bg end-->
+</div><!--container end-->

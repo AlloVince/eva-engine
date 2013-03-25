@@ -1,0 +1,23 @@
+    <div class="navbar navbar-inverse">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <div class="nav-collapse">
+                    <ul class="nav nav-main">
+                        <li data-highlight-url="^/groups/$" data-highlight-mode="full"><a href="<?=$this->uri('/groups/')?>"><?=$this->_('All')?></a></li>
+                        <li data-highlight-url="^/groups/\?category=gastronomy" data-highlight-mode="full"><a href="<?=$this->uri('/groups/?category=gastronomy')?>"><?=$this->_('Gastronomy')?></a></li>
+                        <li data-highlight-url="^/groups/\?category=wine" data-highlight-mode="full"><a href="<?=$this->uri('/groups/?category=wine')?>"><?=$this->_('Wine')?></a></li>
+                        <li data-highlight-url="^/groups/\?category=spirit" data-highlight-mode="full"><a href="<?=$this->uri('/groups/?category=spirit')?>"><?=$this->_('Spirit')?></a></li>
+                        <li data-highlight-url="^/groups/\?category=cocktail" data-highlight-mode="full"><a href="<?=$this->uri('/groups/?category=cocktail')?>"><?=$this->_('Cocktail')?></a></li>
+                        <li data-highlight-url="^/groups/\?category=hotel-resort" data-highlight-mode="full"><a href="<?=$this->uri('/groups/?category=hotel-resort')?>"><?=$this->_('Hotel & Resort')?></a></li>
+                        <li data-highlight-url="^/groups/\?category=art-design" data-highlight-mode="full"><a href="<?=$this->uri('/groups/?category=art-design')?>"><?=$this->_('Art & Design')?></a></li>
+                        <li data-highlight-url="^/groups/\?category=culture" data-highlight-mode="full"><a href="<?=$this->uri('/groups/?category=culture')?>"><?=$this->_('Culture')?></a></li>
+                    </ul>
+                </div><!-- /.nav-collapse -->
+            </div>
+        </div><!-- /navbar-inner -->
+    </div><!-- /navbar -->

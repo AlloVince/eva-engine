@@ -1,0 +1,240 @@
+<?
+$this->headTitle('Epicurissimo compass | communauté privé pour les pros et les connaisseur du gastronomie et vin', 'SET');
+$form = new Epic\Form\ConnoisseurForm();
+$form->useSubFormGroup()
+    ->addSubForm('UserRoleFields', new User\Form\UserRoleFieldsForm(null, 12))
+    ->setView($this)
+    ->setMethod('post')
+    ->setAction($this->uri('/reg/connoisseur'))
+    ->prepare();
+?>
+
+<div class="container">
+    <div id="titleblock">
+        <div class="row">
+            <?$locale = \Eva\Api::_()->getServiceManager()->get('translator')->getLocale();?>
+            <div class="span5">
+                <img src="<?=$this->assets('/module/epic/img/connoisseur-' . $locale . '-1.png')?>" />
+            </div>
+            <div class="span5">
+                <img src="<?=$this->assets('/module/epic/img/connoisseur-' . $locale . '-2.png')?>" />
+            </div>
+            <?$locale="abc";?>
+            <?if($locale == 'en'):?>
+
+            <div class="span12">
+                <h1><?=$this->_('Your Benefits')?></h1>
+            </div>
+
+            <div class="span6">
+                <ul>
+                    <li>Sharing recipes, insights, gastronomic experiences</li>
+                    <li>Meeting people of same hobbies</li>
+                    <li>Network : Private and Professional</li>
+
+                </ul>
+            </div>
+            <div class="span6">
+                <ul>
+                    <li>Events : wine tasting, cocktails party, cooking lessons</li>
+                    <li>Advices : Finding a professional and ask for advices</li>
+                    <li>Exploring epicurean world</li>
+                </ul>
+            </div>
+
+            <?elseif($locale == 'fr'):?>
+
+            <div class="span12">
+                <h1><?=$this->_('Your Benefits')?></h1>
+            </div>
+
+            <div class="span6">
+                <ul>
+                    <li>Partage de vos expériences gastronomiques</li>
+                    <li>Rencontrer des gens avec les mêmes passe-temps</li>
+
+                </ul>
+            </div>
+            <div class="span6">
+                <ul>
+                    <li>Network Privé et Professionnel</li>
+                    <li>Evénements: dégustation de vins, cocktails, parties de thé Fashion Party</li>
+                </ul>
+            </div>
+
+
+            <?elseif($locale == 'zh'):?>
+
+            <div class="span12">
+                <h1><?=$this->_('Your Benefits')?></h1>
+            </div>
+
+            <div class="span6">
+                <ul>
+                    <li>更多曝光：展示您的工作</li>
+                    <li>更多机会：帮助您找到更多职业机会</li>
+                    <li>更多人脉：近距离接触超过10,000+名行业决策者</li>
+
+                </ul>
+            </div>
+            <div class="span6">
+                <ul>
+                    <li>更多活动：组织和参与展会、活动或高端酒会</li>
+                    <li>更多创新：将您的想法与其他职业人士分享</li>
+                    <li>更多视野：洞悉及讨论行业发展趋势</li>
+                </ul>
+            </div>
+
+            <?elseif($locale == 'zh_TW'):?>
+            <div class="span12">
+                <h1><?=$this->_('Your Benefits')?></h1>
+            </div>
+
+            <div class="span6">
+                <ul>
+                    <li>更多曝光：展示您的工作</li>
+                    <li>更多機會：幫助您找到更多職業機會</li>
+                    <li>更多人脈：近距離接觸超過10,000+名行業決策者</li>
+
+                </ul>
+            </div>
+            <div class="span6">
+                <ul>
+                    <li>更多活動：組織和參與展會、活動或高端酒會</li>
+                    <li>更多創新：將您的想法與其他職業人士分享</li>
+                    <li>更多視野：洞悉及討論行業發展趨勢</li>
+                </ul>
+            </div>
+
+
+            <?endif?>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row">
+            <form id="signupform" <?=$this->formAttr($form)?> class="form">
+                <?=$form->restful();?>
+                <?=$form->helper('id');?>
+                <div class="span5">
+                    <div class="control-group <?=$form->isError('email') ? 'error' : '';?>">
+                        <?=$form->helper('email', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('email', array('class' => 'validate[required,custom[email]]'))?>        
+                            <div class="help-block"><?=$form->helper('email', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <!-- title -->
+                    <div class="control-group <?=$form->isError(array('CommonFields', '13')) ? 'error' : '';?>">
+                        <?=$form->helper(array('CommonFields', '13'), 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper(array('CommonFields', '13'), 'formRadio', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper(array('CommonFields', '13'), 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError('firstName') ? 'error' : '';?>">
+                        <?=$form->helper('firstName', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('firstName', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('firstName', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError('lastName') ? 'error' : '';?>">
+                        <?=$form->helper('lastName', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper('lastName', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper('lastName', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+
+                    <div class="control-group <?=$form->isError(array('Profile', 'birthday')) ? 'error' : '';?>">
+                        <?=$form->helper(array('Profile', 'birthday'), 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper(array('Profile', 'birthday'), array('class' => 'datepicker', 'data-date-format' => 'yyyy-mm-dd'))?>        
+                            <div class="help-block"><?=$form->helper(array('Profile', 'birthday'), 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$form->isError(array('Profile', 'country')) ? 'error' : '';?>">
+                        <?=$form->helper(array('Profile', 'country'), 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper(array('Profile', 'country'), 'formSelect', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper(array('Profile', 'country'), 'formElementErrors')?></div>
+                        </div>
+                    </div>
+
+                    <!-- Central Interests:2 -->
+                    <div class="control-group <?=$form->isError(array('UserRoleFields', '2')) ? 'error' : '';?>">
+                        <?=$form->helper(array('UserRoleFields', '2'), 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper(array('UserRoleFields', '2'), 'formMultiCheckbox', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper(array('UserRoleFields', '2'), 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="span5">
+                    <div class="control-group <?=$form->isError(array('Profile', 'industry')) ? 'error' : '';?>">
+                        <?=$form->helper(array('Profile', 'industry'), 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper(array('Profile', 'industry'), array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper(array('Profile', 'industry'), 'formElementErrors')?></div>
+                        </div>
+                    </div>
+
+                    <!-- hobbies:1 -->
+                    <div class="control-group <?=$form->isError(array('UserRoleFields', '1')) ? 'error' : '';?>">
+                        <?=$form->helper(array('UserRoleFields', '1'), 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper(array('UserRoleFields', '1'), array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper(array('UserRoleFields', '1'), 'formElementErrors')?></div>
+                        </div>
+                    </div>
+
+                    <div class="control-group <?=$form->isError(array('Profile', 'bio')) ? 'error' : '';?>">
+                        <?=$form->helper(array('Profile', 'bio'), 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper(array('Profile', 'bio'), 'formTextarea', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper(array('Profile', 'bio'), 'formElementErrors')?></div>
+                        </div>
+                    </div>
+
+                    <div class="control-group <?=$form->isError(array('Profile', 'phoneBusiness')) ? 'error' : '';?>">
+                        <?=$form->helper(array('Profile', 'phoneBusiness'), 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper(array('Profile', 'phoneBusiness'), array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper(array('Profile', 'phoneBusiness'), 'formElementErrors')?></div>
+                        </div>
+                    </div>
+
+                    <div class="control-group <?=$form->isError(array('Profile', 'address')) ? 'error' : '';?>">
+                        <?=$form->helper(array('Profile', 'address'), 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper(array('Profile', 'address'), array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper(array('Profile', 'address'), 'formElementErrors')?></div>
+                        </div>
+                    </div>
+
+                    <!-- You might interested in:3 -->
+                    <div class="control-group <?=$form->isError(array('UserRoleFields', '3')) ? 'error' : '';?>">
+                        <?=$form->helper(array('UserRoleFields', '3'), 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$form->helper(array('UserRoleFields', '3'), 'formMultiCheckbox', array('class' => ''))?>        
+                            <div class="help-block"><?=$form->helper(array('UserRoleFields', '3'), 'formElementErrors')?></div>
+                        </div>
+                    </div>
+
+                </div>
+
+                    <div class="control-group span12">
+                        <div class="controls">
+                            <label><input name="agree" class="validate[required]" type="checkbox" checke="checked"><?=$this->_('By clicking Sign Up, you agree to our Terms & Conditions.')?></label>
+                            <br>
+                            <button type="submit" class="btn btn-large"><?=$this->_('Sign Up')?></button>
+                        </div>
+                    </div>
+            </form>
+    </div>
+</div>
+
+

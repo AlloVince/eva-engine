@@ -1,0 +1,42 @@
+<? 
+$title = $this->_('Reset Password');
+$this->headTitle($title, 'SET');
+
+if($this->form){
+    $form = $this->form;
+} else {
+    $form = new User\Form\ResetForm();
+}
+$form->setView($this)
+->setMethod('put')
+->setAction($this->uri('/reset/'))
+->bind($this->item)
+->prepare();
+?>
+
+<div class="container">
+
+    <form class="form well form-horizontal" <?=$this->formAttr($form)?> >
+        <?=$form->restful();?>
+        <header class="page-header">
+        <h2 class=""><?=$title?></h2>
+        </header>
+        <fieldset>
+            <div class="control-group <?=$form->isError('email') ? 'error' : '';?>">
+                <?=$form->helper('email', 'label', array('class' => 'control-label'))?>
+                <div class="controls">
+                    <?=$form->helper('email', array('class' => 'input-xlarge', 'autocomplete' => 'off'))?>
+                    <div class="help-block">
+                        Please provide your account email, you will receive email instructions on how to reset your password.
+                        <?=$form->helper('email', 'formElementErrors')?>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-primary" type="submit">Reset</button> or  <a href="<?=$this->uri('/login/')?>">Login</a>
+            </div>
+        </fieldset>
+    </form>
+
+
+</div>

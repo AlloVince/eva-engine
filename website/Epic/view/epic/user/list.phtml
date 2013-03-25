@@ -1,0 +1,150 @@
+<?
+$title = 'Members';
+$title = $this->_($title);
+$this->headTitle($title, 'SET');
+$items = $this->items;
+
+$form = new Activity\Form\FollowForm();
+$form
+->setView($this)
+->useSubFormGroup()
+->setMethod('post')
+->setAction($this->uri('/activity/follow/'))
+->prepare();
+
+$unfollowForm = clone $form;
+$unfollowForm->setMethod('delete');
+
+
+$userSearchForm = $this->form ? $this->form : new User\Form\UserSearchForm();
+$userSearchForm->setView($this)
+     ->setMethod('get')
+     ->setAction($this->uri('/users/list/'))
+     ->prepare();
+
+?>
+
+<div class="container">
+    <div class="normal-page">
+        <div class="page-main"><div class="row"><div class="span12">
+                    <div class="row">
+                        <div class="span8">
+                            <div class="page-main-header">
+                                <a href="<?=$this->uri('/account/import/')?>" class="btn btn-small btn-orange pull-right"><i class="icon-user"></i> Sending Invitation</a>
+                                <h3>
+                                    <?=$this->_('Members')?>
+                                    <?if($this->query['keyword']):?>
+                                    | Now Searching "<span class="highlight"><?=$this->query['keyword']?></span>"
+                                    <?endif?>
+                                </h3>
+                            </div>
+                            <div class="search-filter">
+                                <form <?=$this->formAttr($userSearchForm)?> class="form form-inline">
+                                    <?=$userSearchForm->helper('keyword', array('class' => 'input-small', 'placeholder' => 'Name'))?>
+                                    <?//=$userSearchForm->helper('gender', 'formSelect', array('class' => 'span2'))?>
+                                    <?//=$userSearchForm->helper('onlineStatus', 'formSelect', array('class' => 'span2'))?>
+                                    <?//=$userSearchForm->helper('country', 'formSelect', array('class' => 'span2'))?>  
+                                    <?=$userSearchForm->helper('city', 'formSelect', array('class' => 'input-medium select2', 'placeholder' => 'City'))?>        
+                                    <?=$userSearchForm->helper('interest', 'formSelect', array('class' => 'input-medium select2', 'placeholder' => 'Interest'))?>  
+                                    <?=$userSearchForm->helper('role', 'formSelect', array('class' => 'input-medium select2', 'placeholder' => 'Member Type'))?>  
+                                    <?=$userSearchForm->helper('tag', 'formText', array('class' => 'input-small', 'placeholder' => 'Tag'))?>  
+                                    <button class="btn" type="submit"><?=$this->_('Filter')?></button>
+                                </form>
+                            </div>
+                            <div class="user-list vlist">
+                                <?foreach($items as $item):?>
+                                <div class="item">
+                                    <div class="item-absolute item-userface">
+                                        <a href="<?=$this->uri('/user/' . $item['userName'])?>" title="" class="userface">
+                                            <img src="<?=$item['Avatar'] ? $this->thumb($item['Avatar']['Thumb'], array('h_60', 'w_60', 'c_fill')) :  $this->assets('/module/epic/img/default_avatar.png')?>" alt=""  width="60" height="60" class="img-rounded"/>
+                                        </a>
+                                        <a href="<?=$this->uri('/messages/send/' . $item['userName'])?>" title="" class="item-quick-action btn btn-small btn-tiny-white">Message</a>
+                                    </div>
+                                    <div class="item-inline item-text">
+                                        <div class="item-title">
+                                            <h2><a href="<?=$this->uri('/user/' . $item['userName'])?>" class="item-user"><?=$item['userName']?></a></h2>
+                                            <?if($item['Profile']['city']):?>
+                                            <?=$item['Profile']['city']?>
+                                            <?endif?>
+                                            <?if($item['Profile']['city']):?>
+                                            <?=$item['Profile']['province']?>
+                                            <?endif?>
+                                            <?if($item['Profile']['country']):?>
+                                            <?=$this->locale('territory', $item['Profile']['country'])?>
+                                            <?endif?>
+                                        </div>
+                                        <div class="item-meta">
+                                            <table class="table-condensed">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Title: 
+                                                            <?if($item['gender'] =='male'):?>
+                                                            Mr.
+                                                            <?elseif($item['gender'] == 'femail'):?>
+                                                            Miss.
+                                                            <?endif?>
+
+                                                            <?if($item['firstName'] && $item['lastName']):?>
+                                                            <?=$item['lastName']?> <?=$item['firstName']?>
+                                                            <?endif?>
+                                                        </td>
+                                                        <td>Birthday : 
+                                                            <?if($item['Profile']['birthday'] && $item['Profile']['birthday'] != '0000-00-00'):?>
+                                                            <?=$item['Profile']['birthday']?>
+                                                            <?else:?>
+                                                            Secret
+                                                            <?endif?>
+                                                        </td>
+                                                        <td>Events : <a href=""><?=$item['EventCount']['eventCount']?></a> Times</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="item-content">
+                                            <p><?=$item['Profile']['bio']?></p>
+                                        </div>
+                                    </div>
+                                    <div class="item-absolute item-action">
+
+                                        <?if(isset($item['Follow']) && $item['Follow']):?>
+                                        <form <?=$this->formAttr($unfollowForm)?>>
+                                            <?=$unfollowForm->restful();?>
+                                            <?=$unfollowForm->helper('user_id', 'formHidden', array('class' => '', 'value' => $item['id']))?>
+                                            <?=$unfollowForm->helper('follower_id', array('class' => ''))?>
+                                            <?=$this->callback()?>
+                                            <button class="btn btn-small item-action-main">Unfollow</button>
+                                        </form>
+                                        <?else:?>
+                                        <form <?=$this->formAttr($form)?>>
+                                            <?=$form->restful();?>
+                                            <?=$form->helper('user_id', 'formHidden', array('class' => '', 'value' => $item['id']))?>
+                                            <?=$form->helper('follower_id', array('class' => ''))?>
+                                            <?=$this->callback()?>
+                                            <button class="btn btn-small item-action-main">Follow</button>
+                                        </form>
+                                        <?endif?>
+
+
+                                    </div>
+                                </div>
+                                <?endforeach?>
+                            </div><!--activity-list end-->
+
+                            <?if($this->paginator):?>
+                            <?=$this->paginator->setPath('/users/list/')->setBaseQuery($this->query);?>
+                            <?=$this->widget('Core', 'widgets/paginator', $this->vars())?>
+                            <?endif;?>
+
+                            <div class="alert clearfix"><a href="<?=$this->uri('/account/import/')?>" class="btn btn-small btn-orange pull-right"><i class="icon-user"></i> Sending Invitation</a>If you cannot find a friend on Epicurissimo, you can invite him / her </div>
+
+                        </div><!--page main left end-->
+                        <div class="span3">
+                            <div class="page-extra">
+                                <?=$this->widget('Epic', 'widgets/userextra')?>
+                            </div>
+                        </div><!--page main right end-->
+                    </div>
+        </div></div></div><!--page-main end-->
+    </div><!-- normal end-->
+</div><!--container end-->
+

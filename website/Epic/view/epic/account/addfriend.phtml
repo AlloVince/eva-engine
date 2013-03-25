@@ -1,0 +1,94 @@
+<?
+$item = $this->item;
+$title = 'Add Friends';
+$title = $this->_($title);
+$this->headTitle($title, 'SET');
+
+$contacts = $this->contacts;
+
+$form = new Activity\Form\FollowForm();
+$form
+->setView($this)
+->useSubFormGroup()
+->setMethod('post')
+->setAction($this->uri('/activity/follow/'))
+->prepare();
+
+$items = array();
+if($contacts['onSiteContacts']){
+    $items = $contacts['onSiteContacts'];
+}
+?>
+
+<div class="container">
+    <div class="normal-page">
+        <div class="body grid-s5m0">
+
+            <div class="main-wrap"><div id="main" class="main">
+                    <div class="page-main">
+                        <div class="page-main-header">
+                            <small class="pull-right">Found your <span class="highlight"><?=$contacts['onSiteContactsCount']?></span> friends on our site</small>
+                            <h3><?=$this->_('Add Friends')?></h3>
+                        </div>
+                        <?if($items):?>
+                        <div class="user-list vlist">
+                            <?foreach($items as $item):?>
+                            <div class="item">
+                                <div class="item-absolute item-userface">
+                                    <a href="<?=$this->uri('/user/' . $item['userName'])?>" title="" class="userface">
+                                        <img src="<?=$item['Avatar'] ? $this->thumb($item['Avatar']['Thumb'], array('h_175', 'w_175', 'c_fill')) :  $this->assets('/module/epic/img/default_avatar.png')?>" alt=""  width="175" height="175" />
+                                    </a>
+                                </div>
+                                <div class="item-inline item-text">
+                                    <div class="item-title">
+                                        <h2><a href="<?=$this->uri('/user/' . $item['userName'])?>" class="item-user"><?=$item['userName']?></a></h2>
+                                    </div>
+                                </div>
+                                <div class="item-absolute item-action">
+
+                                    <?if(isset($item['Follow']) && $item['Follow']):?>
+                                    <form <?=$this->formAttr($unfollowForm)?>>
+                                        <?=$unfollowForm->restful();?>
+                                        <?=$unfollowForm->helper('user_id', 'formHidden', array('class' => '', 'value' => $item['id']))?>
+                                        <?=$unfollowForm->helper('follower_id', array('class' => ''))?>
+                                        <?=$this->callback()?>
+                                        <button class="btn btn-small item-action-main">Unfollow</button>
+                                    </form>
+                                    <?else:?>
+                                    <form <?=$this->formAttr($form)?>>
+                                        <?=$form->restful();?>
+                                        <?=$form->helper('user_id', 'formHidden', array('class' => '', 'value' => $item['id']))?>
+                                        <?=$form->helper('follower_id', array('class' => ''))?>
+                                        <?=$this->callback()?>
+                                        <button class="btn btn-small item-action-main">Follow</button>
+                                    </form>
+                                    <?endif?>
+                                </div>
+                            </div>
+                            <?endforeach?>
+                        </div><!--activity-list end--> 
+                        <div class="well typo">
+                            <p>Friends not enough? Please try to:</p>
+                            <a class="btn btn-large btn-block" href="<?=$this->uri('/account/invite/?service=' . $this->service)?>">Invite your friends</a>
+                        </div>
+                        <?else:?>
+                        <div class="well typo">
+                            <p>Not find your friend on our site. Please try to:</p>
+                            <a class="btn btn-large btn-block" href="<?=$this->uri('/account/import/')?>">Find friends by other site.</a>
+                            <a class="btn btn-large btn-block" href="<?=$this->uri('/account/invite/?service=' . $this->service)?>">Invite your friends</a>
+                        </div>
+                        <?endif?>
+
+
+                    </div><!--page-main end-->
+            </div></div><!-- #main end-->
+
+            <div class="sidebar">
+                <div class="page-side">
+                    <?=$this->widget('Epic', 'widgets/accountnav', $this->vars())?>
+                </div>
+            </div><!--sider end-->
+
+        </div><!-- #body end-->
+    </div><!-- normal end-->
+</div><!--container end-->

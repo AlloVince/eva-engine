@@ -1,0 +1,145 @@
+<div class="group-side">
+    <div class="calendar calendar-mini">
+        <div class="calendar-wrap">
+
+        </div>
+        <div class="calendar-caption">
+            <i class="icon-stop green"></i> Coming Events
+            <i class="icon-stop brown"></i> Finished Events
+            <i class="icon-stop orange"></i> Today
+        </div>
+    </div><!--calendar end-->
+
+    <div class="page-header  border-header">
+        <h4 class="txt-bold">Group Members (<?=count($this->members)?>)</h4>
+    </div>
+
+    <div class="group-member-list">
+        <div class="page-header">
+            <h5 class="txt-bold">Group Admin</h5>
+        </div>
+       <?if($this->members):?>
+        <ul>
+        <?foreach($this->members as $member):?>
+        <?if($member['role'] != 'admin'){continue;}?>
+            <li>
+                <a href="<?=$this->uri('/user/' . $member['User']['userName'])?>">
+                    <img src="<?=$member['User']['Avatar'] ? $this->thumb($member['User']['Avatar']['Thumb'], array('h_175', 'w_175', 'c_fill')) :  $this->assets('/module/epic/img/default_avatar.png')?>" alt="userface"  width="30" height="30" />
+                    <?=$member['User']['userName']?>
+                </a>
+            </li>
+        <?endforeach;?>
+        </ul>
+        <?endif;?> 
+    </div>
+    <div class="group-member-list">
+        <div class="page-header">
+            <small class="pull-right"><a href="<?=$this->uri('/user/', array('group' => $this->item['id']))?>">View All</a></small>
+            <h5 class="txt-bold">Group Members</h5>
+        </div>
+        <?if($this->members):?>
+        <ul>
+        <?foreach($this->members as $member):?>
+        <?if($member['role'] == 'admin'){continue;}?>
+            <li>
+                <a href="<?=$this->uri('/user/' . $member['User']['userName'])?>">
+                    <img src="<?=$member['User']['Avatar'] ? $this->thumb($member['User']['Avatar']['Thumb'], array('h_175', 'w_175', 'c_fill')) :  $this->assets('/module/epic/img/default_avatar.png')?>" alt="userface"  width="30" height="30" />
+                    <?=$member['User']['userName']?>
+                </a>
+            </li>
+        <?endforeach;?>
+        </ul>
+        <?endif;?> 
+    </div>
+
+    <script id="side-event-list" type="text/x-tmpl" data-url="<?=$this->uri('/data/event/' , array('rows' => 10,'group_id' => $this->item['id'],'order' => 'memberdesc'))?>">
+        <div class="page-header border-header">
+            <h4>Group Events  ({% if(o.paginator) { %}{%=o.paginator.rowCount%}{% } else { %} 0 {% } %})</h4>
+        </div>
+        <div class="side-event-list">
+            {% if(o.items.length > 0) { %}
+                {% for (var i=0, item; item=o.items[i]; i++) { %}
+                    <div class="item">
+                        <a href="<?=$this->uri('/group/')?>{%=item.Group.groupKey%}/event/info/{%=item.urlName%}" title="" class="">
+                            {% if(item.File) { %}
+                                    <img src="{%=eva.thumb(item.File.Thumb, 'c_fill,h_50,w_50')%}" alt="" width="50" height="50" class="item-absolute imgdelay figure userface" />
+                            {% }else{ %}
+                                    <img src="{%=eva.s('/assets/module/epic/img/event-default.jpg')%}" alt="" width="50" height="50" class="item-absolute imgdelay figure userface" />
+                            {% } %}
+                        </a>
+                        <div class="item-inline item-text">
+                            <div class="text-content">
+                                <div class="item-title">
+                                    <a href="<?=$this->uri('/group/')?>{%=item.Group.groupKey%}/event/info/{%=item.urlName%}">{%=item.title%}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% } %}
+                {% } %}
+        </div>
+    </script>
+    
+    <script id="side-album-list" type="text/x-tmpl" data-url="<?=$this->uri('/data/album/' , array('rows' => 8,'group_id' => $this->item['id'],'order' => 'iddesc'))?>">
+    <div class="page-header">
+        <small class="pull-right"><a href="<?=$this->uri('/group/' . $this->item['groupKey'] . '/album/')?>">View All</a></small>
+        <h4 class="txt-bold">Group Albums ({% if(o.paginator) { %}{%=o.paginator.rowCount%}{% } else { %} 0 {% } %})</h4>
+    </div>
+    <div class="side-album-list">
+        <ul class="thumbnails">
+        {% if(o.items.length > 0) { %}
+        {% for (var i=0, item; item=o.items[i]; i++) { %}
+        <li>
+            <a class="thumbnail" href="<?=$this->uri('/group/' . $this->item['groupKey'] . '/album/')?>{%=item.urlName%}">
+                {% if(item.Cover.Thumb) { %}
+                    <img src="{%=eva.thumb(item.Cover.Thumb, 'c_fill,h_65,w_65')%}" alt="" width="65" height="65" class="img-rounded"/>
+                {% }else{ %}
+                    <img src="<?=$this->assets('/module/epic/img/album-default.png')?>" alt="" width="65" height="65" class="img-rounded" />
+                {% } %}
+            </a>
+        </li>
+        {% } %}
+        {% } %}
+        </ul>
+    </div>
+    </script>
+    
+    <?=$this->widget('Epic', 'widgets/toolbox')?>
+
+    <script id="group-ranks" type="text/x-tmpl" data-url="<?=$this->uri('/data/group/',array('rows' => 5, 'order' => 'memberdesc', 'flag' => 1))?>">
+    <div class="page-header border-header">
+        <h4>Feature Groups</h4>
+    </div>
+    <div class="group-ranks">
+        <ul>
+        {% if(o.items.length > 0) { %}
+            {% for (var i=0, item; item=o.items[i]; i++) { %}
+            <li style="padding-left:0;">
+            <!--<em class="ranknum rank{%=i+1%}">{%=i+1%}</em>-->
+            <div class="media">
+                <a class="pull-left" href="<?=$this->uri('/group/')?>{%=item.groupKey%}">
+                            {% if(item.File) { %}
+                                    <img src="{%=eva.thumb(item.File.Thumb, 'c_fill,h_50,w_50')%}" alt="{%=item.title%}" width="50" height="50" class="media-object img-rounded" />
+                            {% }else{ %}
+                                    <img src="{%=eva.s('/assets/module/epic/img/event-default.jpg')%}" alt="" width="50" height="50" class="media-object img-rounded" />
+                            {% } %}
+                </a>
+                <div class="media-body">
+                    <h4 class="media-heading"><a class="pull-left" href="<?=$this->uri('/group/')?>{%=item.groupKey%}">{%=item.groupName%}</a></h4>
+                    <div class="media">
+                        <div class="row">
+                            <span class="highlight txt-bold">{%=item.Count.memberCount%}</span> Members
+                            <span class="span1"><span class="highlight txt-bold">{%=item.PostCount.postCount%}</span>Discussion</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </li>
+            {% } %}
+        {% } %}
+        </ul>
+    </div>
+    </script>
+
+     <?=$this->widget('Epic', 'components/ad_group')?>
+</div><!--right side end-->

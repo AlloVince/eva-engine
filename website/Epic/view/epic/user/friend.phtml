@@ -1,0 +1,40 @@
+<?
+$title = 'Friends';
+$this->headTitle($title, 'SET');
+$user = $this->user;
+$items = $this->items;
+$viewAsGuest = $this->viewAsGuest;
+?>
+
+<div class="page-inner">
+    <div class="container">
+        <?=$this->widget('Epic', 'widgets/profilenav', $this->vars())?>
+    </div><!-- above container end -->
+    <div class="container">
+        <div class="profile-main">
+            <div class="row">
+                <div class="span8">
+                    <?=$this->widget('Epic', 'widgets/profilemeta', $this->vars())?>
+
+                    <div class="profile-activities">
+
+                        <div class="page-header border-header">
+                            <h3><?=$this->_($title);?></h3>
+                        </div>
+
+                        Under building
+                        <?if($this->paginator):?>
+                        <?=$this->paginator->setPath('/user/' . $user['userName'] . '/blog/')->setBaseQuery($this->query);?>
+                        <?=$this->widget('Core', 'widgets/paginator', $this->vars())?>
+                        <?endif;?>
+
+
+                    </div><!--profile-activities end-->
+                </div><!--left span8 end-->
+                <div class="span4">
+                    <?=$this->widget('Epic', 'widgets/profileside', $this->vars())?>
+                </div><!--right span4 end-->
+            </div><!--row end-->
+        </div><!--profil-main end-->
+    </div><!--container end-->
+</div><!--page inner end-->

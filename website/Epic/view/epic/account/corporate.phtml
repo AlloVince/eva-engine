@@ -1,0 +1,107 @@
+<?
+$item = $this->item;
+$title = 'Corporate Request';
+$this->headTitle($title, 'SET');
+
+if($this->form){
+	$form = $this->form;
+} else {
+    $form = new Core\Form\SendEmailForm();
+}
+
+$form
+->setView($this)
+->useSubFormGroup()
+->setMethod('post')
+->setAction($this->uri('/account/corporate/'))
+->bind($item)
+->prepare();
+
+?>
+
+<div class="container">
+    <div class="normal-page">
+        <div class="body grid-s5m0">
+
+            <div class="main-wrap"><div id="main" class="main">
+                    <div class="page-main">
+                        <div class="page-main-header">
+                            <h3><?=$this->_($title)?></h3>
+                        </div>
+
+                        <div class="typo">
+                            <div class="well">
+                                <h1><?=$this->_('Your Benefits')?></h1>
+                                <ul>
+                                    <li>Branding : reach your customers and audiences </li>
+                                    <li>Global Vision : profit our international.</li>
+                                    <li>Communicating : raise local attention</li>
+                                </ul>
+                                <ul>
+                                    <li>Human Capitals : post jobs and search for talents </li>
+                                    <li>Network : meet and connect with business contacts</li>
+                                    <li>Events : Hosing and promoting your events</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <form <?=$this->formAttr($form)?> class="form">
+                            <?=$form->restful();?>
+                            <div class="control-group <?=$form->isError('sender') ? 'error' : '';?> hide">
+                                <?=$form->helper('sender', 'label', array('class' => 'control-label'))?>
+                                <div class="controls">
+                                    <?=$form->helper('sender', array('class' => 'span6'))?>        
+                                    <div class="help-block"><?=$form->helper('sender', 'formElementErrors')?></div>
+                                </div>
+                            </div>
+                            <div class="control-group <?=$form->isError('recipient') ? 'error' : '';?> hide">
+                                <?=$form->helper('recipient', 'label', array('class' => 'control-label'))?>
+                                <div class="controls">
+                                    <?=$form->helper('recipient', array('class' => 'span6'))?>        
+                                    <div class="help-block"><?=$form->helper('recipient', 'formElementErrors')?></div>
+                                </div>
+                            </div>
+                            <div class="control-group <?=$form->isError('subject') ? 'error' : '';?> hide">
+                                <?=$form->helper('subject', 'label', array('class' => 'control-label'))?>
+                                <div class="controls">
+                                    <?=$form->helper('subject', array('class' => 'span6', 'value' => 'Corporate Request'))?>        
+
+                                    <div class="help-block"><?=$form->helper('subject', 'formElementErrors')?></div>
+                                </div>
+                            </div>
+                            <div class="control-group <?=$form->isError('content') ? 'error' : '';?>">
+                                <?=$form->helper('content', 'label', array('class' => 'control-label'), array('args' => array(null, 'abc')))?>
+                                <div class="controls">
+                                    <?=$form->helper('content', 'formTextarea', array('class' => 'span6', 'rows' => 10))?>        
+                                    <div class="help-block"><?=$form->helper('content', 'formElementErrors')?></div>
+                                    <div class="help-block">Please provide your company informations</div>
+                                </div>
+                            </div>
+                            <div class="control-group <?=$form->isError('attachment') ? 'error' : '';?>">
+                                <?=$form->helper('attachment', 'label', array('class' => 'control-label'))?>
+                                <div class="controls">
+                                    <?=$form->helper('attachment', array('class' => ''))?>        
+                                    <div class="help-block"><?=$form->helper('attachment', 'formElementErrors')?></div>
+                                    <div class="help-block">Please upload certificate of your company qualification</div>
+                                </div>
+                            </div>
+
+                            <div class="form-action">
+                                <button class="btn  btn-large">Send Request</button> A email will send to system admin, please wait for admin verify.
+                            </div>
+                        </form>
+
+
+
+                    </div><!--page-main end-->
+            </div></div><!-- #main end-->
+
+            <div class="sidebar">
+                <div class="page-side">
+                    <?=$this->widget('Epic', 'widgets/accountnav', $this->vars())?>
+                </div>
+            </div><!--sider end-->
+
+        </div><!-- #body end-->
+    </div><!-- normal end-->
+</div><!--container end-->

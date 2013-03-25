@@ -1,0 +1,194 @@
+<?
+$title = 'Groups';
+$title = $this->_($title);
+$this->headTitle($title, 'SET');
+$items = $this->items;
+
+$form = new Group\Form\GroupUserForm();
+$form
+->setView($this)
+->useSubFormGroup()
+->setMethod('post')
+->setAction($this->uri('/group/join/'))
+->prepare();
+
+$unjoinForm = clone $form;
+$unjoinForm->setMethod('delete');
+
+
+$groupSearchForm = $this->form ? $this->form : new Epic\Form\GroupSearchForm();
+$groupSearchForm->setView($this)
+     ->setMethod('get')
+     ->setAction($this->uri('/groups/'))
+     ->prepare();
+
+$categories = $this->categories;
+
+?>
+
+<div class="container">
+    <header class="group-header">
+        <?=$this->widget('Epic', 'widgets/groupnav', $this->vars())?>  
+    </header>
+</div>
+
+<div class="container">
+    <div class="page-bg">
+        <div class="row">
+
+            <div class="span8">
+                <div class="group-main">
+                    <?=$this->widget('Epic', 'components/banner_group')?>  
+
+                    <div class="page-header border-header">
+                        <h3><?=$this->_('New Groups');?></h3>
+                    </div>
+
+                    <script id="group-new" type="text/x-tmpl" data-url="<?=$this->uri('/data/group/', array('order' => 'timedesc','rows' => 6, 'category' => $this->query['category']))?>">
+                    <div class="group-new group-thumbnails">
+                        <ul class="thumbnails">
+                        {% if(o.items.length > 0) { %}
+                        {% for (var i=0, item; item=o.items[i]; i++) { %}
+                            <li><a href="<?=$this->uri('/group/')?>{%=item.groupKey%}">
+                            {% if(item.File) { %}
+                                <img width="90" height="90" class="img-rounded" alt="" src="{%=eva.thumb(item.File.Thumb, 'c_fill,h_90,w_90')%}">
+                            {% } else { %}
+                                <img  src="<?=$this->assets('/module/epic/img/group-default.png')?>" width="90" height="90" class="img-rounded"/>
+                            {% } %}
+                            <p>{%=item.groupName%}</p>
+                            </a></li>
+                        {% } %}
+                        {% } %}
+                        </ul>
+                    </div>
+                    </script>
+
+                    <div class="page-header border-header">
+                        <h3><?=$this->_('Feature Groups');?></h3>
+                    </div>
+
+                    <script id="group-hot" type="text/x-tmpl" data-url="<?=$this->uri('/data/group/', array('order' => 'timedesc','rows' => 12, 'category' => $this->query['category']))?>">
+                        <div class="group-hot group-thumbnails">
+                            <ul class="thumbnails">
+                                {% if(o.items.length > 0) { %}
+                                {% for (var i=0, item; item=o.items[i]; i++) { %}
+                                <li><a href="<?=$this->uri('/group/')?>{%=item.groupKey%}">
+                                    {% if(item.File) { %}
+                                    <img width="90" height="90" class="img-rounded" alt="" src="{%=eva.thumb(item.File.Thumb, 'c_fill,h_90,w_90')%}">
+                                    {% } else { %}
+                                    <img  src="<?=$this->assets('/module/epic/img/group-default.png')?>" width="90" height="90" class="img-rounded"/>
+                                    {% } %}
+                                    <p>{%=item.groupName%}</p>
+                                </a></li>
+                                {% } %}
+                                {% } %}
+                            </ul>
+                        </div>
+                    </script>
+
+                    <div class="page-header border-header">
+                        <h3><?=$this->_('Discussion of Groups');?></h3>
+                    </div>
+
+                    <div class="group-topics">
+                        <?if($this->query['category']):?>
+                        <script id="topic-wrap-hot" type="text/x-tmpl" data-url="<?=$this->uri('/data/blog/', array('inGroup' => true,'order' => 'timedesc','rows' => 15,'groupCategory' =>$this->category['id']))?>">
+                        <div class="topic-wrap-hot topic-wrap full">
+                            <div class="topic">
+                                <div class="topic-heading">
+                                    <small class="pull-right"><a href="<?=$this->uri('/groups/category/' . $this->category['urlName'])?>">More</a></small>
+                                    <h4><a href="<?=$this->uri('/groups/category/' . $this->category['urlName'])?>"><?=$this->category['categoryName']?></a></h4>
+                                </div>
+                                <div class="topic-body-wrap">
+                                    <div class="topic-body">
+                                        <ul>
+                                        {% if(o.items.length > 0) { %}
+                                        {% for (var i=0, item; item=o.items[i]; i++) { %}
+                                            <li><a href="<?=$this->uri('/group/')?>{%=item.Group.groupKey%}/" class="pull-right">[ {%=item.Group.groupName%} ]</a>
+                                            <a href="<?=$this->uri('/group/')?>{%=item.Group.groupKey%}/blog/info/{%=item.urlName%}">{%=item.title%}</a></li>
+                                        {% } %}
+                                        {% } %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </script>
+                        <?elseif($categories && !$this->query['category']):?>
+                        <script id="topic-wrap-feature" type="text/x-tmpl" data-url="<?=$this->uri('/data/blog/', array('inGroup' => true,'order' => 'timedesc','rows' => 4, 'flag' => 1))?>">
+                        <div class="topic-wrap-feature topic-wrap odd">
+                            <div class="topic">
+                                <div class="topic-heading">
+                                    <h4>Feature</h4>
+                                </div>
+                                <div class="topic-body-wrap">
+                                    <div class="topic-body">
+                                        <ul>
+                                        {% if(o.items.length > 0) { %}
+                                        {% for (var i=0, item; item=o.items[i]; i++) { %}
+                                            <li><a href="<?=$this->uri('/group/')?>{%=item.Group.groupKey%}/blog/info/{%=item.urlName%}">{%=item.title%}</a></li>
+                                        {% } %}
+                                        {% } %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </script>
+                        <script id="topic-wrap-new" type="text/x-tmpl" data-url="<?=$this->uri('/data/blog/', array('inGroup' => true,'order' => 'timedesc','rows' => 4))?>">
+                        <div class="topic-wrap-new topic-wrap even">
+                            <div class="topic">
+                                <div class="topic-heading">
+                                    <h4>New</h4>
+                                </div>
+                                <div class="topic-body-wrap">
+                                    <div class="topic-body">
+                                        <ul>
+                                        {% if(o.items.length > 0) { %}
+                                        {% for (var i=0, item; item=o.items[i]; i++) { %}
+                                            <li><a href="<?=$this->uri('/group/')?>{%=item.Group.groupKey%}/blog/info/{%=item.urlName%}">{%=item.title%}</a></li>
+                                        {% } %}
+                                        {% } %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </script>
+                        <?foreach($categories as $key=>$category):?>
+                        <?if($category['urlName'] == 'culture'){continue;}?>
+                        <script id="topic-wrap<?=$key;?>" type="text/x-tmpl" data-url="<?=$this->uri('/data/blog/', array('inGroup' => true,'order' => 'timedesc','rows' => 4, 'groupCategory' => $category['id']))?>">
+                        <div class="topic-wrap<?=$key;?> topic-wrap <?=($key)%2 == 0 ? 'odd' : 'even'?>">
+                            <div class="topic">
+                                <div class="topic-heading">
+                                    <small class="pull-right"><a href="<?=$this->uri('/groups/category/' . $category['urlName'])?>">More</a></small>
+                                    <h4><a href="<?=$this->uri('/groups/category/' . $category['urlName'])?>"><?=$category['categoryName']?></a></h4>
+                                </div>
+                                <div class="topic-body-wrap">
+                                    <div class="topic-body">
+                                        <ul>
+                                        {% if(o.items.length > 0) { %}
+                                        {% for (var i=0, item; item=o.items[i]; i++) { %}
+                                            <li><a href="<?=$this->uri('/group/')?>{%=item.Group.groupKey%}/blog/info/{%=item.urlName%}">{%=item.title%}</a></li>
+                                        {% } %}
+                                        {% } %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </script>
+                        <?endforeach;?>
+                        <?endif;?>
+                    </div>
+                </div><!--group main end-->
+            </div><!--page main left end-->
+            <div class="span4">
+                <?=$this->widget('Epic', 'widgets/groupsside', $this->vars())?>
+            </div>
+
+        </div><!--page main right end-->
+    </div><!-- page-bg end-->
+</div><!--container end-->
+
+

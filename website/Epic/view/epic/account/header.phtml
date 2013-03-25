@@ -1,0 +1,89 @@
+<?
+$item = $this->item;
+$title = 'Edit My Page Header';
+$title = $this->_($title);
+$this->headTitle($title, 'SET');
+
+if(!$this->form){
+    $form = new User\Form\ImageUserForm();
+    $form->useSubFormGroup();
+}
+
+$form->setMethod('put');
+$form->setView($this)
+    ->setAction($this->uri('/account/changeheader/'))
+    ->bind($item['ImageUserHeader'] ? $item['ImageUserHeader'][0] : array())
+    ->prepare();
+
+?>
+
+<div class="container">
+    <div class="normal-page">
+        <div class="body grid-s5m0">
+
+            <div class="main-wrap"><div id="main" class="main">
+                    <div class="page-main">
+                        <div class="page-main-header">
+                            <h3><?=$this->_('Edit My Page Header')?></h3>
+                        </div>
+                        <form id="header-edit-form" <?=$this->formAttr($form)?>>
+                            <?=$form->restful();?>
+                            <?=$form->helper('user_id', array('class' => '', 'value' => $item['id']))?>
+                            <?=$form->helper('file_id', 'formHidden', array('class' => ''))?>
+                            <?=$form->helper('usage', 'formHidden', array('class' => '', 'value' => 'header'))?> 
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div id="header-uploader" class="row <?=$item['Header'] ? 'hide' : ''?>">
+                                        <div class="span4">
+                                            <?=$this->widget('File', 'file/upload')?>
+                                        </div>
+                                    </div>
+                                    <?if($item['Header']):?>
+                                    <img id="header-view" src="<?=$this->thumb($item['Header'][0]['Thumb'], array('h_250', 'w_1200', 'c_fill'))?>" alt="" class="img-polaroid" data-default="<?=$this->assets('/module/epic/img/default_header.jpg')?>" />
+                                    <br /><a href="#" id="show-header-uploader">Change</a> or <a id="delete-header" href="#" >Delete</a>
+                                    <?else:?>
+                                    <img  id="header-view" src="<?=$this->assets('/module/epic/img/default_header.jpg')?>" alt="" class="img-polaroid" />
+                                    <?endif?>
+                                    <div class="help-block">Header Image Size : 1200 * 250, if size not match will be automatically crop.</div>
+                                </div>
+                            </div>
+                            <div class="form-action">
+                                <button class="btn btn-info btn-large">Save</button>
+                            </div>
+                        </form>
+                    </div><!--page-main end-->
+            </div></div><!-- #main end-->
+
+            <div class="sidebar">
+                <div class="page-side">
+                    <?=$this->widget('Epic', 'widgets/accountnav', $this->vars())?>
+                </div>
+            </div><!--sider end-->
+
+        </div><!-- #body end-->
+    </div><!-- normal end-->
+</div><!--container end-->
+
+<script>
+eva.ready(function(){
+    var form = $("#header-edit-form");
+    var uploader = $('#singlefileupload');
+    uploader.bind('fileuploaddone', function (e, data) {
+            var file = data.result[0];
+            form.find('input[name="file_id"]').val(file.id);
+            $("#header-view").hide();
+    });
+
+    $("#show-header-uploader").click(function(){
+        $("#header-uploader").show();
+        return false;
+    });
+
+    $("#delete-header").click(function(){
+        form.find('input[name="file_id"]').val('0');
+        $("#header-view").attr("src", $("#header-view").attr("data-default"));
+        $("#header-uploader").show();
+        return false;
+    });
+});
+</script>

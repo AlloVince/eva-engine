@@ -1,0 +1,35 @@
+<?
+$title = $this->post['title'] . ' - Discussion of Group';
+$this->headTitle($title, 'SET');
+$user = $this->user;
+$item = $this->item;
+$post = $this->post;
+?>
+
+<div class="container">
+    <header class="group-header">
+        <?=$this->widget('Epic', 'widgets/groupnav', $this->vars())?> 
+    </header>
+</div>
+
+<div class="container">
+    <div class="page-bg">
+        <div class="row">
+
+            <div class="span8">
+                <div class="group-main">
+                    <?=$this->widget('Epic', 'widgets/groupcard', $this->vars())?> 
+                    <?=$this->widget('Epic', 'epic/user/post-template', array(
+                        'item' => $post,
+                        'comments' => $this->comments,
+                    ))?> 
+
+                </div><!--group main end-->
+            </div><!--page main left end-->
+            <div class="span4">
+               <?=$this->widget('Epic', 'widgets/groupside', $this->vars())?>  
+            </div>
+
+        </div><!--page main right end-->
+    </div><!-- page-bg end-->
+</div><!--container end-->

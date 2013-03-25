@@ -1,0 +1,38 @@
+<?
+$title = 'Event Image Upload';
+$this->headTitle($title, 'SET');
+$user = $this->user;
+$item = $this->item;
+?>
+
+<div class="container">
+    <div class="page-bg">
+        <div class="row">
+            <div class="span4">
+                <?=$this->widget('Epic', 'widgets/eventside', $this->vars())?> 
+            </div><!--page main right end-->
+            <div class="span8">
+                <div class="event-main">
+                <?=$this->widget('Epic', 'epic/event/event-detail', $this->vars())?>
+                
+                <div class="page-header border-header">
+                    <h3>Event Images</h3>
+                </div>
+                <?
+                    $formAction = '';
+                    if(!$this->form){
+                        $formAction = $this->album['id'] ? $this->uri('/albums/edit/') : $this->uri('/event/albums/');
+                    }
+                ?> 
+                <?=$this->widget('Epic', 'epic/album/form', array(
+                            'form' => $this->form,
+                            'formAction' => $formAction,
+                            'item' => $this->album,
+                            'callbackInput' => '<input type="hidden" name="callback" value="' . '/event/' . $item['urlName'] . '/album/upload/' . '">',
+                            'formExt' => '<input type="hidden" name="event_id" value="' . $this->item['id'] . '">'
+                        ))?> 
+                </div><!--event main end-->
+            </div><!--page main left end-->
+        </div>
+    </div><!-- page-bg end-->
+</div><!--container end-->

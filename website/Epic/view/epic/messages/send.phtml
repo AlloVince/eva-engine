@@ -1,0 +1,79 @@
+<?
+$item = $this->item;
+$title = 'Send Message';
+$title = $this->_($title);
+$this->headTitle($title, 'SET');
+
+if($this->form){
+	$form = $this->form;
+} else {
+    $form = new Message\Form\MessageForm();
+}
+$form->useSubFormGroup()
+     ->setMethod('post')
+     ->setView($this)
+     ->setAction($this->uri('/message/'))
+     ->bind($item)
+     ->prepare();
+?>
+
+<div class="container">
+    <div class="normal-page">
+        <div class="body grid-s5m0">
+
+            <div class="main-wrap"><div id="main" class="main">
+                    <div class="page-main">
+
+
+                        <div class="row">
+                            <div class="span6">
+
+                                <div class="page-main-header">
+                                    <h3><?=$this->_($title)?></h3>
+                                </div>
+                                <div class="row">
+                                    <form <?=$this->formAttr($form)?> class="form span6">
+                                        <?=$form->restful();?>
+                                        <input name="callback" type="hidden" value="<?=$this->uri('/messages/')?>" />
+                                        <div class="control-group">
+                                            <?=$form->helper(array('Conversation', 'recipient_id'), 'label', array('class' => 'control-label', 'readonly' => 'readonly'))?>
+                                            <div class="controls">
+                                                <?=$form->helper(array('Conversation', 'recipient_id'), array('class' => 'span3', 'placeholder' => 'User Name', 'value' => isset($this->to) ? $this->to : null))?>
+                                            </div>
+                                        </div>
+
+                                        <div class="control-group <?=$form->isError('body') ? 'error' : '';?>">
+                                            <?=$form->helper('body', 'label', array('class' => 'control-label'))?>
+                                            <div class="controls">
+                                                <?=$form->helper('body', 'formTextarea', array('class' => 'span5'))?>        
+                                                <div class="help-block"><?=$form->helper('body', 'formElementErrors')?></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="activity-box-buttons">
+                                            <button type="submit" class="btn btn-light-brown btn-large"><?=$this->_('Send')?></button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div><!--page main left end-->
+                            <div class="span3">
+                                <div class="page-extra">
+                                    <?=$this->widget('Epic', 'widgets/userextra')?>
+                                </div>
+                            </div><!--page main right end-->
+                        </div>
+
+                    </div><!--page-main end-->
+            </div></div><!-- #main end-->
+
+            <div class="sidebar">
+                <div class="page-side">
+                    <?=$this->widget('Epic', 'widgets/userside')?>
+                </div>
+            </div><!--sider end-->
+
+        </div><!-- #body end-->
+    </div><!-- normal end-->
+</div><!--container end-->
+

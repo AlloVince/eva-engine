@@ -1,0 +1,43 @@
+<?
+$item = $this->item;
+$title = $item['id'] ? 'Edit Event' : 'Schedule an Event';
+$title = $this->_($title);
+$this->headTitle($title, 'SET');
+?>
+
+<div class="container">
+    <div class="normal-page">
+        <div class="body grid-s5m0">
+            <div class="main-wrap"><div id="main" class="main">
+                    <div class="page-main">
+                        <div class="row">
+                            <div class="span6">
+                                <div class="page-main-header">
+                                    <span class="pull-right">
+                                        <a href="<?=$this->uri('/events/list/')?>" class="btn btn-small btn-gray"><i class="icon-search"></i> Find an Event</a>
+                                        <a href="<?=$this->uri('/events/create/')?>" class="btn btn-small btn-orange"><i class="icon-plus"></i> Schedule an Event</a>
+                                    </span>
+                                    <h3><?=$this->_($title)?> <?if($item['id']):?><a href="<?=$this->uri('/event/' . $item['urlName']);?>" class="">[View]</a><?endif?></h3>
+                                </div>
+                                <?=$this->widget('Epic', 'epic/event/form', $this->vars())?>
+
+                            </div><!--page main left end-->
+                            <div class="span3">
+                                <div class="page-extra">
+                                    <?=$this->widget('Epic', 'widgets/userextra', $this->vars())?>
+                                </div>
+                            </div><!--page main right end-->
+                        </div>
+
+                    </div><!--page-main end-->
+            </div></div><!-- #main end-->
+
+            <div class="sidebar">
+                <div class="page-side">
+                    <?=$this->widget('Epic', 'widgets/userside', $this->vars())?>
+                </div>
+            </div><!--sider end-->
+
+        </div><!-- #body end-->
+    </div><!-- normal end-->
+</div><!--container end-->
