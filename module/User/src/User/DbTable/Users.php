@@ -27,8 +27,6 @@ class Users extends TableGateway
                 return $where;
             });
         }
-        
-        $tableName = $this->initTableName()->getTable();
 
         if($params->id){
             if(is_array($params->id)){
@@ -40,17 +38,13 @@ class Users extends TableGateway
         if($params->excludeId){
             $this->where(array('id != ' . $params->excludeId));
         }
-        
-        if($params->excludeStatus){
-            $this->where(array($tableName . '.status != ' . "'$params->excludeStatus'"));
-        }
 
         if($params->columns) {
             $this->columns($params->columns);
         }
 
         if($params->status){
-            $this->where(array($tableName . '.status' => $params->status));
+            $this->where(array('status' => $params->status));
         }
         
         if($params->flag){

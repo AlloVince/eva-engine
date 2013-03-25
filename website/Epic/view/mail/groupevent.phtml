@@ -1,8 +1,0 @@
-<?if($this->event):?>
-Group <?=$this->item['groupName'];?> Schedule an New Event <?=$this->event['title'];?>
-
-
-You can join here: 
-
-<?=$this->serverUrl('/group/' . $this->item['groupKey'] . '/event/info/' . $this->event['urlName'])?>
-<?endif;?>
