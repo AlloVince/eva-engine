@@ -102,6 +102,16 @@ class UserSearchForm extends UserForm
                 'value' => 1,
             ),
         ),
+        'order' =>     array(
+            'name' => 'order',
+            'type' => 'text',
+            'options' => array(
+                'label' => 'Order',
+            ),
+            'attributes' => array(
+                'value' => 'iddesc',
+            ),
+        ),
     );
 
 

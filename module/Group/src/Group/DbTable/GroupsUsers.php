@@ -49,9 +49,18 @@ class GroupsUsers extends TableGateway
         }
 
         $orders = array(
+            'idasc' => 'group_id ASC',
+            'iddesc' => 'group_id DESC',
             'timeasc' => 'requestTime ASC',
             'timedesc' => 'requestTime DESC',
         );
+        
+        if($params->order){
+            $order = $orders[$params->order];
+            if($order){
+                $this->order($order);
+            }
+        }
 
         return $this;
     }
