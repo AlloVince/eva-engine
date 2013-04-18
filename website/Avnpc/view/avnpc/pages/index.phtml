@@ -35,7 +35,7 @@ $item = $this->item;
         <?=$item['Text']['ContentHtml']?>
         <?if($item['Tags']):?>
         <hr />
-        <p class="tags"> Tags :
+        <p class="tags"> 　Tags :
         <?foreach($item['Tags'] as $tag):?>
         <a href="<?=$this->uri('/thinking/'. $tag['tagName'])?>" class="label tag"><?=$tag['tagName']?></a>
         <?endforeach?>
@@ -49,6 +49,9 @@ $item = $this->item;
         <span data-url-wrap="http://weibo.com/avnpc"><i class="icon-social-weibo"></i></span>
         <span data-url-wrap="http://www.linkedin.com/in/qianxu"><i class="icon-social-linkedin-squared"></i></span>
         <span data-url-wrap="https://www.evernote.com/pub/allovince/Tech"><i class="icon-social-evernote"></i></span>
+        </p>
+        <p>
+        Donate：<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=allo.vince@gmail.com&currency_code=USD&amount=0.99&return=http://avnpc.com&item_name=Blog%20Of%20AlloVince&undefined_quantity=1&no_note=0">Buy me a coffee <span class="icon-coffee"></span></a>　|　文章有帮助，可以<a href="https://me.alipay.com/allovince">请我喝杯咖啡 <span class="icon-coffee"></span></a>
         </p>
         <?endif?>
         </article>
