@@ -98,7 +98,7 @@ $tags = isset($item['Tags']) ? $item['Tags'] : array();
                                         Preview
                                     </a>
                                 </div>
-                                <div id="collapse-preview" class="accordion-body collapse in">
+                                <div id="collapse-preview" class="accordion-body collapse">
                                     <div class="accordion-inner">
                                         <div id="markdown-preview" class="typo typocn">
 
@@ -346,12 +346,17 @@ eva.ready(function(){
                 "lineNumbers":true,
                 "lineWrapping":true,
                 onChange : function(cm){
-                        var html = Markdown(cm.getValue());
-                        editorPreview.html(html);
+                        //var html = Markdown(cm.getValue());
+                        //editorPreview.html(html);
                 }
         });	
     }
 
+
+    $("#collapse-preview").on('show', function () {
+         var html = Markdown(editorMd.getValue());
+         editorPreview.html(html);
+    });
 
     $("#collapse-preview-html").on('show', function () {
             function htmlencode(s){  
