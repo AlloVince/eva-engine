@@ -5,6 +5,8 @@ use Eva\Api,
     Eva\Mvc\Controller\ActionController,
     Eva\View\Model\ViewModel,
     Zend\Feed\Reader\Reader as FeedReader;
+use Zend\Http\Client;
+use Zend\Http\Request;
 
 class LifeController extends ActionController
 {
@@ -13,36 +15,96 @@ class LifeController extends ActionController
 
     protected $_lastfmCache = array();
 
+    /*
     public function indexAction()
     {
-		$url = 'https://www.google.com/reader/public/atom/user%2F06943440676883415375%2Flabel%2FLife?r=n&n=30';
-        $id = $this->params()->fromRoute('id');
-        if($id) {
-            $url .= '&c=' . $id;
+        $url = 'https://theoldreader.com/reader/atom/user/-/label/Life';
+        $client = new Client();
+        $client->setUri($url);
+        $client->setParameterGet(array(
+            'output'     => 'atom',
+        ));
+        $client->setOptions(array(
+            'sslverifypeer' => false
+        ));
+        $client->setHeaders(array(
+            'Authorization' => 'GoogleLogin auth=dfQyePKxTYchuenjHgHq')
+        );
+
+        $response = $client->send();
+        $feedBody = $response->getBody();
+        $feed = FeedReader::importString($feedBody);
+        $feed->getXpath()->registerNamespace(
+            'gr', 'http://example.com/junglebooks/rss/module/1.0/'
+        );
+        $continuation = $feed->getXpath()->evaluate('string(' . $feed->getXpathPrefix() . '/gr:continuation)');
+
+        $data = array();
+        foreach ($feed as $entry) {
+            $edata = array(
+                'title'        => $entry->getTitle(),
+                'dateModified' => $entry->getDateModified()->format(DATE_ISO8601), //$entry->getDateModified()->toString(\Zend\Date::ISO_8601),
+                'link'         => $entry->getLink(),
+                'content'      => $entry->getContent()
+            );
+            $edata = $this->entryHandler($edata);
+            if($edata){
+                $data[] = $edata;
+            }
         }
+        $data = \Eva\Stdlib\Arraylib\Sort::multiSortArray($data, 'dateModified', 'SORT_DESC');
+        p($continuation);
+        exit;
+
+        $view = new ViewModel(array(
+            'feeds' => $data,
+           // 'nextpage' => $continuation,
+           // 'nextId' => $id,
+        ));
+        $this->pagecapture();
+        return $view;
+    }
+    */
+
+    public function indexAction()
+    {
+        $url = 'https://theoldreader.com/reader/atom/user/-/label/Life';
+        $config = Api::_()->getConfig();
+        $authToken = $config['reader']['token'];
+        $id = $this->params()->fromRoute('id');
 
         $cache = null;
-		if ($cache && $cacheData = $cache->load($cacheKey)) {
-			$data = $cacheData['data'];
+        if ($cache && $cacheData = $cache->load($cacheKey)) {
+            $data = $cacheData['data'];
 			$continuation = $cacheData['nextpage'];
-		} else {
-            $httpClient = FeedReader::getHttpClient();
-            $httpClient->setOptions(array(
+        } else {
+            $client = new Client();
+            $client->setUri($url);
+            $client->setParameterGet(array(
+                'output'     => 'atom',
+                'c' => $id,
+            ));
+            $client->setOptions(array(
                 'sslverifypeer' => false
             ));
-            $feed = FeedReader::import($url);
-			$feed->getXpath()->registerNamespace(
-				'gr', 'http://example.com/junglebooks/rss/module/1.0/'
-			);
-			$continuation = $feed->getXpath()->evaluate('string(' . $feed->getXpathPrefix() . '/gr:continuation)');
+            $client->setHeaders(array(
+                'Authorization' => 'GoogleLogin auth=' . $authToken
+            ));
+            $response = $client->send();
+            $feedBody = $response->getBody();
+            $feed = FeedReader::importString($feedBody);
+            $feed->getXpath()->registerNamespace(
+                'gr', 'http://example.com/junglebooks/rss/module/1.0/'
+            );
+            $continuation = $feed->getXpath()->evaluate('string(' . $feed->getXpathPrefix() . '/gr:continuation)');
 
-			$data = array();
-			foreach ($feed as $entry) {
-				$edata = array(
-					'title'        => $entry->getTitle(),
+            $data = array();
+            foreach ($feed as $entry) {
+                $edata = array(
+                    'title'        => $entry->getTitle(),
                     'dateModified' => $entry->getDateModified()->format(DATE_ISO8601), //$entry->getDateModified()->toString(\Zend\Date::ISO_8601),
-					'link'         => $entry->getLink(),
-					'content'      => $entry->getContent()
+                    'link'         => $entry->getLink(),
+                    'content'      => $entry->getContent()
 				);
                 $edata = $this->entryHandler($edata);
                 if($edata){

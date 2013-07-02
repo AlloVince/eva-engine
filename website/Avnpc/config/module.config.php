@@ -19,6 +19,9 @@ return array(
             ),
         ),
     ),
+    'reader' => array(
+        'token' => '',
+    ),
     'router' => array(
         'routes' => array(
             'front' => array(
@@ -89,7 +92,7 @@ return array(
                 'options' => array(
                     'route' => '/life[/][:id][/]',
                     'constraints' => array(
-                        'id'     => '[a-zA-Z][a-zA-Z0-9_-]+',
+                        'id'     => '[0-9]+',
                     ),
                     'defaults' => array(
                         'controller' => 'LifeController',
